@@ -15,6 +15,11 @@ enum FamilyRole {
   MANAGER
 }
 
+enum ProfileKind {
+  ASSISTED_ADULT
+  CHILD
+}
+
 /// An adult account holder. Identity, email, and credentials stay in Clerk.
 model User {
   id          String   @id @default(uuid(7)) @db.Uuid
@@ -22,7 +27,8 @@ model User {
   createdAt   DateTime @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime @updatedAt @db.Timestamptz(3)
 
-  membership FamilyMembership?
+  membership      FamilyMembership?
+  createdProfiles ManagedProfile[]
 }
 
 /// The deletion root for everything a family owns.
@@ -33,6 +39,8 @@ model Family {
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   memberships FamilyMembership[]
+  profiles    ManagedProfile[]
+  auditLogs   AuditLog[]
 }
 
 /// Links an adult to the family they manage. MVP: one family per adult (unique userId).
@@ -50,4 +58,44 @@ model FamilyMembership {
   // Prevents duplicate memberships even after the one-family rule is relaxed.
   // Its leading familyId column also serves "members of this family" lookups.
   @@unique([familyId, userId])
+}
+
+/// A consent-based profile without a Clerk account. AI consent is a separate future flow.
+model ManagedProfile {
+  id                   String      @id @default(uuid(7)) @db.Uuid
+  familyId             String      @db.Uuid
+  displayName          String      @db.VarChar(40)
+  kind                 ProfileKind
+  avatarKey            String      @db.VarChar(30)
+  locale               String      @default("en-US") @db.VarChar(10)
+  consentConfirmedAt   DateTime    @db.Timestamptz(3)
+  consentVersion       String      @db.VarChar(20)
+  createdByUserId      String      @db.Uuid
+  aiAssistEnabled      Boolean     @default(false)
+  aiConsentConfirmedAt DateTime?   @db.Timestamptz(3)
+  aiConsentVersion     String?     @db.VarChar(20)
+  createdAt            DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime    @updatedAt @db.Timestamptz(3)
+
+  family    Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  createdBy User   @relation(fields: [createdByUserId], references: [id], onDelete: Restrict)
+
+  @@index([familyId, id])
+  @@index([createdByUserId])
+}
+
+/// Append-only security events. Opaque IDs only; no profile names or personal text.
+model AuditLog {
+  id         String   @id @default(uuid(7)) @db.Uuid
+  familyId   String   @db.Uuid
+  actorType  String   @db.VarChar(20)
+  actorId    String   @db.Uuid
+  action     String   @db.VarChar(60)
+  targetType String   @db.VarChar(40)
+  targetId   String   @db.Uuid
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+
+  @@index([familyId, createdAt])
 }
