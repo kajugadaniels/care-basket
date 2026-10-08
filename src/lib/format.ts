@@ -4,3 +4,13 @@ export function formatDate(value: string, locale = "en-US"): string {
     dateStyle: "long", timeZone: "UTC",
   }).format(new Date(value));
 }
+
+export function formatTime(value: string, locale = "en-US"): string {
+  return new Intl.DateTimeFormat(locale, { timeStyle: "short", timeZone: "UTC" }).format(new Date(value));
+}
+
+export function formatCountdown(milliseconds: number, locale = "en-US"): string {
+  const seconds = Math.max(0, Math.ceil(milliseconds / 1000));
+  const digits = new Intl.NumberFormat(locale, { minimumIntegerDigits: 2, useGrouping: false });
+  return `${digits.format(Math.floor(seconds / 60))}:${digits.format(seconds % 60)}`;
+}
