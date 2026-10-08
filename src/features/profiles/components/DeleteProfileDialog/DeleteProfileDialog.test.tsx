@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
 
@@ -77,7 +77,7 @@ describe("DeleteProfileDialog", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: profilesCopy.remove }));
     const error = await within(dialog).findByRole("alert");
     expect(error).toHaveTextContent(profilesCopy.errors.internal);
-    expect(error).toHaveFocus();
+    await waitFor(() => expect(error).toHaveFocus());
     expect(dialog).toBeVisible();
   });
 });
