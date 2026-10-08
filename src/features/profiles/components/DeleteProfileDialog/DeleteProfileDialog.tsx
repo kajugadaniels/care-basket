@@ -52,7 +52,7 @@ export function DeleteProfileDialog({ profileId, displayName }: { profileId: str
           <div className={styles.actions}>
             <button ref={cancelRef} type="button" className={styles.cancel}
               onClick={() => dialogRef.current?.close()}>{profilesCopy.cancel}</button>
-            <Button type="submit" disabled={!confirmed || isPending} aria-busy={isPending} className={styles.remove}>
+            <Button type="submit" variant="destructive" disabled={!confirmed || isPending} aria-busy={isPending}>
               {isPending ? profilesCopy.removing : profilesCopy.remove}
             </Button>
           </div>
