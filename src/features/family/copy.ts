@@ -5,6 +5,7 @@ export const familyLayoutCopy = {
   navLabel: "Family manager",
   nav: {
     overview: "Overview",
+    members: "Family Members",
   },
 } as const;
 
@@ -19,7 +20,7 @@ export const familySetupCopy = {
   submit: "Create My Family",
   submitting: "Creating your family…",
   reassurance:
-    "That's all we need for now. You'll add the people you shop for in a later step.",
+    "That's all we need for now. Next, you can add the people you shop for.",
 } as const;
 
 export const familyDashboardCopy = {
@@ -30,9 +31,12 @@ export const familyDashboardCopy = {
     OWNER: "Owner",
     MANAGER: "Manager",
   },
-  readyTitle: "Your family is ready",
   readyText:
-    "Next, you can add someone you care for. Adding parents, grandparents, and children is coming soon.",
+    "Add someone you care for. They won't need an email address or password.",
+  memberCount: ({ count }: { count: number }) =>
+    `Your family has ${count} ${new Intl.PluralRules("en-US").select(count) === "one" ? "member" : "members"}.`,
+  addMember: "Add Family Member",
+  viewMembers: "View Family Members",
 } as const;
 
 export const setupPreviewCopy = {
@@ -40,12 +44,6 @@ export const setupPreviewCopy = {
   description: "These features are planned and not available yet.",
   comingSoon: "Coming soon",
   items: [
-    {
-      id: "profiles",
-      title: "Add a parent, grandparent, or child",
-      description:
-        "Create a simple profile for each person you shop for. They won't need an email address or password.",
-    },
     {
       id: "devices",
       title: "Connect their device",
