@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CreateFamilyFormState } from "@/features/family/types";
 
@@ -55,7 +55,7 @@ describe("CreateFamilyForm", () => {
       "For example, Jane's Family Use at least 2 characters.",
     );
     expect(familyName).toHaveValue("J");
-    expect(familyName).toHaveFocus();
+    await waitFor(() => expect(familyName).toHaveFocus());
   });
 
   it("shows a general error when the problem is not a specific field", async () => {
