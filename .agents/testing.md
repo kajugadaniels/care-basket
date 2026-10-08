@@ -39,6 +39,8 @@
 - Mock at module boundaries (`vi.mock('@/server/auth/actor')`, a fake `ShoppingAssistantProvider`, a fake PayPal client). Never mock the code under test.
 - Clerk: `vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"))`, then switch state with `setSignedIn()` and `setClerkLoaded()`, assert dialogs through `clerkSpies.openSignIn` / `openSignUp` and the `data-clerk-dialog` / `data-mode` attributes, and call `resetClerkMock()` in `beforeEach`. Mock `@clerk/nextjs/server` per test for `auth()` and `currentUser()`.
 - Modules that import `server-only` need `vi.mock("server-only", () => ({}))`, because Vitest does not use the `react-server` export condition.
+- Prisma: mock `@/server/db/client` with `getDb: () => fakeDb`. For transactions, give the fake a `$transaction` that commits staged writes only when the callback succeeds, so rollback behavior is asserted, not assumed. Simulate unique violations with `Object.assign(new Error(), { code: "P2002" })`.
+- The generated Prisma client (`src/generated/prisma`) must exist before running tests or type checks: the developer runs `prisma generate` first.
 - Unit tests never touch the network or a real database. Real Neon, PayPal Sandbox, and Gemini are exercised only in the developer's manual runs.
 - Use factories (`makeActor`, `makeRequest`) in `src/test/factories/` instead of large inline fixtures. All data is fictional.
 
