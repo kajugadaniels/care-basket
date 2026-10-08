@@ -33,6 +33,10 @@ Validated at startup by `src/lib/env/server.ts` and `src/lib/env/client.ts` with
 | `NEXT_PUBLIC_APP_URL` | Public | Canonical origin for Origin checks and absolute URLs | Yes |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Public | Clerk frontend | Yes |
 | `CLERK_SECRET_KEY` | Server | Clerk backend | Yes |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | Public | `/sign-in` | **Add** |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | Public | `/sign-up` | **Add** |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL` | Public | `/family` (used when no valid `redirect_url` is present) | **Add** |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL` | Public | `/family` | **Add** |
 | `DATABASE_URL` | Server | Neon **pooled** connection for runtime queries | Yes |
 | `DIRECT_URL` | Server / CLI | Neon **direct** connection for migrations ([database.md § 2](database.md#2-prisma-7-configuration)) | Yes |
 | `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | Public | PayPal JS SDK (same Sandbox app as below) | Yes |
@@ -49,9 +53,9 @@ Validated at startup by `src/lib/env/server.ts` and `src/lib/env/client.ts` with
 
 Rules:
 
-- Only the three `NEXT_PUBLIC_*` values above may be public. Any other public variable needs a security review.
-- `.env.example` lists every variable with a placeholder and a one-line comment. `.gitignore` must allow it (`!.env.example`).
-- Optional Clerk routing variables (sign-in and sign-up URLs, fallback redirects) are used only as the installed Clerk docs describe.
+- Only the `NEXT_PUBLIC_*` values above may be public: the Clerk publishable key and route paths, the PayPal client ID, and the app URL. Any other public variable needs a security review.
+- `.env.example` lists every variable with a placeholder and a one-line comment, and `.gitignore` allows it (`!.env.example`).
+- Clerk's deprecated `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` and `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` are not used. If the Clerk URL variables are missing, Clerk falls back to its hosted pages.
 - `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` is needed only when self-hosting several instances behind a load balancer.
 
 ## 4. Database migrations
