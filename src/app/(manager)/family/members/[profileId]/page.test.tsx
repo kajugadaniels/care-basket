@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { Suspense } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AppError } from "@/server/errors";
 
@@ -11,7 +12,7 @@ vi.mock("@/features/profiles/actions", () => ({ createManagedProfileAction: vi.f
 vi.mock("next/navigation", () => ({ notFound: mocks.notFound }));
 import MemberPage from "./page";
 import EditMemberPage from "./edit/page";
-import AddMemberPage from "../add/page";
+import AddMemberPage, { AddMemberContent } from "../add/page";
 
 const actor = { type: "adult", userId: "user-rose", familyId: "family-rose", role: "OWNER" };
 const profile = { id: "profile-rose", displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", createdAt: "2026-10-08T12:00:00Z" };
@@ -44,6 +45,11 @@ describe("member detail, add, and edit pages", () => {
   });
   it("authenticates the add page independently", async () => {
     mocks.requireAdult.mockRejectedValue(new Error("SIGN_IN"));
-    await expect(AddMemberPage()).rejects.toThrow("SIGN_IN");
+    await expect(AddMemberContent()).rejects.toThrow("SIGN_IN");
+  });
+  it("streams add-page authorization behind Suspense", () => {
+    const page = AddMemberPage();
+    expect(page.type).toBe(Suspense);
+    expect(mocks.requireAdult).not.toHaveBeenCalled();
   });
 });
