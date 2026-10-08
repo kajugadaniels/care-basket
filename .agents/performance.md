@@ -3,7 +3,7 @@
 **Purpose:** Keep CareBasket fast on older phones and slow mobile connections, where most requesters will use it.
 **Applies to:** UI, data loading, images, caching, and third-party scripts.
 **Related:** [architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project), [design.md](design.md), [database.md § 6](database.md#6-access-boundaries-queries-and-performance)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -68,7 +68,7 @@ Measured by the developer with Lighthouse mobile (throttled 4G, mid-range device
 - Every loading state uses a skeleton or reserved space with the final layout ([design.md § 7](design.md#7-screen-states)).
 - Buttons show immediate pending feedback on press.
 - Use optimistic UI only for low-risk, reversible actions (for example, changing a quantity in a draft basket). Never for payment or status changes.
-- Fonts load through `next/font` with `display: 'swap'` and the Latin subset only: DM Sans (preloaded, variable) for the interface, and Atkinson Hyperlegible Next (`preload: false`) used only for requester reading text, so other screens never download it ([design.md § 3.3](design.md#33-typography)). No other font families.
+- Fonts load through `next/font` with `display: 'swap'` and the Latin subset only: DM Sans (preloaded, variable) for the interface, and Atkinson Hyperlegible (`preload: false`) used only for requester reading text, so other screens never download it ([design.md § 3.3](design.md#33-typography)). No other font families.
 
 ## 9. Animation
 
