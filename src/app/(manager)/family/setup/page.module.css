@@ -1,0 +1,37 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+  max-width: var(--reading-max);
+}
+
+.title {
+  font-size: var(--text-xl);
+}
+
+.description {
+  margin-block-start: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+.card {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.reassurance {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 48rem) {
+  .title {
+    font-size: var(--text-2xl);
+  }
+
+  .card {
+    padding: var(--space-6);
+  }
+}
