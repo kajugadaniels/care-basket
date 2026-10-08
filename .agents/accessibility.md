@@ -26,7 +26,7 @@
 | --- | --- |
 | Text contrast | ≥ 4.5:1 for all text (WCAG 1.4.3). Aim for 7:1 on requester screens. |
 | Non-text contrast | ≥ 3:1 for control borders, icons that carry meaning, and focus indicators (WCAG 1.4.11). |
-| Text size | Minimum 16px anywhere; 18px default body; 22px body on requester screens. |
+| Text size | Public and manager screens: 16px body; 14px (`--text-xs`) only for short secondary labels such as badges, captions, and metadata, never for paragraphs or instructions. Requester screens: 20px body (`--text-lg`), nothing below 18px. |
 | Resize and zoom | Usable at 200% browser zoom and with large system text, without loss of content (WCAG 1.4.4). |
 | Reflow | No horizontal scrolling at 320 CSS px width (WCAG 1.4.10). |
 | Text spacing | Layout survives increased line, letter, and word spacing (WCAG 1.4.12). Do not fix heights on text containers. |
