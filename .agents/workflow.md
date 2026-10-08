@@ -144,8 +144,12 @@ Nothing was executed. Tests, lint, type check, build, and migrations have not be
 ### Open questions
 - …
 
-### Suggested commit message
-feat(scope): short summary
+### Suggested commits (one per changed file, dependency order, see git.md § 2)
+git add path/to/first-file
+git commit -m "feat(scope): short summary of this file's change"
+
+git add path/to/second-file
+git commit -m "test(scope): short summary of this file's change"
 ```
 
 The Prisma `--config` flag stays until the config file is renamed to `prisma.config.ts` (see [database.md § 2](database.md#2-prisma-7-configuration)).
