@@ -43,7 +43,7 @@ describe("ProfileForm", () => {
     fireEvent.click(screen.getByRole("button", { name: profilesCopy.add }));
     expect(await screen.findByRole("alert")).toHaveTextContent(profilesCopy.validationSummary);
     expect(name).toHaveValue("Rose");
-    expect(name).toHaveFocus();
+    await waitFor(() => expect(name).toHaveFocus());
     expect(name).toHaveAttribute("aria-invalid", "true");
     expect(name).toHaveAccessibleDescription(`${profilesCopy.nameHint} ${profilesCopy.errors.nameUnsafe}`);
     expect(screen.getByRole("radio", { name: /^Child/ })).toBeChecked();
@@ -70,6 +70,6 @@ describe("ProfileForm", () => {
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "Rosie" } });
     fireEvent.click(screen.getByRole("button", { name: profilesCopy.save }));
     await waitFor(() => expect(mocks.update).toHaveBeenCalledWith({ profileId: "profile-rose", displayName: "Rosie", avatarKey: "sun" }));
-    expect(await screen.findByRole("alert")).toHaveFocus();
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveFocus());
   });
 });
