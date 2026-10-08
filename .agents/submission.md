@@ -45,7 +45,7 @@ Agents may draft README sections, the Devpost description, video scripts, and te
   - [ ] How to run tests
   - [ ] Demo URL and video link
   - [ ] Disclosures (see §8)
-  - [ ] License
+  - [ ] License, including the data licensing scopes: code (project license), `prisma/catalog/**` (ODbL 1.0), `public/products/**` (CC BY-SA 3.0, see `ATTRIBUTION.md`) ([catalog.md § 10](catalog.md#10-licensing-and-attribution))
 - [ ] `.env.example` is committed with placeholders only; no secrets in history (`git log -p` reviewed for keys).
 - [ ] No real personal data in code, seeds, fixtures, or screenshots.
 
@@ -95,7 +95,8 @@ Confirm the exact fields in the Devpost form. Typical fields:
 These appear in the README, the Devpost description, the video, and an in-app demo banner:
 
 - [ ] Payments use **PayPal Sandbox** test accounts; no real money moves.
-- [ ] Products are a **simulated catalog** from a **demonstration merchant**; no real stores are integrated.
+- [ ] Product data comes from **Open Food Facts and Open Prices** (ODbL, images CC BY-SA 3.0) plus CareBasket-curated items; it is sold by a **simulated demonstration merchant** (CareBasket Demo Market) at **demo prices**. No real stores are integrated, and Open Prices observations are historical reference data, not checkout prices ([catalog.md § 6](catalog.md#6-observed-prices-vs-demo-merchant-prices)).
+- [ ] CareBasket is an independent project, not affiliated with or endorsed by PayPal.
 - [ ] Delivery and fulfillment are **simulated**.
 - [ ] All people and data shown are **fictional test data**.
 - [ ] CareBasket is not an escrow service ([payments.md § 9](payments.md#9-claims-we-must-never-make)).
