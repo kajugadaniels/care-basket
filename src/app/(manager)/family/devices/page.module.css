@@ -1,0 +1,6 @@
+.page { display: grid; gap: var(--space-5); }
+.page h1 { font-size: var(--text-xl); }
+.header { display: grid; gap: var(--space-4); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.loading { min-block-size: calc(var(--control-height) * 4); padding: var(--space-5); background: var(--color-surface-soft); border-radius: var(--radius-lg); }
+@media (min-width: 48rem) { .page h1 { font-size: var(--text-2xl); } .header { grid-template-columns: 1fr auto; align-items: start; } }
