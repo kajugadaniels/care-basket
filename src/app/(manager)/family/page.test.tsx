@@ -87,7 +87,7 @@ describe("FamilyPage", () => {
 
     expect(screen.queryAllByRole("button")).toHaveLength(0);
     expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
-    expect(screen.getAllByText("Coming soon")).toHaveLength(3);
+    expect(screen.getAllByText("Coming soon")).toHaveLength(2);
     expect(screen.queryByText("Create your family")).not.toBeInTheDocument();
   });
 
