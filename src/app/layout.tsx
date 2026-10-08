@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible_Next, DM_Sans } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { clerkAppearance } from "@/lib/clerk/appearance";
 import "./globals.css";
 
 // Primary interface typeface. A licensed alternative, not PayPal's proprietary font.
@@ -39,7 +41,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en-US"
       className={`${dmSans.variable} ${atkinsonHyperlegibleNext.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {/* Not `dynamic`: the provider reads no request data, so pages keep their static shell.
+            Components that read the session sit behind their own Suspense boundaries. */}
+        <ClerkProvider appearance={clerkAppearance}>{children}</ClerkProvider>
+      </body>
     </html>
   );
 }
