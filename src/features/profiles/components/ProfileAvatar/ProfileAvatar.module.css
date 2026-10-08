@@ -1,0 +1,10 @@
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: var(--control-height-lg);
+  block-size: var(--control-height-lg);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-accent);
+  color: var(--color-primary);
+}
