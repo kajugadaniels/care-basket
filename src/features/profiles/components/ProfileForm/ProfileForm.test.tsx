@@ -29,6 +29,17 @@ describe("ProfileForm", () => {
     expect(flower).toBeChecked();
     expect(screen.getByRole("radio", { name: /^Smile/ })).not.toBeChecked();
   });
+  it("describes radio validation on the native fieldset group", async () => {
+    mocks.create.mockResolvedValue({ ok: false, error: {
+      code: "VALIDATION_FAILED", message: profilesCopy.validationSummary,
+      fieldErrors: { kind: [profilesCopy.errors.kind] },
+    } });
+    render(<ProfileForm />);
+    fireEvent.click(screen.getByRole("button", { name: profilesCopy.add }));
+    const group = await screen.findByRole("group", { name: profilesCopy.kindLabel });
+    expect(group).toHaveAccessibleDescription(profilesCopy.errors.kind);
+    expect(screen.getByRole("radio", { name: /^Child/ })).not.toHaveAttribute("aria-invalid");
+  });
   it("preserves input and choices, shows errors, and focuses the invalid field", async () => {
     mocks.create.mockResolvedValue({ ok: false, error: {
       code: "VALIDATION_FAILED", message: profilesCopy.validationSummary,
