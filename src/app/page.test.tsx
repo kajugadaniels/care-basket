@@ -5,6 +5,11 @@ import HomePage from "./page";
 
 // The public header reads the Clerk session; these tests use the signed-out state.
 vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"));
+// The auth dialog opener reads the query string; no dialog is requested here.
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 describe("HomePage", () => {
   beforeEach(() => {
@@ -72,10 +77,12 @@ describe("HomePage", () => {
     }
   });
 
-  it("contains no buttons, because the page has no actions yet", () => {
+  it("has no actions besides the sign-in and sign-up dialog buttons", () => {
     render(<HomePage />);
 
-    expect(screen.queryAllByRole("button")).toHaveLength(0);
+    const buttonNames = screen.getAllByRole("button").map((button) => button.textContent);
+    expect(buttonNames).toEqual(["Sign In", "Get Started"]);
+    expect(within(screen.getByRole("main")).queryAllByRole("button")).toHaveLength(0);
   });
 
   it("discloses the hackathon demo and PayPal independence in the footer", () => {
