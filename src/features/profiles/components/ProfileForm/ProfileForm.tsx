@@ -37,6 +37,7 @@ export function ProfileForm({ profile }: { profile?: ManagedProfileDto }) {
 
   return (
     <form ref={formRef} action={formAction} noValidate className={styles.form} aria-busy={isPending}
+      onReset={(event) => event.preventDefault()}
       onSubmit={(event) => { if (isPending) event.preventDefault(); }}>
       {error ? <p ref={summaryRef} tabIndex={-1} role="alert" className={styles.error}>{error.message}</p> : null}
       <fieldset disabled={isPending} className={styles.fields}>
