@@ -31,7 +31,8 @@
 | Server Actions and Route Handlers | Unit | Call the exported function with mocked actor and service; assert validation, status codes, and response shapes |
 | `features/*/components/*` (Client Components and synchronous Server Components) | React Testing Library | Query by role and accessible name; assert states |
 | Async Server Components (pages) | Not unit-tested | Keep them thin; covered by the journey script in §7 |
-| `src/lib/paypal`, `src/lib/ai` | Unit with stubbed `fetch` or SDK | Request shape, headers, error mapping, response parsing |
+| `src/lib/paypal`, `src/lib/ai`, `src/lib/open-prices`, `src/lib/open-food-facts` | Unit with stubbed `fetch` or SDK | Request shape, headers (including User-Agent), timeouts, retries, error mapping, response parsing |
+| `scripts/catalog/*` logic | Unit, with recorded API fixtures | Keep script entry files thin; test the normalizer and verifier functions they call. Fixtures are small, anonymized excerpts with contributor fields removed. |
 
 - Mock at module boundaries (`vi.mock('@/server/auth/actor')`, a fake `ShoppingAssistantProvider`, a fake PayPal client). Never mock the code under test.
 - Unit tests never touch the network or a real database. Real Neon, PayPal Sandbox, and Gemini are exercised only in the developer's manual runs.
@@ -45,7 +46,11 @@
 | **Family isolation** | An adult or device from family A gets `NOT_FOUND` for every family-B object (request, profile, device, payment); repository functions require `familyId` |
 | **Pairing** | Code format and uniqueness; expiry; single use; reject without the pairing cookie; reject wrong secret; adult rate limit; `APPROVED → COMPLETED` only once; revoked device rejected on next request; idle and absolute expiry |
 | **Input validation** | Each schema: valid input, boundary values (lengths, 1 and 20 quantities), extra fields rejected, wrong types, invalid UUIDs |
-| **AI output validation** | Malformed JSON, schema violations, unknown SKUs, duplicate SKUs merged, quantity limits, low confidence not added, substitution flagged, prompt-injection fixtures produce only catalog items, `CHILD` never calls the provider, deterministic keyword fallback |
+| **AI output validation** | Malformed JSON, schema violations, unknown SKUs grounded out, duplicate SKUs merged, quantity limits, low confidence not added, suggested items labelled and capped, substitution flagged, clarification text with prices replaced by the template, injection fixtures (user text and catalog names) produce only catalog items, `CHILD` and AI-disabled profiles never call the provider, deterministic keyword fallback, timeout and retry budget |
+| **Units and sizes** | Metric and U.S. conversions; variant selection with least excess ("two kilos of rice", "three bars of soap"); size clarification when ambiguous or more than 25% off; 20-pack cap |
+| **Budget fitting** | Optional suggestions removed first, most expensive first; suggested quantities reduced; requested items never removed; over-budget prompt; $1–$500 validation; uses `DemoMerchantPrice` only |
+| **Catalog and U.S. verification** | Recorded Open Prices fixtures: every rule in [catalog.md § 5](catalog.md#5-establishing-us-associated-price-observations) (non-U.S., null country, online location, non-USD, category type, duplicate, per-kilogram, future date, price bounds); normalization and skip reasons; barcode normalization; deduplication; idempotent upserts; API failure leaves data unchanged; demo-price median and basis; seed file validation |
+| **Design tokens** | `src/app/design-tokens.test.ts` checks the contrast pairs in [design.md § 3.2](design.md#32-verified-contrast-wcag-2x-formula-computed-2026-10-08) |
 | **Payments (mocked PayPal)** | Server-computed amount equals basket; price change → `CONFLICT`; device actor rejected; repeat start returns same order; capture success; capture `PENDING`; declined; amount, currency, or `custom_id` mismatch not marked paid; repeat capture is a no-op; cancel checkout; request cannot become `PAID` twice |
 | **Webhooks** | Invalid signature → 400 and no processing; missing webhook ID → reject; duplicate event → 200, no change; out-of-order events never move status backwards; unknown order stored and acknowledged |
 | **Route Handlers** | Status codes and envelopes per [api.md § 4](api.md#4-response-and-error-format); Origin check; body size and MIME limits for audio |
@@ -74,13 +79,14 @@ The developer runs these against a local or preview deployment with Sandbox cred
 1. Sign up as a manager; create a family; set the display name.
 2. Add an `ASSISTED_ADULT` profile with consent.
 3. In the private window, open `/connect`; enter the code in the manager window; approve; the device lands on `/shop`.
-4. On the device, create a request by voice, then one by text, then one by pictures only.
+4. Enable AI for the profile with consent. On the device, create a request by voice ("two kilos of rice, one litre of milk, and three bars of soap"), one by text describing an occasion with a budget ("breakfast for four, under $20"), and one by pictures only. Check that suggestions are marked and that clarifications are answered by tapping.
 5. As the manager, review, change a quantity, and pay with a Sandbox personal account.
 6. Confirm the manager sees "Paid", the device shows the confirmation, and delivery shows as not started (demo).
 7. Use the demo control to simulate delivery; confirm both views update separately.
 8. Revoke the device; confirm the device shows the reconnect screen on its next action.
 9. Check the PayPal Sandbox dashboard and webhook delivery log for the transaction.
-10. Repeat steps 3–6 on a phone-sized viewport and with a keyboard only.
+10. Confirm that every price is labelled "Demo price", and that `/data-sources` shows the Open Food Facts and Open Prices attribution and licenses.
+11. Repeat steps 3–6 on a phone-sized viewport, a tablet, and a desktop, and with a keyboard only.
 
 ## 8. Commands for the developer
 
