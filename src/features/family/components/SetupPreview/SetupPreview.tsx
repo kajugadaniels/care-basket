@@ -3,7 +3,6 @@ import {
   Clock01Icon,
   SmartPhone01Icon,
   TaskDone01Icon,
-  UserAdd01Icon,
   Wallet01Icon,
 } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/ui/Icon/Icon";
@@ -11,7 +10,6 @@ import { setupPreviewCopy, type SetupStepId } from "@/features/family/copy";
 import styles from "./SetupPreview.module.css";
 
 const STEP_ICONS: Record<SetupStepId, IconSvgElement> = {
-  profiles: UserAdd01Icon,
   devices: SmartPhone01Icon,
   requests: TaskDone01Icon,
   payments: Wallet01Icon,
