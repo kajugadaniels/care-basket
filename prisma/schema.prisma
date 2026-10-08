@@ -20,6 +20,14 @@ enum ProfileKind {
   CHILD
 }
 
+enum PairingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+  EXPIRED
+}
+
 /// An adult account holder. Identity, email, and credentials stay in Clerk.
 model User {
   id          String   @id @default(uuid(7)) @db.Uuid
@@ -29,6 +37,9 @@ model User {
 
   membership      FamilyMembership?
   createdProfiles ManagedProfile[]
+  approvedPairings DevicePairing[]
+  approvedDevices AuthorizedDevice[] @relation("DeviceApprover")
+  revokedDevices AuthorizedDevice[] @relation("DeviceRevoker")
 }
 
 /// The deletion root for everything a family owns.
@@ -41,6 +52,8 @@ model Family {
   memberships FamilyMembership[]
   profiles    ManagedProfile[]
   auditLogs   AuditLog[]
+  pairings    DevicePairing[]
+  devices     AuthorizedDevice[]
 }
 
 /// Links an adult to the family they manage. MVP: one family per adult (unique userId).
@@ -79,15 +92,18 @@ model ManagedProfile {
 
   family    Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
   createdBy User   @relation(fields: [createdByUserId], references: [id], onDelete: Restrict)
+  devices AuthorizedDevice[]
+  pairings DevicePairing[]
 
   @@index([familyId, id])
+  @@unique([id, familyId])
   @@index([createdByUserId])
 }
 
 /// Append-only security events. Opaque IDs only; no profile names or personal text.
 model AuditLog {
   id         String   @id @default(uuid(7)) @db.Uuid
-  familyId   String   @db.Uuid
+  familyId   String?  @db.Uuid
   actorType  String   @db.VarChar(20)
   actorId    String   @db.Uuid
   action     String   @db.VarChar(60)
@@ -95,7 +111,75 @@ model AuditLog {
   targetId   String   @db.Uuid
   createdAt  DateTime @default(now()) @db.Timestamptz(3)
 
-  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  family Family? @relation(fields: [familyId], references: [id], onDelete: Cascade)
 
   @@index([familyId, createdAt])
+}
+
+/// Only hashes persist. A nullable reservation enforces active-code uniqueness in PostgreSQL.
+model DevicePairing {
+  id String @id @default(uuid(7)) @db.Uuid
+  codeHash String @db.Char(64)
+  activeCodeHash String? @unique @db.Char(64)
+  secretHash String @unique @db.Char(64)
+  status PairingStatus @default(PENDING)
+  expiresAt DateTime @db.Timestamptz(3)
+  userAgentSummary String @db.VarChar(80)
+  label String? @db.VarChar(40)
+  familyId String? @db.Uuid
+  profileId String? @db.Uuid
+  approvedByUserId String? @db.Uuid
+  approvedAt DateTime? @db.Timestamptz(3)
+  completedAt DateTime? @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  family Family? @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  profile ManagedProfile? @relation(fields: [profileId, familyId], references: [id, familyId], onDelete: Cascade)
+  approvedBy User? @relation(fields: [approvedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([codeHash, status])
+  @@index([expiresAt])
+  @@index([familyId, profileId])
+  @@index([profileId, familyId])
+  @@index([approvedByUserId])
+}
+
+model AuthorizedDevice {
+  id String @id @default(uuid(7)) @db.Uuid
+  familyId String @db.Uuid
+  profileId String @db.Uuid
+  label String @db.VarChar(40)
+  tokenHash String @unique @db.Char(64)
+  userAgentSummary String @db.VarChar(80)
+  approvedByUserId String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  lastSeenAt DateTime @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  revokedByUserId String? @db.Uuid
+
+  family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  profile ManagedProfile @relation(fields: [profileId, familyId], references: [id, familyId], onDelete: Cascade)
+  approvedBy User @relation("DeviceApprover", fields: [approvedByUserId], references: [id], onDelete: Restrict)
+  revokedBy User? @relation("DeviceRevoker", fields: [revokedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([familyId, id])
+  @@index([familyId, profileId, revokedAt, expiresAt])
+  @@index([profileId, familyId])
+  @@index([approvedByUserId])
+  @@index([revokedByUserId])
+  @@index([expiresAt])
+  @@index([revokedAt])
+}
+
+model RateLimitCounter {
+  key String @db.VarChar(128)
+  windowStart DateTime @db.Timestamptz(3)
+  count Int
+  expiresAt DateTime @db.Timestamptz(3)
+
+  @@id([key, windowStart])
+  @@index([expiresAt])
 }
