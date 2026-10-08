@@ -26,7 +26,7 @@
 
 ## 3. Environment variables
 
-Validated at startup by `src/lib/env/server.ts` and `src/lib/env/client.ts` with Zod. Missing or malformed values fail fast with a clear message naming the variable (never its value).
+Validated with Zod by `src/lib/env/server.ts` on first use (it covers `DATABASE_URL` today; a `client.ts` counterpart arrives when the app reads public variables). Missing or malformed values fail fast with a clear message naming the variable (never its value). The Prisma CLI reads `DIRECT_URL` through `prisma7.config.ts`, which loads `.env.local` and then `.env`.
 
 | Variable | Exposure | Purpose | In current `.env` |
 | --- | --- | --- | --- |
