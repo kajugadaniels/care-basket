@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { pairingStatusSchema } from "../schemas";
 import type { PairingStatus } from "../types";
 
+function isDocumentHidden() {
+  return document.visibilityState === "hidden";
+}
+
 export function usePairingStatus(expiresAt: string, retryKey: number) {
   const [status, setStatus] = useState<PairingStatus>("PENDING");
   const [hasError, setHasError] = useState(false);
@@ -19,7 +23,7 @@ export function usePairingStatus(expiresAt: string, retryKey: number) {
     const expiry = setTimeout(() => { final = true; setStatus("EXPIRED"); clearTimeout(timeout); controller.abort(); }, Math.max(0, deadline - Date.now()));
     const warning = setTimeout(() => setIsExpiring(true), Math.max(0, deadline - Date.now() - 60_000));
     async function poll() {
-      if (stopped || final || inFlight || document.visibilityState === "hidden") return;
+      if (stopped || final || inFlight || isDocumentHidden()) return;
       if (Date.now() < retryAt) { timeout = setTimeout(poll, retryAt - Date.now()); return; }
       inFlight = true;
       const requestController = new AbortController();
@@ -49,12 +53,12 @@ export function usePairingStatus(expiresAt: string, retryKey: number) {
       finally {
         clearTimeout(requestTimeout); controller.signal.removeEventListener("abort", abortRequest);
         inFlight = false;
-        if (!stopped && !final && document.visibilityState !== "hidden") {
+        if (!stopped && !final && !isDocumentHidden()) {
           clearTimeout(timeout); timeout = setTimeout(poll, Math.max(15_000, retryAt - Date.now()));
         }
       }
     }
-    function resume() { clearTimeout(timeout); if (document.visibilityState !== "hidden") void poll(); }
+    function resume() { clearTimeout(timeout); if (!isDocumentHidden()) void poll(); }
     document.addEventListener("visibilitychange", resume);
     window.addEventListener("focus", resume);
     void poll();
