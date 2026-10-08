@@ -1,4 +1,5 @@
 import "server-only";
+import { io } from "next/cache";
 import { AppError } from "@/server/errors";
 import { getDb } from "@/server/db/client";
 import { resolveDeviceSession } from "./device-session";
@@ -6,6 +7,7 @@ import { DEVICE_ACTIVITY_MS, DEVICE_IDLE_MS, type DeviceActor } from "./device-p
 
 // Device routes ignore Clerk entirely, even when both cookies coexist.
 export async function requireDevice(): Promise<DeviceActor> {
+  await io();
   const now = new Date();
   const device = await resolveDeviceSession(now);
   if (!device) throw new AppError("UNAUTHENTICATED");
