@@ -3,7 +3,7 @@
 **Purpose:** Define how CareBasket is built on Next.js 16 App Router: rendering, server boundaries, layers, error handling, and integrations.
 **Applies to:** Any code change.
 **Related:** [folder-structure.md](folder-structure.md), [api.md](api.md), [security.md](security.md), [database.md](database.md), [catalog.md](catalog.md), [ai.md](ai.md), [performance.md](performance.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -20,7 +20,7 @@
 | Payments | PayPal Sandbox: Orders API v2 and verified webhooks on the server; `@paypal/react-paypal-js` (v6 SDK entry `@paypal/react-paypal-js/sdk-v6`) on the client |
 | AI | Gemini via `@google/genai`, behind a provider interface ([ai.md](ai.md)) |
 | Product data | Open Prices API (primary) and Open Food Facts API (secondary metadata), called only by developer-run catalog scripts ([catalog.md](catalog.md)) |
-| Fonts | DM Sans and Atkinson Hyperlegible Next via `next/font/google` ([design.md § 3.3](design.md#33-typography)) |
+| Fonts | DM Sans and Atkinson Hyperlegible via `next/font/google` ([design.md § 3.3](design.md#33-typography)) |
 | Tests | Vitest 4, React Testing Library, jsdom |
 | Package manager | npm |
 
