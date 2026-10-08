@@ -27,8 +27,12 @@ export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDt
     finally { setIsCompleting(false); }
   });
   useEffect(() => {
-    if (status === "APPROVED") void finish();
+    let cancelled = false;
+    if (status === "APPROVED") {
+      queueMicrotask(() => { if (!cancelled) void finish(); });
+    }
     if (status !== "PENDING") statusRef.current?.focus();
+    return () => { cancelled = true; };
   }, [status, completionRetry]);
   const message = status === "PENDING" ? devicesCopy.waiting : status === "APPROVED" ? devicesCopy.approved
     : status === "EXPIRED" ? devicesCopy.expired : status === "REJECTED" ? devicesCopy.rejected : devicesCopy.completed;
