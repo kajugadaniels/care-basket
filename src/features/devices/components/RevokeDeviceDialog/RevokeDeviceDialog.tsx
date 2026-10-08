@@ -52,7 +52,7 @@ export function RevokeDeviceDialog({ deviceId, label }: { deviceId: string; labe
           onChange={(event) => setConfirmed(event.target.checked)} />{devicesCopy.revokeConfirm}</label>
         <div className={styles.actions}>
           <Button ref={cancelRef} variant="secondary" onClick={() => dialogRef.current?.close()}>{devicesCopy.cancel}</Button>
-          <Button type="submit" className={styles.danger} disabled={!confirmed || isPending} aria-busy={isPending}>
+          <Button type="submit" variant="destructive" disabled={!confirmed || isPending} aria-busy={isPending}>
             {isPending ? devicesCopy.busy : devicesCopy.revoke}</Button>
         </div>
       </form>
