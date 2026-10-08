@@ -8,14 +8,27 @@ import styles from "./ActionLink.module.css";
 type ActionLinkProps = {
   href: string;
   children: ReactNode;
+  variant?: "primary" | "secondary";
   size?: "md" | "lg";
   icon?: IconSvgElement;
   className?: string;
 };
 
-// A navigation link styled as a primary pill button. Actions that change something use a real <button>.
-export function ActionLink({ href, children, size = "md", icon, className }: ActionLinkProps) {
-  const classes = cx(styles.actionLink, size === "lg" && styles.lg, className);
+// A navigation link styled as a pill button. Actions that change something use Button instead.
+export function ActionLink({
+  href,
+  children,
+  variant = "primary",
+  size = "md",
+  icon,
+  className,
+}: ActionLinkProps) {
+  const classes = cx(
+    styles.actionLink,
+    variant === "secondary" && styles.secondary,
+    size === "lg" && styles.lg,
+    className,
+  );
   const content = (
     <>
       <span>{children}</span>
