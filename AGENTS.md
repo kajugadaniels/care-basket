@@ -44,7 +44,7 @@ If a developer instruction conflicts with a rule, say so briefly and follow the 
 
 ## Finish every task with
 
-The completion report in [`.agents/workflow.md § 7`](.agents/workflow.md#7-completion-report): files changed, decisions, what was not verified, exact commands for the developer, open questions, and a suggested commit message.
+The completion report in [`.agents/workflow.md § 7`](.agents/workflow.md#7-completion-report): files changed, decisions, what was not verified, exact commands for the developer, open questions, and one suggested commit per changed file ([`.agents/git.md § 2`](.agents/git.md#2-changes)).
 
 ---
 
