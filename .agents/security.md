@@ -94,7 +94,7 @@ Rate limiting is enforced in the application with a Postgres-backed fixed-window
 
 - Secrets live only in environment variables on the server, validated by `src/lib/env/server.ts`. The full list is in [deployment.md § 3](deployment.md#3-environment-variables).
 - Only these values may be public (`NEXT_PUBLIC_*`): the Clerk publishable key, the PayPal client ID, and the app URL. Anything else with that prefix is a security bug.
-- `.env*` files are git-ignored. `.env.example` lists names with placeholders only.
+- Real `.env*` files are git-ignored. `.env.local.example` and `.env.production.example` are the only committed environment templates and contain non-secret defaults plus placeholders only.
 - Secrets are never placed in source code, tests, fixtures, documentation, screenshots, demo videos, AI prompts, or issue text.
 - Agents never read secret values ([workflow.md § 1.3](workflow.md#13-secrets)).
 - If a secret is exposed, the developer rotates it at the provider immediately, then updates the environment.
