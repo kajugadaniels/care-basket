@@ -2,7 +2,7 @@
 
 **Purpose:** Define how CareBasket is built on Next.js 16 App Router: rendering, server boundaries, layers, error handling, and integrations.
 **Applies to:** Any code change.
-**Related:** [folder-structure.md](folder-structure.md), [api.md](api.md), [security.md](security.md), [database.md](database.md), [performance.md](performance.md)
+**Related:** [folder-structure.md](folder-structure.md), [api.md](api.md), [security.md](security.md), [database.md](database.md), [catalog.md](catalog.md), [ai.md](ai.md), [performance.md](performance.md)
 **Last reviewed:** 2026-10-08
 
 ---
@@ -19,6 +19,8 @@
 | Validation | Zod 4 |
 | Payments | PayPal Sandbox: Orders API v2 and verified webhooks on the server; `@paypal/react-paypal-js` (v6 SDK entry `@paypal/react-paypal-js/sdk-v6`) on the client |
 | AI | Gemini via `@google/genai`, behind a provider interface ([ai.md](ai.md)) |
+| Product data | Open Prices API (primary) and Open Food Facts API (secondary metadata), called only by developer-run catalog scripts ([catalog.md](catalog.md)) |
+| Fonts | DM Sans and Atkinson Hyperlegible Next via `next/font/google` ([design.md § 3.3](design.md#33-typography)) |
 | Tests | Vitest 4, React Testing Library, jsdom |
 | Package manager | npm |
 
@@ -54,6 +56,7 @@ Anything else needs developer approval ([workflow.md § 3](workflow.md#3-depende
 | Binary uploads with explicit size control (voice audio) | **Route Handler** |
 | Simple polling of status by an unauthenticated-but-cookie-bound flow (device pairing status) | **Route Handler** (`GET`) |
 | Reading data for pages | Server Components calling server functions directly (no internal HTTP fetch to our own API) |
+| Catalog discovery, refresh, and seeding | **Developer-run scripts** (`scripts/catalog/*`, `prisma/seed.ts`). Never a Route Handler, Server Action, scheduled job, or anything on the request path. |
 
 Both entry points MUST stay thin: authenticate → validate → call a service → map the result ([api.md](api.md)).
 
@@ -75,6 +78,7 @@ app (routes, layouts, pages, route handlers)
 | `src/server/` | Cross-cutting server infrastructure | `src/lib`, `src/generated/prisma`, `types` | `features`, `app` |
 | `src/lib/` | External integrations (PayPal, Gemini), env, pure utilities (money, formatting) | `types`, external packages | `server`, `features`, `app` |
 | `src/components/` | Reusable, domain-agnostic UI | `lib` (pure), `types` | `features`, `server` |
+| `scripts/` | Developer-run maintenance (catalog discovery and refresh) | `src/lib/*`, `src/server/db`, `features/catalog/server/*` | Nothing may import from `scripts/` |
 
 Circular imports between features are prohibited. If two features need each other, move the shared rule into the feature that owns the data, or into `src/server/`.
 
@@ -114,7 +118,10 @@ Services receive the actor (or an explicit `familyId` derived from it) and never
 
 ## 9. External integrations
 
-- Each integration lives in `src/lib/<provider>/` behind a small typed interface, starts with `import 'server-only'`, and is the **only** place that talks to that provider.
+- Each integration lives in `src/lib/<provider>/` behind a small typed interface, starts with `import 'server-only'`, and is the **only** place that talks to that provider: `src/lib/paypal/`, `src/lib/ai/`, `src/lib/open-prices/`, `src/lib/open-food-facts/`.
+- Source-specific response types stay inside their adapter. Feature code works only with normalized CareBasket types ([catalog.md § 7](catalog.md#7-normalization)).
+- **Catalog sources are never called during a user request.** Pages, actions, and the AI read the curated catalog from the database (cached with `'use cache'`).
+- **AI boundary:** only the assistant service (`features/assistant/server/`) calls the AI provider. Its output can only become a client-side draft that the requester confirms; there is no code path from AI output to checkout, payment, catalog writes, or prices ([ai.md § 5](ai.md#5-request-workflow-and-states)).
 - Credentials are read only via `src/lib/env/server.ts`, which validates `process.env` with Zod. Only `src/lib/env/*`, `next.config.ts`, and `prisma7.config.ts` may read `process.env`.
 - Every outbound call has a timeout (`AbortSignal.timeout`), bounded retries for idempotent operations only, and a mapped `AppError` on failure.
 - External calls MUST NOT run inside a database transaction.
@@ -129,7 +136,7 @@ Services receive the actor (or an explicit `familyId` derived from it) and never
 ## 11. Avoid premature abstraction
 
 - No generic repositories, base classes, dependency-injection containers, or event buses.
-- An interface exists only where a second implementation is real or planned: the AI provider (Gemini plus a test fake) and the PayPal client (real plus a test fake).
+- An interface exists only where a second implementation is real or planned: the AI provider (Gemini plus a test fake), the PayPal client (real plus a test fake), and the catalog source clients (real plus recorded-fixture fakes for importer tests).
 - Prefer a plain function over a class. Three similar call sites justify extracting a helper; one does not.
 
 ## 12. Prohibited patterns
