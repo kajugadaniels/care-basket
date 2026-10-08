@@ -15,6 +15,7 @@ The rules in this directory are permanent project policy. They are not suggestio
 | [workflow.md](workflow.md) | Agent execution restrictions, task lifecycle, completion report | **Every task** |
 | [project.md](project.md) | Mission, users, journeys, MVP scope, exclusions | **Every task** (scope check) |
 | [architecture.md](architecture.md) | Next.js 16 App Router patterns, layers, errors, integrations | Any code change |
+| [code-quality.md](code-quality.md) | Readability, formatting, comments, reuse, and dead-code removal | Any code change |
 | [folder-structure.md](folder-structure.md) | Directory layout, naming, imports, file size | Creating or moving files |
 | [design.md](design.md) | Visual design, tokens, components, states | Any UI work |
 | [accessibility.md](accessibility.md) | WCAG 2.2 AA rules for CareBasket users | Any UI work |
@@ -39,7 +40,7 @@ The `.agents/skills/` directory holds third-party agent skills (Prisma). They ar
 
 1. Read [workflow.md](workflow.md) and obey its execution restrictions. Agents never install, lint, build, test, format, migrate, deploy, or write to Git.
 2. Check [project.md](project.md) scope. Do not add features outside the MVP without developer approval.
-3. Read the topic documents listed for your task type below **before** changing code.
+3. Read [code-quality.md](code-quality.md) before changing code, plus the topic documents listed for your task type below.
 4. Read the relevant installed documentation before using a framework API: Next.js docs in `node_modules/next/dist/docs/`, and the README or type definitions of other packages in `node_modules/`. Installed versions win over memory.
 5. Never read, print, copy, or disclose secret values from `.env*` files.
 6. End with the completion report defined in [workflow.md § Completion report](workflow.md#7-completion-report).
@@ -113,3 +114,4 @@ When instructions conflict, apply the first matching level:
 | 2026-10-08 | Step 2: Clerk 7 resource-level protection (no `createRouteMatcher`), `<Show>` replaces removed `SignedIn`/`SignedOut`, Clerk redirect variables documented, compact type scale with `--text-xs` and `--text-md`, Vitest and Clerk mocking conventions. |
 | 2026-10-09 | Replaced the generic environment template with aligned local and production templates; real environment files remain ignored. |
 | 2026-10-09 | Use Atkinson Hyperlegible for requester text because the installed Next.js font loader provides its fallback metrics without warnings. |
+| 2026-10-09 | Added project-wide readability, tab indentation, reuse, commenting, and dead-code removal rules. |
