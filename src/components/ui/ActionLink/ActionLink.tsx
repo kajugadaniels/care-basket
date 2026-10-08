@@ -7,11 +7,25 @@ import styles from "./ActionLink.module.css";
 
 type ActionLinkProps = {
   href: string;
-  children: ReactNode;
-  variant?: "primary" | "secondary";
-  size?: "md" | "lg";
-  icon?: IconSvgElement;
   className?: string;
+  variant?: "primary" | "secondary" | "warning" | "destructive";
+} & (
+  | { size: "xs"; icon: IconSvgElement; children: string }
+  | { size?: "sm" | "md" | "lg"; icon?: IconSvgElement; children: ReactNode }
+);
+
+const variantClasses = {
+  primary: styles.primary,
+  secondary: styles.secondary,
+  warning: styles.warning,
+  destructive: styles.destructive,
+};
+
+const sizeClasses = {
+  xs: styles.iconOnly,
+  sm: styles.sm,
+  md: styles.md,
+  lg: styles.lg,
 };
 
 // A navigation link styled as a pill button. Actions that change something use Button instead.
@@ -25,13 +39,13 @@ export function ActionLink({
 }: ActionLinkProps) {
   const classes = cx(
     styles.actionLink,
-    variant === "secondary" && styles.secondary,
-    size === "lg" && styles.lg,
+    variantClasses[variant],
+    sizeClasses[size],
     className,
   );
   const content = (
     <>
-      <span>{children}</span>
+      <span className={size === "xs" ? styles.visuallyHidden : undefined}>{children}</span>
       {icon ? <Icon icon={icon} size={24} /> : null}
     </>
   );
