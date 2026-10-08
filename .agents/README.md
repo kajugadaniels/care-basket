@@ -108,5 +108,6 @@ When instructions conflict, apply the first matching level:
 | 2026-10-08 | Initial rulebook created. |
 | 2026-10-08 | Added `catalog.md` (Open Prices, U.S. verification, demo prices, data licensing). Expanded AI capabilities (context-aware suggestions, per-request budgets, clarification workflow). Replaced the visual design with PayPal-inspired tokens, DM Sans, and Atkinson Hyperlegible Next for requester reading text. Reconciled project, database, architecture, folder-structure, payments, privacy, security, testing, authentication, performance, submission, deployment, and git. |
 | 2026-10-08 | Git: every changed file gets its own commit and message, in dependency order (`git.md` § 2). |
+| 2026-10-08 | Step 3: `User`, `Family`, `FamilyMembership` models; Prisma CLI uses `DIRECT_URL` and loads `.env.local` then `.env`; `ensureUser()`, `requireAdult()`, and transactional family setup documented. |
 | 2026-10-08 | Sign-in and sign-up open as Clerk dialogs; `/sign-in` and `/sign-up` are redirect routes that open the dialog on the home page. |
 | 2026-10-08 | Step 2: Clerk 7 resource-level protection (no `createRouteMatcher`), `<Show>` replaces removed `SignedIn`/`SignedOut`, Clerk redirect variables documented, compact type scale with `--text-xs` and `--text-md`, Vitest and Clerk mocking conventions. |
