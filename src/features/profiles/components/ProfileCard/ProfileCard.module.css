@@ -1,0 +1,15 @@
+.card {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  block-size: 100%;
+  min-inline-size: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+.identity { min-inline-size: 0; }
+.name { font-size: var(--text-lg); overflow-wrap: anywhere; }
+.kind { margin-block-start: var(--space-2); color: var(--color-text-muted); }
+.action { justify-self: start; }
