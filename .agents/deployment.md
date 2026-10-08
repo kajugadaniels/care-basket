@@ -44,6 +44,7 @@ Validated at startup by `src/lib/env/server.ts` and `src/lib/env/client.ts` with
 | `GEMINI_MODEL` | Server | Gemini model ID ([ai.md § 4](ai.md#4-provider-abstraction)) | **No — to add** |
 | `DEVICE_AUTH_SECRET` | Server | HMAC key for pairing codes and IP hashing; at least 32 random bytes | **No — to add** |
 | `DEMO_FULFILLMENT_CONTROLS` | Server | `true` shows simulated delivery controls ([payments.md § 10](payments.md#10-demonstration-merchant-and-fulfillment)) | **No — to add** |
+| `CATALOG_USER_AGENT` | Scripts only | `CareBasket/<version> (<contact email>)` for Open Prices and Open Food Facts requests ([catalog.md § 8](catalog.md#8-curation-and-import-pipeline)); not needed by the deployed app | **No — to add when the importer is built** |
 | `CLERK_WEBHOOK_SIGNING_SECRET` | Server | Only if the Clerk deletion webhook is approved | Not needed yet |
 
 Rules:
