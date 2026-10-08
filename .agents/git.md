@@ -3,7 +3,7 @@
 **Purpose:** Keep CareBasket's history clean, reviewable, and free of secrets, with the developer in full control of every Git write.
 **Applies to:** The end of every task, and anything that decides what may be committed.
 **Related:** [workflow.md](workflow.md), [security.md § 10](security.md#10-secret-management), [submission.md](submission.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -46,13 +46,13 @@ Examples: `feat(devices): add adult approval for pairing codes`, `fix(checkout):
 | Source, tests, styles, docs | `.env`, `.env.local`, any file with secret values |
 | `prisma/schema.prisma`, `prisma/migrations/**`, `prisma/seed.ts` | `src/generated/**` (Prisma Client output) |
 | `package.json` and `package-lock.json` in consecutive commits, when dependencies change | `node_modules/`, `.next/`, `coverage/`, build output |
-| `.env.example` with names and placeholders only | Screenshots or exports containing personal data or credentials |
+| `.env.local.example` and `.env.production.example` with names, non-secret defaults, and placeholders only | Screenshots or exports containing personal data or credentials |
 | Curated product images in `public/products/` with `ATTRIBUTION.md`, and `prisma/catalog/catalog.us.json` (ODbL) | Large binaries, videos, raw design files, audio recordings, catalog candidate reports, raw API dumps |
 | `LICENSE`, `README.md` | Editor and OS files (`.DS_Store`, local IDE settings) |
 
 Notes:
 
-- `.gitignore` ignores `.env*` but allows `.env.example`, which holds placeholders only.
+- `.gitignore` ignores `.env*` but allows only `.env.local.example` and `.env.production.example`. These templates never contain credentials or environment-specific secret values.
 - `package-lock.json` changes only through the developer's npm commands and is committed right after the matching `package.json` commit.
 - The `.agents/skills/`, `.claude/skills/`, and `.windsurf/skills/` directories and `skills-lock.json` are agent tooling; committing them is the developer's choice.
 
