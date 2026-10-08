@@ -1,0 +1,161 @@
+/* A soft panel framing a requester-style card; no device mockup or decoration. */
+.preview {
+  width: 100%;
+  max-width: var(--reading-max);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-soft);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-readable);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.request {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.requestIcon,
+.thumb {
+  display: inline-grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-accent);
+  color: var(--color-primary);
+}
+
+.requestLabel {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.quote {
+  margin-block-start: var(--space-1);
+  font-size: var(--text-lg);
+  line-height: var(--leading-body);
+}
+
+.basket {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.basketTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+}
+
+.items {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.itemText {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.itemName {
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+}
+
+.itemDetail {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* A static count badge, sized smaller than controls so it does not look pressable. */
+.quantity {
+  display: inline-grid;
+  place-items: center;
+  min-width: calc(var(--space-6) + var(--space-2));
+  min-height: calc(var(--space-6) + var(--space-2));
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-soft);
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--weight-bold);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-info-bg);
+  color: var(--color-info);
+  font-weight: var(--weight-semibold);
+}
+
+.caption {
+  margin-block-start: var(--space-3);
+  padding-inline: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (min-width: 40rem) {
+  .preview {
+    padding: var(--space-5);
+  }
+
+  .card {
+    padding: var(--space-5);
+  }
+}
