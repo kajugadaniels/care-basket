@@ -1,0 +1,9 @@
+.list { display: grid; gap: var(--space-5); list-style: none; padding: 0; }
+.card { display: grid; align-content: start; gap: var(--space-4); min-inline-size: 0; padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
+.card h2 { font-size: var(--text-lg); overflow-wrap: anywhere; }
+.facts { display: grid; gap: var(--space-3); }
+.facts dt { font-weight: var(--weight-semibold); }
+.status { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); }
+.empty { padding: var(--space-6); border-radius: var(--radius-lg); background: var(--color-surface-soft); }
+@media (min-width: 40rem) { .list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 80rem) { .list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
