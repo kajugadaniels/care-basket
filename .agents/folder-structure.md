@@ -26,7 +26,7 @@ This is the target layout. **Create directories only when the first real file ne
 ├── public/
 │   └── products/                     # curated product images + ATTRIBUTION.md (CC BY-SA 3.0)
 └── src/
-    ├── proxy.ts                      # Clerk route protection (Next 16 "proxy")
+    ├── proxy.ts                      # clerkMiddleware() only; no route protection (Next 16 "proxy")
     ├── instrumentation.ts            # optional: onRequestError logging
     ├── app/
     │   ├── layout.tsx                # html/body, fonts, global CSS
@@ -67,10 +67,11 @@ This is the target layout. **Create directories only when the first real file ne
     │   ├── ai/                       # provider interface, Gemini adapter, prompts, schemas
     │   ├── open-prices/              # Open Prices API client and source types
     │   ├── open-food-facts/          # secondary metadata adapter
+    │   ├── clerk/appearance.ts       # Clerk UI theming with design tokens
     │   ├── money.ts                  # minor-unit helpers (pure)
     │   └── format.ts                 # Intl formatting helpers (pure)
     ├── types/                        # only genuinely shared types
-    ├── test/                         # test setup file and data factories (fictional data only)
+    ├── test/                         # setup file, module mocks (e.g. mocks/clerk-nextjs.tsx), factories
     └── generated/prisma/             # Prisma Client output (git-ignored, never edited)
 ```
 
