@@ -8,19 +8,19 @@
   padding-inline: var(--space-5);
   border: 2px solid transparent;
   border-radius: var(--radius-full);
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-tight);
   text-align: center;
   text-decoration: none;
-  transition: background-color var(--duration-fast) var(--ease-standard);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
 }
 
-.actionLink:hover {
-  background-color: var(--color-primary-hover);
+.primary {
+  background-color: var(--color-primary);
   color: var(--color-on-primary);
 }
 
@@ -30,15 +30,88 @@
   color: var(--color-primary);
 }
 
-.secondary:hover {
-  background-color: var(--color-surface-accent);
-  color: var(--color-primary-hover);
+.warning {
+  border-color: var(--color-warning);
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.destructive {
+  border-color: var(--color-danger);
+  background-color: var(--color-danger);
+  color: var(--color-on-primary);
+}
+
+.sm {
+  padding-inline: var(--space-4);
+}
+
+.md {
+  padding-inline: var(--space-5);
 }
 
 .lg {
   min-height: var(--control-height-lg);
   padding-inline: var(--space-6);
   font-size: var(--text-lg);
+}
+
+.iconOnly {
+  inline-size: var(--control-height);
+  min-inline-size: var(--control-height);
+  padding: 0;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.primary:active {
+  background-color: var(--color-primary-hover);
+}
+
+.secondary:active {
+  background-color: var(--color-surface-accent);
+  color: var(--color-primary-hover);
+}
+
+.warning:active {
+  background-color: var(--color-surface);
+}
+
+.destructive:active {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+@media (hover: hover) {
+  .primary:hover {
+    background-color: var(--color-primary-hover);
+    color: var(--color-on-primary);
+  }
+
+  .secondary:hover {
+    background-color: var(--color-surface-accent);
+    color: var(--color-primary-hover);
+  }
+
+  .warning:hover {
+    background-color: var(--color-surface);
+    color: var(--color-warning);
+  }
+
+  .destructive:hover {
+    background-color: var(--color-danger-bg);
+    color: var(--color-danger);
+  }
 }
 
 @media (forced-colors: active) {
