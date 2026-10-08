@@ -47,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         {/* Not `dynamic`: the provider reads no request data, so pages keep their static shell.
             Components that read the session sit behind their own Suspense boundaries. */}
-        <ClerkProvider appearance={clerkAppearance}>{children}</ClerkProvider>
+        <ClerkProvider appearance={clerkAppearance} telemetry={false}>{children}</ClerkProvider>
       </body>
     </html>
   );
