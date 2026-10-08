@@ -8,26 +8,38 @@ export const familyLayoutCopy = {
   },
 } as const;
 
+export const familySetupCopy = {
+  metaTitle: "Set up your family",
+  title: "Let's set up your family",
+  description: "Give your family a name so you can start helping the people you care about.",
+  familyNameLabel: "Family name",
+  familyNameHint: "For example, Jane's Family",
+  displayNameLabel: "Your display name",
+  displayNameHint: "What your family calls you. For example, Jane",
+  submit: "Create My Family",
+  submitting: "Creating your family…",
+  reassurance:
+    "That's all we need for now. You'll add the people you shop for in a later step.",
+} as const;
+
 export const familyDashboardCopy = {
   metaTitle: "Your family",
-  greeting: (firstName: string) => `Welcome, ${firstName}`,
-  greetingFallback: "Welcome to CareBasket",
-  lead: "This is your family space. From here, you'll look after the shopping for the people you care for.",
-  noticeTitle: "Family setup is coming soon",
-  noticeText:
-    "CareBasket is still being built. Your account is ready, but nothing has been set up for your family yet, and the features below are not available.",
+  greeting: (displayName: string) => `Welcome back, ${displayName}`,
+  familyLabel: "Your family",
+  roles: {
+    OWNER: "Owner",
+    MANAGER: "Manager",
+  },
+  readyTitle: "Your family is ready",
+  readyText:
+    "Next, you can add someone you care for. Adding parents, grandparents, and children is coming soon.",
 } as const;
 
 export const setupPreviewCopy = {
-  title: "What you'll be able to do",
-  description: "These steps are planned for upcoming releases.",
+  title: "Coming next",
+  description: "These features are planned and not available yet.",
   comingSoon: "Coming soon",
   items: [
-    {
-      id: "family",
-      title: "Create your family",
-      description: "Name your family and set yourself up as its manager.",
-    },
     {
       id: "profiles",
       title: "Add a parent, grandparent, or child",
