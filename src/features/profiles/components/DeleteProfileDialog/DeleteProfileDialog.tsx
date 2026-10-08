@@ -36,6 +36,7 @@ export function DeleteProfileDialog({ profileId, displayName }: { profileId: str
         aria-describedby="delete-profile-description" onClose={() => triggerRef.current?.focus()}
         onCancel={() => dialogRef.current?.close()}>
         <form action={formAction} noValidate className={styles.content} aria-busy={isPending}
+          onReset={(event) => event.preventDefault()}
           onSubmit={(event) => { if (isPending) event.preventDefault(); }}>
           <h2 id="delete-profile-title">{profilesCopy.removeTitle(displayName)}</h2>
           <p id="delete-profile-description">{profilesCopy.removeText(displayName)}</p>
