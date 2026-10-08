@@ -1,6 +1,7 @@
 import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
 import { writeProfileEvent } from "@/server/audit/write-profile-event";
+import { writeDeviceEvent } from "@/server/audit/write-device-event";
 import { getDb } from "@/server/db/client";
 import { AppError } from "@/server/errors";
 import { PROFILE_PAGE_SIZE } from "../presets";
@@ -81,9 +82,21 @@ export async function updateProfile(context: ProfileWriteContext, input: UpdateM
 }
 
 export async function removeProfile(context: ProfileWriteContext, profileId: string) {
-  // Future device revocation belongs in this same transaction, before deleting the profile.
-  // No device/request/payment records exist in Step 4.
   return getDb().$transaction(async (tx) => {
+    const devices = await tx.authorizedDevice.findMany({
+      where: { familyId: context.familyId, profileId, revokedAt: null }, select: { id: true },
+    });
+    const now = new Date();
+    for (const device of devices) {
+      const revoked = await tx.authorizedDevice.updateMany({
+        where: { id: device.id, familyId: context.familyId, profileId, revokedAt: null },
+        data: { revokedAt: now, revokedByUserId: context.userId },
+      });
+      if (revoked.count) await writeDeviceEvent(tx, { familyId: context.familyId,
+        actorType: "ADULT", actorId: context.userId, action: "device.revoked",
+        targetType: "AuthorizedDevice", targetId: device.id });
+    }
+    // Composite FKs cascade devices and approved pairings in this same hard-delete transaction.
     const result = await tx.managedProfile.deleteMany({
       where: { id: profileId, familyId: context.familyId },
     });
