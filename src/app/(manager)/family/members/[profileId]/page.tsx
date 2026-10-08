@@ -39,7 +39,8 @@ export default async function MemberPage({ params }: { params: Promise<{ profile
         </dl>
         <div className={styles.notice}><p>{profilesCopy.deviceNotice}</p><p>{profilesCopy.deviceUnavailable}</p></div>
         <div className={styles.actions}>
-          <ActionLink href={`/family/members/${profile.id}/edit`}>{profilesCopy.edit}</ActionLink>
+          <ActionLink href={`/family/devices/connect?profileId=${profile.id}`}>{profilesCopy.connectDevice}</ActionLink>
+          <ActionLink href={`/family/members/${profile.id}/edit`} variant="secondary">{profilesCopy.edit}</ActionLink>
           <DeleteProfileDialog profileId={profile.id} displayName={profile.displayName} />
         </div>
       </section>
