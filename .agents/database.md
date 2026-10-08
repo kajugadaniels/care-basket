@@ -3,7 +3,7 @@
 **Purpose:** Define how CareBasket models, accesses, migrates, and retains data in Neon PostgreSQL using Prisma ORM 7.
 **Applies to:** Schema changes, queries, repositories, seed data, migrations.
 **Related:** [catalog.md](catalog.md), [security.md § 3](security.md#3-family-isolation-and-object-ownership), [privacy.md § 7](privacy.md#7-deletion-and-retention), [payments.md](payments.md), [authentication.md](authentication.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -21,7 +21,7 @@ Current state of the repository:
 - The datasource URL is not in the schema (Prisma 7). The CLI reads it from the config file.
 - The config file is named **`prisma7.config.ts`** (kept by developer decision). Prisma discovers `prisma.config.ts` by default, so every CLI command passes `--config prisma7.config.ts`.
 - In the installed Prisma 7.10, the config `datasource` accepts `url` and `shadowDatabaseUrl` only; there is no `directUrl`.
-- **Env loading:** Prisma 7 does not load env files itself. `prisma7.config.ts` calls dotenv with `path: [".env.local", ".env"]` (quiet): `.env.local` wins over `.env`, and shell variables win over both, matching Next.js locally.
+- **Env loading:** Prisma 7 does not load env files itself. `prisma7.config.ts` quietly loads `.env.local` by default or `.env.production` when `NODE_ENV=production`; shell variables win over the selected file. This matches the two committed templates without mixing local and production credentials.
 
 Required connection setup:
 
