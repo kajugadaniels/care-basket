@@ -30,16 +30,24 @@ export function HeroSection() {
           <p className={styles.description}>{heroCopy.description}</p>
           <ActionLink
             href="#how-it-works"
-            size="lg"
+            size="md"
             icon={ArrowDown01Icon}
             className={styles.primaryAction}
           >
             {heroCopy.primaryAction}
           </ActionLink>
-          <ul role="list" aria-label={heroCopy.waysToAskLabel} className={styles.ways}>
+          <ul
+            role="list"
+            aria-label={heroCopy.waysToAskLabel}
+            className={styles.ways}
+          >
             {heroCopy.waysToAsk.map((way) => (
               <li key={way.id} className={styles.way}>
-                <Icon icon={WAY_ICONS[way.id]} size={24} className={styles.wayIcon} />
+                <Icon
+                  icon={WAY_ICONS[way.id]}
+                  size={24}
+                  className={styles.wayIcon}
+                />
                 {way.label}
               </li>
             ))}
