@@ -29,7 +29,7 @@ The rules in this directory are permanent project policy. They are not suggestio
 | [privacy.md](privacy.md) | Consent, minimization, retention, children, demos | Personal data, recordings, deletion, demos |
 | [testing.md](testing.md) | Test strategy, what to test, manual commands | Writing or changing tests; end of every coding task |
 | [git.md](git.md) | Commit hygiene, what may be committed | End of every task |
-| [performance.md](performance.md) | Rendering, bundles, images, queries, caching | UI and data-loading work |
+| [performance.md](performance.md) | Response budgets, endpoints, rendering, bundles, queries, and caching | UI, server, data, or integration work |
 | [deployment.md](deployment.md) | Environments, env vars, webhooks, demo hosting | Configuration and release preparation |
 | [hackathon.md](hackathon.md) | Verified PayPal AI Hackathon 2026 requirements | Scope decisions, demo, submission |
 | [submission.md](submission.md) | Final submission checklist | Final two weeks before the deadline |
@@ -50,9 +50,9 @@ The `.agents/skills/` directory holds third-party agent skills (Prisma). They ar
 | Task type | Required reading (in addition to §2) |
 | --- | --- |
 | Frontend / UI | design, accessibility, performance, architecture (§ Server vs Client), folder-structure |
-| Backend / server logic | architecture, api, security, folder-structure, testing |
+| Backend / server logic | architecture, api, security, performance, folder-structure, testing |
 | Authentication / devices / profiles | authentication, security, privacy, database |
-| Database / schema | database, catalog (for catalog models), security, privacy |
+| Database / schema | database, catalog (for catalog models), security, privacy, performance |
 | AI / voice | ai, catalog, privacy, security, api, testing |
 | Catalog / product data / import scripts | catalog, database, security, privacy, testing |
 | Payments / checkout | payments, catalog (§ 6 prices), security, api, database, testing |
@@ -115,3 +115,4 @@ When instructions conflict, apply the first matching level:
 | 2026-10-09 | Replaced the generic environment template with aligned local and production templates; real environment files remain ignored. |
 | 2026-10-09 | Use Atkinson Hyperlegible for requester text because the installed Next.js font loader provides its fallback metrics without warnings. |
 | 2026-10-09 | Added project-wide readability, tab indentation, reuse, commenting, and dead-code removal rules. |
+| 2026-10-09 | Added measurable response budgets and endpoint, query, caching, and performance decision rules. |
