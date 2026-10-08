@@ -1,22 +1,28 @@
 import type { ReactNode } from "react";
+import { vi } from "vitest";
 
 // Test double for @clerk/nextjs: no network calls and no Clerk keys.
 // Use with: vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"));
-type ClerkStatus = "loading" | "ready" | "failed";
+const state = { signedIn: false, loaded: true };
 
-const state: { signedIn: boolean; status: ClerkStatus } = { signedIn: false, status: "ready" };
+export const clerkSpies = {
+  openSignIn: vi.fn(),
+  openSignUp: vi.fn(),
+};
 
 export function resetClerkMock() {
   state.signedIn = false;
-  state.status = "ready";
+  state.loaded = true;
+  clerkSpies.openSignIn.mockReset();
+  clerkSpies.openSignUp.mockReset();
 }
 
 export function setSignedIn(signedIn: boolean) {
   state.signedIn = signedIn;
 }
 
-export function setClerkStatus(status: ClerkStatus) {
-  state.status = status;
+export function setClerkLoaded(loaded: boolean) {
+  state.loaded = loaded;
 }
 
 type ShowProps = {
@@ -34,18 +40,29 @@ export function UserButton() {
   return <button type="button">Open account menu</button>;
 }
 
-export function ClerkLoading({ children }: { children?: ReactNode }) {
-  return <>{state.status === "loading" ? children : null}</>;
+// The real buttons attach a click handler to their child that opens Clerk's dialog.
+type DialogButtonProps = { mode?: "modal" | "redirect"; children?: ReactNode };
+
+export function SignInButton({ mode = "redirect", children }: DialogButtonProps) {
+  return (
+    <span data-clerk-dialog="sign-in" data-mode={mode}>
+      {children}
+    </span>
+  );
 }
 
-export function ClerkFailed({ children }: { children?: ReactNode }) {
-  return <>{state.status === "failed" ? children : null}</>;
+export function SignUpButton({ mode = "redirect", children }: DialogButtonProps) {
+  return (
+    <span data-clerk-dialog="sign-up" data-mode={mode}>
+      {children}
+    </span>
+  );
 }
 
-export function SignIn() {
-  return <div data-testid="clerk-sign-in" />;
+export function useAuth() {
+  return { isLoaded: state.loaded, isSignedIn: state.loaded ? state.signedIn : undefined };
 }
 
-export function SignUp() {
-  return <div data-testid="clerk-sign-up" />;
+export function useClerk() {
+  return clerkSpies;
 }
