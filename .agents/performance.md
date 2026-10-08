@@ -39,7 +39,7 @@ Measured by the developer with Lighthouse mobile (throttled 4G, mid-range device
 ## 4. Images
 
 - Use `next/image` for all raster images, with explicit `width`/`height` or `fill` plus `sizes`, so layout is stable and the right size is served.
-- Product images in `public/products/` are square, at most 600 × 600 px source, optimized WebP or AVIF, ideally under 60 KB each.
+- Product images in `public/products/` are the 400-pixel Open Food Facts display images, stored unmodified so their provenance stays exact ([catalog.md § 9](catalog.md#9-images)); `next/image` serves resized WebP or AVIF variants. Never hotlink third-party images.
 - Only the first visible row of product images may use `priority`/eager loading; everything else lazy-loads.
 - Icons are SVG components (Hugeicons), not images.
 
@@ -68,7 +68,7 @@ Measured by the developer with Lighthouse mobile (throttled 4G, mid-range device
 - Every loading state uses a skeleton or reserved space with the final layout ([design.md § 7](design.md#7-screen-states)).
 - Buttons show immediate pending feedback on press.
 - Use optimistic UI only for low-risk, reversible actions (for example, changing a quantity in a draft basket). Never for payment or status changes.
-- Fonts load through `next/font` with `display: 'swap'`, a single family, and only the weights used.
+- Fonts load through `next/font` with `display: 'swap'` and the Latin subset only: DM Sans (preloaded, variable) for the interface, and Atkinson Hyperlegible Next (`preload: false`) used only for requester reading text, so other screens never download it ([design.md § 3.3](design.md#33-typography)). No other font families.
 
 ## 9. Animation
 
