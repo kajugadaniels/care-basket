@@ -49,6 +49,6 @@ describe("FamilyLayout", () => {
     renderLayout();
 
     const hrefs = screen.getAllByRole("link").map((link) => link.getAttribute("href"));
-    expect(new Set(hrefs)).toEqual(new Set(["#family-main", "/family", "/family/members"]));
+    expect(new Set(hrefs)).toEqual(new Set(["#family-main", "/family", "/family/members", "/family/devices"]));
   });
 });
