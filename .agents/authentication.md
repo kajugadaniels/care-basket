@@ -19,8 +19,9 @@ There is no third kind. Anonymous visitors can only see public pages, sign in or
 ## 2. Adult onboarding
 
 1. Sign up or sign in through Clerk's prebuilt **dialogs**, opened from the public header ("Sign In", "Get Started"). There are no sign-in or sign-up pages (developer decision, 2026-10-08).
-2. On the first authenticated server call, `ensureUser()` in `src/server/auth/` upserts a `User` row keyed by `clerkUserId`. No Clerk webhook is required for the MVP.
-3. If the adult has no family, they are sent to `/family/setup`: family name, and "What should your family call you?" (stored as the membership `displayName`, for example "Mom" or "Anna"). Family and `OWNER` membership are created in one transaction.
+2. On the first authenticated server call, `ensureUser()` (`src/server/auth/ensure-user.ts`) finds or creates the `User` row keyed by `clerkUserId`. It reads first and, if a simultaneous request wins the insert race, uses the winner's row. No Clerk webhook is required for the MVP, and nothing but the Clerk user ID is stored.
+3. If the adult has no family, `requireAdult()` sends them to `/family/setup`: family name, and "Your display name" (stored as the membership `displayName`, for example "Mom" or "Jane", prefilled from the Clerk first name). `createFamilyAction` creates the family and the `OWNER` membership in one transaction. Repeated or concurrent submissions resolve to the existing family, which is never renamed or overwritten. A family is never created without this form being submitted.
+4. `/family/setup` redirects adults who already have a family to `/family`, and `/family` redirects adults without one to `/family/setup`.
 4. They land on the family dashboard, whose empty state invites them to add a family member.
 
 MVP constraints:
@@ -32,7 +33,7 @@ MVP constraints:
 
 - Use current `@clerk/nextjs` v7 APIs. Read the package README and types in `node_modules/@clerk/nextjs` before implementing; installed docs win over memory.
 - `src/proxy.ts` exports `clerkMiddleware()` from `@clerk/nextjs/server` with Clerk's documented matcher, so `auth()` works in server code. It contains **no route-based protection**: `createRouteMatcher()` is deprecated in Clerk 7, because path matching can diverge from how Next.js routes requests. Do **not** create `middleware.ts`; Next.js 16 uses `proxy.ts`.
-- **Resource-level protection:** every protected `page`, Server Action, and Route Handler verifies the session itself. Until database-backed families exist, adult-area pages call `requireAuthenticatedUser()` (`src/server/auth/require-authenticated-user.ts`), which redirects visitors to sign-in. From Step 3, they call `requireAdult()` ([§ 9](#9-server-side-permission-verification)). Layouts alone are never enough, because they do not re-render on every navigation.
+- **Resource-level protection:** every protected `page`, Server Action, and Route Handler verifies the session itself. Family-owned pages, actions, and handlers call `requireAdult()`; `/family/setup` and `createFamilyAction` call `ensureUser()`, because the adult has no family yet ([§ 9](#9-server-side-permission-verification)). Layouts alone are never enough, because they do not re-render on every navigation.
 - `ClerkProvider` wraps the app inside `<body>` in the root layout, **without** the `dynamic` prop, so pages keep their static shell. Server code reads the session with `auth()` from `@clerk/nextjs/server`; with `cacheComponents` enabled, anything that reads it (including the server `<Show>` component) renders inside `<Suspense>` or below a `loading.tsx` ([architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project)).
 - `SignedIn`, `SignedOut`, and `Protect` were removed in Clerk Core 3. Use `<Show when="signed-in">` / `<Show when="signed-out">` for visibility only; it never replaces a server-side check.
 - **Sign-in and sign-up open as Clerk dialogs, never as pages.**
@@ -121,8 +122,12 @@ Pairing binds one browser to one managed profile. It is **device-initiated and a
 
 All authorization lives in `src/server/auth/`:
 
-- `getActor()` resolves the current actor from either the Clerk session or the device cookie. If both are present, routes declare which actor they accept; adult routes ignore device cookies and device routes ignore Clerk sessions.
-- `requireAdult({ roles? })` and `requireDevice()` throw `AppError('UNAUTHENTICATED' | 'FORBIDDEN')`.
+- Adult helpers, from the session outward (implemented in Step 3):
+  - `requireClerkUserId()` and `requireAuthenticatedUser()` (`require-authenticated-user.ts`) verify the Clerk session only. The second also loads the first name.
+  - `ensureUser()` (`ensure-user.ts`) adds the database `User`.
+  - `requireAdult({ roles? })` (`require-adult.ts`) resolves `{ type: "adult", userId, familyId, role }` from the session and `FamilyMembership` alone, and takes no IDs from callers. It redirects to sign-in without a session, redirects to `/family/setup` without a family, and throws `AppError("FORBIDDEN")` for a disallowed role.
+  - The membership lookup (`family-membership.ts`) is deduplicated per request with React `cache()`, never in a shared cache.
+- `getActor()` (with device sessions, later) resolves the current actor from either the Clerk session or the device cookie. If both are present, routes declare which actor they accept; adult routes ignore device cookies and device routes ignore Clerk sessions. `requireDevice()` follows the same rules as `requireAdult()`.
 - Ownership checks (`assertRequestInFamily`, `assertRequestOwnedByProfile`, …) load the object with the actor's `familyId` in the query and throw `NOT_FOUND` when absent.
 
 | Capability | Adult `OWNER` | Adult `MANAGER` | Device (`ASSISTED_ADULT`) | Device (`CHILD`) |
@@ -160,7 +165,7 @@ Do not add claim-related columns or flows until this feature is approved.
 
 ## 12. Acceptance criteria
 
-- [ ] `src/proxy.ts` (not `middleware.ts`) runs `clerkMiddleware()` without route matching, and every adult page, Server Action, and Route Handler verifies the session itself (`requireAuthenticatedUser()` now, `requireAdult()` from Step 3).
+- [ ] `src/proxy.ts` (not `middleware.ts`) runs `clerkMiddleware()` without route matching, and every adult page, Server Action, and Route Handler verifies the session itself (`requireAdult()` for family-owned resources, `ensureUser()` for family setup).
 - [ ] Every device entry point calls `requireDevice()` and scopes reads and writes to the device's own profile.
 - [ ] Pairing needs the device's pairing cookie **and** an authenticated adult's approval; codes are single-use, hashed, short-lived, and rate-limited.
 - [ ] Session tokens and codes are stored only as hashes and never logged.
