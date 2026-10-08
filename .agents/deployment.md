@@ -33,8 +33,8 @@ Validated at startup by `src/lib/env/server.ts` and `src/lib/env/client.ts` with
 | `NEXT_PUBLIC_APP_URL` | Public | Canonical origin for Origin checks and absolute URLs | Yes |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Public | Clerk frontend | Yes |
 | `CLERK_SECRET_KEY` | Server | Clerk backend | Yes |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | Public | `/sign-in` | **Add** |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | Public | `/sign-up` | **Add** |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | Public | `/sign-in`, a redirect route that opens the sign-in dialog (not a page) | **Add** |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | Public | `/sign-up`, a redirect route that opens the sign-up dialog (not a page) | **Add** |
 | `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL` | Public | `/family` (used when no valid `redirect_url` is present) | **Add** |
 | `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL` | Public | `/family` | **Add** |
 | `DATABASE_URL` | Server | Neon **pooled** connection for runtime queries | Yes |
