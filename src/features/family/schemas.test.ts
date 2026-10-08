@@ -23,10 +23,21 @@ describe("createFamilySchema", () => {
     expect(result.success && result.data).toEqual(valid);
   });
 
-  it("rejects an empty or blank family name with a friendly message", () => {
-    expect(fieldError({ ...valid, familyName: "   " }, "familyName")).toBe(
+  it("rejects an empty or blank family name with one friendly message", () => {
+    const result = parse({ ...valid, familyName: "   " });
+
+    expect(result.success).toBe(false);
+    expect(result.error?.issues.map((issue) => issue.message)).toEqual([
       "Enter a name for your family.",
-    );
+    ]);
+  });
+
+  it("reports a single message for a blank display name", () => {
+    const result = parse({ ...valid, displayName: "  " });
+
+    expect(result.error?.issues.map((issue) => issue.message)).toEqual([
+      "Enter the name your family calls you.",
+    ]);
   });
 
   it("enforces the family name length limits", () => {
