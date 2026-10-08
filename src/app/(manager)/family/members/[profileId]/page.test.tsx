@@ -28,13 +28,13 @@ describe("member detail, add, and edit pages", () => {
     await expect(page({ params })).rejects.toThrow("NOT_FOUND");
     expect(mocks.get).toHaveBeenCalledWith(actor, profile.id);
   });
-  it("shows the profile and family with no working device connection action", async () => {
+  it("offers device connection with the owned profile as a suggestion", async () => {
     render(await MemberPage({ params }));
     expect(screen.getByRole("heading", { name: "Rose" })).toBeInTheDocument();
     expect(screen.getByText("Rose's Family")).toBeInTheDocument();
     expect(screen.getByText("October 8, 2026")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Edit Profile" })).toHaveAttribute("href", "/family/members/profile-rose/edit");
-    expect(screen.queryByRole("link", { name: /connect/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Connect Their Device" })).toHaveAttribute("href", "/family/devices/connect?profileId=profile-rose");
     expect(screen.queryByRole("button", { name: /connect/i })).not.toBeInTheDocument();
   });
   it.each([MemberPage, EditMemberPage])("authenticates each profile route independently", async (page) => {
