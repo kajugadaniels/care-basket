@@ -21,7 +21,7 @@
 - **Sandbox only.** `PAYPAL_ENVIRONMENT` must be `sandbox`; `src/lib/env/server.ts` validates it with `z.literal('sandbox')`. Going live requires a deliberate change to this document and the env schema.
 - REST base URL for Sandbox: `https://api-m.sandbox.paypal.com`.
 - **Server:** no PayPal server SDK is installed. The approved approach is a small typed REST client in `src/lib/paypal/` using `fetch` (OAuth client-credentials token, Orders v2, webhook signature verification). Adding `@paypal/paypal-server-sdk` instead requires developer approval.
-- **Client:** `@paypal/react-paypal-js` v10, using the **v6 SDK entry** `@paypal/react-paypal-js/sdk-v6` (`PayPalProvider`, `PayPalOneTimePaymentButton`). Do not use the legacy v5 components (`PayPalScriptProvider`, `PayPalButtons`). Read the installed README before implementing.
+- **Client:** `@paypal/react-paypal-js` v10, using the **v6 SDK entry** `@paypal/react-paypal-js/sdk-v6` (`PayPalProvider`, `PayPalOneTimePaymentButton`). Do not use the legacy v5 components (`PayPalScriptProvider`, `PayPalButtons`). Read the installed README before implementing. Use the official buttons only within the styling options PayPal supports; never build look-alike PayPal buttons.
 - The client receives only `NEXT_PUBLIC_PAYPAL_CLIENT_ID` and the environment value (passed from validated server config). `PAYPAL_CLIENT_SECRET` and `PAYPAL_WEBHOOK_ID` never leave the server.
 - The access token is cached in memory per server instance until shortly before it expires. It is never logged or sent to the client.
 
@@ -30,10 +30,10 @@
 | Step | What happens | Where |
 | --- | --- | --- |
 | 1 | A managed profile submits a shopping request. | Device → `submitRequestAction` |
-| 2 | The server validates SKUs, quantities (1–20), and availability, snapshots catalog prices into `BasketItem.unitPriceMinor`, and computes the subtotal. | `requests` service, one transaction |
+| 2 | The server validates SKUs, quantities (1–20), and availability, snapshots `DemoMerchantPrice` values into `BasketItem.unitPriceMinor`, records each item's origin, and computes the subtotal. | `requests` service, one transaction |
 | 3 | The manager reviews items, quantities, prices, substitutions, and total; can edit quantities, remove items, or decline. | `/family/requests/[requestId]` |
 | 4 | The manager explicitly chooses **Pay with PayPal**. | Manager UI (Client Component) |
-| 5 | `createOrder` calls `startCheckoutAction({ requestId })`. The server re-authorizes the adult and **re-prices** every item from `Product`. If a price changed or an item became unavailable, it updates the unlocked basket to current catalog data, returns `CONFLICT`, and asks the manager to review again. Otherwise, in one transaction, it locks the basket (`lockedAt`, conditional on it being unlocked), sets the request to `AWAITING_PAYMENT`, and creates a `Payment` (`CREATED`). Outside the transaction it creates the PayPal order and stores `paypalOrderId`. It returns only the order ID. | `checkout` service + `src/lib/paypal` |
+| 5 | `createOrder` calls `startCheckoutAction({ requestId })`. The server re-authorizes the adult and **re-prices** every item from `DemoMerchantPrice`. If a price changed or an item became unavailable, it updates the unlocked basket to current catalog data, returns `CONFLICT`, and asks the manager to review again. Otherwise, in one transaction, it locks the basket (`lockedAt`, conditional on it being unlocked), sets the request to `AWAITING_PAYMENT`, and creates a `Payment` (`CREATED`). Outside the transaction it creates the PayPal order and stores `paypalOrderId`. It returns only the order ID. | `checkout` service + `src/lib/paypal` |
 | 6 | The manager approves the payment in the PayPal popup or modal. | PayPal |
 | 7 | `onApprove` calls `captureCheckoutAction({ requestId, paypalOrderId })`. The server checks that the order ID belongs to this request's open payment, then calls capture with `PayPal-Request-Id: capture-<paymentId>`. | `checkout` service |
 | 8 | The server verifies the capture result (§7). | `checkout` service |
@@ -53,6 +53,8 @@ Order creation body rules (Orders v2):
 ## 4. Money handling
 
 - All amounts are integers in **minor units** (cents) with an ISO 4217 currency code. The MVP supports `USD` only.
+- **Checkout prices come only from `DemoMerchantPrice`.** Open Prices observations are reference data and are never used for totals, orders, or captures ([catalog.md § 6](catalog.md#6-observed-prices-vs-demo-merchant-prices)).
+- A requester's per-request budget is context for the manager. It is never enforced, raised, or checked at checkout ([ai.md § 10.3](ai.md#103-budget-aware-suggestions)).
 - Conversion to PayPal's decimal strings, and back, happens only in `src/lib/money.ts`, using integer arithmetic (no floating-point multiplication of prices).
 - Totals are recomputed from items on the server every time; a stored subtotal is updated in the same transaction as its items.
 - Display uses `Intl.NumberFormat` via `src/lib/format.ts`.
@@ -119,14 +121,17 @@ Recoverable PayPal errors (for example `INSTRUMENT_DECLINED`) keep the payment o
 | Declined | "You declined this request." | "Anna can't get this right now." |
 | Payment failed | "Payment didn't go through. You were not charged." (only when verified) | No change; still "Anna is looking at your list." |
 
-- Requesters never see amounts, PayPal, errors, or transaction IDs.
+- Requesters never see PayPal, payment errors, transaction IDs, or item prices. The only amount a requester may see is the server-calculated estimated total against a budget they set for that request, labelled as demo prices ([design.md § 8](design.md#8-requester-interface-assisted-adults-and-children)).
+- Every price shown to managers is labelled "Demo price".
 - "Paid" and "Delivered" use different icons, words, and positions ([design.md § 5](design.md#5-component-patterns)).
 
 ## 9. Claims we must never make
 
 - That CareBasket or PayPal checkout is an **escrow** service, or that money is "held until delivery".
 - That orders are delivered, shipped, or fulfilled by a real merchant. Fulfillment is **simulated** for a **demonstration merchant** with **simulated products**.
-- That real merchants or grocery stores are integrated.
+- That real merchants or grocery stores are integrated, or that a simulated checkout orders products from a real retailer.
+- That demo prices are real store prices, or that Open Prices observations are current, guaranteed, or store-specific prices.
+- That PayPal operates, sponsors, or endorses CareBasket. PayPal appears only through official payment components and factual labels ([design.md § 1.3](design.md#13-brand-separation-mandatory)).
 - That payments are live. They are **PayPal Sandbox** test payments.
 - That buyer protection or refunds apply in any specific way.
 
@@ -134,7 +139,7 @@ These disclosures appear in the app's demo banner, the README, the Devpost descr
 
 ## 10. Demonstration merchant and fulfillment
 
-- The merchant is the developer's PayPal Sandbox business account. Products come from the seeded demo catalog ([database.md § 8](database.md#8-seed-data)).
+- The merchant is the developer's PayPal Sandbox business account, presented as **CareBasket Demo Market**. Products come from the curated catalog, and prices are approved demo prices ([catalog.md](catalog.md), [database.md § 8](database.md#8-seed-data)).
 - `fulfillmentStatus` is advanced only by an explicit manager-side **"Demo: simulate delivery"** control, visible only when `DEMO_FULFILLMENT_CONTROLS=true`, and labelled as simulated.
 - Payment events never change `fulfillmentStatus`, and fulfillment changes never change payment status.
 
@@ -152,7 +157,7 @@ These disclosures appear in the app's demo banner, the README, the Devpost descr
 ## 12. Acceptance criteria
 
 - [ ] Only adult actors can start, cancel, or capture checkout; tests prove device sessions are rejected.
-- [ ] Order amounts are recomputed from `Product` prices on the server and match the basket exactly.
+- [ ] Order amounts are recomputed from `DemoMerchantPrice` on the server and match the basket exactly; no code path reads `PriceObservation` for money.
 - [ ] Capture verification checks order ID, `custom_id`, status, amount, and currency before marking paid.
 - [ ] Webhooks are signature-verified, deduplicated, re-fetched, and safe in any order.
 - [ ] The requester sees a clear confirmation only after verified capture, and fulfillment is shown separately as simulated.
