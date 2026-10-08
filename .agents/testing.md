@@ -15,9 +15,10 @@
 
 - Vitest 4 with the `jsdom` environment for components, and the Node environment for server logic (a per-file `// @vitest-environment node` comment, or Vitest `projects` if the developer prefers configuration-level separation; check the installed Vitest docs).
 - React Testing Library and `@testing-library/jest-dom` matchers.
+- `vitest.config.mts` sets `jsdom`, the `@` → `./src` alias, and `src/test/setup.ts` (jest-dom matchers and cleanup). Vite reads the automatic JSX runtime from `tsconfig.json`.
 - Current gaps (the developer decides; agents do not install):
-  - There is no `vitest.config.mts` and no `test` script yet. A minimal config sets `test.environment: 'jsdom'`, a setup file importing `@testing-library/jest-dom/vitest`, and a `resolve.alias` for `@` → `./src`.
-  - `@vitejs/plugin-react` and `vite-tsconfig-paths`, which the Next.js Vitest guide recommends, are **not installed**. Try the minimal config first; if the first run fails on JSX transform or path aliases, the developer approves and installs them.
+  - There is no `test` script; the developer runs `npx vitest run`.
+  - `@vitejs/plugin-react` and `vite-tsconfig-paths`, which the Next.js Vitest guide recommends, are **not installed**. If a run fails on JSX transform or path aliases, the developer approves and installs them.
   - `@testing-library/user-event` is not installed; it is recommended for realistic interaction tests.
   - No end-to-end runner (Playwright) is installed; critical journeys are covered by the manual script in §7 until one is approved.
 
@@ -30,11 +31,14 @@
 | `src/server/auth/*` | Unit | Actor resolution, role checks, device session validation |
 | Server Actions and Route Handlers | Unit | Call the exported function with mocked actor and service; assert validation, status codes, and response shapes |
 | `features/*/components/*` (Client Components and synchronous Server Components) | React Testing Library | Query by role and accessible name; assert states |
-| Async Server Components (pages) | Not unit-tested | Keep them thin; covered by the journey script in §7 |
+| Async Server Components (pages) | Unit when practical | Mock the data helpers, `await Page()`, and render the result if its children are synchronous; otherwise rely on the journey script in §7 |
+| `src/proxy.ts` | Unit | Assert the matcher with `unstable_doesMiddlewareMatch` from `next/experimental/testing/server` (the installed name) |
 | `src/lib/paypal`, `src/lib/ai`, `src/lib/open-prices`, `src/lib/open-food-facts` | Unit with stubbed `fetch` or SDK | Request shape, headers (including User-Agent), timeouts, retries, error mapping, response parsing |
 | `scripts/catalog/*` logic | Unit, with recorded API fixtures | Keep script entry files thin; test the normalizer and verifier functions they call. Fixtures are small, anonymized excerpts with contributor fields removed. |
 
 - Mock at module boundaries (`vi.mock('@/server/auth/actor')`, a fake `ShoppingAssistantProvider`, a fake PayPal client). Never mock the code under test.
+- Clerk: `vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"))`, then switch state with `setSignedIn()` and `setClerkStatus()`, and call `resetClerkMock()` in `beforeEach`. Mock `@clerk/nextjs/server` per test for `auth()` and `currentUser()`.
+- Modules that import `server-only` need `vi.mock("server-only", () => ({}))`, because Vitest does not use the `react-server` export condition.
 - Unit tests never touch the network or a real database. Real Neon, PayPal Sandbox, and Gemini are exercised only in the developer's manual runs.
 - Use factories (`makeActor`, `makeRequest`) in `src/test/factories/` instead of large inline fixtures. All data is fictional.
 
