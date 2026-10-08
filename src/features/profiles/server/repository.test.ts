@@ -12,6 +12,7 @@ type Write = { table: string; data: Record<string, unknown> };
 
 const fake = vi.hoisted(() => {
   const rows: Row[] = [];
+  const devices: { id: string; familyId: string; profileId: string; revokedAt: Date | null }[] = [];
   const committed: Write[] = [];
   const calls: { method: string; input: unknown }[] = [];
   const failures = { audit: false };
@@ -68,9 +69,19 @@ const fake = vi.hoisted(() => {
     managedProfile: delegate(rows, committed),
     $transaction: vi.fn(async (callback: (tx: unknown) => Promise<unknown>) => {
       const staged = rows.map((row) => ({ ...row }));
+      const stagedDevices = devices.map((row) => ({ ...row }));
       const writes: Write[] = [];
       const result = await callback({
         managedProfile: delegate(staged, writes),
+        authorizedDevice: {
+          findMany: async ({ where }: { where: { familyId: string; profileId: string } }) => stagedDevices.filter((d) =>
+            d.familyId === where.familyId && d.profileId === where.profileId && d.revokedAt === null),
+          updateMany: async ({ where, data }: { where: { id: string; familyId: string; profileId: string }; data: { revokedAt: Date } }) => {
+            const device = stagedDevices.find((d) => d.id === where.id && d.familyId === where.familyId && d.profileId === where.profileId && !d.revokedAt);
+            if (device) { device.revokedAt = data.revokedAt; writes.push({ table: "device", data: { ...where, ...data } }); }
+            return { count: device ? 1 : 0 };
+          },
+        },
         auditLog: { create: async (input: { data: Record<string, unknown> }) => {
           if (failures.audit) throw new Error("audit unavailable");
           writes.push({ table: "audit", data: input.data });
@@ -78,11 +89,12 @@ const fake = vi.hoisted(() => {
         } },
       });
       rows.splice(0, rows.length, ...staged);
+      devices.splice(0, devices.length, ...stagedDevices.filter((d) => staged.some((p) => p.id === d.profileId)));
       committed.push(...writes);
       return result;
     }),
   };
-  return { db, rows, committed, calls, failures };
+  return { db, rows, devices, committed, calls, failures };
 });
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/db/client", () => ({ getDb: () => fake.db }));
@@ -101,6 +113,7 @@ const other: Row = { ...own, id: "019a1234-0000-7000-8000-000000000004", familyI
 describe("managed profile repository", () => {
   beforeEach(() => {
     fake.rows.splice(0, fake.rows.length);
+    fake.devices.splice(0, fake.devices.length);
     fake.committed.splice(0, fake.committed.length);
     fake.calls.splice(0, fake.calls.length);
     fake.failures.audit = false;
@@ -174,6 +187,21 @@ describe("managed profile repository", () => {
     await removeProfile(context, profileId);
     expect(fake.rows).toEqual([other]);
     expect(fake.committed.at(-1)?.data.action).toBe("profile.deleted");
+  });
+  it("revokes and cascades owned devices atomically before deleting the profile", async () => {
+    fake.rows.push({ ...own }, { ...other });
+    fake.devices.push({ id: "device-owned", familyId: context.familyId, profileId, revokedAt: null },
+      { id: "device-other", familyId: other.familyId, profileId: other.id, revokedAt: null });
+    await removeProfile(context, profileId);
+    expect(fake.devices.map((d) => d.id)).toEqual(["device-other"]);
+    expect(fake.committed.filter((w) => w.table === "audit").map((w) => w.data.action)).toEqual(["device.revoked", "profile.deleted"]);
+  });
+  it("rolls back device invalidation together with deletion if auditing fails", async () => {
+    fake.rows.push({ ...own });
+    fake.devices.push({ id: "device-owned", familyId: context.familyId, profileId, revokedAt: null });
+    fake.failures.audit = true;
+    await expect(removeProfile(context, profileId)).rejects.toThrow("audit unavailable");
+    expect(fake.devices[0].revokedAt).toBeNull(); expect(fake.rows).toEqual([own]); expect(fake.committed).toEqual([]);
   });
   it.each(["create", "update", "delete"])("rolls back %s when its audit entry fails", async (operation) => {
     fake.rows.push({ ...own });
