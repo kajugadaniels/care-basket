@@ -6,6 +6,7 @@ export const familyLayoutCopy = {
   nav: {
     overview: "Overview",
     members: "Family Members",
+    devices: "Devices",
   },
 } as const;
 
@@ -44,11 +45,6 @@ export const setupPreviewCopy = {
   description: "These features are planned and not available yet.",
   comingSoon: "Coming soon",
   items: [
-    {
-      id: "devices",
-      title: "Connect their device",
-      description: "Approve their phone or tablet with a short code so they can ask for groceries.",
-    },
     {
       id: "requests",
       title: "Review their shopping requests",
