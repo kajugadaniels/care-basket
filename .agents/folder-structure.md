@@ -32,8 +32,8 @@ This is the target layout. **Create directories only when the first real file ne
     │   ├── layout.tsx                # html/body, fonts, global CSS
     │   ├── globals.css               # reset + design tokens only
     │   ├── page.tsx                  # public landing
-    │   ├── (auth)/sign-in/[[...sign-in]]/page.tsx
-    │   ├── (auth)/sign-up/[[...sign-up]]/page.tsx
+    │   ├── (auth)/sign-in/[[...sign-in]]/route.ts   # redirects to /?auth=sign-in (dialog, not a page)
+    │   ├── (auth)/sign-up/[[...sign-up]]/route.ts   # redirects to /?auth=sign-up
     │   ├── (manager)/family/…        # adult area (Clerk session)
     │   ├── (device)/shop/…           # requester area (device session)
     │   ├── connect/page.tsx          # device pairing start (public)
