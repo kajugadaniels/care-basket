@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { UserButton } from "@clerk/nextjs";
 import { Brand } from "@/components/layout/Brand/Brand";
 import { Container } from "@/components/layout/Container/Container";
@@ -26,7 +26,10 @@ export default function FamilyLayout({ children }: Readonly<{ children: ReactNod
         </Container>
       </header>
       <Container className={styles.body}>
-        <FamilyNav />
+        {/* Dynamic profile IDs make usePathname suspend during prerendering. */}
+        <Suspense fallback={<nav aria-label={familyLayoutCopy.navLabel} />}>
+          <FamilyNav />
+        </Suspense>
         <main id="family-main" tabIndex={-1} className={styles.main}>
           {children}
         </main>
