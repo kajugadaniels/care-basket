@@ -3,7 +3,7 @@
 **Purpose:** A single checklist that the developer completes before submitting CareBasket to the PayPal AI Hackathon 2026.
 **Applies to:** The final two weeks before the deadline, and the submission itself.
 **Related:** [hackathon.md](hackathon.md), [deployment.md](deployment.md), [privacy.md § 10](privacy.md#10-demos-and-public-materials), [payments.md § 9](payments.md#9-claims-we-must-never-make), [testing.md § 7](testing.md#7-critical-journeys-manual-end-to-end-script)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -41,12 +41,12 @@ Agents may draft README sections, the Devpost description, video scripts, and te
   - [ ] What CareBasket is and who it is for (two or three sentences)
   - [ ] How PayPal is used (Orders v2, capture, verified webhooks, JS SDK) and how AI is used (Gemini voice and text interpretation into catalog baskets)
   - [ ] Architecture overview and tech stack
-  - [ ] Setup instructions: prerequisites (Node.js ≥ 20.9, npm, Neon, Clerk, PayPal Sandbox, Gemini API key), `.env.example` variables, install, database migration and seed commands, run command
+  - [ ] Setup instructions: prerequisites (Node.js ≥ 20.9, npm, Neon, Clerk, PayPal Sandbox, Gemini API key), local and production environment templates, install, database migration and seed commands, run command
   - [ ] How to run tests
   - [ ] Demo URL and video link
   - [ ] Disclosures (see §8)
   - [ ] License, including the data licensing scopes: code (project license), `prisma/catalog/**` (ODbL 1.0), `public/products/**` (CC BY-SA 3.0, see `ATTRIBUTION.md`) ([catalog.md § 10](catalog.md#10-licensing-and-attribution))
-- [ ] `.env.example` is committed with placeholders only; no secrets in history (`git log -p` reviewed for keys).
+- [ ] `.env.local.example` and `.env.production.example` are committed with safe defaults and placeholders only; no secrets in history (`git log -p` reviewed for keys).
 - [ ] No real personal data in code, seeds, fixtures, or screenshots.
 
 ## 5. Demo video
