@@ -3,7 +3,7 @@
 **Purpose:** Give CareBasket a clean, confident, premium interface inspired by the clarity of PayPal's modern design, while keeping its own identity, meeting WCAG 2.2 AA, and working on every screen size.
 **Applies to:** Any UI work.
 **Related:** [accessibility.md](accessibility.md) (which wins on any conflict), [performance.md](performance.md), [folder-structure.md](folder-structure.md), [payments.md § 9](payments.md#9-claims-we-must-never-make)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -92,16 +92,16 @@ The neutral and surface values are CareBasket choices, not claims about PayPal's
 
 ### 3.3 Typography
 
-**Decision:** DM Sans is the primary interface typeface, and Atkinson Hyperlegible Next is kept for requester reading text.
+**Decision:** DM Sans is the primary interface typeface, and Atkinson Hyperlegible is kept for requester reading text.
 
 - **DM Sans** (SIL Open Font License, via `next/font/google`, variable weight and optical size) is a legally available alternative with a geometric character similar in spirit to PayPal's typeface. **It is not PayPal's proprietary font.** Used for headings, buttons, navigation, and all manager screens.
-- **Readability concern:** like most geometric sans serifs, DM Sans draws capital `I` and lowercase `l` alike and has rounder, more similar letter shapes. Atkinson Hyperlegible Next was designed for low-vision readers and distinguishes these characters. Older adults and early readers are CareBasket's core requesters, so their reading text keeps it.
-- **Atkinson Hyperlegible Next** (`--font-readable`): requester body text, product names and sizes, quantities, clarification questions, status messages, and the device pairing code. It is loaded without preload, so screens that do not use it never download it.
+- **Readability concern:** like most geometric sans serifs, DM Sans draws capital `I` and lowercase `l` alike and has rounder, more similar letter shapes. Atkinson Hyperlegible was designed for low-vision readers and distinguishes these characters. Older adults and early readers are CareBasket's core requesters, so their reading text keeps it.
+- **Atkinson Hyperlegible** (`--font-readable`): requester body text, product names and sizes, quantities, clarification questions, status messages, and the device pairing code. It is loaded without preload, so screens that do not use it never download it. The installed Next.js version has fallback metrics for this family, avoiding unsupported-font warnings and layout-shift fallback failures.
 
 | Token | Value | Use |
 | --- | --- | --- |
 | `--font-sans` | DM Sans, system fallback | Interface and headings |
-| `--font-readable` | Atkinson Hyperlegible Next, then `--font-sans` | Requester reading text |
+| `--font-readable` | Atkinson Hyperlegible, then `--font-sans` | Requester reading text |
 | `--text-xs` | 0.875rem (14px) | Badges, captions, metadata, navigation-bar labels on public and manager screens only; never paragraphs, never requester screens |
 | `--text-sm` | 0.9375rem (15px) | Secondary text, navigation links, helper text |
 | `--text-base` | 1rem (16px) | Default body on public and manager screens |
