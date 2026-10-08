@@ -2,16 +2,18 @@
 
 **Purpose:** Define what CareBasket is, who it serves, and what is in and out of scope, so every change can be checked against the product's intent.
 **Applies to:** Every task (scope check) and all product decisions.
-**Related:** [hackathon.md](hackathon.md), [authentication.md](authentication.md), [payments.md](payments.md), [ai.md](ai.md), [accessibility.md](accessibility.md)
+**Related:** [hackathon.md](hackathon.md), [authentication.md](authentication.md), [payments.md](payments.md), [ai.md](ai.md), [catalog.md](catalog.md), [accessibility.md](accessibility.md)
 **Last reviewed:** 2026-10-08
 
 ---
 
 ## 1. Mission
 
-CareBasket lets people who find online shopping hard ask for the essentials they need by speaking, typing, or tapping pictures. A trusted family member then reviews the request and pays securely with PayPal.
+CareBasket lets people who find online shopping hard ask for the essentials they need by speaking, typing, or tapping pictures. AI understands the request and proposes products from a verified catalog; the requester confirms; a trusted family member reviews the basket and decides whether to pay with PayPal.
 
-**Product philosophy:** Advanced technology behind the scenes. Exceptional simplicity for the person using it.
+**Product philosophy:** Advanced intelligence behind the scenes. Extremely simple experiences for people.
+
+**Market defaults:** United States, USD, English (`en-US`), grocery and household essentials, sold by a simulated U.S. grocery store ("CareBasket Demo Market"). See [catalog.md § 1](catalog.md#1-market-defaults).
 
 ## 2. Target users and their difficulties
 
@@ -51,8 +53,8 @@ A managed profile can only create and follow its own shopping requests. It canno
 | J1 | Sign up and create a family | Manager | Signed in with Clerk; family created; lands on an empty, helpful family dashboard. |
 | J2 | Add a managed profile | Manager | Profile created with a display name, kind, avatar, and confirmed consent. |
 | J3 | Connect a device | Requester's device + manager | Device shows a short code; manager enters it, picks the profile, approves; device opens the requester's home screen. |
-| J4 | Ask for groceries | Requester | Speaks, types, or taps pictures; sees what CareBasket understood as picture cards; adjusts if needed; sends to the manager by name. |
-| J5 | Review the request | Manager | Sees items, quantities, catalog prices, total, and any substitutions or clarifications; can edit quantities, remove items, decline, or proceed to pay. |
+| J4 | Ask for groceries | Requester | Speaks, types, or taps pictures, or describes an occasion ("breakfast for four"); sees what CareBasket understood as picture cards, with suggestions clearly marked; answers short questions by tapping; optionally keeps it under a budget; confirms and sends to the manager by name. |
+| J5 | Review the request | Manager | Sees items, quantities, demo prices, total, the requester's budget if any, and which items were suggested or substituted; can edit quantities, remove items, decline, or proceed to pay. |
 | J6 | Pay with PayPal (Sandbox) | Manager | Starts checkout, approves in PayPal, server captures and verifies; request shows "Paid". |
 | J7 | See confirmation | Requester | Sees a clear, friendly message: who paid and when, and separately, the delivery status. |
 | J8 | Manage devices | Manager | Sees each paired device with its label and last use; can revoke any device instantly. |
@@ -64,8 +66,8 @@ The MVP stays centered on exactly these eight capabilities:
 1. Adult registration (Clerk)
 2. Family profile management
 3. Secure dependent-device pairing
-4. Grocery requests using voice, text, or pictures
-5. AI basket generation from a predefined catalog
+4. Grocery requests using voice, text, or pictures, including context-aware suggestions and an optional per-request budget ([ai.md § 2](ai.md#2-approved-capabilities))
+5. AI basket generation grounded in the curated U.S. catalog: Open Prices-sourced products plus CareBasket-curated essentials, with approved demo prices ([catalog.md](catalog.md))
 6. Family request review
 7. PayPal Sandbox payment
 8. Clear payment confirmation, kept separate from fulfillment status
@@ -75,10 +77,11 @@ The MVP stays centered on exactly these eight capabilities:
 Do not build these without developer approval:
 
 - Real merchant, grocery, or inventory integrations; real delivery or fulfillment
+- Live retailer prices, real-time stock, store locations, store-specific prices, or price comparison; Open Prices observations used as checkout prices ([catalog.md § 6](catalog.md#6-observed-prices-vs-demo-merchant-prices))
 - Live (production) PayPal payments, refunds UI, saved or vaulted payment methods, subscriptions, Pay Later promotion
-- Recurring or scheduled orders, budgets, spending limits, allowances
-- Multiple merchants, multiple currencies (USD only), coupons, loyalty
-- Open-ended AI chat, AI shopping outside the catalog, AI-initiated payments
+- Recurring or scheduled orders; recurring budgets, spending limits, allowances, or account-level restrictions. Only the optional **per-request** budget aid is in scope.
+- Multiple merchants, countries, or currencies (U.S. and USD only), coupons, loyalty
+- Open-ended AI chat, AI shopping outside the catalog, AI-initiated checkout or payments, financial planning or advice
 - Email, SMS, or push notifications (in-app status only)
 - Native mobile apps, offline mode, PWA installation flows
 - Full localization (the MVP ships in English but stays localization-ready, see [accessibility.md § 9](accessibility.md#9-language-and-localization-readiness))
@@ -90,7 +93,8 @@ Do not build these without developer approval:
 ## 7. Non-goals and scope boundaries
 
 - CareBasket is **not** an escrow service. Ordinary PayPal checkout is a direct payment ([payments.md § 9](payments.md#9-claims-we-must-never-make)).
-- CareBasket does **not** fulfil orders in the hackathon. A demonstration merchant with simulated products and simulated fulfillment is used, and this is disclosed everywhere.
+- CareBasket does **not** fulfil orders in the hackathon. A simulated demonstration merchant with demo prices and simulated fulfillment is used, and this is disclosed everywhere. Real product data from Open Food Facts and Open Prices does not mean any real store sells through CareBasket.
+- CareBasket is **not** a budgeting, price-comparison, or financial-planning tool. A per-request budget is only a shopping aid.
 - CareBasket does **not** make decisions on anyone's behalf. AI proposes; people confirm; only family managers pay.
 - CareBasket is **not** a monitoring or surveillance tool. Managers see requests, not activity logs of the requester's device.
 
