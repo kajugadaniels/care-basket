@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { CheckmarkCircle02Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/ui/Icon/Icon";
+import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { SetupPreview } from "@/features/family/components/SetupPreview/SetupPreview";
 import { familyDashboardCopy } from "@/features/family/copy";
 import { getFamilyOverview } from "@/features/family/server/service";
+import { countManagedProfiles } from "@/features/profiles/server/service";
 import { requireAdult } from "@/server/auth/require-adult";
 import styles from "./page.module.css";
 
@@ -15,7 +17,9 @@ export const metadata: Metadata = {
 // requireAdult() sends signed-out visitors to sign-in and adults without a family to setup.
 export default async function FamilyPage() {
   const actor = await requireAdult();
-  const family = await getFamilyOverview(actor);
+  const [family, profileCount] = await Promise.all([
+    getFamilyOverview(actor), countManagedProfiles(actor),
+  ]);
 
   return (
     <div className={styles.page}>
@@ -37,10 +41,14 @@ export default async function FamilyPage() {
       <div className={styles.ready}>
         <Icon icon={CheckmarkCircle02Icon} size={24} className={styles.readyIcon} />
         <div>
-          <p className={styles.readyTitle}>{familyDashboardCopy.readyTitle}</p>
-          <p className={styles.readyText}>{familyDashboardCopy.readyText}</p>
+          <p className={styles.readyTitle}>{familyDashboardCopy.memberCount({ count: profileCount })}</p>
+          {profileCount === 0 ? <p className={styles.readyText}>{familyDashboardCopy.readyText}</p> : null}
         </div>
       </div>
+
+      <ActionLink href={profileCount === 0 ? "/family/members/add" : "/family/members"} className={styles.memberAction}>
+        {profileCount === 0 ? familyDashboardCopy.addMember : familyDashboardCopy.viewMembers}
+      </ActionLink>
 
       <SetupPreview />
     </div>
