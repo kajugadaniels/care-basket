@@ -4,7 +4,6 @@ import {
   SmartPhone01Icon,
   TaskDone01Icon,
   UserAdd01Icon,
-  UserGroupIcon,
   Wallet01Icon,
 } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/ui/Icon/Icon";
@@ -12,14 +11,13 @@ import { setupPreviewCopy, type SetupStepId } from "@/features/family/copy";
 import styles from "./SetupPreview.module.css";
 
 const STEP_ICONS: Record<SetupStepId, IconSvgElement> = {
-  family: UserGroupIcon,
   profiles: UserAdd01Icon,
   devices: SmartPhone01Icon,
   requests: TaskDone01Icon,
   payments: Wallet01Icon,
 };
 
-// A read-only preview of planned features. Deliberately has no buttons or links.
+// A read-only list of planned features. Deliberately has no buttons or links until they exist.
 export function SetupPreview() {
   return (
     <section aria-labelledby="setup-preview-title" className={styles.section}>
