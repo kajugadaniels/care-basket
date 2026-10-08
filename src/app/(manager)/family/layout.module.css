@@ -1,0 +1,72 @@
+.shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--color-surface-soft);
+}
+
+.header {
+  border-block-end: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-2);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.area {
+  display: none;
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-accent);
+  color: var(--color-accent-strong);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+}
+
+/* Reserves the account menu's space before Clerk loads, so the header does not shift. */
+.account {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--control-height);
+  min-height: var(--control-height);
+}
+
+/* Bottom padding keeps content clear of the fixed navigation bar on small screens. */
+.body {
+  padding-block: var(--space-6) calc(var(--space-8) + var(--space-6));
+}
+
+/* The main region only receives focus from the skip link; it is not an interactive control. */
+.main:focus {
+  outline: none;
+}
+
+@media (min-width: 40rem) {
+  .area {
+    display: inline-flex;
+  }
+}
+
+/* Laptops and up: side navigation next to the content. */
+@media (min-width: 64rem) {
+  .body {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-7);
+    padding-block: var(--space-7);
+  }
+}
