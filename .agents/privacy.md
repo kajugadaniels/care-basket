@@ -18,6 +18,7 @@
 ## 2. Consent
 
 - Creating a managed profile requires the adult's explicit confirmation that they are the parent or guardian, or that the person asked them to set it up ([authentication.md § 5](authentication.md#5-managed-profiles-consent-and-ownership)). Store `consentConfirmedAt` and `consentVersion`. Increase `consentVersion` when the wording changes materially.
+- **AI processing for assisted adults** is off by default. The manager turns it on per profile and confirms that the person agrees to their requests being processed by Google's AI service. Store `aiConsentConfirmedAt` and `aiConsentVersion`; the requester sees a one-line notice wherever AI is used ([ai.md § 8.1](ai.md#81-assisted-adults)). Children's data is never sent to the AI provider.
 - Microphone access is requested only when the user taps the microphone and is explained in plain words first ([ai.md § 7](ai.md#7-voice-input)).
 - No cookies other than strictly necessary ones: Clerk's authentication cookies, the device session cookie, and the short-lived pairing cookie. No consent banner is needed for these; do not add tracking that would require one.
 - A short, plain-language privacy page (`/privacy`) explains what is collected, why, who processes it, and how to delete it, before the public demo is shared.
@@ -34,10 +35,15 @@
 | Device label, browser and OS summary, last use | Adult and device | Device management and revocation | `AuthorizedDevice` |
 | Device token and pairing secrets | Generated | Authentication | Hashes only |
 | Request text or transcript | Requester | Shows the manager what was asked | `ShoppingRequest.inputText` |
+| Optional per-request budget | Requester | Budget-aware suggestions; context for the manager | `ShoppingRequest.budgetMinor` |
+| AI consent confirmation (assisted adults) | Adult | Accountability for AI processing | `ManagedProfile` |
 | Basket items and prices | Server | Review and payment | `ShoppingBasket`, `BasketItem` |
 | PayPal order and capture IDs, amounts, statuses | PayPal | Payment verification | `Payment`, `PaymentEvent` |
 | Voice audio | Requester | Transcription and interpretation | **Never stored** |
 | Client IP | Request | Rate limiting | HMAC only, short-lived |
+| Catalog products and price observations | Open Prices, Open Food Facts | Product catalog and reference prices | Catalog tables; contain **no personal data** |
+
+Open Prices records include contributor usernames, comments, and proof images (receipts and price-tag photos). CareBasket **never stores, displays, or redistributes** them ([catalog.md § 10](catalog.md#10-licensing-and-attribution)).
 
 Not collected in the MVP: dates of birth, ages, addresses, phone numbers, photos, payer names or emails, card data, location, contacts, health information.
 
@@ -49,6 +55,7 @@ Not collected in the MVP: dates of birth, ages, addresses, phone numbers, photos
 - PayPal checkout uses `NO_SHIPPING`, so no address is requested ([payments.md § 3](payments.md#3-payment-workflow)).
 - Logs contain no personal data ([security.md § 9](security.md#9-safe-errors-and-logging)).
 - No third-party analytics, session replay, advertising, or tracking scripts.
+- Product images and fonts are served from CareBasket's own domain (`public/products/`, `next/image`, `next/font`), so users' browsers make no requests to third-party hosts except PayPal and Clerk where needed.
 
 ## 5. AI and voice data
 
@@ -104,8 +111,10 @@ Deletion rules:
 | Clerk | Adult identity and sign-in data |
 | Neon | All CareBasket database data |
 | PayPal | Order items and amounts; the payer's own PayPal data |
-| Google (Gemini API) | Request text or audio and catalog subset (no names) |
+| Google (Gemini API) | Assisted adults' request text or audio and the catalog summary (no names, no children's data) |
 | Hosting provider | Requests and server logs |
+
+Open Prices and Open Food Facts are **data sources, not processors**: developer-run scripts read public data from them and send no user data.
 
 Adding any processor (analytics, error reporting, email) needs developer approval and an update to this table and the privacy page.
 
