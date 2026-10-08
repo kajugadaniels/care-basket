@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const fake = vi.hoisted(() => ({ revoke: vi.fn() }));
 vi.mock("../../actions", () => ({ revokeDeviceAction: fake.revoke }));
@@ -29,7 +29,7 @@ describe("device revocation confirmation", () => {
     fake.revoke.mockResolvedValue({ ok: true, data: { done: true } }); const { dialog } = open();
     fireEvent.click(within(dialog).getByRole("checkbox")); fireEvent.click(within(dialog).getByRole("button", { name: "Disconnect Device" }));
     expect(await screen.findByRole("status")).toHaveTextContent("Device disconnected.");
-    expect(screen.getByRole("status")).toHaveFocus();
+    await waitFor(() => expect(screen.getByRole("status")).toHaveFocus());
     expect(fake.revoke).toHaveBeenCalledWith({ deviceId: "test-device", confirmed: true });
   });
   it("keeps the dialog open with safe failure feedback", async () => {
