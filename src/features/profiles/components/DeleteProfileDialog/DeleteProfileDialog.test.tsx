@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
 
@@ -59,7 +59,8 @@ describe("DeleteProfileDialog", () => {
     expect(mocks.remove).not.toHaveBeenCalled();
   });
   it("sends explicit confirmation and prevents repeated deletion", async () => {
-    mocks.remove.mockReturnValue(new Promise(() => undefined));
+    let resolveRequest!: (value: { ok: true; data: { profileId: string } }) => void;
+    mocks.remove.mockReturnValue(new Promise((resolve) => { resolveRequest = resolve; }));
     const { dialog } = open();
     fireEvent.click(within(dialog).getByRole("checkbox"));
     fireEvent.click(within(dialog).getByRole("button", { name: profilesCopy.remove }));
@@ -69,6 +70,7 @@ describe("DeleteProfileDialog", () => {
     expect(mocks.remove).toHaveBeenCalledWith({ profileId: "profile-rose", confirmed: true });
     fireEvent.click(button);
     expect(mocks.remove).toHaveBeenCalledTimes(1);
+    await act(async () => { resolveRequest({ ok: true, data: { profileId: "profile-rose" } }); });
   });
   it("shows and focuses safe errors without closing the dialog", async () => {
     mocks.remove.mockResolvedValue({ ok: false, error: { code: "INTERNAL", message: profilesCopy.errors.internal } });
@@ -78,6 +80,7 @@ describe("DeleteProfileDialog", () => {
     const error = await within(dialog).findByRole("alert");
     expect(error).toHaveTextContent(profilesCopy.errors.internal);
     await waitFor(() => expect(error).toHaveFocus());
+    expect(within(dialog).getByRole("checkbox")).toBeChecked();
     expect(dialog).toBeVisible();
   });
 });
