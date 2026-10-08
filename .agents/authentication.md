@@ -31,9 +31,11 @@ MVP constraints:
 ## 3. Clerk sign-in and sessions
 
 - Use current `@clerk/nextjs` v7 APIs. Read the package README and types in `node_modules/@clerk/nextjs` before implementing; installed docs win over memory.
-- `src/proxy.ts` exports `clerkMiddleware()` from `@clerk/nextjs/server`, with `createRouteMatcher` protecting `/family(.*)`. Do **not** create `middleware.ts`; Next.js 16 uses `proxy.ts`.
-- `proxy.ts` is a convenience redirect, not authorization. Every Server Action, Route Handler, and data read calls `requireAdult()` again ([§ 9](#9-server-side-permission-verification)).
-- Server code reads the Clerk session with `auth()` from `@clerk/nextjs/server`. Because `cacheComponents` is enabled, components that call it render inside `<Suspense>` ([architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project)). Verify the `ClerkProvider` placement against Clerk's current App Router and Cache Components guidance.
+- `src/proxy.ts` exports `clerkMiddleware()` from `@clerk/nextjs/server` with Clerk's documented matcher, so `auth()` works in server code. It contains **no route-based protection**: `createRouteMatcher()` is deprecated in Clerk 7, because path matching can diverge from how Next.js routes requests. Do **not** create `middleware.ts`; Next.js 16 uses `proxy.ts`.
+- **Resource-level protection:** every protected `page`, Server Action, and Route Handler verifies the session itself. Until database-backed families exist, adult-area pages call `requireAuthenticatedUser()` (`src/server/auth/require-authenticated-user.ts`), which redirects visitors to sign-in. From Step 3, they call `requireAdult()` ([§ 9](#9-server-side-permission-verification)). Layouts alone are never enough, because they do not re-render on every navigation.
+- `ClerkProvider` wraps the app inside `<body>` in the root layout, **without** the `dynamic` prop, so pages keep their static shell. Server code reads the session with `auth()` from `@clerk/nextjs/server`; with `cacheComponents` enabled, anything that reads it (including the server `<Show>` component) renders inside `<Suspense>` or below a `loading.tsx` ([architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project)).
+- `SignedIn`, `SignedOut`, and `Protect` were removed in Clerk Core 3. Use `<Show when="signed-in">` / `<Show when="signed-out">` for visibility only; it never replaces a server-side check.
+- Sign-in and sign-up pages use Clerk's prebuilt `SignIn` and `SignUp` components on optional catch-all routes (`/sign-in/[[...sign-in]]`, `/sign-up/[[...sign-up]]`). Redirects use Clerk's environment variables (`NEXT_PUBLIC_CLERK_SIGN_IN_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_URL`, `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL`); never build custom redirect handling.
 - Clerk manages adult session lifetime, sign-out, and "sign out of all devices". CareBasket never stores Clerk tokens.
 - Clerk UI components load only on adult and auth routes where possible, to keep requester bundles small ([performance.md § 3](performance.md#3-client-javascript-budget)).
 
@@ -154,7 +156,7 @@ Do not add claim-related columns or flows until this feature is approved.
 
 ## 12. Acceptance criteria
 
-- [ ] `src/proxy.ts` (not `middleware.ts`) protects `/family(.*)` with Clerk, and every adult entry point still calls `requireAdult()`.
+- [ ] `src/proxy.ts` (not `middleware.ts`) runs `clerkMiddleware()` without route matching, and every adult page, Server Action, and Route Handler verifies the session itself (`requireAuthenticatedUser()` now, `requireAdult()` from Step 3).
 - [ ] Every device entry point calls `requireDevice()` and scopes reads and writes to the device's own profile.
 - [ ] Pairing needs the device's pairing cookie **and** an authenticated adult's approval; codes are single-use, hashed, short-lived, and rate-limited.
 - [ ] Session tokens and codes are stored only as hashes and never logged.
