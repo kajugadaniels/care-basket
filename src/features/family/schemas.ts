@@ -32,10 +32,11 @@ export function hasUnsafeCharacters(value: string): boolean {
 
 const UNSAFE_CHARACTERS_MESSAGE = "Remove hidden or special characters.";
 
+// Each empty-field check aborts, so a blank field reports one friendly message, not several.
 const familyNameSchema = z
   .string()
   .trim()
-  .min(1, "Enter a name for your family.")
+  .min(1, { error: "Enter a name for your family.", abort: true })
   .min(FAMILY_NAME_MIN_LENGTH, `Use at least ${FAMILY_NAME_MIN_LENGTH} characters.`)
   .max(FAMILY_NAME_MAX_LENGTH, `Use ${FAMILY_NAME_MAX_LENGTH} characters or fewer.`)
   .refine((value) => !hasUnsafeCharacters(value), UNSAFE_CHARACTERS_MESSAGE);
@@ -43,7 +44,7 @@ const familyNameSchema = z
 const displayNameSchema = z
   .string()
   .trim()
-  .min(1, "Enter the name your family calls you.")
+  .min(1, { error: "Enter the name your family calls you.", abort: true })
   .max(DISPLAY_NAME_MAX_LENGTH, `Use ${DISPLAY_NAME_MAX_LENGTH} characters or fewer.`)
   .refine((value) => !hasUnsafeCharacters(value), UNSAFE_CHARACTERS_MESSAGE);
 
