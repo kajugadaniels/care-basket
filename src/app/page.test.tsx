@@ -1,8 +1,16 @@
 import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { resetClerkMock } from "@/test/mocks/clerk-nextjs";
 import HomePage from "./page";
 
+// The public header reads the Clerk session; these tests use the signed-out state.
+vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"));
+
 describe("HomePage", () => {
+  beforeEach(() => {
+    resetClerkMock();
+  });
+
   it("shows the hero headline as the only level-one heading", () => {
     render(<HomePage />);
 
