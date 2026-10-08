@@ -37,7 +37,7 @@
 | `scripts/catalog/*` logic | Unit, with recorded API fixtures | Keep script entry files thin; test the normalizer and verifier functions they call. Fixtures are small, anonymized excerpts with contributor fields removed. |
 
 - Mock at module boundaries (`vi.mock('@/server/auth/actor')`, a fake `ShoppingAssistantProvider`, a fake PayPal client). Never mock the code under test.
-- Clerk: `vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"))`, then switch state with `setSignedIn()` and `setClerkStatus()`, and call `resetClerkMock()` in `beforeEach`. Mock `@clerk/nextjs/server` per test for `auth()` and `currentUser()`.
+- Clerk: `vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"))`, then switch state with `setSignedIn()` and `setClerkLoaded()`, assert dialogs through `clerkSpies.openSignIn` / `openSignUp` and the `data-clerk-dialog` / `data-mode` attributes, and call `resetClerkMock()` in `beforeEach`. Mock `@clerk/nextjs/server` per test for `auth()` and `currentUser()`.
 - Modules that import `server-only` need `vi.mock("server-only", () => ({}))`, because Vitest does not use the `react-server` export condition.
 - Unit tests never touch the network or a real database. Real Neon, PayPal Sandbox, and Gemini are exercised only in the developer's manual runs.
 - Use factories (`makeActor`, `makeRequest`) in `src/test/factories/` instead of large inline fixtures. All data is fictional.
