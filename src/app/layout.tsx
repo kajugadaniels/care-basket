@@ -18,6 +18,9 @@ const atkinsonHyperlegibleNext = Atkinson_Hyperlegible_Next({
   subsets: ["latin"],
   display: "swap",
   preload: false,
+  // Next.js has no metric override data for this family. Be explicit so the
+  // font loader uses the existing CSS fallback stack without repeated warnings.
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
