@@ -37,7 +37,10 @@ describe("getServerEnv", () => {
     vi.stubEnv("DATABASE_URL", "");
     const getServerEnv = await loadGetServerEnv();
 
-    expect(errorMessageOf(getServerEnv)).toContain("DATABASE_URL");
+    const message = errorMessageOf(getServerEnv);
+    expect(message).toContain("DATABASE_URL");
+    expect(message).toContain(".env.local.example");
+    expect(message).toContain(".env.production.example");
   });
 
   it("rejects a value that is not a PostgreSQL URL without echoing the value", async () => {
@@ -61,6 +64,10 @@ describe("getDeviceEnv", () => {
   it("rejects missing or low-entropy-size key material without echoing its value", async () => {
     vi.stubEnv("DEVICE_AUTH_SECRET", "too-short-test-placeholder");
     const { getDeviceEnv } = await import("./server");
-    const message = errorMessageOf(getDeviceEnv); expect(message).toContain("DEVICE_AUTH_SECRET"); expect(message).not.toContain("too-short-test-placeholder");
+    const message = errorMessageOf(getDeviceEnv);
+    expect(message).toContain("DEVICE_AUTH_SECRET");
+    expect(message).toContain(".env.local.example");
+    expect(message).toContain(".env.production.example");
+    expect(message).not.toContain("too-short-test-placeholder");
   });
 });
