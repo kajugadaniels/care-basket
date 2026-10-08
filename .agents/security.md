@@ -16,6 +16,7 @@
 | Payment integrity | Tampered prices or amounts, forged success, dependent-triggered payment, duplicate capture |
 | Provider credentials (PayPal, Gemini, Clerk, Neon) | Exposure in client bundles, logs, repository, or AI prompts |
 | AI behaviour | Prompt injection, invented products or prices, data leakage |
+| Catalog integrity | Poisoned or malformed crowdsourced data, prompt injection through product names, unlicensed images, unsafe downloads |
 
 ## 2. Authentication and authorization
 
@@ -60,6 +61,8 @@
 - Trim and normalize text; reject control characters in names and labels.
 - Uploaded audio: check declared MIME type against an allow-list, enforce a byte limit **before** buffering the full body, and never trust the file name ([ai.md § 7](ai.md#7-voice-input)).
 - Render user and AI text as text. Never use `dangerouslySetInnerHTML` with user or AI content.
+- Budgets: integers in cents, $1–$500, USD only; AI-extracted budgets require the requester's confirmation ([ai.md § 10.3](ai.md#103-budget-aware-suggestions)).
+- **External catalog data is untrusted.** Open Prices and Open Food Facts responses are parsed with Zod, length-limited, stripped of control characters and markup, and curated by a person before seeding. Catalog text is treated as data in AI prompts, never as instructions ([ai.md § 9](ai.md#9-prompt-injection-and-output-safety)).
 
 ## 8. Rate limiting and brute-force protection
 
@@ -98,7 +101,7 @@ Rate limiting is enforced in the application with a Postgres-backed fixed-window
 
 Owned by [payments.md](payments.md). Non-negotiable summary:
 
-- Amounts are computed on the server from catalog prices in the database × validated quantities, in integer minor units.
+- Amounts are computed on the server from `DemoMerchantPrice` in the database × validated quantities, in integer minor units. Open Prices observations never feed a total.
 - The client sends only a request ID to start checkout, and only the PayPal order ID it was given to capture.
 - Capture results are verified (status, amount, currency, our reference) before anything is marked paid.
 - Device actors can never create, approve, or capture a payment.
@@ -137,6 +140,7 @@ Configure in `next.config.ts` `headers()` (an implementation task, not done yet)
 - `package-lock.json` is committed and changed only by the developer's npm commands.
 - The developer reviews `npm audit` output before submission; agents do not run it.
 - Never load third-party scripts except the PayPal SDK (through `@paypal/react-paypal-js`) and Clerk. No analytics or tracking scripts.
+- **Outbound catalog requests** come only from developer-run scripts and only to allow-listed hosts: `prices.openfoodfacts.org`, `world.openfoodfacts.org`, and `images.openfoodfacts.org`. Image downloads check the host allow-list, require an `image/jpeg`, `image/png`, or `image/webp` content type, cap the size at 2 MB, follow no redirects to other hosts, and write only to `public/products/<sku>.<ext>` ([catalog.md § 9](catalog.md#9-images)). No server code fetches URLs supplied by users or by catalog data at request time.
 
 ## 16. Retention and deletion
 
