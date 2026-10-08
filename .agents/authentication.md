@@ -48,13 +48,14 @@ MVP constraints:
 - Only adults with `OWNER` or `MANAGER` roles create, edit, or delete managed profiles.
 - Required fields: display name (a first name or nickname, up to 40 characters), `kind` (`ASSISTED_ADULT` or `CHILD`), and an avatar chosen from presets (no photo uploads in the MVP).
 - **Consent:** creation requires the adult to confirm, in plain words, "I am this person's parent or guardian, or they have asked me to set this up for them." Store `consentConfirmedAt`, `consentVersion`, and `createdByUserId`. No profile exists without this confirmation.
+- **AI assistance** (voice and smart suggestions) is a separate, off-by-default setting for `ASSISTED_ADULT` profiles, enabled only with the AI consent described in [ai.md § 8.1](ai.md#81-assisted-adults). It is unavailable for `CHILD` profiles.
 - The family owns the profile; the profile does not own its own account in the MVP ([§ 11](#11-future-independent-adults-claiming-their-profile)).
 - Deleting a profile revokes all its devices immediately and deletes its data as described in [privacy.md § 7](privacy.md#7-deletion-and-retention). The adult sees a confirmation dialog that explains this.
 
 ## 6. Child supervision
 
 - `CHILD` profiles can only create requests. Every request is reviewed by a manager; there is no auto-approval for anyone in the MVP.
-- Child devices see no prices, no payment status beyond "paid" or "not paid yet", and no family information beyond the manager's display name.
+- Child devices see no prices or budgets, no payment status beyond "paid" or "not paid yet", and no family information beyond the manager's display name.
 - AI handling for children follows [ai.md § 8](ai.md#8-profiles-children-and-tone), and data handling follows [privacy.md § 6](privacy.md#6-children).
 
 ## 7. Secure device pairing
@@ -130,7 +131,9 @@ All authorization lives in `src/server/auth/`:
 | Cancel own request before review | — | — | ✓ | ✓ |
 | Edit a basket during review, decline a request | ✓ | ✓ | — | — |
 | Start checkout, capture payment | ✓ | ✓ | — | — |
-| See prices and totals | ✓ | ✓ | — | — |
+| See item prices and basket totals | ✓ | ✓ | — | — |
+| See the estimated total against a budget they set for that request | — | — | ✓ | — |
+| Turn AI assistance on or off for a profile (with consent) | ✓ | ✓ | — | — |
 
 Any capability not in this table is denied by default.
 
