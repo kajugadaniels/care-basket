@@ -3,14 +3,14 @@
 **Purpose:** Define what a deployable, demo-ready CareBasket needs: environments, variables, migrations, third-party configuration, HTTPS, webhooks, error reporting, and demo availability.
 **Applies to:** Configuration, release preparation, and the public demo.
 **Related:** [security.md § 10](security.md#10-secret-management), [database.md § 7](database.md#7-migrations), [payments.md § 6](payments.md#6-webhooks), [hackathon.md](hackathon.md), [submission.md](submission.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
 ## 1. Agent rules
 
 - Agents **never deploy**, run hosting CLIs, register webhooks, change provider dashboards, or run migrations ([workflow.md § 1.1](workflow.md#11-agents-must-not-execute)).
-- When explicitly asked, agents may prepare configuration files (`next.config.ts` headers, `.env.example`) and deployment documentation, and give the developer exact steps.
+- When explicitly asked, agents may prepare configuration files (`next.config.ts` headers, `.env.local.example`, `.env.production.example`) and deployment documentation, and give the developer exact steps.
 
 ## 2. Environments
 
@@ -26,35 +26,39 @@
 
 ## 3. Environment variables
 
-Validated with Zod by `src/lib/env/server.ts` on first use (it covers `DATABASE_URL` today; a `client.ts` counterpart arrives when the app reads public variables). Missing or malformed values fail fast with a clear message naming the variable (never its value). The Prisma CLI reads `DIRECT_URL` through `prisma7.config.ts`, which loads `.env.local` and then `.env`.
+Validated with Zod by `src/lib/env/server.ts` on first use (it covers `DATABASE_URL` and managed-device variables today; a `client.ts` counterpart arrives when the app reads public variables). Missing or malformed values fail fast with a clear message naming the variable (never its value). Next.js loads `.env.local` during local development and `.env.production` in a production environment, following its documented precedence. The Prisma CLI reads `.env.local` by default or `.env.production` when `NODE_ENV=production`; shell variables win in both modes.
 
-| Variable | Exposure | Purpose | In current `.env` |
+| Variable | Exposure | Purpose | Template status |
 | --- | --- | --- | --- |
-| `NEXT_PUBLIC_APP_URL` | Public | Canonical origin for Origin checks and absolute URLs | Yes |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Public | Clerk frontend | Yes |
-| `CLERK_SECRET_KEY` | Server | Clerk backend | Yes |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | Public | `/sign-in`, a redirect route that opens the sign-in dialog (not a page) | **Add** |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | Public | `/sign-up`, a redirect route that opens the sign-up dialog (not a page) | **Add** |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL` | Public | `/family` (used when no valid `redirect_url` is present) | **Add** |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL` | Public | `/family` | **Add** |
-| `DATABASE_URL` | Server | Neon **pooled** connection for runtime queries | Yes |
-| `DIRECT_URL` | Server / CLI | Neon **direct** connection for migrations ([database.md § 2](database.md#2-prisma-7-configuration)) | Yes |
-| `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | Public | PayPal JS SDK (same Sandbox app as below) | Yes |
-| `PAYPAL_CLIENT_ID` | Server | PayPal REST OAuth | Yes |
-| `PAYPAL_CLIENT_SECRET` | Server | PayPal REST OAuth | Yes |
-| `PAYPAL_WEBHOOK_ID` | Server | Webhook signature verification | Yes |
-| `PAYPAL_ENVIRONMENT` | Server | Must be `sandbox` | Yes |
-| `GEMINI_API_KEY` | Server | Gemini API | Yes |
-| `GEMINI_MODEL` | Server | Gemini model ID ([ai.md § 4](ai.md#4-provider-abstraction)) | **No — to add** |
-| `DEVICE_AUTH_SECRET` | Server | HMAC key for pairing codes and IP hashing; at least 32 random bytes | **No — to add** |
-| `DEMO_FULFILLMENT_CONTROLS` | Server | `true` shows simulated delivery controls ([payments.md § 10](payments.md#10-demonstration-merchant-and-fulfillment)) | **No — to add** |
-| `CATALOG_USER_AGENT` | Scripts only | `CareBasket/<version> (<contact email>)` for Open Prices and Open Food Facts requests ([catalog.md § 8](catalog.md#8-curation-and-import-pipeline)); not needed by the deployed app | **No — to add when the importer is built** |
-| `CLERK_WEBHOOK_SIGNING_SECRET` | Server | Only if the Clerk deletion webhook is approved | Not needed yet |
+| `NEXT_PUBLIC_APP_URL` | Public | Canonical origin for Origin checks and absolute URLs | Both; production domain required |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Public | Clerk frontend | Both; environment-specific value required |
+| `CLERK_SECRET_KEY` | Server | Clerk backend | Both; environment-specific secret required |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | Public | `/sign-in`, a redirect route that opens the sign-in dialog (not a page) | Both; fixed default |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | Public | `/sign-up`, a redirect route that opens the sign-up dialog (not a page) | Both; fixed default |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL` | Public | `/family` (used when no valid `redirect_url` is present) | Both; fixed default |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL` | Public | `/family` | Both; fixed default |
+| `DATABASE_URL` | Server | Neon **pooled** connection for runtime queries | Both; separate database required |
+| `DIRECT_URL` | Server / CLI | Neon **direct** connection for migrations ([database.md § 2](database.md#2-prisma-7-configuration)) | Both; separate database required |
+| `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | Public | PayPal JS SDK (same Sandbox app as below) | Both; Sandbox value required when enabled |
+| `PAYPAL_CLIENT_ID` | Server | PayPal REST OAuth | Both; Sandbox value required when enabled |
+| `PAYPAL_CLIENT_SECRET` | Server | PayPal REST OAuth | Both; Sandbox secret required when enabled |
+| `PAYPAL_WEBHOOK_ID` | Server | Webhook signature verification | Both; environment-specific value required when enabled |
+| `PAYPAL_ENVIRONMENT` | Server | Must be `sandbox` | Both; fixed to `sandbox` |
+| `GEMINI_API_KEY` | Server | Gemini API | Both; environment-specific secret required when enabled |
+| `GEMINI_MODEL` | Server | Gemini model ID ([ai.md § 4](ai.md#4-provider-abstraction)) | Both; approved model required when enabled |
+| `DEVICE_AUTH_SECRET` | Server | HMAC key for pairing codes and IP hashing; at least 32 random bytes | Both; separate secret required |
+| `DEVICE_IP_SOURCE` | Server | Trusted source for pairing-start IP rate limits | Both; local is `unconfigured`, production fails closed until reviewed |
+| `DEMO_FULFILLMENT_CONTROLS` | Server | `true` shows simulated delivery controls ([payments.md § 10](payments.md#10-demonstration-merchant-and-fulfillment)) | Both; fixed to `true` |
+| `CATALOG_USER_AGENT` | Scripts only | `CareBasket/<version> (<contact email>)` for Open Prices and Open Food Facts requests ([catalog.md § 8](catalog.md#8-curation-and-import-pipeline)); not needed by the deployed app | Both; required only when importer exists |
+| `CLERK_WEBHOOK_SIGNING_SECRET` | Server | Only if the Clerk deletion webhook is approved | Both; optional until approved |
 
 Rules:
 
 - Only the `NEXT_PUBLIC_*` values above may be public: the Clerk publishable key and route paths, the PayPal client ID, and the app URL. Any other public variable needs a security review.
-- `.env.example` lists every variable with a placeholder and a one-line comment, and `.gitignore` allows it (`!.env.example`).
+- `.env.local.example` and `.env.production.example` list the same variables in the same order, with safe environment-specific defaults and placeholders. `.gitignore` allows only those two templates.
+- Copy the local template to `.env.local`. Use `.env.production` only in a private production environment; hosted deployments SHOULD use their encrypted environment settings instead of copying a secret file.
+- Next.js gives `.env.local` precedence over `.env.production`. Do not leave a local secret file in a production build/deployment context; hosted environment variables or a clean production checkout take precedence safely.
+- For production Prisma operations backed by a private `.env.production`, explicitly use `NODE_ENV=production npx prisma migrate deploy --config prisma7.config.ts`. Never use `migrate dev`, `db push`, or reset against production.
 - Clerk's deprecated `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` and `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` are not used. If the Clerk URL variables are missing, Clerk falls back to its hosted pages.
 - `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` is needed only when self-hosting several instances behind a load balancer.
 
@@ -130,7 +134,7 @@ The hosting platform is **not decided yet**. Vercel is the natural fit for Next.
 
 ## 11. Acceptance criteria
 
-- [ ] `.env.example` matches §3, and env validation covers every variable.
+- [ ] `.env.local.example` and `.env.production.example` match §3 and each other, and env validation covers every variable used by the current application.
 - [ ] The demo runs on HTTPS with Sandbox PayPal, a verified webhook, and its own database.
 - [ ] The release checklist in §9 has been completed by the developer.
 - [ ] The demo stays available through the judging period.
