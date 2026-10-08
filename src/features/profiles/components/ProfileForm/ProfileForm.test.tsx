@@ -36,8 +36,8 @@ describe("ProfileForm", () => {
     } });
     render(<ProfileForm />);
     fireEvent.click(screen.getByRole("button", { name: profilesCopy.add }));
-    const group = await screen.findByRole("group", { name: profilesCopy.kindLabel });
-    expect(group).toHaveAccessibleDescription(profilesCopy.errors.kind);
+    const group = screen.getByRole("group", { name: profilesCopy.kindLabel });
+    await waitFor(() => expect(group).toHaveAccessibleDescription(profilesCopy.errors.kind));
     expect(screen.getByRole("radio", { name: /^Child/ })).not.toHaveAttribute("aria-invalid");
   });
   it("preserves input and choices, shows errors, and focuses the invalid field", async () => {
