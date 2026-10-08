@@ -157,7 +157,7 @@ Build these once in `src/components/ui/` and reuse them.
 | **Card** | `--color-surface`, `--radius-lg`, `1px` `--color-border`; `--shadow-sm` only on soft backgrounds. A whole-card target is a single link or button, never nested interactive elements. |
 | **Product card** | Large square image on `--color-surface-soft` (at least 50% of card height), name and size in `--font-readable`, quantity stepper with − and + buttons (48px), badges for "Suggested" and "Substitute". Missing photo: large category icon tile. |
 | **Field** | Visible label above, optional hint, error below with an icon; `1px` `--color-border-strong`, `--radius-md`, height at least `--control-height`. |
-| **Dialog** | Native `<dialog>` with `showModal()`, a title, one primary action, a clearly labelled cancel, `--shadow-md`. Never for content that could be a page. |
+| **Dialog** | Native `<dialog>` with `showModal()`, a title, one primary action, a clearly labelled cancel, `--shadow-md`. Never for content that could be a page. Exception: sign-in and sign-up use Clerk's own dialogs, themed through `src/lib/clerk/appearance.ts` (developer decision, 2026-10-08). |
 | **Status badge** | Icon + text + tinted background (`-bg` tokens). "Paid" and "Delivered" use different icons, words, and positions ([payments.md § 8](payments.md#8-user-facing-states)). "Demo price" uses the warning tint. |
 | **Confirmation screen** | One large status icon, one headline, the key fact (for example the amount), secondary details below, one primary next action. Used for payment results and sent requests. |
 | **Navigation (manager)** | Bottom bar with up to four items (icon + label) on small screens; left side navigation from `lg`. No hamburger menus. |
