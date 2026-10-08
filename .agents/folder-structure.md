@@ -18,10 +18,13 @@ This is the target layout. **Create directories only when the first real file ne
 ├── prisma/
 │   ├── schema.prisma
 │   ├── migrations/                   # created by the developer's migrate commands
-│   └── seed.ts                       # idempotent catalog seed (developer runs it)
+│   ├── catalog/catalog.us.json       # curated U.S. catalog, ODbL (catalog.md § 8, § 10)
+│   └── seed.ts                       # idempotent, offline catalog seed (developer runs it)
 ├── prisma7.config.ts                 # Prisma CLI config (see database.md § 2)
+├── scripts/
+│   └── catalog/                      # developer-run: discover.ts, refresh-observations.ts
 ├── public/
-│   └── products/                     # demo catalog images (optimized, small)
+│   └── products/                     # curated product images + ATTRIBUTION.md (CC BY-SA 3.0)
 └── src/
     ├── proxy.ts                      # Clerk route protection (Next 16 "proxy")
     ├── instrumentation.ts            # optional: onRequestError logging
@@ -35,6 +38,7 @@ This is the target layout. **Create directories only when the first real file ne
     │   ├── (device)/shop/…           # requester area (device session)
     │   ├── connect/page.tsx          # device pairing start (public)
     │   ├── privacy/page.tsx          # plain-language privacy page (public)
+    │   ├── data-sources/page.tsx     # data attribution and licenses (public)
     │   └── api/
     │       ├── webhooks/paypal/route.ts
     │       ├── assistant/voice/route.ts
@@ -43,9 +47,9 @@ This is the target layout. **Create directories only when the first real file ne
     │   ├── family/
     │   ├── profiles/
     │   ├── devices/                  # pairing + authorized devices
-    │   ├── catalog/
+    │   ├── catalog/                  # config.ts (market defaults), catalog reads, normalizer
     │   ├── requests/                 # shopping requests + baskets
-    │   ├── assistant/                # AI interpretation and voice UI
+    │   ├── assistant/                # AI workflow, units, budget fitting, keyword matcher, voice UI
     │   └── checkout/                 # PayPal checkout, payments, webhooks
     ├── components/
     │   ├── ui/                       # Button, Card, Dialog, Field, Badge, …
@@ -60,7 +64,9 @@ This is the target layout. **Create directories only when the first real file ne
     ├── lib/
     │   ├── env/{server.ts,client.ts} # Zod-validated environment
     │   ├── paypal/                   # PayPal REST client, webhook verification
-    │   ├── ai/                       # provider interface, Gemini adapter, schemas
+    │   ├── ai/                       # provider interface, Gemini adapter, prompts, schemas
+    │   ├── open-prices/              # Open Prices API client and source types
+    │   ├── open-food-facts/          # secondary metadata adapter
     │   ├── money.ts                  # minor-unit helpers (pure)
     │   └── format.ts                 # Intl formatting helpers (pure)
     ├── types/                        # only genuinely shared types
@@ -104,6 +110,8 @@ src/features/requests/
 | Third-party integration or pure utility | `src/lib/` |
 | Type shared across three or more modules in different layers | `src/types/` (otherwise keep it local) |
 | Route-only composition | `src/app/` |
+| Developer-run maintenance (catalog discovery, refresh) | `scripts/` (never imported by app code) |
+| Curated catalog data (ODbL) | `prisma/catalog/` |
 | Generated code | `src/generated/` (never edited by hand) |
 
 ## 4. Naming conventions
