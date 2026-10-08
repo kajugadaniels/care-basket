@@ -1,20 +1,24 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { deviceIds, deviceTestNow } from "@/test/factories/devices";
-const fake = vi.hoisted(() => ({ session: vi.fn(), update: vi.fn() }));
+const fake = vi.hoisted(() => ({ io: vi.fn(), session: vi.fn(), update: vi.fn() }));
 vi.mock("server-only", () => ({}));
+vi.mock("next/cache", () => ({ io: fake.io }));
 vi.mock("@/server/auth/device-session", () => ({ resolveDeviceSession: fake.session }));
 vi.mock("@/server/db/client", () => ({ getDb: () => ({ authorizedDevice: { updateMany: fake.update } }) }));
 import { requireDevice, assertDevicePermission } from "./require-device";
 describe("restricted device actor", () => {
   beforeEach(() => {
     vi.resetAllMocks(); vi.useFakeTimers(); vi.setSystemTime(deviceTestNow);
+    fake.io.mockResolvedValue(undefined);
     fake.session.mockResolvedValue({ id: deviceIds.device, familyId: deviceIds.family, profileId: deviceIds.profile,
       lastSeenAt: deviceTestNow, profile: { kind: "CHILD" } });
   });
   afterEach(() => vi.useRealTimers());
   it("resolves only device permissions, never an adult role", async () => {
     const actor = await requireDevice(); expect(actor).toMatchObject({ type: "device", profileKind: "CHILD" });
+    expect(fake.io).toHaveBeenCalledOnce();
+    expect(fake.io.mock.invocationCallOrder[0]).toBeLessThan(fake.session.mock.invocationCallOrder[0]);
     expect(actor).not.toHaveProperty("role"); expect(actor).not.toHaveProperty("userId");
     expect(() => assertDevicePermission(actor, "view-own-home")).not.toThrow();
     expect(() => assertDevicePermission(actor, "create-own-request")).toThrow("FORBIDDEN");
