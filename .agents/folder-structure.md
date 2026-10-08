@@ -55,8 +55,9 @@ This is the target layout. **Create directories only when the first real file ne
     │   ├── ui/                       # Button, Card, Dialog, Field, Badge, …
     │   └── layout/                   # PageHeader, Container, …
     ├── server/
-    │   ├── auth/                     # actor resolution, permissions, device session
-    │   ├── db/client.ts              # single PrismaClient
+    │   ├── auth/                     # session checks, ensureUser, requireAdult, membership lookup
+    │   ├── db/client.ts, db/errors.ts  # lazy single PrismaClient; unique-violation check
+    │   ├── users/user-repository.ts  # find-or-create User by Clerk ID
     │   ├── audit/                    # audit log writer
     │   ├── rate-limit/               # Postgres-backed limiter
     │   ├── errors.ts                 # AppError
@@ -70,7 +71,7 @@ This is the target layout. **Create directories only when the first real file ne
     │   ├── clerk/appearance.ts       # Clerk UI theming with design tokens
     │   ├── money.ts                  # minor-unit helpers (pure)
     │   └── format.ts                 # Intl formatting helpers (pure)
-    ├── types/                        # only genuinely shared types
+    ├── types/                        # only genuinely shared types (e.g. action-result.ts)
     ├── test/                         # setup file, module mocks (e.g. mocks/clerk-nextjs.tsx), factories
     └── generated/prisma/             # Prisma Client output (git-ignored, never edited)
 ```
