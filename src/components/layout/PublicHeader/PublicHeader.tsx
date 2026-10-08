@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { Show, UserButton } from "@clerk/nextjs";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { Brand } from "@/components/layout/Brand/Brand";
 import { Container } from "@/components/layout/Container/Container";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import { Button } from "@/components/ui/Button/Button";
 import { SkipLink } from "@/components/ui/SkipLink/SkipLink";
 import { userButtonAppearance } from "@/lib/clerk/appearance";
+import { signInDialogOptions, signUpDialogOptions } from "@/lib/clerk/auth-dialogs";
 import styles from "./PublicHeader.module.css";
 
 // Only the landing page uses this header so far, so section links are in-page anchors.
@@ -66,15 +68,20 @@ export function PublicHeader() {
   );
 }
 
+// Real buttons: they open Clerk's sign-in and sign-up dialogs on the current page.
 function SignedOutActions() {
   return (
     <>
-      <ActionLink href="/sign-in" variant="secondary" className={styles.action}>
-        Sign In
-      </ActionLink>
-      <ActionLink href="/sign-up" className={styles.action}>
-        Get Started
-      </ActionLink>
+      <SignInButton mode="modal" {...signInDialogOptions}>
+        <Button variant="secondary" aria-haspopup="dialog" className={styles.action}>
+          Sign In
+        </Button>
+      </SignInButton>
+      <SignUpButton mode="modal" {...signUpDialogOptions}>
+        <Button aria-haspopup="dialog" className={styles.action}>
+          Get Started
+        </Button>
+      </SignUpButton>
     </>
   );
 }
