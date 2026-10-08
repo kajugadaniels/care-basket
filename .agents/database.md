@@ -19,8 +19,9 @@ Current state of the repository:
 
 - `prisma/schema.prisma` uses the `prisma-client` generator with output `../src/generated/prisma` (git-ignored). Import the client from `@/generated/prisma/client`.
 - The datasource URL is not in the schema (Prisma 7). The CLI reads it from the config file.
-- The config file is named **`prisma7.config.ts`**. Prisma discovers `prisma.config.ts` by default, so every CLI command must pass `--config prisma7.config.ts` until the developer renames the file. Renaming it to `prisma.config.ts` is recommended.
+- The config file is named **`prisma7.config.ts`** (kept by developer decision). Prisma discovers `prisma.config.ts` by default, so every CLI command passes `--config prisma7.config.ts`.
 - In the installed Prisma 7.10, the config `datasource` accepts `url` and `shadowDatabaseUrl` only; there is no `directUrl`.
+- **Env loading:** Prisma 7 does not load env files itself. `prisma7.config.ts` calls dotenv with `path: [".env.local", ".env"]` (quiet): `.env.local` wins over `.env`, and shell variables win over both, matching Next.js locally.
 
 Required connection setup:
 
@@ -29,12 +30,14 @@ Required connection setup:
 | Runtime queries (`PrismaPg` adapter in `src/server/db/client.ts`) | `DATABASE_URL` | **Pooled** connection string (host contains `-pooler`) |
 | Prisma CLI: migrations, introspection (`datasource.url` in the config file) | `DIRECT_URL` | **Direct** (unpooled) connection string |
 
-The config currently points `datasource.url` at `DATABASE_URL`. It should use `DIRECT_URL` so migrations bypass the pooler. That is a developer decision to apply.
+`prisma7.config.ts` points `datasource.url` at `DIRECT_URL`, so migrations bypass the pooler.
 
 Runtime client rules:
 
-- Exactly one `PrismaClient`, created in `src/server/db/client.ts` with `new PrismaPg({ connectionString })` and cached on `globalThis` in development to survive hot reloads.
+- Exactly one `PrismaClient`, created lazily by `getDb()` in `src/server/db/client.ts` with `new PrismaPg({ connectionString })`, using `DATABASE_URL` validated by `src/lib/env/server.ts`, and kept on `globalThis` so hot reloads reuse it. Nothing connects at import time.
 - `src/server/db/client.ts` starts with `import 'server-only'`.
+- Unique-constraint violations are detected with `isUniqueConstraintViolation()` (`src/server/db/errors.ts`, Prisma code `P2002`).
+- `prisma migrate dev` in Prisma 7 does not regenerate the client; run `prisma generate` after every schema change. Tests and type checks need the generated client.
 - `@prisma/adapter-pg` is the approved adapter. Switching to another adapter (for example Neon's serverless driver) needs approval.
 - Seed command is configured in the Prisma config under `migrations.seed` (for example `tsx prisma/seed.ts`; `tsx` is installed).
 
@@ -73,8 +76,10 @@ Runtime client rules:
 
 These are **proposed concepts, not a mandate**. Add a model only when a task needs it, and keep fields minimal. The sketch below is illustrative, not final schema.
 
+**Implemented (Step 3, see `prisma/schema.prisma`):** `User`, `Family`, `FamilyMembership`, and the `FamilyRole` enum. Membership cascades from both `Family` and `User`; `userId` is unique (one family per adult) and `(familyId, userId)` is unique as well. Family creation and its `OWNER` membership share one interactive transaction (`features/family/server/repository.ts`). Everything else below is still planned.
+
 ```prisma
-// Identity and family
+// Identity and family (implemented)
 User              { id; clerkUserId @unique; createdAt; updatedAt }
 Family            { id; name VarChar(60); createdAt; updatedAt }
 FamilyMembership  { id; familyId; userId @unique /* MVP: one family per adult */;
@@ -170,7 +175,7 @@ Design notes:
 
 ## 6. Access boundaries, queries, and performance
 
-- Prisma is used only in `src/server/db/client.ts` and in `features/*/server/repository.ts` files ([architecture.md § 5](architecture.md#5-layers-and-dependency-direction)).
+- Prisma is used only in `src/server/db/client.ts`, in `features/*/server/repository.ts` files, and in cross-cutting `src/server/` data modules such as `src/server/users/user-repository.ts` and `src/server/auth/family-membership.ts` ([architecture.md § 5](architecture.md#5-layers-and-dependency-direction)).
 - Every repository function for family-owned data takes `familyId` (and `profileId` for device scope) as a required argument and includes it in `where`.
 - Always `select` the fields you need. Never return whole records to services that pass them to the UI.
 - Avoid N+1 queries: fetch relations with `include`/`select` or batch with `in`.
