@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible_Next, DM_Sans } from "next/font/google";
+import { Atkinson_Hyperlegible, DM_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { clerkAppearance } from "@/lib/clerk/appearance";
 import "./globals.css";
@@ -13,14 +13,12 @@ const dmSans = DM_Sans({
 });
 
 // Reading typeface for requester-facing text; downloaded only where it is used.
-const atkinsonHyperlegibleNext = Atkinson_Hyperlegible_Next({
+const atkinsonHyperlegible = Atkinson_Hyperlegible({
   variable: "--font-atkinson",
+  weight: ["400", "700"],
   subsets: ["latin"],
   display: "swap",
   preload: false,
-  // Next.js has no metric override data for this family. Be explicit so the
-  // font loader uses the existing CSS fallback stack without repeated warnings.
-  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -42,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-US"
-      className={`${dmSans.variable} ${atkinsonHyperlegibleNext.variable}`}
+      className={`${dmSans.variable} ${atkinsonHyperlegible.variable}`}
     >
       <body>
         {/* Not `dynamic`: the provider reads no request data, so pages keep their static shell.
