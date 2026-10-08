@@ -23,7 +23,8 @@ The rules in this directory are permanent project policy. They are not suggestio
 | [database.md](database.md) | Neon + Prisma conventions, planned models, migrations | Schema, queries, seed data |
 | [api.md](api.md) | Server Actions, Route Handlers, validation, errors, status codes | Any server entry point |
 | [payments.md](payments.md) | PayPal Sandbox workflow, money handling, webhooks | Anything touching baskets, prices, checkout |
-| [ai.md](ai.md) | Gemini provider, voice, structured output, safety | Anything touching AI or voice |
+| [ai.md](ai.md) | AI capabilities, request workflow, Gemini provider, voice, clarification, budgets, safety | Anything touching AI, voice, suggestions, or budgets |
+| [catalog.md](catalog.md) | Open Prices integration, U.S. verification, normalization, demo prices, images, data licensing | Anything touching products, prices, catalog import or seed data, product images, or data attribution |
 | [privacy.md](privacy.md) | Consent, minimization, retention, children, demos | Personal data, recordings, deletion, demos |
 | [testing.md](testing.md) | Test strategy, what to test, manual commands | Writing or changing tests; end of every coding task |
 | [git.md](git.md) | Commit hygiene, what may be committed | End of every task |
@@ -50,9 +51,10 @@ The `.agents/skills/` directory holds third-party agent skills (Prisma). They ar
 | Frontend / UI | design, accessibility, performance, architecture (§ Server vs Client), folder-structure |
 | Backend / server logic | architecture, api, security, folder-structure, testing |
 | Authentication / devices / profiles | authentication, security, privacy, database |
-| Database / schema | database, security, privacy |
-| AI / voice | ai, privacy, security, api, testing |
-| Payments / checkout | payments, security, api, database, testing |
+| Database / schema | database, catalog (for catalog models), security, privacy |
+| AI / voice | ai, catalog, privacy, security, api, testing |
+| Catalog / product data / import scripts | catalog, database, security, privacy, testing |
+| Payments / checkout | payments, catalog (§ 6 prices), security, api, database, testing |
 | Deployment / configuration | deployment, security, hackathon |
 | Demo / submission | hackathon, submission, privacy |
 
@@ -94,6 +96,9 @@ When instructions conflict, apply the first matching level:
 | **Shopping request** | What the requester asked for, plus its workflow status. |
 | **Basket** | The priced, server-validated list of catalog items for a request. |
 | **Payment confirmed** | PayPal capture verified by the server. **Not** the same as delivered. |
+| **Demo price** | The approved CareBasket Demo Market price used for Sandbox checkout (`DemoMerchantPrice`). The only price used for money. |
+| **Reference price observation** | A historical, crowdsourced U.S. price report from Open Prices. Never a checkout price. |
+| **Suggestion** | An item AI proposed that the requester did not explicitly ask for; always labelled and confirmed by the requester. |
 | **Fulfillment** | Simulated delivery status for the hackathon demo merchant. |
 
 ## 8. Changelog
@@ -101,3 +106,5 @@ When instructions conflict, apply the first matching level:
 | Date | Change |
 | --- | --- |
 | 2026-10-08 | Initial rulebook created. |
+| 2026-10-08 | Added `catalog.md` (Open Prices, U.S. verification, demo prices, data licensing). Expanded AI capabilities (context-aware suggestions, per-request budgets, clarification workflow). Replaced the visual design with PayPal-inspired tokens, DM Sans, and Atkinson Hyperlegible Next for requester reading text. Reconciled project, database, architecture, folder-structure, payments, privacy, security, testing, authentication, performance, submission, deployment, and git. |
+| 2026-10-08 | Git: every changed file gets its own commit and message, in dependency order (`git.md` § 2). |
