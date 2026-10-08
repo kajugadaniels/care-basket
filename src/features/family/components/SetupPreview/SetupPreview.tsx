@@ -1,7 +1,6 @@
 import type { IconSvgElement } from "@hugeicons/react";
 import {
   Clock01Icon,
-  SmartPhone01Icon,
   TaskDone01Icon,
   Wallet01Icon,
 } from "@hugeicons/core-free-icons";
@@ -10,7 +9,6 @@ import { setupPreviewCopy, type SetupStepId } from "@/features/family/copy";
 import styles from "./SetupPreview.module.css";
 
 const STEP_ICONS: Record<SetupStepId, IconSvgElement> = {
-  devices: SmartPhone01Icon,
   requests: TaskDone01Icon,
   payments: Wallet01Icon,
 };
