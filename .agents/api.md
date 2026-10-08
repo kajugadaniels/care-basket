@@ -3,7 +3,7 @@
 **Purpose:** Make every server entry point consistent, typed, validated, authorized, and safe to call twice.
 **Applies to:** Every Server Action and Route Handler.
 **Related:** [architecture.md § 4](architecture.md#4-server-actions-and-route-handlers), [security.md](security.md), [payments.md](payments.md), [ai.md](ai.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -36,13 +36,13 @@ Route Handlers exist only for the cases in [architecture.md § 4](architecture.m
 | --- | --- | --- | --- |
 | `POST /api/webhooks/paypal` | PayPal | Signature verification | Payment events ([payments.md § 6](payments.md#6-webhooks)) |
 | `POST /api/assistant/voice` | Requester device | Device session + Origin check | Upload a short audio clip; returns transcript and proposal ([ai.md § 7](ai.md#7-voice-input)) |
-| `GET /api/pairing/status` | Pairing device | Pairing cookie | Returns pairing status only; no state change |
+| `GET /api/pairing/status` | Pairing device | Validated pairing cookie | Returns status only; no business-state change; atomic security rate limiting per security.md §6 |
 | `POST /api/webhooks/clerk` *(only if approved)* | Clerk | `verifyWebhook` | Account deletion sync |
 
 Conventions:
 
 - Paths are lowercase kebab-case nouns under `/api/`. Use plural nouns for collections when collections are added.
-- Use the correct method: `GET` reads (never mutates), `POST` creates or triggers, `PATCH` partially updates, `DELETE` removes.
+- Use the correct method: `GET` reads (never mutates business state; incidental security counter writes are permitted per security.md §6), `POST` creates or triggers, `PATCH` partially updates, `DELETE` removes.
 - Export only the methods the route supports; others get 405 automatically.
 - Parse JSON with `await request.json()` inside a try block, then Zod. For webhooks, read `await request.text()` first, because signature verification needs the exact body.
 - Mutating handlers that use cookie authentication verify the `Origin` header ([security.md § 6](security.md#6-csrf-and-origin-protection)).
@@ -113,7 +113,7 @@ Buttons that trigger these show a pending state and ignore repeat presses, but t
 
 - Business rules, Prisma calls, or provider calls inside an action or handler body
 - Accepting ownership IDs, prices, amounts, or roles from the client
-- `GET` handlers that change state
+- `GET` handlers that change business state (security counter updates are the narrowly defined exception in security.md §6)
 - Returning raw errors or Prisma objects
 - Internal HTTP calls from Server Components to our own Route Handlers
 - Ad-hoc response shapes that differ from §4
