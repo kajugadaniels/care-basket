@@ -2,7 +2,7 @@
 
 **Purpose:** Define how CareBasket models, accesses, migrates, and retains data in Neon PostgreSQL using Prisma ORM 7.
 **Applies to:** Schema changes, queries, repositories, seed data, migrations.
-**Related:** [security.md § 3](security.md#3-family-isolation-and-object-ownership), [privacy.md § 7](privacy.md#7-deletion-and-retention), [payments.md](payments.md), [authentication.md](authentication.md)
+**Related:** [catalog.md](catalog.md), [security.md § 3](security.md#3-family-isolation-and-object-ownership), [privacy.md § 7](privacy.md#7-deletion-and-retention), [payments.md](payments.md), [authentication.md](authentication.md)
 **Last reviewed:** 2026-10-08
 
 ---
@@ -57,7 +57,7 @@ Runtime client rules:
 
 ## 4. Integrity, constraints, and transactions
 
-- **Referential integrity:** every relation declares `onDelete`. The family is the deletion root: family-owned rows use `Cascade` from `Family`. `BasketItem → Product` uses `Restrict`; products are archived (`archivedAt`), never deleted.
+- **Referential integrity:** every relation declares `onDelete`. The family is the deletion root: family-owned rows use `Cascade` from `Family`. `BasketItem → CatalogProduct` uses `Restrict`; catalog products are archived (`archivedAt`), never deleted. `DemoMerchantPrice` and `PriceObservation` cascade from `CatalogProduct`.
 - **Uniqueness:** enforce business uniqueness in the database, not only in code (see the `@unique` markers in §5).
 - **Check constraints** (quantity > 0, amounts ≥ 0) SHOULD be added as raw SQL inside a migration created with `--create-only`, since Prisma does not model them. Zod validation remains the first line of defence.
 - **Transactions:** use interactive `prisma.$transaction(async (tx) => …)` for multi-row invariants:
@@ -81,8 +81,10 @@ FamilyMembership  { id; familyId; userId @unique /* MVP: one family per adult */
                     role FamilyRole /* OWNER | MANAGER */; displayName VarChar(40);
                     createdAt; @@unique([familyId, userId]) }
 ManagedProfile    { id; familyId; displayName VarChar(40); kind ProfileKind /* ASSISTED_ADULT | CHILD */;
-                    avatarKey VarChar(30); locale VarChar(10) @default("en");
+                    avatarKey VarChar(30); locale VarChar(10) @default("en-US");
                     consentConfirmedAt; consentVersion VarChar(20); createdByUserId;
+                    aiAssistEnabled Boolean @default(false) /* ASSISTED_ADULT only, see ai.md § 8 */;
+                    aiConsentConfirmedAt?; aiConsentVersion VarChar(20)?;
                     createdAt; updatedAt; @@index([familyId]) }
 
 // Devices
@@ -95,16 +97,33 @@ AuthorizedDevice  { id; familyId; profileId; label VarChar(40); tokenHash @uniqu
                     lastSeenAt; expiresAt; revokedAt?; revokedByUserId?; createdAt;
                     @@index([profileId]) }
 
-// Catalog (demo merchant)
-Product           { id; sku @unique VarChar(40); name VarChar(80); unitLabel VarChar(30);
-                    category ProductCategory; priceMinor Int; currency Char(3);
-                    imagePath VarChar(200); synonyms String[]; isAvailable Boolean;
-                    sortOrder Int; archivedAt?; createdAt; updatedAt }
+// Catalog (see catalog.md) — MVP core: CatalogProduct + DemoMerchantPrice
+CatalogProduct    { id; sku @unique VarChar(60); barcode? @unique VarChar(14);
+                    displayName VarChar(60); brand VarChar(60)?; category ProductCategory;
+                    variantGroup VarChar(60); netQuantity Int; netQuantityUnit QuantityUnit /* GRAM | MILLILITER | COUNT */;
+                    sizeLabel VarChar(40); synonyms String[];
+                    imagePath VarChar(200)?; imageSourceUrl VarChar(300)?; imageLicense VarChar(40)?; imageAttribution VarChar(120)?;
+                    source CatalogSource /* OPEN_PRICES | OPEN_FOOD_FACTS | CAREBASKET_CURATED */;
+                    sourceProductId Int?; sourceProductCode VarChar(14)?; sourceLicense VarChar(40);
+                    isActive Boolean; sortOrder Int; archivedAt?; createdAt; updatedAt;
+                    @@index([category, isActive]); @@index([variantGroup]) }
+DemoMerchantPrice { id; productId; currency Char(3); priceMinor Int;
+                    basis PriceBasis /* OBSERVED_MEDIAN | OBSERVED_LIMITED | MANUAL_DEMO */;
+                    observationCount Int?; observedFrom Date?; observedTo Date?;
+                    approvedAt; createdAt; updatedAt; @@unique([productId, currency]) }
+// Optional until reference prices or the refresh script are implemented
+PriceObservation  { id; productId; sourcePriceId Int @unique; priceMinor Int; currency Char(3);
+                    observedOn Date; isDiscounted Boolean; locationId Int; locationCountryCode Char(2);
+                    fetchedAt; @@index([productId, observedOn]) }
+CatalogSyncRun    { id; kind VarChar(30) /* discover | refresh */; source CatalogSource;
+                    startedAt; finishedAt?; status VarChar(20); counts Json /* fetched, upserted, skipped by reason */;
+                    errorSummary VarChar(500)? }
 
 // Requests and baskets
 ShoppingRequest   { id; familyId; profileId; deviceId? /* SetNull on device deletion */;
                     clientRequestKey Uuid /* idempotency, see api.md § 6 */;
-                    inputMode InputMode /* VOICE | TEXT | PICTURES */; inputText VarChar(500)?;
+                    inputMode InputMode /* VOICE | TEXT | PICTURES */; inputText VarChar(1000)?;
+                    budgetMinor Int? /* optional per-request budget, USD cents, ai.md § 10.3 */;
                     status RequestStatus /* PENDING_REVIEW | AWAITING_PAYMENT | PAID | DECLINED | CANCELLED */;
                     fulfillmentStatus FulfillmentStatus /* NOT_STARTED | PREPARING | DELIVERED (simulated) */;
                     reviewedByUserId?; reviewedAt?; submittedAt; createdAt; updatedAt;
@@ -112,7 +131,9 @@ ShoppingRequest   { id; familyId; profileId; deviceId? /* SetNull on device dele
                     @@index([familyId, status, createdAt]); @@index([profileId, createdAt]) }
 ShoppingBasket    { id; requestId @unique; familyId; currency Char(3);
                     subtotalMinor Int; lockedAt?; createdAt; updatedAt }
-BasketItem        { id; basketId; productId; quantity Int; unitPriceMinor Int;
+BasketItem        { id; basketId; productId /* CatalogProduct, Restrict */; quantity Int;
+                    unitPriceMinor Int /* snapshot of DemoMerchantPrice */;
+                    origin ItemOrigin /* REQUESTED | SUGGESTED */;
                     isSubstitute Boolean; substitutionNote VarChar(120)?;
                     @@unique([basketId, productId]) }
 
@@ -142,7 +163,10 @@ Design notes:
 - **No draft table:** before submission, the AI proposal lives in the requester's client state. On submit, the server re-validates SKUs and quantities and creates the request, basket, and items in one transaction.
 - **Request `status` vs. `Payment.status`:** the request becomes `PAID` only inside the same transaction that records a verified capture. `fulfillmentStatus` is separate and simulated; it never changes because of payment events.
 - **No email or payer details** are stored. Clerk holds adult emails; PayPal holds payer data.
-- **Prices are snapshotted** into `BasketItem.unitPriceMinor` at submission and re-validated against `Product.priceMinor` when checkout starts.
+- **Two kinds of price, never mixed:** `DemoMerchantPrice` is the only checkout price; `PriceObservation` is reference data from Open Prices and is never read for totals ([catalog.md § 6](catalog.md#6-observed-prices-vs-demo-merchant-prices)).
+- **Prices are snapshotted** into `BasketItem.unitPriceMinor` from `DemoMerchantPrice` at submission and re-validated against it when checkout starts.
+- **Item origin** records whether the requester asked for an item or accepted an AI suggestion, so the manager can tell them apart.
+- **Smallest schema first:** create `CatalogProduct` and `DemoMerchantPrice` with the catalog feature; add `PriceObservation` and `CatalogSyncRun` only when reference prices or the refresh script are built. Sources are an enum, not a table.
 
 ## 6. Access boundaries, queries, and performance
 
@@ -161,16 +185,17 @@ Design notes:
 - One logical change per migration. Name it for what it does, not for the ticket.
 - Never edit a migration that has been applied anywhere. Fix forward with a new migration.
 - Destructive changes (drop or rename a column or table, tighten nullability) use two steps: expand (add new, backfill) and contract (remove old), and are flagged in the completion report.
-- Migrations and `schema.prisma` are committed together. `src/generated/prisma` is never committed.
+- `schema.prisma` and its migration are committed in consecutive commits, schema first ([git.md § 2](git.md#2-changes)). `src/generated/prisma` is never committed.
 - Demo and production databases are migrated only with `prisma migrate deploy`. Never run `migrate dev`, `db push`, or `migrate reset` against the demo database.
 - Use separate Neon branches or databases for local development and the public demo.
 
 ## 8. Seed data
 
-- `prisma/seed.ts` seeds the **demo merchant catalog**: fictional products with SKUs, names, unit labels, categories, synonyms, USD prices in cents, and local image paths in `public/products/`.
-- Seeds are idempotent (`upsert` by `sku`), so the developer can re-run them safely.
+- `prisma/seed.ts` seeds the catalog from the committed, curated file `prisma/catalog/catalog.us.json` (ODbL), which holds `CatalogProduct` and approved `DemoMerchantPrice` data with source attribution ([catalog.md § 8](catalog.md#8-curation-and-import-pipeline)).
+- The seed validates the file with Zod, upserts by `sku`, makes **no network calls**, and is idempotent, so the developer can re-run it safely.
+- Catalog import and refresh are separate developer-run scripts, never part of seeding, migrations, or the request path.
 - Seeds contain **no real personal data**. Any development family seeded for convenience uses clearly fictional names and only runs when an explicit flag is set; it never runs against the demo database.
-- The catalog is the single source of truth for products and prices. AI never adds products ([ai.md](ai.md)).
+- The curated catalog is the single source of truth for products and checkout prices. AI never adds or prices products ([ai.md § 3](ai.md#3-what-ai-must-not-do)).
 
 ## 9. Sensitive data, deletion, and retention
 
@@ -181,7 +206,9 @@ Design notes:
 
 ## 10. Prohibited patterns
 
-- `Float` for money, or prices sourced from anywhere other than `Product`
+- `Float` for money, or checkout prices sourced from anywhere other than `DemoMerchantPrice`
+- Reading `PriceObservation` to compute any total
+- Source-specific fields (Open Prices or Open Food Facts response shapes) stored outside the documented provenance columns
 - `findUnique({ where: { id } })` on family data without a family check in the same query
 - Prisma imports outside the db client and repositories
 - Long transactions or external calls inside transactions
