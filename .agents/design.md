@@ -102,17 +102,21 @@ The neutral and surface values are CareBasket choices, not claims about PayPal's
 | --- | --- | --- |
 | `--font-sans` | DM Sans, system fallback | Interface and headings |
 | `--font-readable` | Atkinson Hyperlegible Next, then `--font-sans` | Requester reading text |
-| `--text-sm` | 1rem (16px) | Manager metadata; the minimum anywhere |
-| `--text-base` | 1.125rem (18px) | Default body |
-| `--text-lg` | 1.375rem (22px) | Requester body, card titles |
-| `--text-xl` | 1.75rem (28px) | Manager page titles |
-| `--text-2xl` | 2.25rem (36px) | Requester page titles |
-| `--text-display` | 3rem (48px) | Welcome headline, pairing code, payment confirmation amount |
+| `--text-xs` | 0.875rem (14px) | Badges, captions, metadata, navigation-bar labels on public and manager screens only; never paragraphs, never requester screens |
+| `--text-sm` | 0.9375rem (15px) | Secondary text, navigation links, helper text |
+| `--text-base` | 1rem (16px) | Default body on public and manager screens |
+| `--text-md` | 1.125rem (18px) | Lead text, card and section sub-titles; the minimum on requester screens |
+| `--text-lg` | 1.25rem (20px) | Requester body, prominent card titles |
+| `--text-xl` | 1.5rem (24px) | Section titles; page titles on phones |
+| `--text-2xl` | 2rem (32px) | Page titles from tablet width; requester page titles |
+| `--text-display` | 2.75rem (44px) | Welcome headline, pairing code, payment confirmation amount |
 | `--leading-body` / `--leading-tight` | 1.5 / 1.2 | Body / headings |
 | `--tracking-tight` | -0.01em | Headings 28px and larger only |
 | Weights | 400 regular, 500 medium, 600 semibold, 700 bold | Body 400; labels and buttons 600; headings 700 |
 
-Rules: no light weights (below 400) for text; no all-caps sentences; tabular numerals (`font-variant-numeric: tabular-nums`) for prices, quantities, and codes.
+Rules: no light weights (below 400) for text; no all-caps sentences; tabular numerals (`font-variant-numeric: tabular-nums`) for prices, quantities, and codes. The scale is deliberately compact for public and manager screens (developer decision, 2026-10-08); requester screens stay large.
+
+Clerk's prebuilt components are themed with these tokens through `src/lib/clerk/appearance.ts` (Clerk accepts CSS variables as appearance values).
 
 ### 3.4 Space, shape, depth, motion
 
@@ -124,7 +128,7 @@ Rules: no light weights (below 400) for text; no all-caps sentences; tabular num
 | `--shadow-sm` | `0 1px 2px rgb(17 17 17 / 0.06)`, for cards on soft surfaces only |
 | `--shadow-md` | `0 8px 24px rgb(17 17 17 / 0.12)`, for dialogs and menus only |
 | `--control-height` / `-lg` | 3rem (48px) / 4rem (64px) |
-| `--content-max` / `--reading-max` | 72rem / 40rem |
+| `--content-max` / `--reading-max` / `--sidebar-width` | 72rem / 40rem / 15rem (manager side navigation) |
 | `--duration-fast` / `-base`, `--ease-standard` | 120ms / 200ms, `cubic-bezier(0.2, 0, 0, 1)` |
 | `--z-header` / `-dialog` / `-toast` | 10 / 100 / 200 |
 
@@ -225,7 +229,7 @@ The manager can create profiles, authorize devices, review requests, inspect pro
 - Heavy or stacked shadows; shadows on every card
 - "AI" sparkle motifs or presenting features as magic; chat-style bubbles with long paragraphs
 - Generic dashboard look: KPI tiles, decorative charts, or data tables on requester screens
-- Cramped layouts, text under 16px, low-contrast gray text, `--color-accent` used for text or button fills
+- Cramped layouts, paragraphs under 16px, any text under 14px, low-contrast gray text, `--color-accent` used for text or button fills
 - Carousels, auto-advancing content, infinite scroll, parallax, unnecessary animation
 - Toast-only feedback for errors or payment results
 - PayPal logos, fonts, screenshots, or copied screens; anything implying PayPal endorsement
