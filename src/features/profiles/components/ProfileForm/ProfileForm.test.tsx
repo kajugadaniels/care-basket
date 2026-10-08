@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
 
@@ -63,7 +63,8 @@ describe("ProfileForm", () => {
     expect(mocks.create).toHaveBeenCalledWith({ displayName: "Rose", kind: "CHILD", avatarKey: "flower", consent: true });
   });
   it("announces loading and prevents repeat submissions", async () => {
-    mocks.create.mockReturnValue(new Promise(() => undefined));
+    let resolveRequest!: (value: { ok: true; data: { profileId: string } }) => void;
+    mocks.create.mockReturnValue(new Promise((resolve) => { resolveRequest = resolve; }));
     render(<ProfileForm />);
     fireEvent.click(screen.getByRole("button", { name: profilesCopy.add }));
     const button = await screen.findByRole("button", { name: profilesCopy.adding });
@@ -72,6 +73,7 @@ describe("ProfileForm", () => {
     expect(screen.getByRole("status")).toHaveTextContent(profilesCopy.adding);
     fireEvent.click(button);
     expect(mocks.create).toHaveBeenCalledTimes(1);
+    await act(async () => { resolveRequest({ ok: true, data: { profileId: "profile-rose" } }); });
   });
   it("keeps the type immutable and omits consent and permission fields during editing", async () => {
     mocks.update.mockResolvedValue({ ok: false, error: { code: "INTERNAL", message: profilesCopy.errors.internal } });
