@@ -20,7 +20,7 @@ export function getDeviceEnv() {
   });
   if (!result.success) {
     const names = [...new Set(result.error.issues.map((issue) => issue.path.join(".")))];
-    throw new Error(`Missing or invalid device environment variables: ${names.join(", ")}. See .env.example.`);
+    throw new Error(`Missing or invalid device environment variables: ${names.join(", ")}. See .env.local.example or .env.production.example.`);
   }
   return result.data;
 }
@@ -49,7 +49,7 @@ export function getServerEnv(): ServerEnv {
   if (!result.success) {
     const names = [...new Set(result.error.issues.map((issue) => issue.path.join(".")))];
     throw new Error(
-      `Missing or invalid server environment variables: ${names.join(", ")}. See .env.example.`,
+      `Missing or invalid server environment variables: ${names.join(", ")}. See .env.local.example or .env.production.example.`,
     );
   }
 
