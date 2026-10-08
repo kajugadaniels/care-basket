@@ -12,7 +12,32 @@ vi.mock("@clerk/nextjs/server", () => ({
   currentUser: mocks.currentUser,
 }));
 
-import { requireAuthenticatedUser } from "./require-authenticated-user";
+import { requireAuthenticatedUser, requireClerkUserId } from "./require-authenticated-user";
+
+describe("requireClerkUserId", () => {
+  beforeEach(() => {
+    mocks.auth.mockReset();
+    mocks.currentUser.mockReset();
+  });
+
+  it("returns the Clerk user ID from the verified session without loading the profile", async () => {
+    mocks.auth.mockResolvedValue({ userId: "user_123", redirectToSignIn: vi.fn() });
+
+    await expect(requireClerkUserId()).resolves.toBe("user_123");
+    expect(mocks.currentUser).not.toHaveBeenCalled();
+  });
+
+  it("redirects visitors without a session to sign-in", async () => {
+    const redirectError = new Error("NEXT_REDIRECT");
+    const redirectToSignIn = vi.fn(() => {
+      throw redirectError;
+    });
+    mocks.auth.mockResolvedValue({ userId: null, redirectToSignIn });
+
+    await expect(requireClerkUserId()).rejects.toBe(redirectError);
+    expect(redirectToSignIn).toHaveBeenCalledOnce();
+  });
+});
 
 describe("requireAuthenticatedUser", () => {
   beforeEach(() => {
