@@ -52,7 +52,7 @@ Examples: `feat(devices): add adult approval for pairing codes`, `fix(checkout):
 
 Notes:
 
-- `.gitignore` currently ignores `.env*`, which also ignores `.env.example`. Add `!.env.example` before committing an example file.
+- `.gitignore` ignores `.env*` but allows `.env.example`, which holds placeholders only.
 - `package-lock.json` changes only through the developer's npm commands and is committed right after the matching `package.json` commit.
 - The `.agents/skills/`, `.claude/skills/`, and `.windsurf/skills/` directories and `skills-lock.json` are agent tooling; committing them is the developer's choice.
 
