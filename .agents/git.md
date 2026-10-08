@@ -11,19 +11,22 @@
 
 - Agents **never** run Git write commands: `add`, `commit`, `push`, `pull`, `merge`, `rebase`, `reset`, `restore`, `checkout -- <path>`, `stash`, `tag`, `cherry-pick`, `clean`, or branch creation and deletion ([workflow.md § 1.1](workflow.md#11-agents-must-not-execute)).
 - Agents may run read-only commands (`git status`, `git diff`, `git log`, `git show`) to understand the working tree.
-- At the end of each task, agents suggest **one concise commit message** and, when helpful, show the exact commands for the developer to run, for example:
+- At the end of each task, agents list **one commit message per changed file** and show the exact commands for the developer to run: one `git add <file>` and `git commit` pair per file, in the order defined in §2. For example:
 
 ```bash
-git add .agents/payments.md src/features/checkout/
+git add src/features/checkout/server/service.ts
 git commit -m "feat(checkout): capture and verify PayPal sandbox orders"
+
+git add src/features/checkout/server/service.test.ts
+git commit -m "test(checkout): cover capture verification failures"
 ```
 
 ## 2. Changes
 
-- Small and focused: one feature, fix, or documentation change per commit.
+- **One file per commit.** Every changed file gets its own commit with its own message that describes that file's change. This is the developer's standing rule.
+- **Order commits by dependency:** a file comes before the files that import, test, or link to it (for example, a new rule document before the index that links to it; a stylesheet before the test that reads it; `schema.prisma` before its migration; `package.json` before `package-lock.json`).
 - No unrelated edits: no drive-by reformatting, renames, or dependency bumps.
-- Rule changes (`.agents/`) are committed separately from feature code.
-- Schema changes are committed together with their migration.
+- Rule files (`.agents/`) are committed before or after code files, never interleaved with them.
 
 ## 3. Commit messages
 
@@ -42,15 +45,15 @@ Examples: `feat(devices): add adult approval for pairing codes`, `fix(checkout):
 | --- | --- |
 | Source, tests, styles, docs | `.env`, `.env.local`, any file with secret values |
 | `prisma/schema.prisma`, `prisma/migrations/**`, `prisma/seed.ts` | `src/generated/**` (Prisma Client output) |
-| `package.json` and `package-lock.json` together, when dependencies change | `node_modules/`, `.next/`, `coverage/`, build output |
+| `package.json` and `package-lock.json` in consecutive commits, when dependencies change | `node_modules/`, `.next/`, `coverage/`, build output |
 | `.env.example` with names and placeholders only | Screenshots or exports containing personal data or credentials |
-| Optimized demo catalog images in `public/products/` | Large binaries, videos, raw design files, audio recordings |
+| Curated product images in `public/products/` with `ATTRIBUTION.md`, and `prisma/catalog/catalog.us.json` (ODbL) | Large binaries, videos, raw design files, audio recordings, catalog candidate reports, raw API dumps |
 | `LICENSE`, `README.md` | Editor and OS files (`.DS_Store`, local IDE settings) |
 
 Notes:
 
 - `.gitignore` currently ignores `.env*`, which also ignores `.env.example`. Add `!.env.example` before committing an example file.
-- `package-lock.json` changes only through the developer's npm commands and is committed with the matching `package.json` change.
+- `package-lock.json` changes only through the developer's npm commands and is committed right after the matching `package.json` commit.
 - The `.agents/skills/`, `.claude/skills/`, and `.windsurf/skills/` directories and `skills-lock.json` are agent tooling; committing them is the developer's choice.
 
 ## 5. Branches and history
@@ -67,7 +70,7 @@ Notes:
 
 ## 7. Acceptance criteria
 
-- [ ] The task's changes form one focused commit (or a small, clearly separated set).
-- [ ] The suggested message follows §3.
+- [ ] Every changed file has its own suggested commit, in dependency order (§2).
+- [ ] Every suggested message follows §3.
 - [ ] No ignored, generated, or secret files are included.
 - [ ] The agent performed no Git writes.
