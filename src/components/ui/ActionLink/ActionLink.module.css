@@ -24,6 +24,17 @@
   color: var(--color-on-primary);
 }
 
+.secondary {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.secondary:hover {
+  background-color: var(--color-surface-accent);
+  color: var(--color-primary-hover);
+}
+
 .lg {
   min-height: var(--control-height-lg);
   padding-inline: var(--space-6);
