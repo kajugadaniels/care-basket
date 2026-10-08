@@ -2,7 +2,7 @@
 
 **Purpose:** Authoritative index of the rules that every coding agent (Codex, Claude Code, and any other assistant) and every human contributor follows on CareBasket.
 **Applies to:** Every task, without exception.
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 The rules in this directory are permanent project policy. They are not suggestions. Read this file first, then the documents your task requires.
 
@@ -111,3 +111,4 @@ When instructions conflict, apply the first matching level:
 | 2026-10-08 | Step 3: `User`, `Family`, `FamilyMembership` models; Prisma CLI uses `DIRECT_URL` and loads `.env.local` then `.env`; `ensureUser()`, `requireAdult()`, and transactional family setup documented. |
 | 2026-10-08 | Sign-in and sign-up open as Clerk dialogs; `/sign-in` and `/sign-up` are redirect routes that open the dialog on the home page. |
 | 2026-10-08 | Step 2: Clerk 7 resource-level protection (no `createRouteMatcher`), `<Show>` replaces removed `SignedIn`/`SignedOut`, Clerk redirect variables documented, compact type scale with `--text-xs` and `--text-md`, Vitest and Clerk mocking conventions. |
+| 2026-10-09 | Replaced the generic environment template with aligned local and production templates; real environment files remain ignored. |
