@@ -1,0 +1,28 @@
+.heading {
+  max-width: var(--reading-max);
+  margin-block-end: var(--space-6);
+}
+
+.title {
+  font-size: var(--text-xl);
+}
+
+.description {
+  margin-block-start: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+@media (min-width: 48rem) {
+  .heading {
+    margin-block-end: var(--space-7);
+  }
+
+  .title {
+    font-size: var(--text-2xl);
+  }
+
+  .description {
+    font-size: var(--text-lg);
+  }
+}
