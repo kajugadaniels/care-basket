@@ -3,7 +3,7 @@
 **Purpose:** Define how adults sign in with Clerk, how managed profiles get restricted access through securely paired devices, and how every request is authorized on the server.
 **Applies to:** Sign-in, onboarding, families, profiles, devices, sessions, permissions.
 **Related:** [security.md](security.md), [privacy.md](privacy.md), [database.md § 5](database.md#5-planned-models), [api.md](api.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -42,7 +42,7 @@ MVP constraints:
   - The handlers ignore every query parameter, so they cannot become open redirects. A deep link's `redirect_url` is therefore not preserved; adults land on `/family`.
   - Redirects use Clerk's environment variables (`NEXT_PUBLIC_CLERK_SIGN_IN_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_URL`, `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL`). Without the URL variables, Clerk falls back to its hosted pages.
 - Clerk manages adult session lifetime, sign-out, and "sign out of all devices". CareBasket never stores Clerk tokens.
-- Clerk UI components load only on adult and auth routes where possible, to keep requester bundles small ([performance.md § 3](performance.md#3-client-javascript-budget)).
+- Clerk UI components load only on adult and auth routes where possible, to keep requester bundles small ([performance.md § 5](performance.md#5-client-javascript-budget)).
 
 ## 4. Family creation and ownership
 
