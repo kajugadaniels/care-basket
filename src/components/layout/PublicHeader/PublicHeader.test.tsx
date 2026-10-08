@@ -40,14 +40,27 @@ describe("PublicHeader", () => {
   });
 
   describe("when signed out", () => {
-    it("offers sign-in and account creation links", () => {
+    it("offers buttons that open the sign-in and sign-up dialogs", () => {
       render(<PublicHeader />);
 
-      expect(screen.getByRole("link", { name: "Sign In" })).toHaveAttribute("href", "/sign-in");
-      expect(screen.getByRole("link", { name: "Get Started" })).toHaveAttribute(
-        "href",
-        "/sign-up",
+      const signIn = screen.getByRole("button", { name: "Sign In" });
+      const getStarted = screen.getByRole("button", { name: "Get Started" });
+      expect(signIn).toHaveAttribute("aria-haspopup", "dialog");
+      expect(getStarted).toHaveAttribute("aria-haspopup", "dialog");
+      expect(signIn.closest("[data-clerk-dialog]")).toHaveAttribute("data-clerk-dialog", "sign-in");
+      expect(getStarted.closest("[data-clerk-dialog]")).toHaveAttribute(
+        "data-clerk-dialog",
+        "sign-up",
       );
+    });
+
+    it("opens both dialogs in modal mode rather than on a separate page", () => {
+      render(<PublicHeader />);
+
+      for (const trigger of document.querySelectorAll("[data-clerk-dialog]")) {
+        expect(trigger).toHaveAttribute("data-mode", "modal");
+      }
+      expect(screen.queryByRole("link", { name: /sign in|get started/i })).not.toBeInTheDocument();
     });
 
     it("shows no family link or account menu", () => {
@@ -70,11 +83,11 @@ describe("PublicHeader", () => {
       expect(screen.getByRole("button", { name: "Open account menu" })).toBeInTheDocument();
     });
 
-    it("hides the sign-in and account creation links", () => {
+    it("hides the sign-in and sign-up buttons", () => {
       render(<PublicHeader />);
 
-      expect(screen.queryByRole("link", { name: "Sign In" })).not.toBeInTheDocument();
-      expect(screen.queryByRole("link", { name: "Get Started" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Sign In" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Get Started" })).not.toBeInTheDocument();
     });
   });
 });
