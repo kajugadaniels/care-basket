@@ -30,8 +30,6 @@ export function ProfileChoices({ group, value, onChange, error }: ProfileChoices
           return (
             <label key={option} className={cx(styles.option, checked && styles.selected)}>
               <input type="radio" name={group} value={option} checked={checked} required
-                aria-invalid={error ? true : undefined}
-                aria-describedby={error ? errorId : undefined}
                 onChange={() => onChange(option)} />
               {!isKind ? <ProfileAvatar avatarKey={option as ProfileAvatarKey} /> : null}
               <span className={styles.text}>
