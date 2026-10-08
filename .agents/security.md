@@ -3,7 +3,7 @@
 **Purpose:** Define the security boundaries for CareBasket's sensitive operations: identities, family data, payments, AI, and secrets.
 **Applies to:** Any server code, any data access, any configuration. This document wins on any security question.
 **Related:** [authentication.md](authentication.md), [api.md](api.md), [payments.md](payments.md), [ai.md § 9](ai.md#9-prompt-injection-and-output-safety), [privacy.md](privacy.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-09
 
 ---
 
@@ -51,7 +51,9 @@
 
 - Server Actions rely on Next.js's built-in POST-only invocation and `Origin`/`Host` comparison. Do not add `serverActions.allowedOrigins` entries except for a documented tunnel or proxy host.
 - Route Handlers that **mutate** and authenticate with cookies MUST verify that the `Origin` header matches `NEXT_PUBLIC_APP_URL` and reject otherwise.
-- `GET` handlers MUST NOT change state.
+- `GET` requests MUST NOT modify application business state. Incidental security operations, such as atomic PostgreSQL rate-limit counter updates, are permitted; this exception grants no business-state mutation permission.
+- `GET /api/pairing/status` validates the pairing cookie before exposing any pairing information and enforces at most 30 polls per minute per pairing through the PostgreSQL-backed limiter. Over-limit responses return HTTP 429 with an appropriate `Retry-After` header. Every pairing-status response sets `Cache-Control: no-store`.
+- Pairing-status GET requests MUST NOT approve, reject, complete, extend, or otherwise modify pairing records, update device sessions, or set cookies. Approval, rejection, and completion remain separate authenticated POST operations or Server Actions.
 - Webhook handlers are exempt from origin checks because they use no cookies; they rely on signature verification instead ([payments.md § 6](payments.md#6-webhooks)).
 
 ## 7. Input validation
