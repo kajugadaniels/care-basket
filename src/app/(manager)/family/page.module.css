@@ -78,8 +78,10 @@
 
 .readyText {
   margin-block-start: var(--space-1);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
 }
+
+.memberAction { justify-self: start; }
 
 @media (min-width: 48rem) {
   .title {
