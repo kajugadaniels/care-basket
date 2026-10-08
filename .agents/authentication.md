@@ -18,7 +18,7 @@ There is no third kind. Anonymous visitors can only see public pages, sign in or
 
 ## 2. Adult onboarding
 
-1. Sign up or sign in with Clerk's prebuilt components at `/sign-up` and `/sign-in` (optional catch-all routes, per Clerk's Next.js docs).
+1. Sign up or sign in through Clerk's prebuilt **dialogs**, opened from the public header ("Sign In", "Get Started"). There are no sign-in or sign-up pages (developer decision, 2026-10-08).
 2. On the first authenticated server call, `ensureUser()` in `src/server/auth/` upserts a `User` row keyed by `clerkUserId`. No Clerk webhook is required for the MVP.
 3. If the adult has no family, they are sent to `/family/setup`: family name, and "What should your family call you?" (stored as the membership `displayName`, for example "Mom" or "Anna"). Family and `OWNER` membership are created in one transaction.
 4. They land on the family dashboard, whose empty state invites them to add a family member.
@@ -35,7 +35,11 @@ MVP constraints:
 - **Resource-level protection:** every protected `page`, Server Action, and Route Handler verifies the session itself. Until database-backed families exist, adult-area pages call `requireAuthenticatedUser()` (`src/server/auth/require-authenticated-user.ts`), which redirects visitors to sign-in. From Step 3, they call `requireAdult()` ([§ 9](#9-server-side-permission-verification)). Layouts alone are never enough, because they do not re-render on every navigation.
 - `ClerkProvider` wraps the app inside `<body>` in the root layout, **without** the `dynamic` prop, so pages keep their static shell. Server code reads the session with `auth()` from `@clerk/nextjs/server`; with `cacheComponents` enabled, anything that reads it (including the server `<Show>` component) renders inside `<Suspense>` or below a `loading.tsx` ([architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project)).
 - `SignedIn`, `SignedOut`, and `Protect` were removed in Clerk Core 3. Use `<Show when="signed-in">` / `<Show when="signed-out">` for visibility only; it never replaces a server-side check.
-- Sign-in and sign-up pages use Clerk's prebuilt `SignIn` and `SignUp` components on optional catch-all routes (`/sign-in/[[...sign-in]]`, `/sign-up/[[...sign-up]]`). Redirects use Clerk's environment variables (`NEXT_PUBLIC_CLERK_SIGN_IN_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_URL`, `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL`); never build custom redirect handling.
+- **Sign-in and sign-up open as Clerk dialogs, never as pages.**
+  - The header uses `SignInButton` and `SignUpButton` with `mode="modal"`, wrapping real `<button>` elements. Shared options live in `src/lib/clerk/auth-dialogs.ts`: the sign-in dialog uses `withSignUp`, so a new adult can create an account inside it, and both dialogs fall back to `/family`.
+  - Clerk still navigates to its configured sign-in and sign-up URLs in some cases, for example `redirectToSignIn()` from a protected page or a link inside a dialog. `/sign-in` and `/sign-up` are therefore Route Handlers, not pages. They redirect to the fixed paths `/?auth=sign-in` and `/?auth=sign-up`, where `AuthDialogOpener` opens the matching dialog, or sends a signed-in adult to `/family`.
+  - The handlers ignore every query parameter, so they cannot become open redirects. A deep link's `redirect_url` is therefore not preserved; adults land on `/family`.
+  - Redirects use Clerk's environment variables (`NEXT_PUBLIC_CLERK_SIGN_IN_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_URL`, `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL`, `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL`). Without the URL variables, Clerk falls back to its hosted pages.
 - Clerk manages adult session lifetime, sign-out, and "sign out of all devices". CareBasket never stores Clerk tokens.
 - Clerk UI components load only on adult and auth routes where possible, to keep requester bundles small ([performance.md § 3](performance.md#3-client-javascript-budget)).
 
