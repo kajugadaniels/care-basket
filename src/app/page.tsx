@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { PublicFooter } from "@/components/layout/PublicFooter/PublicFooter";
 import { PublicHeader } from "@/components/layout/PublicHeader/PublicHeader";
+import { AuthDialogOpener } from "@/features/auth/components/AuthDialogOpener/AuthDialogOpener";
 import { CommitmentsSection } from "@/features/landing/components/CommitmentsSection/CommitmentsSection";
 import { FamiliesSection } from "@/features/landing/components/FamiliesSection/FamiliesSection";
 import { HeroSection } from "@/features/landing/components/HeroSection/HeroSection";
@@ -18,6 +20,10 @@ export default function HomePage() {
         <CommitmentsSection />
       </main>
       <PublicFooter />
+      {/* Reads the query string, so it sits behind Suspense to keep the page's static shell. */}
+      <Suspense fallback={null}>
+        <AuthDialogOpener />
+      </Suspense>
     </>
   );
 }
