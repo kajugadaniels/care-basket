@@ -1,0 +1,3 @@
+.content { display: grid; gap: var(--space-5); }
+.action { min-block-size: var(--control-height-lg); font-size: var(--text-md); }
+.error { color: var(--color-danger); }
