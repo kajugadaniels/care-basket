@@ -21,7 +21,8 @@
 }
 
 /* Full width on phones for an easy target. */
-.submit {
+.submit,
+.submitSkeleton {
   width: 100%;
 }
 
@@ -29,5 +30,9 @@
   .submit {
     justify-self: start;
     width: auto;
+  }
+
+  .submitSkeleton {
+    width: 11rem;
   }
 }
