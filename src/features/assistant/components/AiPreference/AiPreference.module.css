@@ -1,0 +1,2 @@
+.panel { composes: panel from "../AssistantStart/AssistantStart.module.css"; }
+.check { composes: check from "../AssistantStart/AssistantStart.module.css"; }
