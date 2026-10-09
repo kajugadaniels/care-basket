@@ -33,4 +33,21 @@ describe("in-memory shopping draft", () => {
 		expect(changeDraft(draft, { type: "remove", sku: requestProduct.sku }, requestIds.other)).toEqual(EMPTY_DRAFT);
 		expect(changeDraft(draft, { type: "clear" }, requestIds.other)).toEqual(EMPTY_DRAFT);
 	});
+	it("merges proposals with manual items without changing their requested origin", () => {
+		const draft = changeDraft(EMPTY_DRAFT, { type: "add", item: { ...requestProduct, quantity: 2 } }, requestIds.key);
+		const next = changeDraft(draft, { type: "proposal", inputMode: "TEXT", inputText: "milk", items: [
+			{ ...requestProduct, quantity: 1, origin: "SUGGESTED", proof: "fictional-proof" },
+		] }, requestIds.other);
+		expect(next.items).toHaveLength(1); expect(next.items[0]).toMatchObject({ quantity: 3 });
+		expect(next.items[0].origin).not.toBe("SUGGESTED"); expect(next.clientRequestKey).toBe(requestIds.other);
+		expect(draft.items[0].quantity).toBe(2);
+	});
+	it("caps merged suggestions and stores only a deliberately confirmed budget", () => {
+		const item = { ...requestProduct, quantity: 4, origin: "SUGGESTED" as const, proof: "fictional-proof" };
+		const draft = changeDraft(EMPTY_DRAFT, { type: "proposal", inputMode: "TEXT", inputText: "breakfast", items: [item],
+			budgetMinor: 2000, budgetConfirmed: true }, requestIds.key);
+		const next = changeDraft(draft, { type: "proposal", inputMode: "TEXT", inputText: "more breakfast", items: [item] }, requestIds.other);
+		expect(next.items[0].quantity).toBe(6); expect(next.budgetMinor).toBeUndefined();
+		expect(draft.budgetMinor).toBe(2000);
+	});
 });
