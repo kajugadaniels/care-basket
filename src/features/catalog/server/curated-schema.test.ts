@@ -7,10 +7,19 @@ import { curatedCatalogSchema, validateSeedCatalog } from "./curated-schema";
 import { makeCuratedCatalog } from "@/test/factories/catalog";
 
 const now = new Date("2026-10-09T12:00:00Z");
-const emptyCatalog: unknown = JSON.parse(readFileSync(resolve("prisma/catalog/catalog.us.json"), "utf8"));
+const committedCatalog: unknown = JSON.parse(readFileSync(resolve("prisma/catalog/catalog.us.json"), "utf8"));
 
 describe("reviewed catalog contract", () => {
-	it("keeps the committed empty dataset honest but refuses to seed it", () => {
+	it("accepts the 50 approved products in the committed seed catalog", () => {
+		const catalog = validateSeedCatalog(committedCatalog, now);
+
+		expect(catalog.products).toHaveLength(50);
+		expect(catalog.products.every((product) => product.demoPrice.approved)).toBe(true);
+		expect(catalog.products.every((product) => product.image === null && !product.isChildSuitable)).toBe(true);
+	});
+	it("still refuses to seed an empty catalog", () => {
+		const emptyCatalog = { ...makeCuratedCatalog(), products: [] };
+
 		expect(curatedCatalogSchema.safeParse(emptyCatalog).success).toBe(true);
 		expect(() => validateSeedCatalog(emptyCatalog, now)).toThrow(/empty/);
 	});
