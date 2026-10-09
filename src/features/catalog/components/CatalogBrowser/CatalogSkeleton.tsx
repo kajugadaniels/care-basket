@@ -3,9 +3,10 @@ import { cx } from "@/lib/class-names";
 import { catalogCopy } from "../../copy";
 import styles from "./CatalogBrowser.module.css";
 
-export function CatalogSkeleton({ requester = false }: { requester?: boolean }) {
+// The requester browser's loading state. The manager catalog uses ManagerCatalogSkeleton.
+export function CatalogSkeleton() {
 	return (
-		<div className={cx(styles.page, requester && styles.requester)} aria-busy="true">
+		<div className={cx(styles.page, styles.requester)} aria-busy="true">
 			<p role="status">{catalogCopy.loading}</p>
 			<div className={styles.header}><Skeleton shape="heading" /><Skeleton /><Skeleton shape="pill" /></div>
 			<div className={styles.filters}><Skeleton shape="box" /><Skeleton shape="pill" /><Skeleton shape="box" /></div>
