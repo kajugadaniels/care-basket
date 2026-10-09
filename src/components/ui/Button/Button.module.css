@@ -72,11 +72,16 @@
   white-space: nowrap;
 }
 
-.button:disabled {
+.button:disabled:not(.loading) {
   border-color: var(--color-border);
   background-color: var(--color-border);
   color: var(--color-text-muted);
   cursor: not-allowed;
+}
+
+/* A loading button keeps its variant colors, so the press still reads as the same action. */
+.loading {
+  cursor: progress;
 }
 
 .primary:active:not(:disabled) {
