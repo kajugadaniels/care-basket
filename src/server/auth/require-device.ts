@@ -24,6 +24,8 @@ export async function requireDevice(): Promise<DeviceActor> {
 }
 
 export function assertDevicePermission(actor: DeviceActor, capability: "view-own-home" | "create-own-request" | "view-own-requests") {
-  // Shopping capabilities are deliberately not implemented yet.
-  if (!actor || actor.type !== "device" || capability !== "view-own-home") throw new AppError("FORBIDDEN");
+  if (!actor || actor.type !== "device" || !["ASSISTED_ADULT", "CHILD"].includes(actor.profileKind)
+    || !["view-own-home", "create-own-request", "view-own-requests"].includes(capability)) {
+    throw new AppError("FORBIDDEN");
+  }
 }
