@@ -31,7 +31,7 @@ export const devicesCopy = {
   reconnect: "This device needs to be connected again.", reconnectHelp: "Ask your family member to help you.", reconnectAction: "Connect Again",
   greeting: (name: string) => `Hello, ${name}!`, welcome: "Your CareBasket is ready.",
   shopping: "Here, you will be able to ask your family for the things you need.", reviewNotice: "Your family member will review every shopping request.",
-  comingSoon: "Asking for groceries is coming next. You don't need to do anything yet.",
+  comingSoon: "Shopping requests are coming next. You can look at groceries now.",
   disclaimer: "CareBasket is an independent project and is not affiliated with or endorsed by PayPal.",
   errors: { code: "Enter the six digits shown on their device.", label: "Enter a label of 40 characters or fewer, without hidden characters.",
     confirm: "Confirm that you checked the device and selected the right person.",
