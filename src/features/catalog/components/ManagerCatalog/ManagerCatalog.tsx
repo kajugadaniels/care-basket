@@ -20,7 +20,7 @@ type ManagerCatalogProps = {
 // The manager's catalog below the page header. ManagerCatalogSkeleton mirrors this layout.
 export function ManagerCatalog({ filters, result }: ManagerCatalogProps) {
 	const isFiltered = Boolean(filters.q || filters.category);
-	const hasPagination = Boolean(result.nextCursor || filters.cursor);
+	const hasPagination = Boolean(result.nextCursor || result.previousCursor || filters.cursor || filters.before);
 
 	return (
 		<div className={styles.catalog}>
@@ -60,13 +60,15 @@ export function ManagerCatalog({ filters, result }: ManagerCatalogProps) {
 
 			{hasPagination ? (
 				<nav className={styles.pagination} aria-label={catalogCopy.pages}>
-					{filters.cursor ? (
-						<ActionLink href={catalogHref(BASE, { ...filters, cursor: undefined })} variant="secondary">
+					{result.previousCursor ? (
+						<ActionLink href={catalogHref(BASE, { ...filters, cursor: undefined, before: result.previousCursor })} variant="secondary">{catalogCopy.previous}</ActionLink>
+					) : filters.cursor || filters.before ? (
+						<ActionLink href={catalogHref(BASE, { ...filters, cursor: undefined, before: undefined })} variant="secondary">
 							{catalogCopy.first}
 						</ActionLink>
 					) : null}
 					{result.nextCursor ? (
-						<ActionLink href={catalogHref(BASE, { ...filters, cursor: result.nextCursor })}>{catalogCopy.more}</ActionLink>
+						<ActionLink href={catalogHref(BASE, { ...filters, before: undefined, cursor: result.nextCursor })}>{catalogCopy.more}</ActionLink>
 					) : null}
 				</nav>
 			) : null}
