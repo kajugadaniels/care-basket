@@ -33,6 +33,25 @@ describe("Button", () => {
     expect(screen.getByRole("button", { name: "Large" })).toHaveClass(styles.lg);
   });
 
+  it("shows a busy, disabled state that keeps its variant while loading", () => {
+    render(<Button variant="secondary" icon={ArrowDown01Icon} loading>Saving…</Button>);
+
+    const button = screen.getByRole("button", { name: "Saving…" });
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).toHaveClass(styles.secondary, styles.loading);
+    expect(button.querySelectorAll('[aria-hidden="true"]')).toHaveLength(1);
+    expect(button.querySelector("svg")).not.toBeInTheDocument();
+  });
+
+  it("is not busy by default", () => {
+    render(<Button>Save</Button>);
+
+    const button = screen.getByRole("button", { name: "Save" });
+    expect(button).toBeEnabled();
+    expect(button).not.toHaveAttribute("aria-busy");
+  });
+
   it("keeps an icon-only button labelled for assistive technology", () => {
     render(<Button size="xs" icon={ArrowDown01Icon}>Show more</Button>);
 
