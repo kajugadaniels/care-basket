@@ -1,15 +1,13 @@
-import styles from "./loading.module.css";
+import { FamilyWelcomeSkeleton } from "@/features/family/components/FamilyWelcome/FamilyWelcomeSkeleton";
+import { SetupPreview } from "@/features/family/components/SetupPreview/SetupPreview";
+import styles from "./page.module.css";
 
-// Skeleton with the same layout as the dashboard, so nothing shifts when it loads.
+// Matches the overview page: the static preview is real, the personal overview is a skeleton.
 export default function FamilyLoading() {
-  return (
-    <div className={styles.loading} role="status">
-      <span className={styles.visuallyHidden}>Loading your family space…</span>
-      <div className={styles.title} aria-hidden="true" />
-      <div className={styles.line} aria-hidden="true" />
-      <div className={styles.block} aria-hidden="true" />
-      <div className={styles.block} aria-hidden="true" />
-      <div className={styles.block} aria-hidden="true" />
-    </div>
-  );
+	return (
+		<div className={styles.page}>
+			<FamilyWelcomeSkeleton />
+			<SetupPreview />
+		</div>
+	);
 }
