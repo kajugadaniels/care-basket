@@ -352,6 +352,7 @@ model ShoppingBasket {
 	family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
 	items BasketItem[]
 
+	@@unique([requestId, familyId])
 	@@index([familyId])
 }
 
