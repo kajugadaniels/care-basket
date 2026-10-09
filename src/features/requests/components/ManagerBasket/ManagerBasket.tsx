@@ -42,5 +42,6 @@ export function ManagerBasket({ request }: { request: ManagerDetailDto }) {
 			</RequestItem>
 		</li>)}</ul>
 		<p className={styles.total}>{requestsCopy.total}: {request.subtotal}</p>
+		{request.budget ? <p>{requestsCopy.budget}: {request.budget}</p> : null}
 	</div>;
 }
