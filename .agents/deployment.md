@@ -46,6 +46,7 @@ Validated with Zod by `src/lib/env/server.ts` on first use (it covers `DATABASE_
 | `PAYPAL_ENVIRONMENT` | Server | Must be `sandbox` | Both; fixed to `sandbox` |
 | `GEMINI_API_KEY` | Server | Gemini API | Both; environment-specific secret required when enabled |
 | `GEMINI_MODEL` | Server | Gemini model ID ([ai.md § 4](ai.md#4-provider-abstraction)) | Both; approved model required when enabled |
+| `GEMINI_SHOPPING_ENABLED` | Server | Disabled-by-default gate; requires a documented deployment approval and reviewed model, not just an environment flag | Both; fixed to `false` until approved |
 | `DEVICE_AUTH_SECRET` | Server | HMAC key for pairing codes and IP hashing; at least 32 random bytes | Both; separate secret required |
 | `DEVICE_IP_SOURCE` | Server | Trusted source for pairing-start IP rate limits | Both; local is `unconfigured`, production fails closed until reviewed |
 | `DEMO_FULFILLMENT_CONTROLS` | Server | `true` shows simulated delivery controls ([payments.md § 10](payments.md#10-demonstration-merchant-and-fulfillment)) | Both; fixed to `true` |
@@ -86,6 +87,7 @@ Rules:
 
 ### 5.3 Gemini
 
+- Actual Gemini use remains blocked for this child-accessible application until application-wide provider eligibility is confirmed and documented. Profile consent and blocking child endpoints do not resolve this restriction. Keep `GEMINI_SHOPPING_ENABLED=false` and the approval/model constants in `src/lib/ai/eligibility.ts` unset until that review is approved ([ai.md](ai.md)).
 - A separate API key for the demo, with a budget alert or spending cap set by the developer ([ai.md § 11](ai.md#11-cost-controls)).
 - Use a paid-tier key before any real person's data is processed ([privacy.md § 5](privacy.md#5-ai-and-voice-data)).
 
