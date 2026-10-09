@@ -12,10 +12,29 @@ function client(prices: OpenPricesClient["prices"]): OpenPricesClient {
 }
 
 describe("bounded discovery", () => {
+	it("reserves candidate space for later categories and reaches beans within the same request cap", async () => {
+		const prices = vi.fn<OpenPricesClient["prices"]>().mockImplementation(async (input) => {
+			const items = input.categoryTag === "en:fruits" ? [
+				makeSourceObservation({ product: makeSourceProduct({ categories_tags: ["en:fruits"] }) }),
+				makeSourceObservation({ id: 8002, product_code: "036000291452", product: makeSourceProduct({ id: 9002, code: "036000291452", categories_tags: ["en:fruits"] }) }),
+			] : input.categoryTag === "en:legumes" ? [
+				makeSourceObservation({ id: 8003, product_code: "4006381333931", product: makeSourceProduct({ id: 9003, code: "4006381333931", categories_tags: ["en:legumes"] }) }),
+			] : [];
+			return { items, page: input.page, pages: 1, size: 50, total: items.length, malformed: 0 };
+		});
+		const report = await discoverCatalog(client(prices), vi.fn().mockResolvedValue(null), { ...options, maxPagesPerCategory: 5 });
+		expect(report.candidates.map((product) => product.category)).toEqual(["PRODUCE", "PANTRY"]);
+		expect(report.skipReasons["category-candidate-limit"]).toBe(1);
+		expect(report.coverage).toContainEqual({ category: "PANTRY", candidates: 1, imageCandidates: 0 });
+		expect(prices.mock.calls.length).toBeLessThanOrEqual(PRODUCT_CATEGORIES.length * 5);
+		const enrich = vi.fn().mockResolvedValue(null);
+		await discoverCatalog(client(prices), enrich, { ...options, maxPagesPerCategory: 5, maxCandidates: 30 });
+		expect(enrich.mock.calls.map(([code]) => code)).toEqual(["012345678905", "4006381333931"]);
+	});
 	it("deduplicates repeated observations and barcodes and keeps candidates unapproved", async () => {
 		const prices = vi.fn<OpenPricesClient["prices"]>().mockResolvedValue({ items: [makeSourceObservation(), makeSourceObservation({ id: 8002 })], page: 1, pages: 1, size: 50, total: 2, malformed: 0 });
 		const report = await discoverCatalog(client(prices), vi.fn().mockResolvedValue(null), options);
-		expect(prices).toHaveBeenCalledTimes(PRODUCT_CATEGORIES.length);
+		expect(prices).toHaveBeenCalledTimes(PRODUCT_CATEGORIES.length * 2);
 		expect(report.candidates).toHaveLength(1);
 		expect(report.candidates[0]).toMatchObject({ approved: false, verification: expect.any(Array) });
 		expect(report.candidates[0].verification).toHaveLength(2);
@@ -30,7 +49,7 @@ describe("bounded discovery", () => {
 		const report = await discoverCatalog(client(prices), vi.fn(), { ...options, maxEnrichments: 0 });
 		expect(report.counts.excluded).toBe(1);
 		expect(report.skipReasons["excluded-policy"]).toBe(1);
-		expect(report.counts.malformed).toBe(PRODUCT_CATEGORIES.length);
+		expect(report.counts.malformed).toBe(PRODUCT_CATEGORIES.length * 2);
 	});
 	it("never enriches or attributes observations from outside the U.S.", async () => {
 		const prices = vi.fn<OpenPricesClient["prices"]>().mockResolvedValue({ items: [makeSourceObservation({ location: { id: 7001, type: "OSM", osm_address_country_code: "CA" } })], page: 1, pages: 1, size: 50, total: 1, malformed: 0 });
