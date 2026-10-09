@@ -1,5 +1,6 @@
 import "server-only";
 import { z } from "zod";
+import { GEMINI_APPROVED_MODEL, GEMINI_DEPLOYMENT_APPROVAL } from "@/lib/ai/eligibility";
 
 const deviceEnvSchema = z.object({
   // Require a canonical base64url encoding of at least 32 random bytes.
@@ -65,4 +66,20 @@ export function getCatalogEnv() {
 		throw new Error("Set CATALOG_USER_AGENT to CareBasket/<version> (<contact email>) before running catalog discovery.");
 	}
 	return result.data;
+}
+
+export function getShoppingAiConfig() {
+	const parsed = z.strictObject({
+		enabled: z.enum(["true", "false"]).default("false"),
+		apiKey: z.string().min(20).max(256),
+		model: z.string().min(1).max(100).regex(/^gemini-[a-z0-9.-]+$/),
+	}).safeParse({ enabled: process.env.GEMINI_SHOPPING_ENABLED,
+		apiKey: process.env.GEMINI_API_KEY, model: process.env.GEMINI_MODEL });
+	if (!parsed.success || parsed.data.enabled !== "true" || !GEMINI_DEPLOYMENT_APPROVAL
+		|| !GEMINI_APPROVED_MODEL || parsed.data.model !== GEMINI_APPROVED_MODEL) return null;
+	return { apiKey: parsed.data.apiKey, model: parsed.data.model };
+}
+
+export function getAppOrigin() {
+	return new URL(z.url().parse(process.env.NEXT_PUBLIC_APP_URL)).origin;
 }
