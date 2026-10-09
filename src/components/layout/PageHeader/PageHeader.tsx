@@ -16,8 +16,10 @@ type PageHeaderProps = {
 // The page title row. It takes only static text, so it renders in the prerendered shell
 // while the page's data streams in below it.
 export function PageHeader({ title, description, back, actions }: PageHeaderProps) {
+	const hasActions = Boolean(actions);
+
 	return (
-		<header className={cx(styles.header, actions && styles.withActions)}>
+		<header className={cx(styles.header, hasActions && styles.withActions)}>
 			<div className={cx(styles.heading, back && styles.withBack)}>
 				{back ? (
 					<Link href={back.href} className={styles.back}>
@@ -28,7 +30,7 @@ export function PageHeader({ title, description, back, actions }: PageHeaderProp
 				<h1 className={styles.title}>{title}</h1>
 				{description ? <p className={styles.description}>{description}</p> : null}
 			</div>
-			{actions ? <div className={styles.actions}>{actions}</div> : null}
+			{hasActions ? <div className={styles.actions}>{actions}</div> : null}
 		</header>
 	);
 }
