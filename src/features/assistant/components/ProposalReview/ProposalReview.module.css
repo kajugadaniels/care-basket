@@ -1,0 +1,7 @@
+.page { composes: page from "../AssistantStart/AssistantStart.module.css"; }
+.panel { composes: panel from "../AssistantStart/AssistantStart.module.css"; }
+.grid { composes: grid from "../AssistantStart/AssistantStart.module.css"; }
+.check { composes: check from "../AssistantStart/AssistantStart.module.css"; }
+.field { composes: field from "../AssistantStart/AssistantStart.module.css"; }
+.actions { composes: actions from "../AssistantStart/AssistantStart.module.css"; }
+.error { composes: error from "../AssistantStart/AssistantStart.module.css"; }
