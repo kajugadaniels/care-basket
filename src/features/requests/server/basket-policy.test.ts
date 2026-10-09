@@ -8,9 +8,14 @@ describe("basket integer invariants", () => {
 	it("calculates minor-unit totals without floating point prices", () => {
 		expect(basketSubtotal([{ quantity: 3, unitPriceMinor: 349 }, { quantity: 2, unitPriceMinor: 125 }])).toBe(1297);
 	});
-	it.each([[], [{ quantity: 0, unitPriceMinor: 100 }], [{ quantity: 21, unitPriceMinor: 100 }],
-		[{ quantity: 1, unitPriceMinor: -1 }], [{ quantity: 1, unitPriceMinor: 3.49 }],
-		[{ quantity: 20, unitPriceMinor: 2_147_483_647 }]])("rejects an invalid basket %j", (items) => {
+	it.each([
+		{ items: [] },
+		{ items: [{ quantity: 0, unitPriceMinor: 100 }] },
+		{ items: [{ quantity: 21, unitPriceMinor: 100 }] },
+		{ items: [{ quantity: 1, unitPriceMinor: -1 }] },
+		{ items: [{ quantity: 1, unitPriceMinor: 3.49 }] },
+		{ items: [{ quantity: 20, unitPriceMinor: 2_147_483_647 }] },
+	])("rejects an invalid basket $items", ({ items }) => {
 		expect(() => basketSubtotal(items)).toThrow("CONFLICT");
 	});
 	it("canonicalizes item order but detects different quantities and products", () => {
