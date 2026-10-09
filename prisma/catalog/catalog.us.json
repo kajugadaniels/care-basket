@@ -1,0 +1,10 @@
+{
+	"version": 1,
+	"country": "US",
+	"currency": "USD",
+	"locale": "en-US",
+	"merchant": "CareBasket Demo Market",
+	"license": "ODbL 1.0",
+	"attribution": "Open Food Facts and Open Prices contributors; CareBasket curated demo data",
+	"products": []
+}
