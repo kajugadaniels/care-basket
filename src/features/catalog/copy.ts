@@ -31,6 +31,14 @@ export const catalogCopy = {
 	imageSource: "Image source",
 	imageLicense: "CC BY-SA 3.0",
 	results: ({ count }: { count: number }) => `${count} groceries on this page.`,
+	productSearchLabel: "Search products",
+	searchPlaceholder: "Try rice, milk, or bread",
+	categorySelectLabel: "Category",
+	activeFilters: "Active filters",
+	managerLoading: "Loading products…",
+	managerResults: ({ count }: { count: number }) =>
+		`${count} ${new Intl.PluralRules("en-US").select(count) === "one" ? "product" : "products"} on this page`,
+	pages: "Catalog pages",
 	categories: {
 		PRODUCE: "Fruits & Vegetables", DAIRY_EGGS: "Dairy & Eggs", BAKERY: "Bread & Bakery",
 		PANTRY: "Rice & Pantry", BREAKFAST: "Breakfast", MEAT_SEAFOOD: "Meat & Fish",
