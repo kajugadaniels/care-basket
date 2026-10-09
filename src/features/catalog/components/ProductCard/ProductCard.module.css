@@ -1,29 +1,167 @@
 .card {
 	display: grid;
+	align-content: start;
 	gap: var(--space-4);
 	block-size: 100%;
+	min-inline-size: 0;
 	padding: var(--space-4);
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-lg);
-	background: var(--color-surface);
-	align-content: start;
-	min-inline-size: 0;
+	background-color: var(--color-surface);
 }
 
 .picture {
+	position: relative;
 	display: grid;
 	place-items: center;
-	position: relative;
 	aspect-ratio: 1;
-	border-radius: var(--radius-md);
-	background: var(--color-surface-soft);
-	color: var(--color-primary);
 	overflow: hidden;
+	border-radius: var(--radius-md);
+	background-color: var(--color-surface-soft);
+	color: var(--color-primary);
 }
 
-.image { object-fit: contain; }
-.name { font-size: var(--text-lg); overflow-wrap: anywhere; }
-.size { color: var(--color-text-muted); }
-.price { color: var(--color-warning); background: var(--color-warning-bg); padding: var(--space-2); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; }
-.attribution { font-size: var(--text-xs); color: var(--color-text-muted); overflow-wrap: anywhere; }
-.attribution a { color: var(--color-primary); min-block-size: var(--control-height); display: inline-flex; align-items: center; }
+/* Inset, so packaging never touches the edges of the tile. */
+.image {
+	object-fit: contain;
+	padding: var(--space-3);
+}
+
+.body {
+	display: grid;
+	align-content: start;
+	gap: var(--space-2);
+	min-inline-size: 0;
+}
+
+.name {
+	font-size: var(--text-lg);
+	overflow-wrap: anywhere;
+}
+
+.meta {
+	color: var(--color-text-muted);
+	overflow-wrap: anywhere;
+}
+
+/* The second declaration gives the separator empty alternative text where supported. */
+.meta > span + span::before {
+	content: "·";
+	content: "·" / "";
+	margin-inline: var(--space-2);
+}
+
+/* Manager cards: compact title, category, demo price, and attribution. */
+.managerCard {
+	box-shadow: var(--shadow-sm);
+}
+
+.managerCard .name {
+	font-size: var(--text-md);
+}
+
+.category {
+	display: inline-flex;
+	align-items: center;
+	justify-self: start;
+	gap: var(--space-1);
+	padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+	border-radius: var(--radius-full);
+	background-color: var(--color-surface-accent);
+	color: var(--color-accent-strong);
+	font-size: var(--text-xs);
+	font-weight: var(--weight-semibold);
+}
+
+.price {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-2);
+	margin-block-start: var(--space-1);
+}
+
+/* "Demo price" uses the warning tint (design.md § 5). */
+.priceLabel {
+	padding: var(--space-1) var(--space-2);
+	border-radius: var(--radius-full);
+	background-color: var(--color-warning-bg);
+	color: var(--color-warning);
+	font-size: var(--text-xs);
+	font-weight: var(--weight-semibold);
+}
+
+.priceValue {
+	font-size: var(--text-xl);
+	font-weight: var(--weight-bold);
+	line-height: var(--leading-tight);
+	font-variant-numeric: tabular-nums;
+}
+
+.attribution {
+	display: grid;
+	gap: var(--space-1);
+	margin-block-start: var(--space-2);
+	padding-block-start: var(--space-3);
+	border-block-start: 1px solid var(--color-border);
+	color: var(--color-text-muted);
+	font-size: var(--text-xs);
+	overflow-wrap: anywhere;
+}
+
+.attribution a {
+	display: inline-flex;
+	align-items: center;
+	min-block-size: var(--control-height);
+	color: var(--color-primary);
+}
+
+/* ProductCardSkeleton */
+.pictureSkeleton {
+	aspect-ratio: 1;
+}
+
+.categorySkeleton {
+	justify-self: start;
+	inline-size: 7.5rem;
+	block-size: calc(var(--text-xs) * var(--leading-body) + var(--space-1) * 2);
+	border-radius: var(--radius-full);
+}
+
+.nameSkeleton {
+	inline-size: 85%;
+}
+
+.metaSkeleton {
+	inline-size: 55%;
+}
+
+.priceLabelSkeleton {
+	inline-size: 6rem;
+	block-size: calc(var(--text-xs) * var(--leading-body) + var(--space-1) * 2);
+	border-radius: var(--radius-full);
+}
+
+.priceValueSkeleton {
+	inline-size: 4.5rem;
+}
+
+.attributionSkeleton {
+	inline-size: 100%;
+}
+
+.attributionSkeletonShort {
+	inline-size: 60%;
+}
+
+/*
+ * In a wide grid cell (one column on phones), a manager card becomes a row: picture beside
+ * the details. The query container is the grid item set up by ManagerCatalog.
+ */
+@container (min-width: 17.5rem) {
+	.managerCard {
+		grid-template-columns: 6.5rem minmax(0, 1fr);
+		align-items: start;
+	}
+}
