@@ -31,7 +31,8 @@ export function ApprovalForm({ profiles, preselected }: { profiles: ProfileOptio
       value={code} onChange={(event) => setCode(event.target.value)} maxLength={7} inputMode="numeric" autoComplete="off"
       error={error ?? undefined} disabled={isPending} />
     {error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
-    <Button type="submit" disabled={isPending} aria-busy={isPending}>{isPending ? devicesCopy.checking : devicesCopy.lookup}</Button>
-    <p role="status">{isPending ? devicesCopy.checking : ""}</p>
+    <Button type="submit" loading={isPending} className={styles.submit}>{isPending ? devicesCopy.checking : devicesCopy.lookup}</Button>
+    {/* The button shows the progress; this announces it to screen readers. */}
+    <p role="status" className={styles.visuallyHidden}>{isPending ? devicesCopy.checking : ""}</p>
   </form>;
 }
