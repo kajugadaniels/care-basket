@@ -29,12 +29,13 @@ export async function listCatalogRows(filters: CatalogFilters, childOnly: boolea
 			...availableWhere(childOnly),
 			...(filters.category ? { category: filters.category } : {}),
 			...(filters.cursor ? { id: { gt: filters.cursor } } : {}),
+			...(filters.before ? { id: { lt: filters.before } } : {}),
 			...(filters.q ? { OR: [
 				{ displayName: { contains: filters.q, mode: "insensitive" } },
 				{ synonyms: { has: filters.q.toLowerCase() } },
 			] } : {}),
 		},
-		orderBy: { id: "asc" }, take: Math.min(filters.limit + 1, 50), select: productSelect,
+		orderBy: { id: filters.before ? "desc" : "asc" }, take: Math.min(filters.limit + 1, 50), select: productSelect,
 	});
 }
 
