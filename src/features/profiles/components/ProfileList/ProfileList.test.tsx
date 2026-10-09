@@ -1,13 +1,21 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { profilesCopy } from "@/features/profiles/copy";
 import { ProfileList } from "./ProfileList";
+import { ProfileListSkeleton } from "./ProfileListSkeleton";
 
 describe("ProfileList", () => {
-  it("shows a helpful empty state and an implemented add route", () => {
+  it("shows a helpful empty state without repeating the page's add action", () => {
     render(<ProfileList profiles={[]} />);
     expect(screen.getByRole("heading", { name: "Who would you like to help?" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
     expect(screen.queryByRole("article")).not.toBeInTheDocument();
+  });
+  it("announces loading while its placeholder cards stay out of the accessibility tree", () => {
+    render(<ProfileListSkeleton />);
+    expect(screen.getByRole("status")).toHaveTextContent(profilesCopy.loading);
+    expect(screen.queryByRole("list")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
   it("renders real profile cards with names, types, and scoped detail links", () => {
     render(<ProfileList profiles={[
