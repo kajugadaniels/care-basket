@@ -4,13 +4,16 @@ import { loadScriptEnvironment } from "../src/lib/env/scripts";
 import { CatalogValidationError, validateSeedCatalog } from "../src/features/catalog/server/curated-schema";
 import { seedCatalog } from "../src/features/catalog/server/seed-service";
 import { closeSeedConnection } from "../src/features/catalog/server/seed-repository";
+import { describeSeedFailure, type SeedPhase } from "../src/features/catalog/server/seed-error";
 
 let seedStarted = false;
+let phase: SeedPhase = "input";
 
 async function main() {
 	loadScriptEnvironment();
 	const raw: unknown = JSON.parse(await readFile(resolve("prisma/catalog/catalog.us.json"), "utf8"));
 	const catalog = validateSeedCatalog(raw);
+	phase = "images";
 	// Validate every referenced local asset before making any database writes.
 	for (const product of catalog.products) {
 		if (!product.image) continue;
@@ -20,12 +23,14 @@ async function main() {
 		}
 	}
 	seedStarted = true;
+	phase = "database";
 	const result = await seedCatalog(catalog);
 	console.info(`Seeded ${result.products} reviewed products. No products were deleted. Restart/redeploy the app after seeding to invalidate the catalog cache.`);
 }
 
 main().catch((error: unknown) => {
-	console.error(error instanceof CatalogValidationError ? error.message : "Catalog seed failed. Check the reviewed dataset, local image files, and database configuration. Earlier products may have been committed; rerunning is safe. No source APIs were called.");
+	const diagnostic = error instanceof CatalogValidationError ? error.message : describeSeedFailure(error, phase);
+	console.error(`Catalog seed failed during ${phase}: ${diagnostic}`);
 	process.exitCode = 1;
 }).finally(async () => {
 	// getDb is lazy. Avoid constructing a database client when local validation failed.
