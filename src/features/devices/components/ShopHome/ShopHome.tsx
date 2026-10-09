@@ -1,6 +1,7 @@
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { ProfileAvatar } from "@/features/profiles/components/ProfileAvatar/ProfileAvatar";
 import { catalogCopy } from "@/features/catalog/copy";
+import { requestsCopy } from "@/features/requests/copy";
 import { devicesCopy } from "../../copy";
 import type { ShopHomeDto } from "../../types";
 import styles from "./ShopHome.module.css";
@@ -29,6 +30,8 @@ export function ShopHome({ profile }: { profile: ShopHomeDto | null }) {
 				<p>{devicesCopy.comingSoon}</p>
 			</section>
 			<ActionLink href="/shop/products" size="lg">{catalogCopy.browse}</ActionLink>
+			<ActionLink href="/shop/basket" size="lg" variant="secondary">{requestsCopy.basket}</ActionLink>
+			<ActionLink href="/shop/requests" size="lg" variant="secondary">{requestsCopy.history}</ActionLink>
 		</div>
 	);
 }

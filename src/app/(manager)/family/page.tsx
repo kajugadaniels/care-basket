@@ -6,6 +6,7 @@ import { SetupPreview } from "@/features/family/components/SetupPreview/SetupPre
 import { familyDashboardCopy } from "@/features/family/copy";
 import { getFamilyOverview } from "@/features/family/server/service";
 import { countManagedProfiles } from "@/features/profiles/server/service";
+import { countWaitingRequests } from "@/features/requests/server/service";
 import { requireAdult } from "@/server/auth/require-adult";
 import styles from "./page.module.css";
 
@@ -29,10 +30,11 @@ export default function FamilyPage() {
 // requireAdult() sends signed-out visitors to sign-in and adults without a family to setup.
 async function FamilyOverviewSection() {
 	const actor = await requireAdult();
-	const [family, profileCount] = await Promise.all([
+	const [family, profileCount, pendingRequestCount] = await Promise.all([
 		getFamilyOverview(actor),
 		countManagedProfiles(actor),
+		countWaitingRequests(actor),
 	]);
 
-	return <FamilyWelcome family={family} profileCount={profileCount} />;
+	return <FamilyWelcome family={family} profileCount={profileCount} pendingRequestCount={pendingRequestCount} />;
 }

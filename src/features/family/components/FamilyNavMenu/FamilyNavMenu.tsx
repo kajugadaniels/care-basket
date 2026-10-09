@@ -14,6 +14,7 @@ const NAV_ITEMS: readonly NavItem[] = [
 	{ href: "/family/members", label: familyLayoutCopy.nav.members, icon: UserGroupIcon },
 	{ href: "/family/devices", label: familyLayoutCopy.nav.devices, icon: SmartPhone01Icon },
 	{ href: "/family/catalog", label: familyLayoutCopy.nav.catalog, icon: ShoppingBasket01Icon },
+	{ href: "/family/requests", label: familyLayoutCopy.nav.requests, icon: ShoppingBasket01Icon },
 ];
 
 function isCurrentPage(pathname: string, href: string) {

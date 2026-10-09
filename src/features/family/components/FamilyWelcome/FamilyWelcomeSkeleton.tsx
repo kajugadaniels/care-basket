@@ -32,6 +32,10 @@ export function FamilyWelcomeSkeleton() {
 			</div>
 
 			<Skeleton shape="pill" className={styles.actionSkeleton} />
+			<div className={styles.ready} aria-hidden="true">
+				<Skeleton shape="heading" className={styles.readySkeleton} />
+				<Skeleton shape="pill" className={styles.actionSkeleton} />
+			</div>
 		</LoadingState>
 	);
 }

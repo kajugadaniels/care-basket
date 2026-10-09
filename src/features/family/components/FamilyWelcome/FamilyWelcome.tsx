@@ -3,15 +3,17 @@ import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { familyDashboardCopy } from "@/features/family/copy";
 import type { FamilyOverview } from "@/features/family/types";
+import { requestsCopy } from "@/features/requests/copy";
 import styles from "./FamilyWelcome.module.css";
 
 type FamilyWelcomeProps = {
 	family: FamilyOverview;
 	profileCount: number;
+	pendingRequestCount?: number;
 };
 
 // The personal part of the family overview. FamilyWelcomeSkeleton mirrors this layout.
-export function FamilyWelcome({ family, profileCount }: FamilyWelcomeProps) {
+export function FamilyWelcome({ family, profileCount, pendingRequestCount = 0 }: FamilyWelcomeProps) {
 	const hasMembers = profileCount > 0;
 
 	return (
@@ -42,6 +44,13 @@ export function FamilyWelcome({ family, profileCount }: FamilyWelcomeProps) {
 			<ActionLink href={hasMembers ? "/family/members" : "/family/members/add"} className={styles.memberAction}>
 				{hasMembers ? familyDashboardCopy.viewMembers : familyDashboardCopy.addMember}
 			</ActionLink>
+			<section aria-labelledby="pending-requests-title" className={styles.ready}>
+				<div>
+					<h2 id="pending-requests-title">{requestsCopy.pendingCount(pendingRequestCount)}</h2>
+					{pendingRequestCount === 0 ? <p>{requestsCopy.emptyHelp}</p> : null}
+					<ActionLink href="/family/requests" variant="secondary">{requestsCopy.inbox}</ActionLink>
+				</div>
+			</section>
 		</div>
 	);
 }
