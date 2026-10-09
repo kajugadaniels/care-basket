@@ -49,6 +49,15 @@ describe("shopping request screens", () => {
 		expect(screen.getByText("Selected by requester")).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /pay|approve/i })).not.toBeInTheDocument();
 	});
+	it("renders original text, suggested origin, substitutions and budget as manager context", () => {
+		const request = makeManagerRequest({ budget: "$20.00", inputText: "Breakfast groceries" });
+		request.items[0] = { ...request.items[0], origin: "SUGGESTED", isSubstitute: true, substitutionNote: "Different package size" };
+		render(<RequestDetail request={request} />);
+		expect(screen.getByText("Breakfast groceries")).toBeInTheDocument();
+		expect(screen.getByText("Different package size")).toBeInTheDocument();
+		expect(screen.getByText(/\$20\.00/)).toBeInTheDocument();
+		expect(screen.getByText(/Suggested.*Substitute/i)).toBeInTheDocument();
+	});
 	it("sends manager quantity edits with a revision, never prices or ownership", async () => {
 		render(<RequestDetail request={makeManagerRequest()} />);
 		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" }), { target: { value: "3" } });
