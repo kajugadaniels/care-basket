@@ -6,5 +6,2636 @@
 	"merchant": "CareBasket Demo Market",
 	"license": "ODbL 1.0",
 	"attribution": "Open Food Facts and Open Prices contributors; CareBasket curated demo data",
-	"products": []
+	"products": [
+		{
+			"sku": "shine-muscat-op-4238179",
+			"barcode": "8809316810561",
+			"displayName": "Shine Muscat",
+			"brand": null,
+			"category": "PRODUCE",
+			"variantGroup": "shine-muscat",
+			"netQuantity": 600,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "21.16 oz (600 g)",
+			"synonyms": [
+				"shine muscat"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 4238179,
+			"sourceProductCode": "8809316810561",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 339851,
+					"productCode": "8809316810561",
+					"priceMinor": 1299,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "kiwi-berries-op-3484519",
+			"barcode": "0828904002186",
+			"displayName": "Kiwi Berries",
+			"brand": "Little pranksters",
+			"category": "PRODUCE",
+			"variantGroup": "kiwi-berries",
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"kiwi berries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3484519,
+			"sourceProductCode": "0828904002186",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 599,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-09-20",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 339859,
+					"productCode": "0828904002186",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 333625,
+					"productCode": "0828904002186",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-09-20",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "blueberries-op-2527655",
+			"barcode": "0850022543043",
+			"displayName": "Blueberries",
+			"brand": "Fruitist Jumbo",
+			"category": "PRODUCE",
+			"variantGroup": "blueberries",
+			"netQuantity": 277,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "9.77 oz (277 g)",
+			"synonyms": [
+				"blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2527655,
+			"sourceProductCode": "0850022543043",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 599,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 4,
+				"observedFrom": "2026-03-12",
+				"observedTo": "2026-09-19",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 339842,
+					"productCode": "0850022543043",
+					"priceMinor": 666,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": true,
+					"locationId": 4834,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 332801,
+					"productCode": "0850022543043",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-09-19",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 332407,
+					"productCode": "0850022543043",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-09-05",
+					"isDiscounted": false,
+					"locationId": 5442,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 306647,
+					"productCode": "0850022543043",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-08-08",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 243984,
+					"productCode": "0850022543043",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-03-12",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-mango-chunks-op-3823301",
+			"barcode": "0873668004709",
+			"displayName": "Organic Mango Chunks",
+			"brand": "Nature’s Touch",
+			"category": "FROZEN",
+			"variantGroup": "frozen-mango",
+			"netQuantity": 2267,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "79.97 oz (2,267 g)",
+			"synonyms": [
+				"frozen mango",
+				"mango chunks"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3823301,
+			"sourceProductCode": "0873668004709",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 999,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 5,
+				"observedFrom": "2026-04-17",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 339848,
+					"productCode": "0873668004709",
+					"priceMinor": 1039,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 293809,
+					"productCode": "0873668004709",
+					"priceMinor": 999,
+					"currency": "USD",
+					"observedOn": "2026-07-16",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 288590,
+					"productCode": "0873668004709",
+					"priceMinor": 999,
+					"currency": "USD",
+					"observedOn": "2026-06-23",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 278999,
+					"productCode": "0873668004709",
+					"priceMinor": 999,
+					"currency": "USD",
+					"observedOn": "2026-05-27",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 266722,
+					"productCode": "0873668004709",
+					"priceMinor": 999,
+					"currency": "USD",
+					"observedOn": "2026-04-17",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "regenerative-organic-blueberries-op-4175613",
+			"barcode": "0850065016023",
+			"displayName": "Organic Blueberries",
+			"brand": "Pitaya Foods",
+			"category": "FROZEN",
+			"variantGroup": "frozen-blueberries",
+			"netQuantity": 340,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"frozen blueberries",
+				"organic blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 4175613,
+			"sourceProductCode": "0850065016023",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341804,
+					"productCode": "0850065016023",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4393,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-bananas-op-2071835",
+			"barcode": "7861193000047",
+			"displayName": "Organic Bananas",
+			"brand": "One",
+			"category": "PRODUCE",
+			"variantGroup": "bananas",
+			"netQuantity": 1360,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "47.97 oz (1,360 g)",
+			"synonyms": [
+				"bananas",
+				"organic bananas"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2071835,
+			"sourceProductCode": "7861193000047",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 249,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-07-16",
+				"observedTo": "2026-09-25",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 335799,
+					"productCode": "7861193000047",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-09-25",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 293815,
+					"productCode": "7861193000047",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-07-16",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-blueberries-op-1749988",
+			"barcode": "0096619140466",
+			"displayName": "Organic Blueberries",
+			"brand": "Kirkland",
+			"category": "FROZEN",
+			"variantGroup": "frozen-blueberries",
+			"netQuantity": 1360,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "47.97 oz (1,360 g)",
+			"synonyms": [
+				"frozen blueberries",
+				"organic blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1749988,
+			"sourceProductCode": "0096619140466",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 899,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-25",
+				"observedTo": "2026-09-25",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 335797,
+					"productCode": "0096619140466",
+					"priceMinor": 899,
+					"currency": "USD",
+					"observedOn": "2026-09-25",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "sweetest-batch-blueberries-op-1495979",
+			"barcode": "0715756500178",
+			"displayName": "Sweetest Batch Blueberries",
+			"brand": "Driscoll's",
+			"category": "PRODUCE",
+			"variantGroup": "blueberries",
+			"netQuantity": 311,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "10.97 oz (311 g)",
+			"synonyms": [
+				"blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1495979,
+			"sourceProductCode": "0715756500178",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-30",
+				"observedTo": "2026-08-30",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 324912,
+					"productCode": "0715756500178",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-08-30",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "strawberries-op-1803783",
+			"barcode": "0715756200221",
+			"displayName": "Strawberries",
+			"brand": "Driscoll's",
+			"category": "PRODUCE",
+			"variantGroup": "strawberries",
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"strawberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1803783,
+			"sourceProductCode": "0715756200221",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 799,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-12",
+				"observedTo": "2026-08-12",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 311022,
+					"productCode": "0715756200221",
+					"priceMinor": 799,
+					"currency": "USD",
+					"observedOn": "2026-08-12",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-blueberries-op-2152751",
+			"barcode": "0096619140497",
+			"displayName": "Organic Blueberries",
+			"brand": "KIRKLAND Signature",
+			"category": "FROZEN",
+			"variantGroup": "frozen-blueberries",
+			"netQuantity": 1360,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "47.97 oz (1,360 g)",
+			"synonyms": [
+				"frozen blueberries",
+				"organic blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2152751,
+			"sourceProductCode": "0096619140497",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 889,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2026-04-23",
+				"observedTo": "2026-08-07",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 305035,
+					"productCode": "0096619140497",
+					"priceMinor": 889,
+					"currency": "USD",
+					"observedOn": "2026-08-07",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 274827,
+					"productCode": "0096619140497",
+					"priceMinor": 889,
+					"currency": "USD",
+					"observedOn": "2026-05-15",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 268725,
+					"productCode": "0096619140497",
+					"priceMinor": 889,
+					"currency": "USD",
+					"observedOn": "2026-04-23",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "bananas-3-lb-bag-30669-op-706374",
+			"barcode": "0717524611109",
+			"displayName": "Bananas",
+			"brand": "Delmonte Bag 30669",
+			"category": "PRODUCE",
+			"variantGroup": "bananas",
+			"netQuantity": 1360,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "47.97 oz (1,360 g)",
+			"synonyms": [
+				"bananas"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 706374,
+			"sourceProductCode": "0717524611109",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-05-26",
+				"observedTo": "2026-08-02",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 303555,
+					"productCode": "0717524611109",
+					"priceMinor": 199,
+					"currency": "USD",
+					"observedOn": "2026-08-02",
+					"isDiscounted": false,
+					"locationId": 4532,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 278060,
+					"productCode": "0717524611109",
+					"priceMinor": 199,
+					"currency": "USD",
+					"observedOn": "2026-05-26",
+					"isDiscounted": false,
+					"locationId": 6088,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-strawberries-op-2075389",
+			"barcode": "0096619081417",
+			"displayName": "Organic Strawberries",
+			"brand": "Kirkland",
+			"category": "FROZEN",
+			"variantGroup": "frozen-strawberries",
+			"netQuantity": 1814,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "63.99 oz (1,814 g)",
+			"synonyms": [
+				"frozen strawberries",
+				"organic strawberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2075389,
+			"sourceProductCode": "0096619081417",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1199,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2026-03-23",
+				"observedTo": "2026-06-23",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 288584,
+					"productCode": "0096619081417",
+					"priceMinor": 1199,
+					"currency": "USD",
+					"observedOn": "2026-06-23",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 264496,
+					"productCode": "0096619081417",
+					"priceMinor": 1199,
+					"currency": "USD",
+					"observedOn": "2026-04-10",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 249922,
+					"productCode": "0096619081417",
+					"priceMinor": 1199,
+					"currency": "USD",
+					"observedOn": "2026-03-23",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "wild-blueberries-op-4036696",
+			"barcode": "0196633860330",
+			"displayName": "Wild Blueberries",
+			"brand": "Kirkland Signature",
+			"category": "FROZEN",
+			"variantGroup": "frozen-wild-blueberries",
+			"netQuantity": 2267,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "79.97 oz (2,267 g)",
+			"synonyms": [
+				"frozen blueberries",
+				"wild blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 4036696,
+			"sourceProductCode": "0196633860330",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-05-27",
+				"observedTo": "2026-05-27",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 279000,
+					"productCode": "0196633860330",
+					"priceMinor": 1299,
+					"currency": "USD",
+					"observedOn": "2026-05-27",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "blackberry-organic-op-2457206",
+			"barcode": "0715756100286",
+			"displayName": "Organic Blackberries",
+			"brand": "Driscoll's",
+			"category": "PRODUCE",
+			"variantGroup": "blackberries",
+			"netQuantity": 510,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "17.99 oz (510 g)",
+			"synonyms": [
+				"blackberries",
+				"organic blackberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2457206,
+			"sourceProductCode": "0715756100286",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 899,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-05-22",
+				"observedTo": "2026-05-22",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 277955,
+					"productCode": "0715756100286",
+					"priceMinor": 899,
+					"currency": "USD",
+					"observedOn": "2026-05-22",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-blueberries-op-2152000",
+			"barcode": "0671704000155",
+			"displayName": "Organic Blueberries",
+			"brand": null,
+			"category": "PRODUCE",
+			"variantGroup": "blueberries",
+			"netQuantity": 510,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "17.99 oz (510 g)",
+			"synonyms": [
+				"blueberries",
+				"organic blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2152000,
+			"sourceProductCode": "0671704000155",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 799,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-05-21",
+				"observedTo": "2026-05-21",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 277100,
+					"productCode": "0671704000155",
+					"priceMinor": 799,
+					"currency": "USD",
+					"observedOn": "2026-05-21",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "certified-organic-bananas-op-1651824",
+			"barcode": "0643126971962",
+			"displayName": "Organic Bananas",
+			"brand": "Dole",
+			"category": "PRODUCE",
+			"variantGroup": "bananas",
+			"netQuantity": 1360,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "47.97 oz (1,360 g)",
+			"synonyms": [
+				"bananas",
+				"organic bananas"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1651824,
+			"sourceProductCode": "0643126971962",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 249,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 4,
+				"observedFrom": "2026-04-10",
+				"observedTo": "2026-05-21",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 277095,
+					"productCode": "0643126971962",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-05-21",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 274824,
+					"productCode": "0643126971962",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-05-15",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 266721,
+					"productCode": "0643126971962",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-04-17",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 264501,
+					"productCode": "0643126971962",
+					"priceMinor": 150,
+					"currency": "USD",
+					"observedOn": "2026-04-10",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-blackberries-op-4207575",
+			"barcode": "0761635202053",
+			"displayName": "Organic Blackberries",
+			"brand": "GreenBelle",
+			"category": "PRODUCE",
+			"variantGroup": "blackberries",
+			"netQuantity": 340,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"blackberries",
+				"organic blackberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 4207575,
+			"sourceProductCode": "0761635202053",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 489,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-03-20",
+				"observedTo": "2026-05-21",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 277098,
+					"productCode": "0761635202053",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-05-21",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 248981,
+					"productCode": "0761635202053",
+					"priceMinor": 579,
+					"currency": "USD",
+					"observedOn": "2026-03-20",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "zespri-organic-sungold-kiwifruit-op-1853431",
+			"barcode": "0818849020109",
+			"displayName": "Organic SunGold Kiwifruit",
+			"brand": "Zespri",
+			"category": "PRODUCE",
+			"variantGroup": "kiwifruit",
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"kiwi",
+				"kiwifruit"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1853431,
+			"sourceProductCode": "0818849020109",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-05-15",
+				"observedTo": "2026-05-15",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 274818,
+					"productCode": "0818849020109",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-05-15",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-raspberries-op-152912",
+			"barcode": "0715756100040",
+			"displayName": "Organic Raspberries",
+			"brand": "Driscoll's",
+			"category": "PRODUCE",
+			"variantGroup": "raspberries",
+			"netQuantity": 170,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "6 oz (170 g)",
+			"synonyms": [
+				"raspberries",
+				"organic raspberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 152912,
+			"sourceProductCode": "0715756100040",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 449,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-04-05",
+				"observedTo": "2026-04-05",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 261001,
+					"productCode": "0715756100040",
+					"priceMinor": 449,
+					"currency": "USD",
+					"observedOn": "2026-04-05",
+					"isDiscounted": false,
+					"locationId": 4758,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 244957,
+					"productCode": "0715756100040",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-03-15",
+					"isDiscounted": true,
+					"locationId": 4058,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "raspberries-op-1413218",
+			"barcode": "0715756100156",
+			"displayName": "Raspberries",
+			"brand": "Driscoll's",
+			"category": "PRODUCE",
+			"variantGroup": "raspberries",
+			"netQuantity": 340,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"raspberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1413218,
+			"sourceProductCode": "0715756100156",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 849,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-04-02",
+				"observedTo": "2026-04-02",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 266210,
+					"productCode": "0715756100156",
+					"priceMinor": 849,
+					"currency": "USD",
+					"observedOn": "2026-04-02",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "strawberries-op-2259908",
+			"barcode": "0740075000047",
+			"displayName": "Strawberries",
+			"brand": null,
+			"category": "PRODUCE",
+			"variantGroup": "strawberries",
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"strawberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2259908,
+			"sourceProductCode": "0740075000047",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-04-02",
+				"observedTo": "2026-04-02",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 266209,
+					"productCode": "0740075000047",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-04-02",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "framboises-op-152911",
+			"barcode": "0715756100033",
+			"displayName": "Raspberries",
+			"brand": "Driscoll's",
+			"category": "PRODUCE",
+			"variantGroup": "raspberries",
+			"netQuantity": 340,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"raspberries",
+				"framboises"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 152911,
+			"sourceProductCode": "0715756100033",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-04-02",
+				"observedTo": "2026-04-02",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 266211,
+					"productCode": "0715756100033",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-04-02",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "mandarinas-op-71174",
+			"barcode": "0054107221011",
+			"displayName": "Mandarins",
+			"brand": "Sun Pacific",
+			"category": "PRODUCE",
+			"variantGroup": "mandarins",
+			"netQuantity": 1360,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "47.97 oz (1,360 g)",
+			"synonyms": [
+				"mandarins",
+				"mandarin oranges",
+				"mandarinas"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 71174,
+			"sourceProductCode": "0054107221011",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-03-14",
+				"observedTo": "2026-03-27",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 259054,
+					"productCode": "0054107221011",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-03-27",
+					"isDiscounted": false,
+					"locationId": 5142,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 244320,
+					"productCode": "0054107221011",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-03-14",
+					"isDiscounted": false,
+					"locationId": 5505,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "pitted-dates-op-119321",
+			"barcode": "0099482434267",
+			"displayName": "Pitted Dates",
+			"brand": "365 Whole Foods Market",
+			"category": "PRODUCE",
+			"variantGroup": "pitted-dates",
+			"netQuantity": 226,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "7.97 oz (226 g)",
+			"synonyms": [
+				"dates",
+				"pitted dates"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 119321,
+			"sourceProductCode": "0099482434267",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 529,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-26",
+				"observedTo": "2026-03-26",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 252502,
+					"productCode": "0099482434267",
+					"priceMinor": 529,
+					"currency": "USD",
+					"observedOn": "2026-03-26",
+					"isDiscounted": false,
+					"locationId": 4058,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "medjool-dates-op-3454474",
+			"barcode": "0097923002365",
+			"displayName": "Medjool Dates",
+			"brand": "Natural Delights",
+			"category": "PRODUCE",
+			"variantGroup": "medjool-dates",
+			"netQuantity": 680,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"dates",
+				"medjool dates"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3454474,
+			"sourceProductCode": "0097923002365",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-25",
+				"observedTo": "2026-03-25",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 252249,
+					"productCode": "0097923002365",
+					"priceMinor": 1199,
+					"currency": "USD",
+					"observedOn": "2026-03-25",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "medjool-dates-op-3268315",
+			"barcode": "0097923002082",
+			"displayName": "Medjool Dates",
+			"brand": "Natural Delights",
+			"category": "PRODUCE",
+			"variantGroup": "medjool-dates",
+			"netQuantity": 2268,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "80 oz (2,268 g)",
+			"synonyms": [
+				"dates",
+				"medjool dates"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3268315,
+			"sourceProductCode": "0097923002082",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 2599,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-25",
+				"observedTo": "2026-03-25",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 252237,
+					"productCode": "0097923002082",
+					"priceMinor": 2599,
+					"currency": "USD",
+					"observedOn": "2026-03-25",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "premium-pitted-organic-dates-deglet-no-op-1427501",
+			"barcode": "0089257084254",
+			"displayName": "Organic Pitted Deglet Noor Dates",
+			"brand": "DESERT VALLEY DATE",
+			"category": "PRODUCE",
+			"variantGroup": "pitted-deglet-noor-dates",
+			"netQuantity": 1133,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "39.97 oz (1,133 g)",
+			"synonyms": [
+				"dates",
+				"pitted dates",
+				"deglet noor dates"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1427501,
+			"sourceProductCode": "0089257084254",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 799,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-25",
+				"observedTo": "2026-03-25",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 252245,
+					"productCode": "0089257084254",
+					"priceMinor": 799,
+					"currency": "USD",
+					"observedOn": "2026-03-25",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "blueberries-organic-op-2920199",
+			"barcode": "0860001841084",
+			"displayName": "Organic Blueberries",
+			"brand": "Twin River",
+			"category": "PRODUCE",
+			"variantGroup": "blueberries",
+			"netQuantity": 510,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "17.99 oz (510 g)",
+			"synonyms": [
+				"blueberries",
+				"organic blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2920199,
+			"sourceProductCode": "0860001841084",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-20",
+				"observedTo": "2026-03-20",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 248980,
+					"productCode": "0860001841084",
+					"priceMinor": 1299,
+					"currency": "USD",
+					"observedOn": "2026-03-20",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-blueberries-op-1845137",
+			"barcode": "0665290051387",
+			"displayName": "Organic Blueberries",
+			"brand": null,
+			"category": "PRODUCE",
+			"variantGroup": "blueberries",
+			"netQuantity": 510,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "17.99 oz (510 g)",
+			"synonyms": [
+				"blueberries",
+				"organic blueberries"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1845137,
+			"sourceProductCode": "0665290051387",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-15",
+				"observedTo": "2026-03-15",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 244964,
+					"productCode": "0665290051387",
+					"priceMinor": 1299,
+					"currency": "USD",
+					"observedOn": "2026-03-15",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-whole-milk-kids-op-3909559",
+			"barcode": "4061462228520",
+			"displayName": "Organic Whole Milk",
+			"brand": "Simply Nature",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "whole-milk",
+			"netQuantity": 1750,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "59.17 fl oz (1.75 L)",
+			"synonyms": [
+				"whole milk",
+				"organic whole milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3909559,
+			"sourceProductCode": "4061462228520",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 519,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-06",
+				"observedTo": "2026-10-06",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341734,
+					"productCode": "4061462228520",
+					"priceMinor": 519,
+					"currency": "USD",
+					"observedOn": "2026-10-06",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "1-low-fat-milk-op-1748979",
+			"barcode": "0041190467211",
+			"displayName": "1% Low-Fat Milk",
+			"brand": "Bowl & Basket",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "milk-1-percent",
+			"netQuantity": 1892,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.98 fl oz (1.89 L)",
+			"synonyms": [
+				"1% milk",
+				"low fat milk",
+				"low-fat milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1748979,
+			"sourceProductCode": "0041190467211",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 249,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-09-13",
+				"observedTo": "2026-09-18",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332158,
+					"productCode": "0041190467211",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-09-18",
+					"isDiscounted": false,
+					"locationId": 5085,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 330753,
+					"productCode": "0041190467211",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-09-13",
+					"isDiscounted": false,
+					"locationId": 4805,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-fat-free-milk-op-160541",
+			"barcode": "0742365264054",
+			"displayName": "Organic Fat-Free Milk",
+			"brand": "Horizon Organic",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "fat-free-milk",
+			"netQuantity": 1890,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.91 fl oz (1.89 L)",
+			"synonyms": [
+				"fat free milk",
+				"skim milk",
+				"organic skim milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 160541,
+			"sourceProductCode": "0742365264054",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 824,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-16",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 331578,
+					"productCode": "0742365264054",
+					"priceMinor": 799,
+					"currency": "USD",
+					"observedOn": "2026-09-16",
+					"isDiscounted": false,
+					"locationId": 7292,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 332744,
+					"productCode": "0742365264054",
+					"priceMinor": 849,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "whole-ultra-filtered-milk-op-171718",
+			"barcode": "0811620020169",
+			"displayName": "Whole Ultra-Filtered Milk",
+			"brand": "fairlife",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "ultra-filtered-whole-milk",
+			"netQuantity": 1537,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "51.97 fl oz (1.54 L)",
+			"synonyms": [
+				"whole milk",
+				"ultra-filtered milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 171718,
+			"sourceProductCode": "0811620020169",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 539,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 331372,
+					"productCode": "0811620020169",
+					"priceMinor": 539,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7282,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "almondmilk-op-25284",
+			"barcode": "0025293001497",
+			"displayName": "Almond Milk",
+			"brand": "Silk",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "almond-milk",
+			"netQuantity": 1892,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.98 fl oz (1.89 L)",
+			"synonyms": [
+				"almond milk",
+				"almondmilk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 25284,
+			"sourceProductCode": "0025293001497",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 338100,
+					"productCode": "0025293001497",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "reduced-fat-milk-op-1203745",
+			"barcode": "0052159012045",
+			"displayName": "Reduced-Fat Milk",
+			"brand": "Stonyfield Organic",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "reduced-fat-milk",
+			"netQuantity": 1890,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.91 fl oz (1.89 L)",
+			"synonyms": [
+				"reduced fat milk",
+				"reduced-fat milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1203745,
+			"sourceProductCode": "0052159012045",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 749,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332746,
+					"productCode": "0052159012045",
+					"priceMinor": 749,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "whole-milk-op-2651380",
+			"barcode": "0093966009989",
+			"displayName": "Whole Milk",
+			"brand": "Organic Valley",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "whole-milk",
+			"netQuantity": 1890,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.91 fl oz (1.89 L)",
+			"synonyms": [
+				"whole milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2651380,
+			"sourceProductCode": "0093966009989",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 999,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332729,
+					"productCode": "0093966009989",
+					"priceMinor": 999,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "almond-breeze-almondmilk-unsweetened-o-op-56778",
+			"barcode": "0041570054130",
+			"displayName": "Unsweetened Original Almond Milk",
+			"brand": "Almond Breeze",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "unsweetened-almond-milk",
+			"netQuantity": 946,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "31.99 fl oz (946 mL)",
+			"synonyms": [
+				"almond milk",
+				"unsweetened almond milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 56778,
+			"sourceProductCode": "0041570054130",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 229,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2026-06-25",
+				"observedTo": "2026-09-05",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 326010,
+					"productCode": "0041570054130",
+					"priceMinor": 229,
+					"currency": "USD",
+					"observedOn": "2026-09-05",
+					"isDiscounted": false,
+					"locationId": 5442,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 301001,
+					"productCode": "0041570054130",
+					"priceMinor": 229,
+					"currency": "USD",
+					"observedOn": "2026-07-29",
+					"isDiscounted": false,
+					"locationId": 5142,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 289886,
+					"productCode": "0041570054130",
+					"priceMinor": 339,
+					"currency": "USD",
+					"observedOn": "2026-06-25",
+					"isDiscounted": false,
+					"locationId": 6348,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "reduced-fat-milk-2-milkfat-op-1488577",
+			"barcode": "0096619000012",
+			"displayName": "2% Reduced-Fat Milk",
+			"brand": "KIRKLAND Signature",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "milk-2-percent",
+			"netQuantity": 3785,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "127.99 fl oz (3.79 L)",
+			"synonyms": [
+				"2% milk",
+				"reduced fat milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1488577,
+			"sourceProductCode": "0096619000012",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 737,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 4,
+				"observedFrom": "2026-03-09",
+				"observedTo": "2026-08-07",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 305033,
+					"productCode": "0096619000012",
+					"priceMinor": 719,
+					"currency": "USD",
+					"observedOn": "2026-08-07",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 292800,
+					"productCode": "0096619000012",
+					"priceMinor": 755,
+					"currency": "USD",
+					"observedOn": "2026-07-05",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 282211,
+					"productCode": "0096619000012",
+					"priceMinor": 829,
+					"currency": "USD",
+					"observedOn": "2026-06-05",
+					"isDiscounted": false,
+					"locationId": 4065,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 242071,
+					"productCode": "0096619000012",
+					"priceMinor": 600,
+					"currency": "USD",
+					"observedOn": "2026-03-09",
+					"isDiscounted": false,
+					"locationId": 5471,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-2-milkfat-reduced-fat-milk-op-1770888",
+			"barcode": "00901512",
+			"displayName": "Organic 2% Reduced-Fat Milk",
+			"brand": "Trader Joe's",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "milk-2-percent",
+			"netQuantity": 1892,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.98 fl oz (1.89 L)",
+			"synonyms": [
+				"2% milk",
+				"organic 2% milk",
+				"reduced fat milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1770888,
+			"sourceProductCode": "00901512",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 399,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 7,
+				"observedFrom": "2026-03-05",
+				"observedTo": "2026-05-24",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 277945,
+					"productCode": "00901512",
+					"priceMinor": 429,
+					"currency": "USD",
+					"observedOn": "2026-05-24",
+					"isDiscounted": false,
+					"locationId": 4758,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 277950,
+					"productCode": "00901512",
+					"priceMinor": 429,
+					"currency": "USD",
+					"observedOn": "2026-05-22",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 274811,
+					"productCode": "00901512",
+					"priceMinor": 429,
+					"currency": "USD",
+					"observedOn": "2026-05-15",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 271065,
+					"productCode": "00901512",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-04-25",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 261005,
+					"productCode": "00901512",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-04-05",
+					"isDiscounted": false,
+					"locationId": 4758,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 256539,
+					"productCode": "00901512",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-03-29",
+					"isDiscounted": false,
+					"locationId": 5588,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 239181,
+					"productCode": "00901512",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-03-05",
+					"isDiscounted": false,
+					"locationId": 5442,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "fat-free-milk-op-1696385",
+			"barcode": "0096619000128",
+			"displayName": "Fat-Free Milk",
+			"brand": "Kirkland",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "fat-free-milk",
+			"netQuantity": 3785,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "127.99 fl oz (3.79 L)",
+			"synonyms": [
+				"fat free milk",
+				"skim milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1696385,
+			"sourceProductCode": "0096619000128",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 669,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-05-21",
+				"observedTo": "2026-05-21",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 277086,
+					"productCode": "0096619000128",
+					"priceMinor": 669,
+					"currency": "USD",
+					"observedOn": "2026-05-21",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "reduced-fat-milk-op-20386",
+			"barcode": "0021130070114",
+			"displayName": "Reduced-Fat Milk",
+			"brand": "Lucerne",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "reduced-fat-milk",
+			"netQuantity": 1892,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.98 fl oz (1.89 L)",
+			"synonyms": [
+				"reduced fat milk",
+				"reduced-fat milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 20386,
+			"sourceProductCode": "0021130070114",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 399,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-05-01",
+				"observedTo": "2026-05-01",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 271058,
+					"productCode": "0021130070114",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-05-01",
+					"isDiscounted": false,
+					"locationId": 5032,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "almondmilk-op-56792",
+			"barcode": "0041570056707",
+			"displayName": "Almond Milk",
+			"brand": "Blue Diamond",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "almond-milk",
+			"netQuantity": 1890,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.91 fl oz (1.89 L)",
+			"synonyms": [
+				"almond milk",
+				"almondmilk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 56792,
+			"sourceProductCode": "0041570056707",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 429,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-04-05",
+				"observedTo": "2026-04-05",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 260987,
+					"productCode": "0041570056707",
+					"priceMinor": 429,
+					"currency": "USD",
+					"observedOn": "2026-04-05",
+					"isDiscounted": false,
+					"locationId": 5206,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "1-lowfat-milk-op-62017",
+			"barcode": "0044100102523",
+			"displayName": "1% Low-Fat Milk",
+			"brand": "Hood",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "milk-1-percent",
+			"netQuantity": 1892,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "63.98 fl oz (1.89 L)",
+			"synonyms": [
+				"1% milk",
+				"low fat milk",
+				"low-fat milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 62017,
+			"sourceProductCode": "0044100102523",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 259,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-31",
+				"observedTo": "2026-03-31",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 257604,
+					"productCode": "0044100102523",
+					"priceMinor": 259,
+					"currency": "USD",
+					"observedOn": "2026-03-31",
+					"isDiscounted": false,
+					"locationId": 4844,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "1-lowfat-milk-op-112348",
+			"barcode": "0085239284070",
+			"displayName": "1% Low-Fat Milk",
+			"brand": "Market Pantry",
+			"category": "DAIRY_EGGS",
+			"variantGroup": "milk-1-percent",
+			"netQuantity": 3785,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "127.99 fl oz (3.79 L)",
+			"synonyms": [
+				"1% milk",
+				"low fat milk",
+				"low-fat milk"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 112348,
+			"sourceProductCode": "0085239284070",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-03-31",
+				"observedTo": "2026-03-31",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 257611,
+					"productCode": "0085239284070",
+					"priceMinor": 299,
+					"currency": "USD",
+					"observedOn": "2026-03-31",
+					"isDiscounted": false,
+					"locationId": 4844,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "seedtastic-jam-packed-with-seeds-bread-op-1852419",
+			"barcode": "4099100253108",
+			"displayName": "Seedtastic Seed Bread",
+			"brand": "Simply Nature",
+			"category": "BAKERY",
+			"variantGroup": "seed-bread",
+			"netQuantity": 765,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "26.98 oz (765 g)",
+			"synonyms": [
+				"bread",
+				"seed bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1852419,
+			"sourceProductCode": "4099100253108",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 419,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 340940,
+					"productCode": "4099100253108",
+					"priceMinor": 419,
+					"currency": "USD",
+					"observedOn": "2026-10-04",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "flour-tortillas-op-1822949",
+			"barcode": "4099100016031",
+			"displayName": "Flour Tortillas",
+			"brand": "PUEBLO LINDO",
+			"category": "BAKERY",
+			"variantGroup": "flour-tortillas",
+			"netQuantity": 566,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "19.97 oz (566 g)",
+			"synonyms": [
+				"tortillas",
+				"flour tortillas"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1822949,
+			"sourceProductCode": "4099100016031",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 209,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 340941,
+					"productCode": "4099100016031",
+					"priceMinor": 209,
+					"currency": "USD",
+					"observedOn": "2026-10-04",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "whole-wheat-bread-op-1003404",
+			"barcode": "00642200",
+			"displayName": "Whole Wheat Bread",
+			"brand": "Trader Joe's",
+			"category": "BAKERY",
+			"variantGroup": "whole-wheat-bread",
+			"netQuantity": 623,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "21.98 oz (623 g)",
+			"synonyms": [
+				"bread",
+				"whole wheat bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1003404,
+			"sourceProductCode": "00642200",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 249,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 339772,
+					"productCode": "00642200",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 7497,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "the-big-16-op-71889",
+			"barcode": "0055991040160",
+			"displayName": "The Big 16 Bread",
+			"brand": "Silver Hills",
+			"category": "BAKERY",
+			"variantGroup": "the-big-16-bread",
+			"netQuantity": 615,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "21.69 oz (615 g)",
+			"synonyms": [
+				"bread",
+				"the big 16"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 71889,
+			"sourceProductCode": "0055991040160",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 619,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-07-28",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341129,
+					"productCode": "0055991040160",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": true,
+					"locationId": 4393,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 335425,
+					"productCode": "0055991040160",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 300687,
+					"productCode": "0055991040160",
+					"priceMinor": 639,
+					"currency": "USD",
+					"observedOn": "2026-07-28",
+					"isDiscounted": false,
+					"locationId": 4117,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "thin-sliced-organic-bread-sprouted-who-op-1077402",
+			"barcode": "0013764028074",
+			"displayName": "Thin-Sliced Organic Sprouted Whole Grain Bread",
+			"brand": "Killer Bread",
+			"category": "BAKERY",
+			"variantGroup": "sprouted-whole-grain-bread",
+			"netQuantity": 581,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "20.49 oz (581 g)",
+			"synonyms": [
+				"bread",
+				"sprouted bread",
+				"whole grain bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1077402,
+			"sourceProductCode": "0013764028074",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 779,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341130,
+					"productCode": "0013764028074",
+					"priceMinor": 779,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4393,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-bread-good-seed-thin-sliced-op-13638",
+			"barcode": "0013764027121",
+			"displayName": "Thin-Sliced Organic Good Seed Bread",
+			"brand": "DAVE'S KILLER BREAD",
+			"category": "BAKERY",
+			"variantGroup": "good-seed-bread",
+			"netQuantity": 581,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "20.49 oz (581 g)",
+			"synonyms": [
+				"bread",
+				"seed bread",
+				"good seed bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 13638,
+			"sourceProductCode": "0013764027121",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 714,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-07-30",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-09T10:51:15Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341132,
+					"productCode": "0013764027121",
+					"priceMinor": 779,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4393,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 332354,
+					"productCode": "0013764027121",
+					"priceMinor": 549,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": true,
+					"locationId": 7283,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 303269,
+					"productCode": "0013764027121",
+					"priceMinor": 649,
+					"currency": "USD",
+					"observedOn": "2026-07-30",
+					"isDiscounted": false,
+					"locationId": 4190,
+					"locationCountryCode": "US"
+				}
+			]
+		}
+	]
 }
