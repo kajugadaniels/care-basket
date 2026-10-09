@@ -6,7 +6,8 @@ describe("restricted shopping home", () => {
     render(<ShopHome profile={{ displayName: "Rose", avatarKey: "flower" }} />);
     expect(screen.getByRole("heading", { name: "Hello, Rose!" })).toBeInTheDocument();
     expect(screen.getByText(/review every shopping request/)).toBeInTheDocument();
-    expect(screen.queryAllByRole("button")).toHaveLength(0); expect(screen.getByText(/coming next/)).toBeInTheDocument();
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+		expect(screen.getByRole("link", { name: "Start my shopping list" })).toHaveAttribute("href", "/shop/assistant");
 		expect(screen.getByRole("link", { name: "Look at Groceries" })).toHaveAttribute("href", "/shop/products");
   });
   it("shows only a reconnect action without leaking the previous profile", () => {
