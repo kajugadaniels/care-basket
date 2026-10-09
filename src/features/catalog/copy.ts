@@ -13,6 +13,7 @@ export const catalogCopy = {
 	clear: "Show All",
 	more: "More Groceries",
 	first: "Back to First Groceries",
+	previous: "Previous Groceries",
 	loading: "Loading groceries…",
 	empty: "There are no groceries to look at yet.",
 	emptyHelp: "Ask your family member to help you.",
