@@ -50,7 +50,10 @@ export function BasketReview() {
 		{draft.items.length ? <>
 			<ul className={styles.list}>{draft.items.map((item) => <li key={item.sku} className={styles.panel}>
 				<RequestItem product={item}>
+					{item.origin === "SUGGESTED" ? <p>{requestsCopy.origins.SUGGESTED}</p> : null}
+					{item.isSubstitute ? <p>{requestsCopy.substitute}</p> : null}
 					<QuantityControl name={item.displayName} quantity={item.quantity} disabled={locked}
+						maxQuantity={item.origin === "SUGGESTED" ? 6 : 20}
 						onChange={(quantity) => change({ type: "quantity", sku: item.sku, quantity })} />
 					<Button variant="secondary" disabled={locked} aria-label={`${requestsCopy.remove}: ${item.displayName}`}
 						onClick={() => change({ type: "remove", sku: item.sku })}>{requestsCopy.remove}</Button>
