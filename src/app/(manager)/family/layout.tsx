@@ -4,6 +4,7 @@ import { Brand } from "@/components/layout/Brand/Brand";
 import { Container } from "@/components/layout/Container/Container";
 import { SkipLink } from "@/components/ui/SkipLink/SkipLink";
 import { FamilyNav } from "@/features/family/components/FamilyNav/FamilyNav";
+import { FamilyNavMenu } from "@/features/family/components/FamilyNavMenu/FamilyNavMenu";
 import { familyLayoutCopy } from "@/features/family/copy";
 import { userButtonAppearance } from "@/lib/clerk/appearance";
 import styles from "./layout.module.css";
@@ -26,8 +27,9 @@ export default function FamilyLayout({ children }: Readonly<{ children: ReactNod
         </Container>
       </header>
       <Container className={styles.body}>
-        {/* Dynamic profile IDs make usePathname suspend during prerendering. */}
-        <Suspense fallback={<nav aria-label={familyLayoutCopy.navLabel} />}>
+        {/* Dynamic profile IDs make usePathname suspend during prerendering. The fallback is
+            the same menu without a current item, so the links are usable from the first paint. */}
+        <Suspense fallback={<FamilyNavMenu />}>
           <FamilyNav />
         </Suspense>
         <main id="family-main" tabIndex={-1} className={styles.main}>
