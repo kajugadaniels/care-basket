@@ -56,3 +56,13 @@ export function getServerEnv(): ServerEnv {
   cachedEnv = result.data;
   return cachedEnv;
 }
+
+export function getCatalogEnv() {
+	const result = z.strictObject({
+		CATALOG_USER_AGENT: z.string().max(200).regex(/^CareBasket\/\d+\.\d+\.\d+ \([^\s()@]+@[^\s()@]+\.[^\s()@]+\)$/),
+	}).safeParse({ CATALOG_USER_AGENT: process.env.CATALOG_USER_AGENT });
+	if (!result.success) {
+		throw new Error("Set CATALOG_USER_AGENT to CareBasket/<version> (<contact email>) before running catalog discovery.");
+	}
+	return result.data;
+}
