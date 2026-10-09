@@ -67,7 +67,7 @@ export function CreateFamilyForm({ defaultDisplayName }: CreateFamilyFormProps) 
       />
 
       {/* Disabled only while sending, so a double press cannot submit twice. */}
-      <Button type="submit" disabled={isPending} aria-busy={isPending} className={styles.submit}>
+      <Button type="submit" loading={isPending} className={styles.submit}>
         {isPending ? familySetupCopy.submitting : familySetupCopy.submit}
       </Button>
     </form>
