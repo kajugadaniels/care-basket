@@ -48,7 +48,7 @@ export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDt
     <p ref={statusRef} tabIndex={-1} role="status" className={styles.status}>{message}</p>
     {hasError || completionError ? <p role="alert" className={styles.error}>{completionError ?? devicesCopy.network}</p> : null}
     {hasError && status === "PENDING" ? <Button className={styles.action} onClick={() => setRetryKey((n) => n + 1)}>{devicesCopy.retry}</Button> : null}
-    {completionError && status === "APPROVED" ? <Button className={styles.action} disabled={isCompleting} aria-busy={isCompleting}
+    {completionError && status === "APPROVED" ? <Button className={styles.action} loading={isCompleting}
       onClick={() => { attempted.current = false; setCompletionRetry((n) => n + 1); }}>{devicesCopy.retry}</Button> : null}
     {status === "COMPLETED" ? <ActionLink size="lg" href="/shop">{devicesCopy.open}</ActionLink> : null}
     {["EXPIRED", "REJECTED", "COMPLETED"].includes(status) || completionError ?
