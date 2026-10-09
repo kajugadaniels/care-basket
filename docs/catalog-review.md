@@ -1,18 +1,20 @@
 # Catalog review — 2026-10-09
 
-Status: **draft only; no products or prices have been approved.**
+Status: **the 50 selected products and listed demo prices have been approved for the initial seed; 31 products remain on hold.**
+
+The developer requested “Implement that next” after the confirmation question about these 50 products and prices, category placeholders, and disabled child visibility. This was treated as approval of that specific subset. Approval was recorded at `2026-10-09T10:51:15Z`. Database seeding has not been performed by the agent.
 
 Source: the developer-generated `.catalog-output/candidates.us.json` report dated 2026-10-09.
 Product data and the tables below are derived from Open Prices / Open Food Facts contributors and are offered under **ODbL 1.0**. See [catalog licensing](../.agents/catalog.md#10-licensing-and-attribution).
 
 ## Files and approval boundary
 
-- Prepared draft: [curated-draft.us.json](../.catalog-output/curated-draft.us.json), kept local in the git-ignored report directory.
-- Seed input: [catalog.us.json](../prisma/catalog/catalog.us.json), unchanged and still empty.
+- Original review draft: `.catalog-output/curated-draft.us.json`, kept local in the git-ignored report directory; it remains unapproved historical working data.
+- Approved seed input: [catalog.us.json](../prisma/catalog/catalog.us.json), now populated with the 50 selected products.
 - Contract: [curated-schema.ts](../src/features/catalog/server/curated-schema.ts).
 - Policy: [catalog.md](../.agents/catalog.md).
 
-The draft resembles the seed contract, but intentionally has `demoPrice.approved: false` and `demoPrice.approvedAt: null`. It is **not valid seed input** until the developer reviews and approves the selected entries. The seed validator has not been weakened. Do not commit the candidate report or the local draft.
+The original draft retains `demoPrice.approved: false` and `demoPrice.approvedAt: null` and is **not valid seed input**. The seed file has `approved: true` and the recorded approval timestamp for the selected 50 products. The seed validator has not been weakened. Do not commit the candidate report or the local draft.
 
 ## Review results
 
@@ -22,25 +24,25 @@ The selected draft contains 23 produce products, 6 frozen products, 15 dairy/mil
 
 The discovery report counted 620 observations skipped at the candidate cap. It filled candidate slots before all categories could contribute, so increasing page count alone may not resolve the skew. A future category-balanced discovery change is separate work; this review does not modify the importer.
 
-Eight selected demo-price suggestions have an `OBSERVED_MEDIAN` basis (at least three observations); 42 have an `OBSERVED_LIMITED` basis (one or two). These are historical suggestions, not live retailer prices or approved checkout prices.
+Eight approved demo prices have an `OBSERVED_MEDIAN` basis (at least three observations); 42 have an `OBSERVED_LIMITED` basis (one or two). The suggested amounts were accepted unchanged as demo checkout prices. Their evidence remains historical, not live retailer pricing.
 
 ## Draft decisions
 
 - Preserve all source IDs, barcodes, verified observations, quantities, size labels, and suggested-price derivations exactly from the report.
 - Preserve existing suggested SKUs so name cleanup does not silently change product identity.
 - Simplify capitalization and wording; translate “Framboises” to “Raspberries” and “Mandarinas” to “Mandarins”, retaining the original words as synonyms.
-- Propose semantic variant groups and lowercase search synonyms. These still need human review; milk fat levels, fresh versus frozen products, and bread varieties remain separate groups.
+- Use the reviewed draft's semantic variant groups and lowercase search synonyms; milk fat levels, fresh versus frozen products, and bread varieties remain separate groups.
 - Keep recorded brands rather than inventing replacements.
 - Leave `isChildSuitable: false` for every entry until explicitly reviewed. This is conservative visibility, not a finding that every item is unsafe.
 - Set `image: null` for every entry. Existing source image candidates have not been downloaded, inspected, or attributed as local assets. The current UI can use category placeholders; this would not satisfy a photo-complete catalog milestone.
 - Do not fabricate manual prices, approval dates, source observations, quantities, or missing product coverage.
 - Keep raw evidence separate from pricing: discounted observations are retained as provenance but were not included in the suggested median.
 
-## Selected products — awaiting approval
+## Selected products — approved initial subset
 
-Prices below are **proposals for CareBasket Demo Market**, not current retailer prices. Observation counts are the counts used for each suggestion, not all source observations.
+Prices below are **approved demo prices for CareBasket Demo Market**, not current retailer prices. Observation counts are the counts used for each derivation, not all source observations.
 
-| Source product ID | Proposed display name | Recorded brand | Recorded package size | Suggested demo price | Pricing observations |
+| Source product ID | Approved display name | Recorded brand | Recorded package size | Approved demo price | Pricing observations |
 | --- | --- | --- | --- | --- | --- |
 | 4238179 | Shine Muscat | Not recorded | 21.16 oz (600 g) | $12.99 | 1 |
 | 3484519 | Kiwi Berries | Little pranksters | 15.98 oz (453 g) | $5.99 | 2 |
@@ -131,9 +133,9 @@ None of these entries is included in the draft. A hold is not a permanent reject
 | 92135 | Cinnamon Toast | No eligible non-discounted price suggestion; requires developer-set MANUAL_DEMO price or additional verified evidence. |
 | 3272905 | Flour Tortillas | No eligible non-discounted price suggestion; requires developer-set MANUAL_DEMO price or additional verified evidence. |
 
-## Developer approval checklist
+## Approval scope and future additions
 
-Before approving any subset:
+The developer approved the selected subset with category placeholders, unchanged listed prices, and child visibility disabled. The earlier draft checklist remains guidance for any future addition or correction; approval is not a claim that the agent independently inspected package labels or product photos.
 
 - [ ] Confirm each product's identity, full package quantity, category, display name, brand, and proposed variant group.
 - [ ] Review synonyms so searches do not conflate milk-fat levels, fresh/frozen forms, or different bread varieties.
@@ -142,19 +144,19 @@ Before approving any subset:
 - [ ] Accept category placeholders for now, or download and review the permitted licensed images, add matching local image metadata, and update `public/products/ATTRIBUTION.md`.
 - [ ] Decide whether to seed this smaller four-category subset first or complete category coverage before seeding.
 
-After explicit approval, copy **only the approved products** into `prisma/catalog/catalog.us.json`. Each accepted price needs `approved: true` and the actual approval time in `approvedAt` (ISO 8601, with timezone). Do not automatically set every entry to approved.
+The selected 50 products have been copied into `prisma/catalog/catalog.us.json`. The 31 held products were not copied or approved. Future additions require their own explicit approval and actual ISO 8601 approval time; do not blanket-approve candidate reports.
 
 If approving at a later date, re-evaluate the 24-month observation window. For an observed basis, the stored amount, count, and date range must match the evidence at approval time. If the developer chooses a different price, use `MANUAL_DEMO` and set `observationCount`, `observedFrom`, and `observedTo` to null while preserving U.S. verification evidence.
 
 ## Commands after approval
 
-The agent did not run tests, schema validation, seeding, migrations, or source requests. Existing schema tests can be run manually:
+The agent did not run tests, schema validation, seeding, migrations, or source requests. The schema test now covers the populated committed catalog and independently retains the empty-catalog rejection test. Run it manually:
 
 ```bash
 npx vitest run src/features/catalog/server/curated-schema.test.ts
 ```
 
-Only after the reviewed seed file has approved entries:
+After the schema tests pass, seed the populated approved catalog:
 
 ```bash
 npx prisma db seed --config prisma7.config.ts
