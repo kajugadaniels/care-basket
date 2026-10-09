@@ -8,6 +8,8 @@ const mocks = vi.hoisted(() => ({ requireAdult: vi.fn(), get: vi.fn(), family: v
 vi.mock("@/server/auth/require-adult", () => ({ requireAdult: mocks.requireAdult }));
 vi.mock("@/features/profiles/server/service", () => ({ getManagedProfile: mocks.get }));
 vi.mock("@/features/family/server/service", () => ({ getFamilyOverview: mocks.family }));
+vi.mock("@/features/assistant/server/service", () => ({ getAiPreference: vi.fn(async () => ({ enabled: false, available: false })) }));
+vi.mock("@/features/assistant/actions", () => ({ updateAiPreferenceAction: vi.fn() }));
 vi.mock("@/features/profiles/actions", () => ({ createManagedProfileAction: vi.fn(), updateManagedProfileAction: vi.fn(), deleteManagedProfileAction: vi.fn() }));
 vi.mock("next/navigation", () => ({ notFound: mocks.notFound }));
 import MemberPage from "./page";
