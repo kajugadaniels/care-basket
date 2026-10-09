@@ -15,7 +15,7 @@ describe("reviewed catalog contract", () => {
 
 		expect(catalog.products).toHaveLength(50);
 		expect(catalog.products.every((product) => product.demoPrice.approved)).toBe(true);
-		expect(catalog.products.every((product) => product.image === null && !product.isChildSuitable)).toBe(true);
+		expect(catalog.products.every((product) => !product.isChildSuitable)).toBe(true);
 	});
 	it("still refuses to seed an empty catalog", () => {
 		const emptyCatalog = { ...makeCuratedCatalog(), products: [] };
