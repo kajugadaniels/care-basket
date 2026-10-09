@@ -1,3 +1,46 @@
-.form { display: grid; gap: var(--space-5); max-inline-size: var(--reading-max); }
-.field > label, .field > p { font-size: var(--text-base); }
-.error { color: var(--color-danger); padding: var(--space-4); background: var(--color-danger-bg); border-radius: var(--radius-md); }
+.form {
+	display: grid;
+	gap: var(--space-5);
+	max-inline-size: var(--reading-max);
+}
+
+.field > label,
+.field > p {
+	font-size: var(--text-base);
+}
+
+.error {
+	padding: var(--space-4);
+	border-radius: var(--radius-md);
+	background: var(--color-danger-bg);
+	color: var(--color-danger);
+}
+
+/* Full width on phones for an easy target. */
+.submit,
+.submitSkeleton {
+	inline-size: 100%;
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+@media (min-width: 40rem) {
+	.submit {
+		justify-self: start;
+		inline-size: auto;
+	}
+
+	.submitSkeleton {
+		inline-size: 10rem;
+	}
+}
