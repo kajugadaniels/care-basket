@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
 	requireAdult: vi.fn(),
 	getFamilyOverview: vi.fn(),
 	countManagedProfiles: vi.fn(),
+	countWaitingRequests: vi.fn(),
 }));
 
 vi.mock("@/server/auth/require-adult", () => ({ requireAdult: mocks.requireAdult }));
@@ -13,6 +14,7 @@ vi.mock("@/features/family/server/service", () => ({
 	getFamilyOverview: mocks.getFamilyOverview,
 }));
 vi.mock("@/features/profiles/server/service", () => ({ countManagedProfiles: mocks.countManagedProfiles }));
+vi.mock("@/features/requests/server/service", () => ({ countWaitingRequests: mocks.countWaitingRequests }));
 
 import FamilyPage from "./page";
 import FamilyLoading from "./loading";
@@ -30,6 +32,8 @@ describe("FamilyPage", () => {
 		mocks.getFamilyOverview.mockReset();
 		mocks.countManagedProfiles.mockReset();
 		mocks.countManagedProfiles.mockResolvedValue(0);
+		mocks.countWaitingRequests.mockReset();
+		mocks.countWaitingRequests.mockResolvedValue(0);
 	});
 
 	it("reads the session only inside the streamed overview section", () => {
@@ -84,7 +88,7 @@ describe("FamilyPage", () => {
 
 		expect(screen.queryAllByRole("button")).toHaveLength(0);
 		expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
-		expect(screen.getAllByText("Coming soon")).toHaveLength(2);
+		expect(screen.getAllByText("Coming soon")).toHaveLength(1);
 		expect(screen.queryByText("Create your family")).not.toBeInTheDocument();
 	});
 
@@ -98,6 +102,15 @@ describe("FamilyPage", () => {
 		expect(mocks.countManagedProfiles).toHaveBeenCalledWith(actor);
 		expect(screen.getByText(`Your family has ${count} ${count === 1 ? "member" : "members"}.`)).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "View Family Members" })).toHaveAttribute("href", "/family/members");
+	});
+	it("shows the authenticated family's real pending request count", async () => {
+		mocks.requireAdult.mockResolvedValue(actor);
+		mocks.getFamilyOverview.mockResolvedValue(overview);
+		mocks.countWaitingRequests.mockResolvedValue(3);
+		await renderPage();
+		expect(mocks.countWaitingRequests).toHaveBeenCalledWith(actor);
+		expect(screen.getByText("3 requests waiting for review")).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Shopping requests" })).toHaveAttribute("href", "/family/requests");
 	});
 });
 
