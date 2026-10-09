@@ -86,6 +86,21 @@
 	inline-size: 100%;
 }
 
+/* Shared panel, with larger readable labels and controls on requester screens. */
+.requesterToolbar .label {
+	font-size: var(--text-md);
+}
+
+.requesterToolbar .input {
+	min-block-size: var(--control-height-lg);
+	font-family: var(--font-readable);
+	font-size: var(--text-lg);
+}
+
+.requesterToolbar .submitSkeleton {
+	block-size: var(--control-height-lg);
+}
+
 /* Count, active filters, and "Show All". The minimum height matches the small button. */
 .resultsBar {
 	display: flex;
