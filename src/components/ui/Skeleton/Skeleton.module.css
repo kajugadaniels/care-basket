@@ -1,0 +1,46 @@
+/*
+ * Static placeholders: performance.md § 9 rules out looping decorative animation.
+ * Shape defaults sit in :where() (zero specificity), so a caller's sizing class always wins
+ * whatever order the CSS Modules load in.
+ */
+:where(.skeleton) {
+	display: block;
+	max-inline-size: 100%;
+}
+
+.skeleton::before {
+	content: "";
+	display: block;
+	block-size: 100%;
+	border-radius: inherit;
+	background-color: color-mix(in srgb, var(--color-border) 70%, var(--color-surface));
+}
+
+/* One line box tall, with the bar inset like real glyphs, so lines stack like text. */
+:where(.text) {
+	block-size: calc(1em * var(--leading-body));
+	padding-block: 0.3em;
+	border-radius: var(--radius-sm);
+}
+
+:where(.heading) {
+	block-size: calc(1em * var(--leading-tight));
+	padding-block: 0.15em;
+	border-radius: var(--radius-sm);
+}
+
+:where(.box) {
+	border-radius: var(--radius-md);
+}
+
+:where(.pill) {
+	inline-size: 10rem;
+	block-size: var(--control-height);
+	border-radius: var(--radius-full);
+}
+
+@media (forced-colors: active) {
+	.skeleton::before {
+		border: 1px solid GrayText;
+	}
+}
