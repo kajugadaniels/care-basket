@@ -3,13 +3,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 type ProductWrite = { where: { sku: string }; create: Record<string, unknown>; update: Record<string, unknown> };
 type PriceWrite = { where: { productId_currency: { productId: string; currency: string } }; create: Record<string, unknown>; update: Record<string, unknown> };
+type TransactionOptions = { maxWait: number; timeout: number };
+type Transaction = (callback: (tx: unknown) => Promise<void>, options: TransactionOptions) => Promise<void>;
 const fake = vi.hoisted(() => {
 	const products = new Map<string, Record<string, unknown>>();
 	const prices = new Map<string, Record<string, unknown>>();
 	const productUpserts = vi.fn();
 	const priceUpserts = vi.fn();
 	const state = { failPrice: false };
-	const transaction = vi.fn(async (callback: (tx: unknown) => Promise<void>) => {
+	const transaction = vi.fn<Transaction>(async (callback) => {
 		const stagedProducts = new Map(products);
 		const stagedPrices = new Map(prices);
 		await callback({
@@ -49,6 +51,20 @@ import { makeCuratedCatalog } from "@/test/factories/catalog";
 describe("idempotent catalog writes", () => {
 	beforeEach(() => {
 		fake.products.clear(); fake.prices.clear(); fake.productUpserts.mockClear(); fake.priceUpserts.mockClear(); fake.state.failPrice = false;
+		fake.db.$transaction.mockClear();
+	});
+	it("uses bounded seed-only transaction budgets for each product", async () => {
+		const catalog = makeCuratedCatalog();
+		catalog.products.push({ ...catalog.products[0], sku: "another-demo-rice" });
+
+		await upsertCuratedProducts(catalog);
+
+		expect(fake.db.$transaction).toHaveBeenCalledTimes(2);
+		for (const [, options] of fake.db.$transaction.mock.calls) {
+			expect(options).toEqual({ maxWait: 15_000, timeout: 30_000 });
+		}
+		expect(fake.products.size).toBe(2);
+		expect(fake.prices.size).toBe(2);
 	});
 	it("upserts by SKU and price composite key without changing repeated seed state", async () => {
 		const catalog = makeCuratedCatalog();
