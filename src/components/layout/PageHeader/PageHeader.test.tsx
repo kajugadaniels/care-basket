@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import Link from "next/link";
 import { describe, expect, it } from "vitest";
 import { PageHeader } from "./PageHeader";
 
@@ -20,9 +21,14 @@ describe("PageHeader", () => {
 	});
 
 	it("renders page actions and omits the back link when none is given", () => {
-		render(<PageHeader title="Family Members" actions={<a href="/family/members/add">Add Family Member</a>} />);
+		render(
+			<PageHeader
+				title="Family Members"
+				actions={<Link href="/family/members/add">Add Family Member</Link>}
+			/>,
+		);
 
 		expect(screen.getAllByRole("link")).toHaveLength(1);
-		expect(screen.getByRole("link", { name: "Add Family Member" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
 	});
 });
