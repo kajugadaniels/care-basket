@@ -1,0 +1,94 @@
+.header {
+	display: grid;
+	gap: var(--space-4);
+	min-inline-size: 0;
+}
+
+.heading {
+	display: grid;
+	align-items: center;
+	gap: var(--space-2) var(--space-4);
+	min-inline-size: 0;
+}
+
+/* Back control and title share the first row; the description lines up under the title. */
+.withBack {
+	grid-template-columns: auto minmax(0, 1fr);
+}
+
+.withBack .description {
+	grid-column: 2;
+}
+
+.back {
+	display: inline-grid;
+	place-items: center;
+	inline-size: var(--control-height);
+	block-size: var(--control-height);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-full);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+	color: var(--color-primary);
+	transition:
+		background-color var(--duration-fast) var(--ease-standard),
+		border-color var(--duration-fast) var(--ease-standard),
+		transform var(--duration-fast) var(--ease-standard);
+}
+
+.back:active {
+	transform: scale(0.96);
+}
+
+.title {
+	font-size: var(--text-xl);
+	overflow-wrap: anywhere;
+}
+
+.description {
+	max-inline-size: var(--reading-max);
+	color: var(--color-text-muted);
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+@media (hover: hover) {
+	.back:hover {
+		border-color: var(--color-primary);
+		background-color: var(--color-surface-accent);
+		color: var(--color-primary-hover);
+	}
+}
+
+@media (min-width: 48rem) {
+	.title {
+		font-size: var(--text-2xl);
+	}
+
+	.withActions {
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+	}
+}
+
+@media (forced-colors: active) {
+	.back {
+		border-color: LinkText;
+	}
+}
