@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { TextField } from "@/components/ui/TextField/TextField";
 import { formatCountdown, formatDate, formatTime } from "@/lib/format";
 import { approvePairingAction, rejectPairingAction } from "../../actions";
@@ -18,7 +19,8 @@ export function ApprovalReview({ review, profiles, preselected }: {
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState<{ message: string; fieldErrors?: Record<string, string[] | undefined> } | null>(null);
   const [result, setResult] = useState<"approved" | "rejected" | null>(null);
-  const [isPending, setIsPending] = useState(false);
+  const [pendingDecision, setPendingDecision] = useState<"approve" | "reject" | null>(null);
+  const isPending = pendingDecision !== null;
   const [isExpired, setIsExpired] = useState(false);
   const [remaining, setRemaining] = useState<string | null>(null);
   const inFlight = useRef(false);
@@ -34,7 +36,7 @@ export function ApprovalReview({ review, profiles, preselected }: {
   }, [review.expiresAt]);
   async function decide(decision: "approve" | "reject") {
     if (inFlight.current) return;
-    inFlight.current = true; setIsPending(true); setError(null);
+    inFlight.current = true; setPendingDecision(decision); setError(null);
     try {
       const input = { pairingId: review.pairingId, reviewTicket: review.reviewTicket, expiresAt: review.expiresAt };
       const response = decision === "approve" ? await approvePairingAction({ ...input, profileId, label, confirmed })
@@ -42,7 +44,7 @@ export function ApprovalReview({ review, profiles, preselected }: {
       if (response.ok) { setResult(decision === "approve" ? "approved" : "rejected"); requestAnimationFrame(() => headingRef.current?.focus()); }
       else { setError(response.error); requestAnimationFrame(() => errorRef.current?.focus()); }
     } catch { setError({ message: devicesCopy.errors.INTERNAL }); requestAnimationFrame(() => errorRef.current?.focus()); }
-    finally { inFlight.current = false; setIsPending(false); }
+    finally { inFlight.current = false; setPendingDecision(null); }
   }
   return <section className={styles.review} aria-labelledby="review-title">
     <h2 ref={headingRef} id="review-title" tabIndex={-1}>{devicesCopy.reviewTitle}</h2>
@@ -69,13 +71,14 @@ export function ApprovalReview({ review, profiles, preselected }: {
           </div>
           <TextField name="label" className={styles.field} label={devicesCopy.label} hint={devicesCopy.labelHint} maxLength={40}
             value={label} onChange={(event) => setLabel(event.target.value)} error={error?.fieldErrors?.label?.[0]} />
-          <label className={styles.confirmation}><input type="checkbox" name="confirmed" checked={confirmed}
-            onChange={(event) => setConfirmed(event.target.checked)} aria-invalid={error?.fieldErrors?.confirmed ? true : undefined}
-            aria-describedby={error?.fieldErrors?.confirmed ? "approval-confirm-error" : undefined} />{devicesCopy.confirmation}</label>
-          {error?.fieldErrors?.confirmed ? <p id="approval-confirm-error" className={styles.error}>{devicesCopy.errors.confirm}</p> : null}
+          <Checkbox name="confirmed" label={devicesCopy.confirmation} checked={confirmed}
+            error={error?.fieldErrors?.confirmed ? devicesCopy.errors.confirm : undefined}
+            onChange={(event) => setConfirmed(event.target.checked)} />
           <div className={styles.actions}>
-            <Button type="submit" disabled={!confirmed || isPending || isExpired} aria-busy={isPending}>{isPending ? devicesCopy.busy : devicesCopy.approve}</Button>
-            <Button variant="secondary" disabled={isPending || isExpired} onClick={() => void decide("reject")}>{devicesCopy.reject}</Button>
+            <Button type="submit" disabled={!confirmed || isPending || isExpired} loading={pendingDecision === "approve"}>
+              {pendingDecision === "approve" ? devicesCopy.busy : devicesCopy.approve}</Button>
+            <Button variant="secondary" disabled={isPending || isExpired} loading={pendingDecision === "reject"}
+              onClick={() => void decide("reject")}>{pendingDecision === "reject" ? devicesCopy.busy : devicesCopy.reject}</Button>
           </div>
         </fieldset>
       </form>
