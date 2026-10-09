@@ -23,13 +23,13 @@ async function ProductsContent({ searchParams }: { searchParams: CatalogSearchPa
 	const parsed = parseCatalogSearchParams(await searchParams);
 	if (!parsed.success) throw new AppError("VALIDATION_FAILED");
 	const result = await listRequesterProducts(actor, parsed.data);
-	return <CatalogBrowser view="requester" filters={parsed.data} result={result} />;
+	return <CatalogBrowser filters={parsed.data} result={result} />;
 }
 
 export default function ProductsPage({ searchParams }: { searchParams: CatalogSearchParams }) {
 	return (
 		<RequesterFrame wide>
-			<Suspense fallback={<CatalogSkeleton requester />}><ProductsContent searchParams={searchParams} /></Suspense>
+			<Suspense fallback={<CatalogSkeleton />}><ProductsContent searchParams={searchParams} /></Suspense>
 		</RequesterFrame>
 	);
 }
