@@ -12,6 +12,7 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
+		seed: "node --conditions=react-server --import tsx prisma/seed.ts",
   },
   datasource: {
     // Neon's DIRECT (unpooled) connection: migrations need a session-level connection that the
