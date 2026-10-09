@@ -4,6 +4,7 @@ import { isUniqueConstraintViolation } from "@/server/db/errors";
 import { DEVICE_IDLE_MS, type DeviceActor } from "@/server/auth/device-policy";
 import { writeRequestEvent } from "@/server/audit/write-request-event";
 import { AppError } from "@/server/errors";
+import { verifyShoppingProposal } from "@/server/auth/shopping-proposal";
 import type { SubmitRequestInput } from "../schemas";
 import { basketSubtotal, databaseConflict, submissionFingerprint } from "./basket-policy";
 
@@ -16,6 +17,22 @@ export async function insertRequest(actor: DeviceActor, input: SubmitRequestInpu
 	if (existing) {
 		if (existing.submissionHash !== submissionHash) throw new AppError("CONFLICT");
 		return { requestId: existing.id };
+	}
+	if (actor.profileKind === "CHILD" && (input.inputMode === "VOICE" || input.budgetMinor !== undefined
+		|| input.items.some((item) => item.origin === "SUGGESTED" || item.isSubstitute))) throw new AppError("FORBIDDEN");
+	if (input.inputMode === "VOICE") {
+		if (!input.sourceProof) throw new AppError("VALIDATION_FAILED");
+		const claim = verifyShoppingProposal(actor, input.sourceProof);
+		if (claim.inputMode !== "VOICE" || claim.inputText !== input.inputText) throw new AppError("VALIDATION_FAILED");
+	}
+	if (input.items.filter((item) => item.origin === "SUGGESTED").length > 12) throw new AppError("VALIDATION_FAILED");
+	for (const item of input.items) {
+		if (item.origin !== "SUGGESTED" && !item.isSubstitute && !item.substitutionNote) continue;
+		if (!item.proof) throw new AppError("VALIDATION_FAILED");
+		const claim = verifyShoppingProposal(actor, item.proof);
+		if (!claim.items.some((entry) => entry.sku === item.sku && entry.origin === (item.origin ?? "REQUESTED")
+			&& entry.isSubstitute === (item.isSubstitute ?? false) && entry.substitutionNote === (item.substitutionNote ?? null))) throw new AppError("VALIDATION_FAILED");
+		if (item.origin === "SUGGESTED" && item.quantity > 6) throw new AppError("VALIDATION_FAILED");
 	}
 	try {
 		return await db.$transaction(async (tx) => {
@@ -42,12 +59,15 @@ export async function insertRequest(actor: DeviceActor, input: SubmitRequestInpu
 				if (!product || !price || price.currency !== "USD" || !Number.isInteger(price.priceMinor)
 					|| price.priceMinor <= 0 || price.approvedAt > now) throw new AppError("VALIDATION_FAILED");
 				return { productId: product.id, quantity: item.quantity, unitPriceMinor: price.priceMinor,
-					origin: "REQUESTED" as const, isSubstitute: false };
+					origin: item.origin ?? "REQUESTED", isSubstitute: item.isSubstitute ?? false,
+					...(item.substitutionNote ? { substitutionNote: item.substitutionNote } : {}) };
 			});
 			const subtotalMinor = basketSubtotal(items);
 			const request = await tx.shoppingRequest.create({
 				data: { familyId: actor.familyId, profileId: actor.profileId, deviceId: actor.deviceId,
-					clientRequestKey: input.clientRequestKey, submissionHash, inputMode: "PICTURES",
+					clientRequestKey: input.clientRequestKey, submissionHash, inputMode: input.inputMode,
+					...(input.inputText ? { inputText: input.inputText } : {}),
+					...(input.budgetMinor !== undefined ? { budgetMinor: input.budgetMinor } : {}),
 					status: "PENDING_REVIEW", fulfillmentStatus: "NOT_STARTED", submittedAt: now }, select: { id: true },
 			});
 			// Explicit creation keeps both composite request/family FK scalars server-owned.
