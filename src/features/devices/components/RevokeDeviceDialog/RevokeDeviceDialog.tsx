@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
+import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { revokeDeviceAction } from "../../actions";
 import { devicesCopy } from "../../copy";
 import styles from "./RevokeDeviceDialog.module.css";
@@ -48,11 +49,11 @@ export function RevokeDeviceDialog({ deviceId, label }: { deviceId: string; labe
         <h2 id={`${id}-title`}>{devicesCopy.revokeTitle(label)}</h2>
         <p id={`${id}-description`}>{devicesCopy.revokeText}</p>
         {error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
-        <label className={styles.confirmation}><input type="checkbox" checked={confirmed} disabled={isPending}
-          onChange={(event) => setConfirmed(event.target.checked)} />{devicesCopy.revokeConfirm}</label>
+        <Checkbox label={devicesCopy.revokeConfirm} checked={confirmed} disabled={isPending}
+          onChange={(event) => setConfirmed(event.target.checked)} />
         <div className={styles.actions}>
           <Button ref={cancelRef} variant="secondary" onClick={() => dialogRef.current?.close()}>{devicesCopy.cancel}</Button>
-          <Button type="submit" variant="destructive" disabled={!confirmed || isPending} aria-busy={isPending}>
+          <Button type="submit" variant="destructive" disabled={!confirmed} loading={isPending}>
             {isPending ? devicesCopy.busy : devicesCopy.revoke}</Button>
         </div>
       </form>
