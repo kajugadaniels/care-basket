@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import Link from "next/link";
 import { describe, expect, it } from "vitest";
 import { PageHeader } from "./PageHeader";
+import styles from "./PageHeader.module.css";
 
 describe("PageHeader", () => {
 	it("pairs a labelled back link with the page title", () => {
@@ -30,5 +31,15 @@ describe("PageHeader", () => {
 
 		expect(screen.getAllByRole("link")).toHaveLength(1);
 		expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
+		expect(screen.getByRole("banner")).toHaveClass(styles.withActions);
+	});
+
+	it.each([undefined, null, false, "", 0, BigInt(0)])("omits the action layout for falsy actions: %s", (actions) => {
+		render(<PageHeader title="Family Members" actions={actions} />);
+
+		const header = screen.getByRole("banner");
+		expect(header).not.toHaveClass(styles.withActions);
+		expect(header.querySelector(`.${styles.actions}`)).not.toBeInTheDocument();
+		expect(header).toHaveTextContent(/^Family Members$/);
 	});
 });
