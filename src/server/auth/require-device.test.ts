@@ -21,7 +21,8 @@ describe("restricted device actor", () => {
     expect(fake.io.mock.invocationCallOrder[0]).toBeLessThan(fake.session.mock.invocationCallOrder[0]);
     expect(actor).not.toHaveProperty("role"); expect(actor).not.toHaveProperty("userId");
     expect(() => assertDevicePermission(actor, "view-own-home")).not.toThrow();
-    expect(() => assertDevicePermission(actor, "create-own-request")).toThrow("FORBIDDEN");
+    expect(() => assertDevicePermission(actor, "create-own-request")).not.toThrow();
+    expect(() => assertDevicePermission(actor, "view-own-requests")).not.toThrow();
     expect(fake.update).not.toHaveBeenCalled();
   });
   it("rejects every invalid resolved session without touching activity", async () => {
