@@ -1,5 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it, vi } from "vitest";
+import { createHash } from "node:crypto";
 import { requestIds } from "@/test/factories/requests";
 vi.mock("server-only", () => ({}));
 import { basketSubtotal, submissionFingerprint } from "./basket-policy";
@@ -25,5 +26,21 @@ describe("basket integer invariants", () => {
 		expect(submissionFingerprint({ ...input, items: [...input.items].reverse() })).toBe(hash);
 		expect(submissionFingerprint({ ...input, items: [{ sku: "demo-milk", quantity: 1 }] })).not.toBe(hash);
 		expect(hash).toMatch(/^[a-f0-9]{64}$/);
+	});
+	it("fingerprints immutable assistant fields, excluding expiring authorization evidence", () => {
+		const input = { clientRequestKey: requestIds.key, inputMode: "TEXT" as const, inputText: "milk", budgetMinor: 2000,
+			budgetConfirmed: true as const, sourceProof: "old-proof", items: [{ sku: "demo-milk", quantity: 1, origin: "SUGGESTED" as const, proof: "old-proof" }] };
+		const hash = submissionFingerprint(input);
+		expect(submissionFingerprint({ ...input, sourceProof: "new-proof", items: [{ ...input.items[0], proof: "new-proof" }] })).toBe(hash);
+		expect(submissionFingerprint({ ...input, inputText: "bread" })).not.toBe(hash);
+		expect(submissionFingerprint({ ...input, budgetMinor: 1000 })).not.toBe(hash);
+		expect(submissionFingerprint({ ...input, items: [{ ...input.items[0], origin: "REQUESTED" }] })).not.toBe(hash);
+		expect(submissionFingerprint({ ...input, items: [{ ...input.items[0], isSubstitute: true, substitutionNote: "Different size" }] })).not.toBe(hash);
+	});
+	it("keeps existing Step 7 picture fingerprints compatible", () => {
+		const input = { clientRequestKey: requestIds.key, inputMode: "PICTURES" as const, items: [{ sku: "demo-milk", quantity: 2 }] };
+		const oldHash = createHash("sha256").update(JSON.stringify({ inputMode: "PICTURES", items: input.items })).digest("hex");
+		expect(submissionFingerprint(input)).toBe(oldHash);
+		expect(submissionFingerprint({ ...input, items: [{ ...input.items[0], origin: "REQUESTED" }] })).toBe(oldHash);
 	});
 });
