@@ -72,9 +72,13 @@ describe("atomic shopping submission", () => {
 		await expect(insertRequest(requester, input)).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
 		expect(committed).toEqual([]); expect(fake.create).not.toHaveBeenCalled();
 	});
-	it.each([[], [{ currency: "EUR", priceMinor: 250, approvedAt: requestNow }],
-		[{ currency: "USD", priceMinor: 0, approvedAt: requestNow }], [{ currency: "USD", priceMinor: 3.49, approvedAt: requestNow }],
-		[{ currency: "USD", priceMinor: 250, approvedAt: new Date("2099-01-01") }]])("refuses invalid demo price %j", async (demoPrices) => {
+	it.each([
+		{ demoPrices: [] },
+		{ demoPrices: [{ currency: "EUR", priceMinor: 250, approvedAt: requestNow }] },
+		{ demoPrices: [{ currency: "USD", priceMinor: 0, approvedAt: requestNow }] },
+		{ demoPrices: [{ currency: "USD", priceMinor: 3.49, approvedAt: requestNow }] },
+		{ demoPrices: [{ currency: "USD", priceMinor: 250, approvedAt: new Date("2099-01-01") }] },
+	])("refuses invalid demo price $demoPrices", async ({ demoPrices }) => {
 		fake.products.mockResolvedValue([{ id: requestIds.other, sku: "demo-milk", demoPrices }]);
 		await expect(insertRequest(requester, input)).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
 		expect(committed).toEqual([]);
