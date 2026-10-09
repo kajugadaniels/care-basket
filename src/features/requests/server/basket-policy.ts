@@ -5,8 +5,18 @@ import { MAX_ITEM_QUANTITY, MAX_MONEY_MINOR, MAX_REQUEST_ITEMS } from "../limits
 import type { SubmitRequestInput } from "../schemas";
 
 export function submissionFingerprint(input: SubmitRequestInput): string {
-	const items = input.items.map(({ sku, quantity }) => ({ sku, quantity })).sort((a, b) => a.sku.localeCompare(b.sku));
-	return createHash("sha256").update(JSON.stringify({ inputMode: input.inputMode, items })).digest("hex");
+	const items = input.items.map(({ sku, quantity, origin, isSubstitute, substitutionNote }) => ({ sku, quantity,
+		origin: origin ?? "REQUESTED", isSubstitute: isSubstitute ?? false, substitutionNote: substitutionNote ?? null }))
+		.sort((a, b) => a.sku.localeCompare(b.sku));
+	// Preserve Step 7 hashes so an in-flight picture request can still retry after rollout.
+	if (input.inputMode === "PICTURES" && !input.inputText && input.budgetMinor === undefined
+		&& items.every((item) => item.origin === "REQUESTED" && !item.isSubstitute && !item.substitutionNote)) {
+		return createHash("sha256").update(JSON.stringify({ inputMode: input.inputMode,
+			items: items.map(({ sku, quantity }) => ({ sku, quantity })) })).digest("hex");
+	}
+	// Expiring signatures are authorization evidence, not immutable request material.
+	return createHash("sha256").update(JSON.stringify({ inputMode: input.inputMode, inputText: input.inputText ?? null,
+		budgetMinor: input.budgetMinor ?? null, items })).digest("hex");
 }
 
 export function basketSubtotal(items: readonly { quantity: number; unitPriceMinor: number }[]): number {
