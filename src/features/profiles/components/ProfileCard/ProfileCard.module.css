@@ -13,3 +13,13 @@
 .name { font-size: var(--text-lg); overflow-wrap: anywhere; }
 .kind { margin-block-start: var(--space-2); color: var(--color-text-muted); }
 .action { justify-self: start; }
+
+/* ProfileCardSkeleton: the avatar matches ProfileAvatar; widths are typical name and label lengths. */
+.avatarSkeleton {
+  inline-size: var(--control-height-lg);
+  block-size: var(--control-height-lg);
+  border-radius: var(--radius-lg);
+}
+.nameSkeleton { inline-size: min(9rem, 70%); }
+.kindSkeleton { inline-size: min(7rem, 55%); }
+.actionSkeleton { inline-size: 8.5rem; }
