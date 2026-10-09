@@ -183,3 +183,91 @@ model RateLimitCounter {
   @@id([key, windowStart])
   @@index([expiresAt])
 }
+
+enum ProductCategory {
+	PRODUCE
+	DAIRY_EGGS
+	BAKERY
+	PANTRY
+	BREAKFAST
+	MEAT_SEAFOOD
+	FROZEN
+	SNACKS
+	BEVERAGES
+	HOUSEHOLD
+	PERSONAL_CARE
+}
+
+enum QuantityUnit {
+	GRAM
+	MILLILITER
+	COUNT
+}
+
+enum CatalogSource {
+	OPEN_PRICES
+	CAREBASKET_CURATED
+}
+
+enum PriceBasis {
+	OBSERVED_MEDIAN
+	OBSERVED_LIMITED
+	MANUAL_DEMO
+}
+
+/// Shared, curated data; not owned by a family. Archive products rather than deleting them.
+model CatalogProduct {
+	id String @id @default(uuid(7)) @db.Uuid
+	sku String @unique @db.VarChar(60)
+	barcode String? @unique @db.VarChar(14)
+	displayName String @db.VarChar(60)
+	brand String? @db.VarChar(60)
+	category ProductCategory
+	variantGroup String @db.VarChar(60)
+	netQuantity Int
+	netQuantityUnit QuantityUnit
+	sizeLabel String @db.VarChar(40)
+	synonyms String[]
+	imagePath String? @db.VarChar(200)
+	imageSourceUrl String? @db.VarChar(300)
+	imageProductUrl String? @db.VarChar(300)
+	imageLicense String? @db.VarChar(40)
+	imageAttribution String? @db.VarChar(120)
+	source CatalogSource
+	sourceProductId Int? @unique
+	sourceProductCode String? @db.VarChar(14)
+	sourceSystem String? @db.VarChar(10)
+	sourceLicense String @db.VarChar(40)
+	isActive Boolean @default(true)
+	isChildSuitable Boolean @default(false)
+	archivedAt DateTime? @db.Timestamptz(3)
+	createdAt DateTime @default(now()) @db.Timestamptz(3)
+	updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+	demoPrices DemoMerchantPrice[]
+
+	@@index([isActive, archivedAt, id])
+	@@index([category, isActive, archivedAt, id])
+	@@index([isChildSuitable, isActive, archivedAt, id])
+	@@index([variantGroup])
+	@@index([synonyms], type: Gin)
+}
+
+/// Historical source observations never become authoritative without explicit human approval.
+model DemoMerchantPrice {
+	id String @id @default(uuid(7)) @db.Uuid
+	productId String @db.Uuid
+	currency String @db.Char(3)
+	priceMinor Int
+	basis PriceBasis
+	observationCount Int?
+	observedFrom DateTime? @db.Date
+	observedTo DateTime? @db.Date
+	approvedAt DateTime @db.Timestamptz(3)
+	createdAt DateTime @default(now()) @db.Timestamptz(3)
+	updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+	product CatalogProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+	@@unique([productId, currency])
+}
