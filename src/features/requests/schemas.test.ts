@@ -11,11 +11,19 @@ describe("shopping request inputs", () => {
 	it.each([0, -1, 21, 1.5, "2", null, NaN, Infinity])("rejects quantity %s", (quantity) => {
 		expect(submitRequestSchema.safeParse({ ...input, items: [{ sku: "demo-milk", quantity }] }).success).toBe(false);
 	});
-	it.each(["TEXT", "VOICE", "PAID"])("keeps unfinished mode %s disabled", (inputMode) => {
+	it.each(["TEXT", "VOICE", "PAID"])("rejects unsupported or incomplete mode %s", (inputMode) => {
 		expect(submitRequestSchema.safeParse({ ...input, inputMode }).success).toBe(false);
 	});
-	it.each(["familyId", "profileId", "deviceId", "status", "budgetMinor", "priceMinor", "inputText"])("rejects client field %s", (field) => {
+	it.each(["familyId", "profileId", "deviceId", "status", "budgetMinor", "priceMinor"])("rejects client field %s", (field) => {
 		expect(submitRequestSchema.safeParse({ ...input, [field]: "untrusted" }).success).toBe(false);
+	});
+	it.each(["TEXT", "VOICE"])("accepts a complete %s request without client prices", (inputMode) => {
+		expect(submitRequestSchema.safeParse({ ...input, inputMode, inputText: "milk" }).success).toBe(true);
+	});
+	it("requires deliberate budget confirmation and bounds text", () => {
+		expect(submitRequestSchema.safeParse({ ...input, budgetMinor: 2000 }).success).toBe(false);
+		expect(submitRequestSchema.safeParse({ ...input, budgetMinor: 2000, budgetConfirmed: true }).success).toBe(true);
+		expect(submitRequestSchema.safeParse({ ...input, inputMode: "TEXT", inputText: "a".repeat(501) }).success).toBe(false);
 	});
 	it("rejects empty, excessive, duplicate and enriched item payloads", () => {
 		for (const items of [[], Array.from({ length: 31 }, (_, i) => ({ sku: `demo-${i}`, quantity: 1 })),
