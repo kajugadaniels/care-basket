@@ -45,6 +45,9 @@ async function main() {
 		await unlink(temporary).catch(() => undefined);
 	}
 	console.info(`Discovery finished: ${report.counts.verifiedProducts} candidate products require review. Report: .catalog-output/candidates.us.json. No database writes or price approvals.`);
+	for (const entry of report.coverage) {
+		console.info(`${entry.category}: ${entry.candidates} candidates, ${entry.imageCandidates} possible photos (not yet reviewed).`);
+	}
 }
 
 main().catch((error: unknown) => {
