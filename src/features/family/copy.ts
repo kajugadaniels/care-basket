@@ -20,6 +20,7 @@ export const familySetupCopy = {
   displayNameHint: "What your family calls you. For example, Jane",
   submit: "Create My Family",
   submitting: "Creating your family…",
+  loading: "Loading the family setup form…",
   reassurance:
     "That's all we need for now. Next, you can add the people you shop for.",
 } as const;
@@ -38,6 +39,7 @@ export const familyDashboardCopy = {
     `Your family has ${count} ${new Intl.PluralRules("en-US").select(count) === "one" ? "member" : "members"}.`,
   addMember: "Add Family Member",
   viewMembers: "View Family Members",
+  loading: "Loading your family…",
 } as const;
 
 export const setupPreviewCopy = {
