@@ -39,9 +39,25 @@ describe("catalog actor boundaries", () => {
 	});
 	it("handles empty results and unavailable storage without falling back to observations", async () => {
 		mocks.page.mockResolvedValue([]);
-		expect(await listRequesterProducts(device, {})).toEqual({ products: [], nextCursor: null });
+		expect(await listRequesterProducts(device, {})).toEqual({ products: [], nextCursor: null, previousCursor: null });
 		mocks.page.mockRejectedValue(new Error("database unavailable"));
 		await expect(listManagerProducts(adult, {})).rejects.toThrow();
+	});
+	it("reverses backward results after removing lookahead and provides both boundaries", async () => {
+		const middle = { ...row, id: "019a1234-0000-7000-8000-000000000002", sku: "middle" };
+		const last = { ...row, id: "019a1234-0000-7000-8000-000000000003", sku: "last" };
+		mocks.page.mockResolvedValue([last, middle, row]);
+		const result = await listRequesterProducts(device, { before: "019a1234-0000-7000-8000-000000000004", limit: 2 });
+		expect(result.products.map((product) => product.sku)).toEqual(["middle", "last"]);
+		expect(result).toMatchObject({ previousCursor: middle.id, nextCursor: last.id });
+	});
+	it("omits Previous on the earliest backward page and permits recovery from empty windows", async () => {
+		mocks.page.mockResolvedValue([row]);
+		const boundary = "019a1234-0000-7000-8000-000000000004";
+		expect(await listRequesterProducts(device, { before: boundary })).toMatchObject({ previousCursor: null, nextCursor: row.id });
+		mocks.page.mockResolvedValue([]);
+		expect(await listRequesterProducts(device, { cursor: boundary })).toMatchObject({ previousCursor: boundary, nextCursor: null });
+		expect(await listRequesterProducts(device, { before: boundary })).toMatchObject({ previousCursor: null, nextCursor: boundary });
 	});
 	it("applies the same suitability and not-found rules to individual lookups", async () => {
 		await getRequesterProduct(device, "example-rice");
