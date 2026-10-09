@@ -25,7 +25,7 @@ const BASE = "/shop/products";
 // Same catalog panel as the manager area, without prices or manager-only data.
 export function CatalogBrowser({ filters, result, selectable = false, child = false }: Props) {
 	const hasFilters = Boolean(filters.q || filters.category);
-	const hasPagination = Boolean(result.nextCursor || filters.cursor);
+	const hasPagination = Boolean(result.nextCursor || result.previousCursor || filters.cursor || filters.before);
 
 	return (
 		<div className={cx(styles.page, styles.requester)}>
@@ -69,10 +69,12 @@ export function CatalogBrowser({ filters, result, selectable = false, child = fa
 
 			{hasPagination ? (
 				<nav className={styles.pagination} aria-label={catalogCopy.pages}>
-					{filters.cursor ? (
-						<ActionLink href={catalogHref(BASE, { ...filters, cursor: undefined })} variant="secondary">{catalogCopy.first}</ActionLink>
+					{result.previousCursor ? (
+						<ActionLink href={catalogHref(BASE, { ...filters, cursor: undefined, before: result.previousCursor })} variant="secondary" size="lg">{catalogCopy.previous}</ActionLink>
+					) : filters.cursor || filters.before ? (
+						<ActionLink href={catalogHref(BASE, { ...filters, cursor: undefined, before: undefined })} variant="secondary" size="lg">{catalogCopy.first}</ActionLink>
 					) : null}
-					{result.nextCursor ? <ActionLink href={catalogHref(BASE, { ...filters, cursor: result.nextCursor })} size="lg">{catalogCopy.more}</ActionLink> : null}
+					{result.nextCursor ? <ActionLink href={catalogHref(BASE, { ...filters, before: undefined, cursor: result.nextCursor })} size="lg">{catalogCopy.more}</ActionLink> : null}
 				</nav>
 			) : null}
 
