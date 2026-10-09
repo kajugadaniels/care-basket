@@ -40,6 +40,7 @@ model User {
   approvedPairings DevicePairing[]
   approvedDevices AuthorizedDevice[] @relation("DeviceApprover")
   revokedDevices AuthorizedDevice[] @relation("DeviceRevoker")
+	reviewedRequests ShoppingRequest[]
 }
 
 /// The deletion root for everything a family owns.
@@ -54,6 +55,8 @@ model Family {
   auditLogs   AuditLog[]
   pairings    DevicePairing[]
   devices     AuthorizedDevice[]
+	requests ShoppingRequest[]
+	baskets ShoppingBasket[]
 }
 
 /// Links an adult to the family they manage. MVP: one family per adult (unique userId).
@@ -94,6 +97,7 @@ model ManagedProfile {
   createdBy User   @relation(fields: [createdByUserId], references: [id], onDelete: Restrict)
   devices AuthorizedDevice[]
   pairings DevicePairing[]
+	requests ShoppingRequest[]
 
   @@index([familyId, id])
   @@unique([id, familyId])
@@ -164,6 +168,7 @@ model AuthorizedDevice {
   profile ManagedProfile @relation(fields: [profileId, familyId], references: [id, familyId], onDelete: Cascade)
   approvedBy User @relation("DeviceApprover", fields: [approvedByUserId], references: [id], onDelete: Restrict)
   revokedBy User? @relation("DeviceRevoker", fields: [revokedByUserId], references: [id], onDelete: SetNull)
+	requests ShoppingRequest[]
 
   @@index([familyId, id])
   @@index([familyId, profileId, revokedAt, expiresAt])
@@ -245,6 +250,7 @@ model CatalogProduct {
 	updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
 	demoPrices DemoMerchantPrice[]
+	basketItems BasketItem[]
 
 	@@index([isActive, archivedAt, id])
 	@@index([category, isActive, archivedAt, id])
@@ -270,4 +276,100 @@ model DemoMerchantPrice {
 	product CatalogProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
 
 	@@unique([productId, currency])
+}
+
+enum InputMode {
+	PICTURES
+	TEXT
+	VOICE
+}
+
+enum RequestStatus {
+	PENDING_REVIEW
+	AWAITING_PAYMENT
+	PAID
+	DECLINED
+	CANCELLED
+}
+
+enum FulfillmentStatus {
+	NOT_STARTED
+	PREPARING
+	DELIVERED
+}
+
+enum ItemOrigin {
+	REQUESTED
+	SUGGESTED
+}
+
+model ShoppingRequest {
+	id String @id @default(uuid(7)) @db.Uuid
+	familyId String @db.Uuid
+	profileId String @db.Uuid
+	deviceId String? @db.Uuid
+	clientRequestKey String @db.Uuid
+	// Immutable original contents, independent of subsequent basket edits.
+	submissionHash String @db.Char(64)
+	// Every mutation compares and increments this revision atomically.
+	revision Int @default(0)
+	inputMode InputMode
+	inputText String? @db.VarChar(1000)
+	budgetMinor Int?
+	status RequestStatus @default(PENDING_REVIEW)
+	fulfillmentStatus FulfillmentStatus @default(NOT_STARTED)
+	reviewedByUserId String? @db.Uuid
+	reviewedAt DateTime? @db.Timestamptz(3)
+	submittedAt DateTime @default(now()) @db.Timestamptz(3)
+	createdAt DateTime @default(now()) @db.Timestamptz(3)
+	updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+	family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+	profile ManagedProfile @relation(fields: [profileId, familyId], references: [id, familyId], onDelete: Cascade)
+	device AuthorizedDevice? @relation(fields: [deviceId], references: [id], onDelete: SetNull)
+	reviewedBy User? @relation(fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+	basket ShoppingBasket?
+
+	@@unique([profileId, clientRequestKey])
+	@@index([familyId, status, id])
+	@@index([profileId, familyId, id])
+	@@index([deviceId])
+	@@index([reviewedByUserId])
+	@@unique([id, familyId])
+}
+
+model ShoppingBasket {
+	id String @id @default(uuid(7)) @db.Uuid
+	requestId String @unique @db.Uuid
+	familyId String @db.Uuid
+	currency String @default("USD") @db.Char(3)
+	subtotalMinor Int
+	lockedAt DateTime? @db.Timestamptz(3)
+	createdAt DateTime @default(now()) @db.Timestamptz(3)
+	updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+	request ShoppingRequest @relation(fields: [requestId, familyId], references: [id, familyId], onDelete: Cascade)
+	family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+	items BasketItem[]
+
+	@@index([familyId])
+}
+
+model BasketItem {
+	id String @id @default(uuid(7)) @db.Uuid
+	basketId String @db.Uuid
+	productId String @db.Uuid
+	quantity Int
+	unitPriceMinor Int
+	origin ItemOrigin @default(REQUESTED)
+	isSubstitute Boolean @default(false)
+	substitutionNote String? @db.VarChar(120)
+	createdAt DateTime @default(now()) @db.Timestamptz(3)
+	updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+	basket ShoppingBasket @relation(fields: [basketId], references: [id], onDelete: Cascade)
+	product CatalogProduct @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+	@@unique([basketId, productId])
+	@@index([productId])
 }
