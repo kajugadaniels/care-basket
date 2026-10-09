@@ -1,4 +1,5 @@
 export const requestsCopy = {
+	budget: "Requester’s budget (context only)",
 	basketTitle: "Check your shopping list",
 	basketIntro: "Make sure everything looks right before sending it to your family.",
 	draftNotice: "Your unsent list stays here while you browse. Reloading or closing this page clears it.",
