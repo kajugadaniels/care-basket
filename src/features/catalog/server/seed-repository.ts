@@ -3,6 +3,13 @@ import type { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/server/db/client";
 import type { CuratedCatalog } from "./curated-schema";
 
+// Only the developer-run seed gets a larger, bounded budget for remote database
+// startup and round trips. Runtime transactions retain the client's defaults.
+const SEED_TRANSACTION_OPTIONS = {
+	maxWait: 15_000,
+	timeout: 30_000,
+} satisfies NonNullable<Prisma.PrismaClientOptions["transactionOptions"]>;
+
 function unchanged(existing: Record<string, unknown> | null, data: Record<string, unknown>): boolean {
 	return existing !== null && Object.entries(data).every(([key, value]) => {
 		const previous = existing[key];
@@ -54,7 +61,7 @@ export async function upsertCuratedProducts(catalog: CuratedCatalog) {
 				update: unchanged(existingPrice, priceData) ? {} : priceData,
 				select: { id: true },
 			});
-		});
+		}, SEED_TRANSACTION_OPTIONS);
 	}
 	return { products: catalog.products.length };
 }
