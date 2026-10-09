@@ -1,6 +1,7 @@
 export const PRODUCT_CATEGORIES = [
 	"PRODUCE", "DAIRY_EGGS", "BAKERY", "PANTRY", "BREAKFAST", "MEAT_SEAFOOD",
-	"FROZEN", "SNACKS", "BEVERAGES", "HOUSEHOLD", "PERSONAL_CARE",+] as const;
+	"FROZEN", "SNACKS", "BEVERAGES", "HOUSEHOLD", "PERSONAL_CARE",
+] as const;
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 
