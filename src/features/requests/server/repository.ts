@@ -18,7 +18,7 @@ const deviceDetailSelect = { id: true, status: true, submittedAt: true, revision
 const managerSummarySelect = { ...summarySelect, profile: { select: { displayName: true } },
 	basket: { select: { subtotalMinor: true, currency: true, _count: { select: { items: true } } } },
 } satisfies Prisma.ShoppingRequestSelect;
-const managerDetailSelect = { ...managerSummarySelect, revision: true, inputText: true,
+const managerDetailSelect = { ...managerSummarySelect, revision: true, inputText: true, budgetMinor: true,
 	basket: { select: { subtotalMinor: true, currency: true, lockedAt: true, items: {
 		orderBy: { id: "asc" }, select: { id: true, quantity: true, unitPriceMinor: true, origin: true,
 			isSubstitute: true, substitutionNote: true, product: { select: productSelect } },
