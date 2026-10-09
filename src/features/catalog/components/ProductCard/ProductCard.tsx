@@ -9,11 +9,12 @@ import styles from "./ProductCard.module.css";
 
 // Requesters see the picture, name, and size only. Managers also see the category, brand,
 // demo price, and the data and image attribution that the licenses require.
-export function ProductCard({ product }: { product: CatalogProductDto | ManagerProductDto }) {
+export function ProductCard({ product, idPrefix = "product" }: { product: CatalogProductDto | ManagerProductDto; idPrefix?: string }) {
 	const managerProduct = "demoPrice" in product ? product : null;
+	const headingId = `${idPrefix}-${product.sku}`;
 
 	return (
-		<article className={cx(styles.card, managerProduct && styles.managerCard)} aria-labelledby={`product-${product.sku}`}>
+		<article className={cx(styles.card, managerProduct && styles.managerCard)} aria-labelledby={headingId}>
 			<div className={styles.picture}>
 				{product.imagePath ? (
 					<Image
@@ -34,7 +35,7 @@ export function ProductCard({ product }: { product: CatalogProductDto | ManagerP
 						{catalogCopy.categories[product.category]}
 					</p>
 				) : null}
-				<h2 id={`product-${product.sku}`} className={styles.name}>
+				<h2 id={headingId} className={styles.name}>
 					{product.displayName}
 				</h2>
 				<p className={styles.meta}>
