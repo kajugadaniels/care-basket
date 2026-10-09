@@ -9,23 +9,28 @@ import type { CatalogFilters } from "../../types";
 import styles from "./ManagerCatalog.module.css";
 
 // Search and category in one GET form, so the filters live in the URL and survive a refresh.
-// Keyed by the filters, so the fields reset when a link or "Show All" changes them.
-export function CatalogToolbar({ action, filters }: { action: string; filters: CatalogFilters }) {
+// Key the native fields, not Next Form, so URL navigation resets their default values.
+export function CatalogToolbar({ action, filters, audience = "manager" }: {
+	action: string;
+	filters: CatalogFilters;
+	audience?: "manager" | "requester";
+}) {
+	const isRequester = audience === "requester";
 	return (
 		<Form
 			action={action}
-			key={`${filters.category}-${filters.q}`}
 			prefetch={false}
 			role="search"
-			className={styles.toolbar}
+			className={cx(styles.toolbar, isRequester && styles.requesterToolbar)}
 		>
 			<div className={styles.field}>
 				<label htmlFor="catalog-search" className={styles.label}>
-					{catalogCopy.productSearchLabel}
+					{isRequester ? catalogCopy.searchLabel : catalogCopy.productSearchLabel}
 				</label>
 				<div className={styles.control}>
 					<Icon icon={Search01Icon} size={20} className={styles.leadingIcon} />
 					<input
+						key={filters.q}
 						id="catalog-search"
 						type="search"
 						name="q"
@@ -39,10 +44,11 @@ export function CatalogToolbar({ action, filters }: { action: string; filters: C
 			</div>
 			<div className={styles.field}>
 				<label htmlFor="catalog-category" className={styles.label}>
-					{catalogCopy.categorySelectLabel}
+					{isRequester ? catalogCopy.categoryLabel : catalogCopy.categorySelectLabel}
 				</label>
 				<div className={styles.control}>
 					<select
+						key={filters.category ?? ""}
 						id="catalog-category"
 						name="category"
 						defaultValue={filters.category ?? ""}
@@ -58,7 +64,7 @@ export function CatalogToolbar({ action, filters }: { action: string; filters: C
 					<Icon icon={ArrowDown01Icon} size={20} className={styles.trailingIcon} />
 				</div>
 			</div>
-			<Button type="submit" className={styles.submit}>
+			<Button type="submit" size={isRequester ? "lg" : "md"} className={styles.submit}>
 				{catalogCopy.search}
 			</Button>
 		</Form>
