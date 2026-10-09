@@ -8,6 +8,7 @@ export const familyLayoutCopy = {
     members: "Family Members",
     devices: "Devices",
 		catalog: "Catalog",
+		requests: "Requests",
   },
 } as const;
 
@@ -48,11 +49,6 @@ export const setupPreviewCopy = {
   description: "These features are planned and not available yet.",
   comingSoon: "Coming soon",
   items: [
-    {
-      id: "requests",
-      title: "Review their shopping requests",
-      description: "See each item and the total, then change, remove, or decline anything.",
-    },
     {
       id: "payments",
       title: "Pay through PayPal",
