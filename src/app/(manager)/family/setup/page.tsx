@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: familySetupCopy.metaTitle,
 };
 
-// For signed-in adults without a family. Reads the session at request time; the /family
+// For signed-in adults without a family. Reads the session at request time; the setup
 // loading.tsx provides the Suspense boundary.
 export default async function FamilySetupPage() {
   const user = await ensureUser();
