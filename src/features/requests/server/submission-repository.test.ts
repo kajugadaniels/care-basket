@@ -1,8 +1,9 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { requestIds, requester, requestNow } from "@/test/factories/requests";
-const fake = vi.hoisted(() => ({ find: vi.fn(), products: vi.fn(), device: vi.fn(), create: vi.fn(), basket: vi.fn(), audit: vi.fn(), transaction: vi.fn() }));
+const fake = vi.hoisted(() => ({ find: vi.fn(), products: vi.fn(), device: vi.fn(), create: vi.fn(), basket: vi.fn(), audit: vi.fn(), transaction: vi.fn(), proof: vi.fn() }));
 vi.mock("server-only", () => ({}));
+vi.mock("@/server/auth/shopping-proposal", () => ({ verifyShoppingProposal: fake.proof }));
 vi.mock("@/server/db/client", () => ({ getDb: () => ({
 	shoppingRequest: { findFirst: fake.find }, $transaction: fake.transaction,
 }) }));
@@ -115,5 +116,28 @@ describe("atomic shopping submission", () => {
 			insertRequest(requester, { ...input, items: [{ sku: "demo-milk", quantity: 3 }] })]);
 		expect(results.map((result) => result.status)).toEqual(["fulfilled", "rejected"]);
 		expect(committed).toHaveLength(1);
+	});
+	it("persists typed input, confirmed budget and server-verified suggestions with database prices", async () => {
+		fake.proof.mockReturnValue({ items: [{ sku: "demo-milk", origin: "SUGGESTED", isSubstitute: false, substitutionNote: null }] });
+		await insertRequest(requester, { ...input, inputMode: "TEXT", inputText: "breakfast", budgetMinor: 2000, budgetConfirmed: true,
+			items: [{ sku: "demo-milk", quantity: 2, origin: "SUGGESTED", proof: "fictional-proof" }] });
+		expect(fake.create).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ inputMode: "TEXT", inputText: "breakfast", budgetMinor: 2000 }) }));
+		expect(fake.basket).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ items: { create: [
+			{ productId: requestIds.other, quantity: 2, unitPriceMinor: 250, origin: "SUGGESTED", isSubstitute: false },
+		] } }) }));
+	});
+	it("refuses forged suggestion origin and child voice or budget before opening a transaction", async () => {
+		await expect(insertRequest(requester, { ...input, items: [{ sku: "demo-milk", quantity: 1, origin: "SUGGESTED" }] })).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+		await expect(insertRequest({ ...requester, profileKind: "CHILD" }, { ...input, inputMode: "VOICE", inputText: "milk" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+		await expect(insertRequest({ ...requester, profileKind: "CHILD" }, { ...input, budgetMinor: 2000, budgetConfirmed: true })).rejects.toMatchObject({ code: "FORBIDDEN" });
+		expect(fake.transaction).not.toHaveBeenCalled();
+	});
+	it("persists voice only with a matching, verified transcript claim", async () => {
+		fake.proof.mockReturnValue({ inputMode: "VOICE", inputText: "milk", items: [] });
+		await insertRequest(requester, { ...input, inputMode: "VOICE", inputText: "milk", sourceProof: "fictional-proof" });
+		expect(fake.create).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ inputMode: "VOICE", inputText: "milk" }) }));
+		committed = []; fake.transaction.mockClear();
+		await expect(insertRequest(requester, { ...input, inputMode: "VOICE", inputText: "different", sourceProof: "fictional-proof" })).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+		expect(fake.transaction).not.toHaveBeenCalled();
 	});
 });
