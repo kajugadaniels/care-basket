@@ -1,0 +1,5 @@
+export const MAX_REQUEST_ITEMS = 30;
+export const MAX_ITEM_QUANTITY = 20;
+export const REQUEST_PAGE_SIZE = 20;
+export const MAX_MONEY_MINOR = 2_147_483_647;
+export const REQUEST_STATUSES = ["PENDING_REVIEW", "AWAITING_PAYMENT", "PAID", "DECLINED", "CANCELLED"] as const;
