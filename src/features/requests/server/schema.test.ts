@@ -9,6 +9,10 @@ function model(name: string) {
 	return value.replace(/\s+/g, " ");
 }
 describe("shopping ownership and deletion schema", () => {
+	it("defines a unique composite relation while keeping one basket per request", () => {
+		expect(model("ShoppingBasket")).toContain("requestId String @unique @db.Uuid");
+		expect(model("ShoppingBasket")).toContain("@@unique([requestId, familyId])");
+	});
 	it("cascades requests from profiles and families, then baskets and items", () => {
 		expect(model("ShoppingRequest")).toContain("profile ManagedProfile @relation(fields: [profileId, familyId], references: [id, familyId], onDelete: Cascade)");
 		expect(model("ShoppingRequest")).toContain("family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)");
