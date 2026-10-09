@@ -64,16 +64,22 @@ describe("shopping basket review", () => {
 		const error = await screen.findByRole("alert");
 		await waitFor(() => expect(error).toHaveFocus());
 		expect(screen.getByRole("heading", { name: "Demo milk" })).toBeInTheDocument();
+		await waitFor(() => expect(screen.getByRole("button", { name: "Send My Shopping List" })).toBeEnabled());
 		fireEvent.click(screen.getByRole("button", { name: "Send My Shopping List" }));
 		await screen.findByRole("heading", { name: "Your shopping list has been sent!" });
 		expect(fake.submit.mock.calls[0][0]).toEqual(fake.submit.mock.calls[1][0]);
 	});
-	it("retains the list after a transport failure", async () => {
-		fake.submit.mockRejectedValue(new Error("offline"));
+	it("retains the list and key for retry after a transport failure", async () => {
+		fake.submit.mockRejectedValueOnce(new Error("offline"));
 		render(<BasketFixture />); add();
 		fireEvent.click(screen.getByRole("button", { name: "Send My Shopping List" }));
 		await screen.findByRole("alert");
-		expect(screen.getByRole("button", { name: "Send My Shopping List" })).toBeEnabled();
+		await waitFor(() => expect(screen.getByRole("button", { name: "Send My Shopping List" })).toBeEnabled());
+		expect(screen.getByRole("heading", { name: requestProduct.displayName })).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Send My Shopping List" }));
+		await screen.findByRole("heading", { name: "Your shopping list has been sent!" });
+		expect(fake.submit).toHaveBeenCalledTimes(2);
+		expect(fake.submit.mock.calls[1][0]).toEqual(fake.submit.mock.calls[0][0]);
 	});
 	it("clears the draft only after confirmed server success", async () => {
 		const { rerender } = render(<BasketFixture />); add();
