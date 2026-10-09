@@ -1,9 +1,88 @@
-.list { display: grid; gap: var(--space-5); list-style: none; padding: 0; }
-.card { display: grid; align-content: start; gap: var(--space-4); min-inline-size: 0; padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-.card h2 { font-size: var(--text-lg); overflow-wrap: anywhere; }
-.facts { display: grid; gap: var(--space-3); }
-.facts dt { font-weight: var(--weight-semibold); }
-.status { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); }
-.empty { padding: var(--space-6); border-radius: var(--radius-lg); background: var(--color-surface-soft); }
-@media (min-width: 40rem) { .list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 80rem) { .list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.list {
+	display: grid;
+	gap: var(--space-5);
+	padding: 0;
+	list-style: none;
+}
+
+.card {
+	display: grid;
+	align-content: start;
+	gap: var(--space-4);
+	min-inline-size: 0;
+	padding: var(--space-5);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-surface);
+}
+
+.title {
+	font-size: var(--text-lg);
+	overflow-wrap: anywhere;
+}
+
+.facts {
+	display: grid;
+	gap: var(--space-3);
+}
+
+.term {
+	font-weight: var(--weight-semibold);
+}
+
+.status {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	color: var(--color-text-muted);
+}
+
+.empty {
+	padding: var(--space-6);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface-soft);
+}
+
+/* DeviceListSkeleton: typical lengths for a label, a name, a browser summary, and a date. */
+.titleSkeleton {
+	inline-size: min(10rem, 70%);
+}
+
+.nameSkeleton {
+	inline-size: min(7rem, 50%);
+}
+
+.summarySkeleton {
+	inline-size: min(14rem, 90%);
+}
+
+.statusIconSkeleton {
+	flex-shrink: 0;
+	inline-size: 1.5rem;
+	block-size: 1.5rem;
+	border-radius: var(--radius-full);
+}
+
+.statusTextSkeleton {
+	inline-size: 3.5rem;
+}
+
+.dateSkeleton {
+	inline-size: min(9rem, 70%);
+}
+
+.actionSkeleton {
+	inline-size: 11rem;
+}
+
+@media (min-width: 40rem) {
+	.list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 80rem) {
+	.list {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
