@@ -7,9 +7,10 @@ import styles from "./PublicFooter.module.css";
 
 const FOOTER_LINKS = [
   { href: "/", label: "Home" },
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#families", label: "For families" },
-  { href: "#commitments", label: "Our commitments" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#families", label: "For families" },
+  { href: "/#commitments", label: "Our commitments" },
+	{ href: "/data-sources", label: "Data sources" },
 ] as const;
 
 export function PublicFooter() {
@@ -32,15 +33,9 @@ export function PublicFooter() {
           <ul role="list" className={styles.links}>
             {FOOTER_LINKS.map((item) => (
               <li key={item.href}>
-                {item.href.startsWith("#") ? (
-                  <a href={item.href} className={styles.link}>
-                    {item.label}
-                  </a>
-                ) : (
-                  <Link href={item.href} className={styles.link}>
-                    {item.label}
-                  </Link>
-                )}
+								<Link href={item.href} className={styles.link}>
+									{item.label}
+								</Link>
               </li>
             ))}
           </ul>
