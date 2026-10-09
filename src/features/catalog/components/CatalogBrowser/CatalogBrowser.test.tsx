@@ -9,6 +9,12 @@ import type { CatalogProductDto } from "../../types";
 const product: CatalogProductDto = { sku: "example-rice", displayName: "Example Rice", category: "PANTRY", sizeLabel: "1 lb", imagePath: null };
 
 describe("catalog browsing", () => {
+	it("keeps filters and clears the opposite direction on Previous and More links", () => {
+		render(<CatalogBrowser filters={{ q: "beans", category: "PANTRY", before: "boundary", limit: 24 }} result={{ products: [product], previousCursor: "previous", nextCursor: "next" }} />);
+		expect(screen.getByRole("link", { name: "Previous Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=beans&before=previous");
+		expect(screen.getByRole("link", { name: "More Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=beans&cursor=next");
+		expect(screen.queryByRole("link", { name: "Back to First Groceries" })).not.toBeInTheDocument();
+	});
 	it("renders a real empty state with a home path and no purchase controls", () => {
 		render(<CatalogBrowser filters={{ q: "", limit: 24 }} result={{ products: [], nextCursor: null }} />);
 		expect(screen.getByText("There are no groceries to look at yet.")).toBeInTheDocument();
