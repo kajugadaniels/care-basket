@@ -1,0 +1,98 @@
+.detail {
+	display: grid;
+	gap: var(--space-5);
+	max-inline-size: var(--reading-max);
+	padding: var(--space-5);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-surface);
+}
+
+.identity {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-4);
+	min-inline-size: 0;
+}
+
+.identityText {
+	min-inline-size: 0;
+}
+
+.name {
+	font-size: var(--text-xl);
+	overflow-wrap: anywhere;
+}
+
+.facts {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.term {
+	font-weight: var(--weight-semibold);
+}
+
+.value {
+	margin-block-start: var(--space-1);
+	overflow-wrap: anywhere;
+}
+
+.notice {
+	display: grid;
+	gap: var(--space-2);
+	padding: var(--space-4);
+	border-radius: var(--radius-md);
+	background-color: var(--color-info-bg);
+	color: var(--color-info);
+}
+
+.actions {
+	display: grid;
+	gap: var(--space-3);
+}
+
+/* ProfileDetailsSkeleton: rem widths, because the identity text column sizes to its content. */
+.avatarSkeleton {
+	inline-size: var(--control-height-lg);
+	block-size: var(--control-height-lg);
+	border-radius: var(--radius-lg);
+}
+
+.nameSkeleton {
+	inline-size: 10rem;
+}
+
+.kindSkeleton {
+	inline-size: 7rem;
+}
+
+.valueSkeleton {
+	inline-size: min(11rem, 100%);
+}
+
+.connectSkeleton {
+	inline-size: 13rem;
+}
+
+.editSkeleton {
+	inline-size: 8rem;
+}
+
+.removeSkeleton {
+	inline-size: 10.5rem;
+}
+
+@media (min-width: 40rem) {
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+	}
+}
+
+@media (min-width: 48rem) {
+	.facts {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
