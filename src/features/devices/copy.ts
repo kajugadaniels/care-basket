@@ -27,7 +27,7 @@ export const devicesCopy = {
   revokeText: "This browser will need a new connection code before it can use CareBasket again.",
   revokeConfirm: "I want to disconnect this device.", revoked: "Device disconnected.", cancel: "Cancel",
   next: "More Devices", first: "Back to First Devices", moreProfiles: "More Family Members", backDevices: "Back to Devices",
-  loading: "Loading devices…", errorTitle: "We couldn't open CareBasket", errorText: "Please try again in a moment.",
+  loading: "Loading devices…", loadingApproval: "Loading the connection form…", errorTitle: "We couldn't open CareBasket", errorText: "Please try again in a moment.",
   reconnect: "This device needs to be connected again.", reconnectHelp: "Ask your family member to help you.", reconnectAction: "Connect Again",
   greeting: (name: string) => `Hello, ${name}!`, welcome: "Your CareBasket is ready.",
   shopping: "Here, you will be able to ask your family for the things you need.", reviewNotice: "Your family member will review every shopping request.",
