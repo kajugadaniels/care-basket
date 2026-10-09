@@ -6,6 +6,14 @@ vi.mock("@/server/db/client", () => ({ getDb: () => ({ catalogProduct: { findMan
 import { findCatalogRow, listCatalogRows } from "./repository";
 
 describe("shared catalog queries", () => {
+	it("reads the nearest preceding rows without offsets and retains suitability and search", async () => {
+		const before = "019a1234-0000-7000-8000-000000000099";
+		await listCatalogRows({ q: "beans", category: "PANTRY", before, limit: 49 }, true);
+		expect(mocks.many).toHaveBeenLastCalledWith(expect.objectContaining({
+			take: 50, orderBy: { id: "desc" },
+			where: expect.objectContaining({ id: { lt: before }, category: "PANTRY", isChildSuitable: true, OR: expect.any(Array) }),
+		}));
+	});
 	it("bounds the list and applies active, archive, category, child and approved-price filters in one query", async () => {
 		await listCatalogRows({ q: "Rice", category: "PANTRY", cursor: "019a1234-0000-7000-8000-000000000001", limit: 24 }, true);
 		expect(mocks.many).toHaveBeenLastCalledWith(expect.objectContaining({
