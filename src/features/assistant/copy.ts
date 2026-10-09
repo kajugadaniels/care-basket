@@ -1,0 +1,23 @@
+export const assistantCopy = {
+	title: "Start my shopping list", speak: "Speak", type: "Type", pictures: "Pictures",
+	local: "Type a simple list or choose pictures. Voice and smart suggestions are not available here yet.",
+	disclosure: "Google AI helps us understand your list. We don't keep recordings.",
+	prompt: "What groceries do you need?", placeholder: "Try: two bags of rice and one carton of milk",
+	continue: "Find my groceries", cancel: "Cancel", working: "Understanding your list…", slow: "Still working…",
+	review: "Here is what I understood", requested: "Your groceries", suggested: "Suggested for you",
+	uncertain: "Is this right?", question: "Which one would you like?", none: "None of these",
+	substitution: "A different product or package was suggested. Please check this choice.",
+	uncaught: "I didn't catch these things.", accept: "Add these to my list", basket: "Check my list",
+	fallback: "We used simple word matching. Check the products and sizes before adding them.",
+	error: "We couldn't understand that right now. Try again, or use pictures.",
+	voiceError: "We couldn't hear that. Try again, or type your list.", start: "Start speaking", stop: "Stop",
+	permissionError: "Allow microphone access to speak, or type your list instead.",
+	recordingUnavailable: "This browser can't record here. Type your list or use pictures instead.",
+	listening: "Listening…", warning: "Ten seconds left.", transcript: "I heard:",
+	remove: "Remove", budget: "Budget for this list", noBudget: "No budget", confirmBudget: "Use this budget",
+	consentTitle: "Voice and smart suggestions", blocked: "Google AI is unavailable pending deployment eligibility review. Typing and pictures still work.",
+	consent: "This person understands and agrees that Google AI may process their shopping requests.",
+	enable: "Enable voice and smart suggestions", revoke: "Revoke AI consent", saved: "AI preference saved.",
+	budgetLine: ({ total, budget, over }: { total: string; budget: string; over: boolean }) =>
+		`About ${total} with demo prices, ${over ? "over" : "within"} your ${budget}.`,
+};
