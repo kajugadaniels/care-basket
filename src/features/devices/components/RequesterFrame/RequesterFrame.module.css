@@ -5,3 +5,9 @@
 .main button { min-block-size: var(--control-height-lg); font-size: var(--text-md); }
 .footer { max-inline-size: var(--reading-max); margin: var(--space-8) auto 0; color: var(--color-text-muted); font-size: var(--text-md); }
 .loading { min-block-size: calc(var(--control-height-lg) * 3); background: var(--color-surface-soft); border-radius: var(--radius-lg); padding: var(--space-6); }
+
+.wide .brand,
+.wide .main,
+.wide .footer {
+	max-inline-size: var(--content-max);
+}
