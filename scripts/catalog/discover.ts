@@ -7,6 +7,8 @@ import { getCatalogEnv } from "../../src/lib/env/server";
 import { createOpenPricesClient } from "../../src/lib/open-prices/client";
 import { createOpenFoodFactsClient } from "../../src/lib/open-food-facts/client";
 import { discoverCatalog } from "../../src/features/catalog/server/discovery";
+import { describeDiscoveryFailure } from "../../src/features/catalog/server/discovery-error";
+import type { DiscoveryPhase } from "../../src/features/catalog/server/discovery-error";
 
 const optionsSchema = z.strictObject({
 	pages: z.coerce.number().int().min(1).max(5).default(2),
@@ -14,19 +16,24 @@ const optionsSchema = z.strictObject({
 	enrichments: z.coerce.number().int().min(0).max(100).default(30),
 });
 
+let phase: DiscoveryPhase = "options";
+
 async function main() {
 	const args = parseArgs({ options: { pages: { type: "string" }, candidates: { type: "string" }, enrichments: { type: "string" } } });
 	const options = optionsSchema.parse(args.values);
+	phase = "configuration";
 	loadScriptEnvironment();
 	const { CATALOG_USER_AGENT: userAgent } = getCatalogEnv();
 	const prices = createOpenPricesClient({ userAgent });
 	const foods = createOpenFoodFactsClient({ userAgent });
 	const controller = new AbortController();
 	process.once("SIGINT", () => controller.abort());
+	phase = "sources";
 	const report = await discoverCatalog(prices, (code, signal) => foods.product(code, signal), {
 		today: new Date().toISOString().slice(0, 10), maxPagesPerCategory: options.pages,
 		maxCandidates: options.candidates, maxEnrichments: options.enrichments, signal: controller.signal,
 	});
+	phase = "report";
 	const directory = resolve(".catalog-output");
 	await mkdir(directory, { recursive: true });
 	const temporary = resolve(directory, `candidates-${process.pid}.tmp`);
@@ -40,7 +47,8 @@ async function main() {
 	console.info(`Discovery finished: ${report.counts.verifiedProducts} candidate products require review. Report: .catalog-output/candidates.us.json. No database writes or price approvals.`);
 }
 
-main().catch(() => {
-	console.error("Discovery stopped. Check CLI options, CATALOG_USER_AGENT, and source availability. The previous report, curated catalog, and database were not changed.");
+main().catch((error: unknown) => {
+	console.error(`Discovery stopped during ${phase}: ${describeDiscoveryFailure(error, phase)}`);
+	console.error("The previous report, curated catalog, and database were not changed.");
 	process.exitCode = 1;
 });
