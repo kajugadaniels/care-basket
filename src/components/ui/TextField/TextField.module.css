@@ -46,3 +46,15 @@
 .errorIcon {
   flex-shrink: 0;
 }
+
+/* TextFieldSkeleton: the same frame as .input, without the hover feedback of a live control. */
+.inputSkeleton,
+.inputSkeleton:hover {
+  display: flex;
+  align-items: center;
+  border-color: var(--color-border-strong);
+}
+
+.valueSkeleton {
+  inline-size: min(10rem, 60%);
+}
