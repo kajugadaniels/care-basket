@@ -12,4 +12,10 @@ describe("catalog inputs", () => {
 	it("rejects ownership IDs and client prices in service input", () => {
 		expect(catalogFiltersSchema.safeParse({ familyId: "someone-else", priceMinor: 1 }).success).toBe(false);
 	});
+	it("accepts a backward boundary but rejects mixed directions and malformed boundaries", () => {
+		const boundary = "019a1234-0000-7000-8000-000000000001";
+		expect(parseCatalogSearchParams({ before: boundary }).success).toBe(true);
+		expect(parseCatalogSearchParams({ before: "bad" }).success).toBe(false);
+		expect(parseCatalogSearchParams({ cursor: boundary, before: boundary }).success).toBe(false);
+	});
 });
