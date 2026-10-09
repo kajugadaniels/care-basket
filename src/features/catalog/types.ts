@@ -1,6 +1,6 @@
 import type { ProductCategory } from "./taxonomy";
 
-export type CatalogFilters = { category?: ProductCategory; q: string; cursor?: string; limit: number };
+export type CatalogFilters = { category?: ProductCategory; q: string; cursor?: string; before?: string; limit: number };
 export type CatalogSearchParams = Promise<Record<string, string | string[] | undefined>>;
 export type CatalogProductDto = {
 	sku: string;
@@ -17,4 +17,4 @@ export type ManagerProductDto = CatalogProductDto & {
 	imageSourceUrl: string | null;
 	imageProductUrl: string | null;
 };
-export type CatalogPage<T> = { products: T[]; nextCursor: string | null };
+export type CatalogPage<T> = { products: T[]; nextCursor: string | null; previousCursor?: string | null };
