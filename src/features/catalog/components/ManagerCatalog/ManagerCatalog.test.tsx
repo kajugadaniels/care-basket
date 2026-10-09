@@ -19,6 +19,10 @@ const product: ManagerProductDto = {
 };
 
 describe("manager catalog", () => {
+	it("preserves filters on backward navigation without retaining an after boundary", () => {
+		render(<ManagerCatalog filters={{ q: "rice", category: "PANTRY", cursor: "old", limit: 24 }} result={{ products: [product], previousCursor: "previous", nextCursor: "next" }} />);
+		expect(screen.getByRole("link", { name: "Previous Groceries" })).toHaveAttribute("href", "/family/catalog?category=PANTRY&q=rice&before=previous");
+	});
 	it("keeps search text and category in one labelled search form", () => {
 		render(<ManagerCatalog filters={{ q: "rice", category: "PANTRY", limit: 24 }} result={{ products: [product], nextCursor: null }} />);
 		const search = screen.getByRole("search");
