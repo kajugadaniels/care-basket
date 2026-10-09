@@ -96,7 +96,7 @@ export async function removeProfile(context: ProfileWriteContext, profileId: str
         actorType: "ADULT", actorId: context.userId, action: "device.revoked",
         targetType: "AuthorizedDevice", targetId: device.id });
     }
-    // Composite FKs cascade devices and approved pairings in this same hard-delete transaction.
+    // Composite FKs cascade devices, pairings, requests, baskets and items in this transaction.
     const result = await tx.managedProfile.deleteMany({
       where: { id: profileId, familyId: context.familyId },
     });
