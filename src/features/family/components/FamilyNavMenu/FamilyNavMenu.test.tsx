@@ -7,7 +7,7 @@ describe("FamilyNavMenu", () => {
 		render(<FamilyNavMenu />);
 
 		const links = screen.getAllByRole("link");
-		expect(links.map((link) => link.getAttribute("href"))).toEqual(["/family", "/family/members", "/family/devices"]);
+		expect(links.map((link) => link.getAttribute("href"))).toEqual(["/family", "/family/members", "/family/devices", "/family/catalog"]);
 		for (const link of links) {
 			expect(link).not.toHaveAttribute("aria-current");
 		}
