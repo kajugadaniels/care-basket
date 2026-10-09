@@ -1,0 +1,74 @@
+// @vitest-environment node
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+type ProductWrite = { where: { sku: string }; create: Record<string, unknown>; update: Record<string, unknown> };
+type PriceWrite = { where: { productId_currency: { productId: string; currency: string } }; create: Record<string, unknown>; update: Record<string, unknown> };
+const fake = vi.hoisted(() => {
+	const products = new Map<string, Record<string, unknown>>();
+	const prices = new Map<string, Record<string, unknown>>();
+	const productUpserts = vi.fn();
+	const priceUpserts = vi.fn();
+	const state = { failPrice: false };
+	const transaction = vi.fn(async (callback: (tx: unknown) => Promise<void>) => {
+		const stagedProducts = new Map(products);
+		const stagedPrices = new Map(prices);
+		await callback({
+			catalogProduct: {
+				findUnique: async ({ where }: { where: { sku: string } }) => stagedProducts.get(where.sku) ?? null,
+				upsert: async (input: ProductWrite) => {
+					productUpserts(input);
+					const previous = stagedProducts.get(input.where.sku);
+					const value = previous ? { ...previous, ...input.update } : { id: `product-${stagedProducts.size}`, ...input.create };
+					stagedProducts.set(input.where.sku, value);
+					return { id: value.id };
+				},
+			},
+			demoMerchantPrice: {
+				findUnique: async ({ where }: { where: PriceWrite["where"] }) => stagedPrices.get(where.productId_currency.productId) ?? null,
+				upsert: async (input: PriceWrite) => {
+					priceUpserts(input);
+					if (state.failPrice) throw new Error("price write unavailable");
+					const key = input.where.productId_currency.productId;
+					const previous = stagedPrices.get(key);
+					stagedPrices.set(key, previous ? { ...previous, ...input.update } : input.create);
+					return { id: "price" };
+				},
+			},
+		});
+		products.clear(); prices.clear();
+		for (const [key, value] of stagedProducts) products.set(key, value);
+		for (const [key, value] of stagedPrices) prices.set(key, value);
+	});
+	return { products, prices, productUpserts, priceUpserts, state, db: { $transaction: transaction } };
+});
+vi.mock("server-only", () => ({}));
+vi.mock("@/server/db/client", () => ({ getDb: () => fake.db }));
+import { upsertCuratedProducts } from "./seed-repository";
+import { makeCuratedCatalog } from "@/test/factories/catalog";
+
+describe("idempotent catalog writes", () => {
+	beforeEach(() => {
+		fake.products.clear(); fake.prices.clear(); fake.productUpserts.mockClear(); fake.priceUpserts.mockClear(); fake.state.failPrice = false;
+	});
+	it("upserts by SKU and price composite key without changing repeated seed state", async () => {
+		const catalog = makeCuratedCatalog();
+		await upsertCuratedProducts(catalog);
+		await upsertCuratedProducts(catalog);
+		expect(fake.products.size).toBe(1);
+		expect(fake.prices.size).toBe(1);
+		expect(fake.productUpserts.mock.calls[1][0]).toMatchObject({ where: { sku: "example-demo-rice" }, update: {} });
+		expect(fake.priceUpserts.mock.calls[1][0]).toMatchObject({ where: { productId_currency: { currency: "USD" } }, update: {} });
+	});
+	it("preserves unrelated existing products and never deletes absent seed entries", async () => {
+		fake.products.set("unrelated", { id: "old-product", sku: "unrelated", archivedAt: new Date("2026-01-01Z") });
+		await upsertCuratedProducts(makeCuratedCatalog());
+		expect(fake.products.get("unrelated")).toHaveProperty("id", "old-product");
+		expect(fake.products.size).toBe(2);
+	});
+	it("rolls back the product when its approved price write fails", async () => {
+		fake.state.failPrice = true;
+		await expect(upsertCuratedProducts(makeCuratedCatalog())).rejects.toThrow();
+		expect(fake.products.size).toBe(0);
+		expect(fake.prices.size).toBe(0);
+	});
+});
