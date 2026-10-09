@@ -1,10 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { formatCountdown, formatDate, formatTime } from "./format";
+import { formatCountdown, formatDate, formatTime, formatMoney } from "./format";
 
 describe("formatDate", () => {
   it("formats profile creation dates consistently in UTC", () => {
     expect(formatDate("2026-10-08T23:59:59Z")).toBe("October 8, 2026");
   });
+});
+
+describe("formatMoney", () => {
+	it("displays integer cents without accepting fractional amounts", () => {
+		expect(formatMoney(349, "USD")).toBe("$3.49");
+		expect(() => formatMoney(3.49, "USD")).toThrow();
+	});
 });
 
 describe("device time formatting", () => {
