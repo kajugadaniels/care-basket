@@ -31,11 +31,13 @@ export function DraftProvider({ children }: { children: ReactNode }) {
 	}
 	function begin(): SubmitRequestInput | null {
 		const state = current.current;
-		if (state.locked || !state.draft.items.length || !state.draft.clientRequestKey) return null;
+		const { items, clientRequestKey, ...metadata } = state.draft;
+		if (state.locked || !items.length || !clientRequestKey) return null;
 		state.locked = true;
 		setLocked(true);
-		return { clientRequestKey: state.draft.clientRequestKey, inputMode: "PICTURES",
-			items: state.draft.items.map(({ sku, quantity }) => ({ sku, quantity })) };
+		return { ...metadata, clientRequestKey, inputMode: state.draft.inputMode ?? "PICTURES",
+			items: items.map(({ sku, quantity, origin, isSubstitute, substitutionNote, proof }) => ({ sku, quantity,
+				...(origin ? { origin } : {}), ...(isSubstitute ? { isSubstitute, substitutionNote } : {}), ...(proof ? { proof } : {}) })) };
 	}
 	function finish(key: string, succeeded: boolean) {
 		if (current.current.draft.clientRequestKey !== key) return;
