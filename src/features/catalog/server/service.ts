@@ -5,7 +5,7 @@ import type { AdultActor } from "@/server/auth/require-adult";
 import { AppError } from "@/server/errors";
 import { catalogCopy } from "../copy";
 import { catalogFiltersSchema } from "../schemas";
-import type { CatalogPage, CatalogProductDto, ManagerProductDto } from "../types";
+import type { CatalogFilters, CatalogPage, CatalogProductDto, ManagerProductDto } from "../types";
 import { readCatalogPage, readCatalogProduct } from "./cached-catalog";
 import type { CatalogRow } from "./repository";
 
@@ -32,23 +32,36 @@ function managerProduct(row: CatalogRow): ManagerProductDto {
 	};
 }
 
-function page<T>(rows: CatalogRow[], limit: number, project: (row: CatalogRow) => T): CatalogPage<T> {
+function page<T>(rows: CatalogRow[], filters: CatalogFilters, project: (row: CatalogRow) => T): CatalogPage<T> {
+	const visible = rows.slice(0, filters.limit);
+	const hasMore = rows.length > filters.limit;
+	// Backward queries read the nearest preceding rows, then restore display order.
+	if (filters.before) visible.reverse();
+	const first = visible[0]?.id ?? null;
+	const last = visible.at(-1)?.id ?? null;
+	let nextCursor = hasMore ? last : null;
+	let previousCursor = filters.cursor ? first ?? filters.cursor : null;
+	if (filters.before) {
+		nextCursor = last ?? filters.before;
+		previousCursor = hasMore ? first : null;
+	}
 	return {
-		products: rows.slice(0, limit).map(project),
-		nextCursor: rows.length > limit ? rows[limit - 1].id : null,
+		products: visible.map(project),
+		nextCursor,
+		previousCursor,
 	};
 }
 
 export async function listRequesterProducts(actor: DeviceActor, input: unknown): Promise<CatalogPage<CatalogProductDto>> {
 	assertDevice(actor);
 	const filters = catalogFiltersSchema.parse(input);
-	return page(await readCatalogPage(filters, actor.profileKind === "CHILD"), filters.limit, requesterProduct);
+	return page(await readCatalogPage(filters, actor.profileKind === "CHILD"), filters, requesterProduct);
 }
 
 export async function listManagerProducts(actor: AdultActor, input: unknown): Promise<CatalogPage<ManagerProductDto>> {
 	assertAdult(actor);
 	const filters = catalogFiltersSchema.parse(input);
-	return page(await readCatalogPage(filters, false), filters.limit, managerProduct);
+	return page(await readCatalogPage(filters, false), filters, managerProduct);
 }
 
 export async function getRequesterProduct(actor: DeviceActor, sku: string): Promise<CatalogProductDto> {
