@@ -1,0 +1,16 @@
+export const dataSourcesCopy = {
+	title: "Data sources",
+	intro: "CareBasket uses reviewed product data from open community projects.",
+	productsTitle: "Product data",
+	products: "Open Prices supplies historical price observations and product references. Open Food Facts can fill missing food-product metadata. CareBasket also labels manually curated demo essentials separately.",
+	pricesTitle: "Historical observations and demo prices",
+	prices: "An observation reports a price on a past date. It is not a current offer. Only prices explicitly approved for the demo store may be used for future Sandbox shopping. Source refreshes never change them automatically.",
+	store: (merchant: string) => `${merchant} is simulated. Nothing is bought from real supermarkets or delivered by this demo.`,
+	licensesTitle: "Licenses and reuse",
+	licenses: "Product data: Open Food Facts and Open Prices contributors, ODbL 1.0. The derivative catalog, including demo prices, is offered under ODbL 1.0. Individual database contents use DbCL 1.0. Licensed product images use CC BY-SA 3.0, with per-image attribution. Application code has a separate licensing scope.",
+	review: "This describes our engineering approach, not legal advice. License compatibility and publication must be reviewed before release.",
+	download: "Download or reuse the curated catalog",
+	images: "Included product image attribution",
+	privacy: "We do not redistribute contributor usernames, comments, receipts, or proof images.",
+	home: "Back to Home",
+} as const;
