@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { GEMINI_APPROVED_MODEL, GEMINI_DEPLOYMENT_APPROVAL } from "@/lib/ai/eligibility";
+import { cloudNameSchema } from "@/lib/cloudinary/catalog-images";
 
 const deviceEnvSchema = z.object({
   // Require a canonical base64url encoding of at least 32 random bytes.
@@ -82,4 +83,28 @@ export function getShoppingAiConfig() {
 
 export function getAppOrigin() {
 	return new URL(z.url().parse(process.env.NEXT_PUBLIC_APP_URL)).origin;
+}
+
+export function getCloudinaryCloudName() {
+	const value = process.env.CLOUDINARY_CLOUD_NAME;
+	if (!value) return undefined;
+	const result = cloudNameSchema.safeParse(value);
+	if (!result.success) throw new Error("Invalid CLOUDINARY_CLOUD_NAME.");
+	return result.data;
+}
+
+export function getCloudinaryUploadEnv() {
+	const result = z.strictObject({
+		cloudName: cloudNameSchema,
+		apiKey: z.string().min(1).max(100).regex(/^[0-9]+$/),
+		apiSecret: z.string().min(1).max(256).regex(/^[A-Za-z0-9_-]+$/),
+		folderMode: z.enum(["dynamic", "fixed"]).default("dynamic"),
+	}).safeParse({
+		cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+		apiKey: process.env.CLOUDINARY_API_KEY,
+		apiSecret: process.env.CLOUDINARY_API_SECRET,
+		folderMode: process.env.CLOUDINARY_FOLDER_MODE,
+	});
+	if (!result.success) throw new Error("Set valid CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET and CLOUDINARY_FOLDER_MODE in the selected environment.");
+	return result.data;
 }
