@@ -3,7 +3,7 @@
 **Purpose:** Define what a deployable, demo-ready CareBasket needs: environments, variables, migrations, third-party configuration, HTTPS, webhooks, error reporting, and demo availability.
 **Applies to:** Configuration, release preparation, and the public demo.
 **Related:** [security.md § 10](security.md#10-secret-management), [database.md § 7](database.md#7-migrations), [payments.md § 6](payments.md#6-webhooks), [hackathon.md](hackathon.md), [submission.md](submission.md)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-10
 
 ---
 
@@ -51,6 +51,10 @@ Validated with Zod by `src/lib/env/server.ts` on first use (it covers `DATABASE_
 | `DEVICE_IP_SOURCE` | Server | Trusted source for pairing-start IP rate limits | Both; local is `unconfigured`, production fails closed until reviewed |
 | `DEMO_FULFILLMENT_CONTROLS` | Server | `true` shows simulated delivery controls ([payments.md § 10](payments.md#10-demonstration-merchant-and-fulfillment)) | Both; fixed to `true` |
 | `CATALOG_USER_AGENT` | Scripts only | `CareBasket/<version> (<contact email>)` for Open Prices and Open Food Facts requests ([catalog.md § 8](catalog.md#8-curation-and-import-pipeline)); not needed by the deployed app | Both; required only when importer exists |
+| `CLOUDINARY_CLOUD_NAME` | Build/runtime and scripts | Exact account allow-list for approved catalog images ([security.md § 15](security.md#cloudinary-catalog-image-exception)); no `NEXT_PUBLIC_` prefix | Both; optional for local photos, required once migrated; must match committed catalog mappings |
+| `CLOUDINARY_API_KEY` | Scripts only | Signed uploads of reviewed product photos | Both templates; set only where the developer runs uploads |
+| `CLOUDINARY_API_SECRET` | Scripts only | Upload/response signatures; never exposed or logged | Both templates; private upload environment only, not required by deployed app |
+| `CLOUDINARY_FOLDER_MODE` | Scripts only | `dynamic` by default; `fixed` for legacy accounts; folder remains `care-based/products` | Both; use the account's actual folder mode |
 | `CLERK_WEBHOOK_SIGNING_SECRET` | Server | Only if the Clerk deletion webhook is approved | Both; optional until approved |
 
 Rules:
