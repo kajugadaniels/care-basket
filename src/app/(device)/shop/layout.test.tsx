@@ -4,6 +4,7 @@ import { requester } from "@/test/factories/requests";
 import { AppError } from "@/server/errors";
 import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
 import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
+import { AssistantProvider } from "@/features/assistant/components/AssistantProvider/AssistantProvider";
 
 const mocks = vi.hoisted(() => ({ device: vi.fn() }));
 vi.mock("server-only", () => ({}));
@@ -41,7 +42,9 @@ describe("requester draft layout", () => {
 		const result = await session(children) as ReactElement<SessionProps>;
 		expect(result.type).toBe(DraftProvider);
 		expect(result.key).toBe(`${requester.deviceId}:${requester.profileId}`);
-		expect(result.props).toEqual({ children });
+		const assistant = result.props.children as ReactElement<SessionProps>;
+		expect(assistant.type).toBe(AssistantProvider);
+		expect(assistant.props).toEqual({ children });
 	});
 
 	it("leaves reconnect rendering to the page for an unauthenticated device", async () => {
