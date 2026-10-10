@@ -1,16 +1,15 @@
 import { Suspense } from "react";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
-import { RequesterFrame } from "@/features/devices/components/RequesterFrame/RequesterFrame";
 import { ShopHome } from "@/features/devices/components/ShopHome/ShopHome";
 import { RequestDetail } from "@/features/requests/components/RequestUi/RequestDetail";
-import { RequestSkeleton } from "@/features/requests/components/RequestUi/RequestSkeleton";
+import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
 import { getOwnRequest } from "@/features/requests/server/service";
 import { requestPageData } from "@/features/requests/server/page-data";
 import { requestsCopy } from "@/features/requests/copy";
 
 type Props = { params: Promise<{ requestId: string }> };
-export const metadata = { title: requestsCopy.listTitle };
+export const metadata = { title: requestsCopy.detailTitle };
 async function DetailContent({ params }: Props) {
 	let actor;
 	try { actor = await requireDevice(); }
@@ -23,5 +22,5 @@ async function DetailContent({ params }: Props) {
 	return <RequestDetail request={request} />;
 }
 export default function DetailPage(props: Props) {
-	return <RequesterFrame wide><Suspense fallback={<RequestSkeleton />}><DetailContent {...props} /></Suspense></RequesterFrame>;
+	return <Suspense fallback={<ShopSkeleton variant="detail" />}><DetailContent {...props} /></Suspense>;
 }
