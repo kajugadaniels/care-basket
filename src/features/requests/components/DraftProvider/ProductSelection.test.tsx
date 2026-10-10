@@ -1,10 +1,40 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { requestProduct } from "@/test/factories/requests";
 import { CatalogBrowser } from "@/features/catalog/components/CatalogBrowser/CatalogBrowser";
-import { DraftProvider } from "./DraftProvider";
+import { DraftProvider, useDraft } from "./DraftProvider";
+import { ProductSelection } from "./ProductSelection";
+
+function SuggestedSelection() {
+	const { change } = useDraft();
+	return <>
+		<button onClick={() => change({ type: "add", item: { ...requestProduct, quantity: 6, origin: "SUGGESTED" } })}>Load suggestion</button>
+		<ProductSelection product={requestProduct}><p>{requestProduct.displayName}</p></ProductSelection>
+	</>;
+}
 
 describe("catalog draft selection", () => {
+	it("uses initial quantities and a custom add handler without also adding a catalog item", () => {
+		const onAdd = vi.fn();
+		render(<DraftProvider><ProductSelection product={requestProduct} initialQuantity={5} maxQuantity={6} onAdd={onAdd}>
+			<p>{requestProduct.displayName}</p>
+		</ProductSelection></DraftProvider>);
+		expect(screen.getByText("Quantity: 5")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Increase quantity for Demo milk" }));
+		expect(screen.getByRole("button", { name: "Increase quantity for Demo milk" })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: "Add to my list" }));
+		expect(onAdd).toHaveBeenCalledExactlyOnceWith(6);
+		expect(screen.getByRole("button", { name: "Add to my list" })).toBeEnabled();
+		expect(screen.queryByRole("button", { name: "Remove item: Demo milk" })).not.toBeInTheDocument();
+	});
+	it("keeps an assistant suggestion capped at six when it is viewed in the catalog", () => {
+		render(<DraftProvider><SuggestedSelection /></DraftProvider>);
+		fireEvent.click(screen.getByRole("button", { name: "Load suggestion" }));
+		expect(screen.getByText("Quantity: 6")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Increase quantity for Demo milk" })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: "Decrease quantity for Demo milk" }));
+		expect(screen.getByText("Quantity: 5")).toBeInTheDocument();
+	});
 	it("announces adding, prevents duplicate cards and keeps quantities in bounds", () => {
 		render(<DraftProvider><CatalogBrowser filters={{ q: "", limit: 24 }} selectable
 			result={{ products: [requestProduct], nextCursor: null }} /></DraftProvider>);
