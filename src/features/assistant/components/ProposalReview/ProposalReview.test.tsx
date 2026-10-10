@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { assistantCatalog } from "@/test/factories/assistant";
 import { requestIds } from "@/test/factories/requests";
@@ -41,7 +42,20 @@ describe("explicit proposal review", () => {
 		expect(screen.getByRole("link", { name: copy.none })).toHaveAttribute("href", "/shop/products");
 		const ids = [...document.querySelectorAll("[id]")].map((element) => element.id);
 		expect(new Set(ids).size).toBe(ids.length);
-		fireEvent.click(screen.getByRole("button", { name: "Milk · 1 litre" }));
+		const choice = screen.getByRole("button", { name: copy.chooseLabel({ name: "Milk", size: "1 litre" }) });
+		expect(choice).toHaveTextContent(copy.chooseProduct);
+		fireEvent.click(choice);
 		expect(screen.getByRole("heading", { name: "Choose bread" })).toHaveFocus();
+	});
+	it("does not block a child with a stale adult budget", () => {
+		review({ ...proposal, budgetMinor: 2000 }, true);
+		expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+		expect(screen.getByRole("button", { name: copy.accept })).toBeEnabled();
+	});
+	it("reserves natural-height space for cards and their choice controls", () => {
+		const styles = readFileSync(new URL("./ProposalReview.module.css", import.meta.url), "utf8");
+		expect(styles).toMatch(/\.choice,\s*\.item\s*\{[^}]*display: flex;[^}]*flex-direction: column;/);
+		expect(styles).toMatch(/\.choice > article,\s*\.item > article\s*\{[^}]*block-size: auto;/);
+		expect(styles).toMatch(/\.chooseButton\s*\{[^}]*white-space: normal;/);
 	});
 });
