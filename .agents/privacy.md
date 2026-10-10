@@ -3,7 +3,7 @@
 **Purpose:** Protect older adults, children, and family information by collecting as little as possible, being clear about consent and ownership, and deleting data on schedule.
 **Applies to:** Any personal data, voice input, deletion, third-party processing, and anything shown in public demos.
 **Related:** [security.md](security.md), [authentication.md § 5](authentication.md#5-managed-profiles-consent-and-ownership), [ai.md](ai.md), [database.md § 9](database.md#9-sensitive-data-deletion-and-retention), [submission.md](submission.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-10
 
 ---
 
@@ -55,7 +55,7 @@ Not collected in the MVP: dates of birth, ages, addresses, phone numbers, photos
 - PayPal checkout uses `NO_SHIPPING`, so no address is requested ([payments.md § 3](payments.md#3-payment-workflow)).
 - Logs contain no personal data ([security.md § 9](security.md#9-safe-errors-and-logging)).
 - No third-party analytics, session replay, advertising, or tracking scripts.
-- Product images and fonts are served from CareBasket's own domain (`public/products/`, `next/image`, `next/font`), so users' browsers make no requests to third-party hosts except PayPal and Clerk where needed.
+- Product images and fonts are served from CareBasket's own domain (`public/products/`, `next/image`, `next/font`), so users' browsers make no requests to third-party hosts except PayPal and Clerk where needed. The approved [Cloudinary exception](security.md#cloudinary-catalog-image-exception) allows server-side storage and retrieval of licensed catalog photos, never direct browser image requests or uploads of user/family data.
 
 ## 5. AI and voice data
 
@@ -113,6 +113,7 @@ Deletion rules:
 | PayPal | Order items and amounts; the payer's own PayPal data |
 | Google (Gemini API) | Assisted adults' request text or audio and the catalog summary (no names, no children's data) |
 | Hosting provider | Requests and server logs |
+| Cloudinary (public catalog-image storage/delivery) | Licensed product photos, product asset identifiers, and server-side upload/retrieval requests; no family information, recordings, or users' browser image requests |
 
 Open Prices and Open Food Facts are **data sources, not processors**: developer-run scripts read public data from them and send no user data.
 
