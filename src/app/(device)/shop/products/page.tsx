@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
-import { ShopHome } from "@/features/devices/components/ShopHome/ShopHome";
+import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
 import { CatalogBrowser } from "@/features/catalog/components/CatalogBrowser/CatalogBrowser";
 import { CatalogSkeleton } from "@/features/catalog/components/CatalogBrowser/CatalogSkeleton";
 import { catalogCopy } from "@/features/catalog/copy";
@@ -16,7 +16,7 @@ async function ProductsContent({ searchParams }: { searchParams: CatalogSearchPa
 	try {
 		actor = await requireDevice();
 	} catch (error) {
-		if (error instanceof AppError && error.code === "UNAUTHENTICATED") return <ShopHome profile={null} />;
+		if (error instanceof AppError && error.code === "UNAUTHENTICATED") return <ReconnectDevice />;
 		throw error;
 	}
 	const parsed = parseCatalogSearchParams(await searchParams);
