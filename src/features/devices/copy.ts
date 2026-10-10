@@ -1,4 +1,10 @@
 export const devicesCopy = {
+	shopHome: "Home", askFamily: "Ask your family", skipShopping: "Skip to shopping",
+	shopHelp: "Ask your family member to help you.",
+	shopDemo: "This is a demo. No real orders or deliveries.", loadingShopping: "Opening your shopping…",
+	shopStart: "What do you need today?", shopStartHelp: "Type your list or choose pictures.",
+	shopOtherWays: "Other ways to shop", shopPicturesHelp: "Choose groceries by looking at pictures.",
+	shopHistoryHelp: "See the lists you sent to your family.",
   connectTitle: "Connect your device", connectDescription: "Someone in your family can help you start using CareBasket.",
   start: "Connect This Device", starting: "Getting your code…", codeLabel: "Your connection code",
   instructions: "Tell your family member this code so they can connect your device.",
