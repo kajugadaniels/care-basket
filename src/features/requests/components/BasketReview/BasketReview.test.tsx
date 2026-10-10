@@ -94,4 +94,11 @@ describe("shopping basket review", () => {
 		expect(screen.getByText("Your shopping list is empty.")).toBeInTheDocument();
 		expect(fake.submit).not.toHaveBeenCalled();
 	});
+	it("groups the send action separately from the selected groceries", () => {
+		render(<BasketFixture />);
+		add();
+		expect(screen.getByRole("list", { name: "Groceries in your list" })).toHaveTextContent(requestProduct.displayName);
+		expect(screen.getByRole("complementary", { name: "Ready to send?" })).toHaveTextContent("Your family will check your list first.");
+		expect(fake.submit).not.toHaveBeenCalled();
+	});
 });
