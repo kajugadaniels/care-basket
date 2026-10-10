@@ -2,6 +2,7 @@ import { useState } from "react";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DraftProvider, useDraft } from "@/features/requests/components/DraftProvider/DraftProvider";
+import { requestsCopy } from "@/features/requests/copy";
 import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
 import { AssistantProvider, useAssistant } from "../AssistantProvider/AssistantProvider";
@@ -51,7 +52,7 @@ describe("separate proposal review screen", () => {
 		expect(screen.getByRole("heading", { level: 1, name: copy.emptyReview })).toHaveFocus();
 		expect(screen.getByRole("link", { name: copy.startAgain })).toHaveAttribute("href", "/shop/assistant");
 		expect(screen.getByRole("link", { name: copy.pictures })).toHaveAttribute("href", "/shop/products");
-		expect(screen.queryByRole("button", { name: copy.accept })).not.toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: copy.basket })).not.toBeInTheDocument();
 		expect(screen.queryByRole("link", { name: copy.none })).not.toBeInTheDocument();
 	});
 
@@ -75,30 +76,46 @@ describe("separate proposal review screen", () => {
 		await waitFor(() => expect(fake.push).toHaveBeenCalledWith("/shop/assistant/review"));
 		fireEvent.click(screen.getByRole("button", { name: "Open review" }));
 		expect(screen.getByRole("heading", { level: 1, name: copy.review })).toHaveFocus();
-		expect(screen.getByRole("checkbox")).toBeChecked();
+		expect(screen.getByRole("button", { name: requestsCopy.add })).toBeEnabled();
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("0");
 		fireEvent.click(screen.getByRole("button", { name: "Open entry" }));
 		expect(screen.getByRole("textbox", { name: copy.prompt })).toHaveValue("milk");
 	});
 
-	it("consumes the proposal only after confirmation so returning cannot add it twice", () => {
+	it("keeps the proposal after adding and consumes it only when opening the basket", () => {
 		open(true);
 		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("0");
-		fireEvent.click(screen.getByRole("button", { name: copy.accept }));
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.add }));
+		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("1");
+		expect(screen.getByRole("heading", { name: copy.review })).toBeInTheDocument();
+		expect(fake.push).not.toHaveBeenCalled();
+		fireEvent.click(screen.getByRole("button", { name: copy.basket }));
 		expect(fake.push).toHaveBeenCalledWith("/shop/basket");
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("1");
 		expect(screen.getByRole("heading", { name: copy.emptyReview })).toBeInTheDocument();
-		expect(screen.queryByRole("button", { name: copy.accept })).not.toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: copy.basket })).not.toBeInTheDocument();
 	});
 
-	it("resets choices for a fresh interpretation with identical words", () => {
+	it("resets unadded quantities for a fresh interpretation with identical words", () => {
 		open(true);
 		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
-		fireEvent.click(screen.getByRole("checkbox"));
-		expect(screen.getByRole("button", { name: copy.accept })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.increase("Milk") }));
+		expect(screen.getByText("Quantity: 2")).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
-		expect(screen.getByRole("checkbox")).toBeChecked();
-		expect(screen.getByRole("button", { name: copy.accept })).toBeEnabled();
+		expect(screen.getByText("Quantity: 1")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: copy.basket })).toBeDisabled();
+		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("0");
+	});
+
+	it("keeps added items across review navigation without offering a duplicate add", () => {
+		open();
+		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.add }));
+		fireEvent.click(screen.getByRole("button", { name: "Open entry" }));
+		fireEvent.click(screen.getByRole("button", { name: "Open review" }));
+		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("1");
+		expect(screen.queryByRole("button", { name: requestsCopy.add })).not.toBeInTheDocument();
+		expect(screen.getByRole("button", { name: `${requestsCopy.remove}: Milk` })).toBeEnabled();
 	});
 });
