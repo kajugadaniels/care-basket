@@ -20,7 +20,13 @@
 			"synonyms": [
 				"shine muscat"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/shine-muscat-op-4238179.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/880/931/681/0561/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/8809316810561",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4238179,
 			"sourceProductCode": "8809316810561",
@@ -64,7 +70,13 @@
 			"synonyms": [
 				"kiwi berries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/kiwi-berries-op-3484519.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/082/890/400/2186/front_en.4.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0828904002186",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3484519,
 			"sourceProductCode": "0828904002186",
@@ -118,7 +130,13 @@
 			"synonyms": [
 				"blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/blueberries-op-2527655.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/002/254/3043/front_en.30.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0850022543043",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2527655,
 			"sourceProductCode": "0850022543043",
@@ -203,7 +221,13 @@
 				"frozen mango",
 				"mango chunks"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-mango-chunks-op-3823301.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/087/366/800/4709/front_en.8.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0873668004709",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3823301,
 			"sourceProductCode": "0873668004709",
@@ -333,7 +357,13 @@
 				"bananas",
 				"organic bananas"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-bananas-op-2071835.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/786/119/300/0047/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/7861193000047",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2071835,
 			"sourceProductCode": "7861193000047",
@@ -388,7 +418,13 @@
 				"frozen blueberries",
 				"organic blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-blueberries-op-1749988.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/914/0466/front_en.26.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0096619140466",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1749988,
 			"sourceProductCode": "0096619140466",
@@ -432,7 +468,13 @@
 			"synonyms": [
 				"blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/sweetest-batch-blueberries-op-1495979.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/650/0178/front_en.20.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0715756500178",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1495979,
 			"sourceProductCode": "0715756500178",
@@ -476,7 +518,13 @@
 			"synonyms": [
 				"strawberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/strawberries-op-1803783.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/620/0221/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0715756200221",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1803783,
 			"sourceProductCode": "0715756200221",
@@ -521,7 +569,13 @@
 				"frozen blueberries",
 				"organic blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-blueberries-op-2152751.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/914/0497/front_en.25.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0096619140497",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2152751,
 			"sourceProductCode": "0096619140497",
@@ -585,7 +639,13 @@
 			"synonyms": [
 				"bananas"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/bananas-3-lb-bag-30669-op-706374.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/752/461/1109/front_en.12.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0717524611109",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 706374,
 			"sourceProductCode": "0717524611109",
@@ -640,7 +700,13 @@
 				"frozen strawberries",
 				"organic strawberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-strawberries-op-2075389.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/908/1417/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0096619081417",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2075389,
 			"sourceProductCode": "0096619081417",
@@ -705,7 +771,13 @@
 				"frozen blueberries",
 				"wild blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/wild-blueberries-op-4036696.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/019/663/386/0330/front_en.67.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0196633860330",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4036696,
 			"sourceProductCode": "0196633860330",
@@ -750,7 +822,13 @@
 				"blackberries",
 				"organic blackberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/blackberry-organic-op-2457206.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0286/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0715756100286",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2457206,
 			"sourceProductCode": "0715756100286",
@@ -795,7 +873,13 @@
 				"blueberries",
 				"organic blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-blueberries-op-2152000.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/067/170/400/0155/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0671704000155",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2152000,
 			"sourceProductCode": "0671704000155",
@@ -840,7 +924,13 @@
 				"bananas",
 				"organic bananas"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/certified-organic-bananas-op-1651824.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/064/312/697/1962/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0643126971962",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1651824,
 			"sourceProductCode": "0643126971962",
@@ -970,7 +1060,13 @@
 				"kiwi",
 				"kiwifruit"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/zespri-organic-sungold-kiwifruit-op-1853431.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/884/902/0109/front_en.26.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0818849020109",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1853431,
 			"sourceProductCode": "0818849020109",
@@ -1015,7 +1111,13 @@
 				"raspberries",
 				"organic raspberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-raspberries-op-152912.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0040/front_en.22.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0715756100040",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 152912,
 			"sourceProductCode": "0715756100040",
@@ -1069,7 +1171,13 @@
 			"synonyms": [
 				"raspberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/raspberries-op-1413218.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0156/front_en.8.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0715756100156",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1413218,
 			"sourceProductCode": "0715756100156",
@@ -1113,7 +1221,13 @@
 			"synonyms": [
 				"strawberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/strawberries-op-2259908.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/074/007/500/0047/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0740075000047",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2259908,
 			"sourceProductCode": "0740075000047",
@@ -1158,7 +1272,13 @@
 				"raspberries",
 				"framboises"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/framboises-op-152911.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0033/front_en.8.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0715756100033",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 152911,
 			"sourceProductCode": "0715756100033",
@@ -1204,7 +1324,13 @@
 				"mandarin oranges",
 				"mandarinas"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/mandarinas-op-71174.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/410/722/1011/front_fr.8.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0054107221011",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71174,
 			"sourceProductCode": "0054107221011",
@@ -1259,7 +1385,13 @@
 				"dates",
 				"pitted dates"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/pitted-dates-op-119321.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/948/243/4267/front_en.15.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0099482434267",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 119321,
 			"sourceProductCode": "0099482434267",
@@ -1304,7 +1436,13 @@
 				"dates",
 				"medjool dates"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/medjool-dates-op-3454474.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/792/300/2365/front_en.20.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0097923002365",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3454474,
 			"sourceProductCode": "0097923002365",
@@ -1349,7 +1487,13 @@
 				"dates",
 				"medjool dates"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/medjool-dates-op-3268315.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/792/300/2082/front_en.4.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0097923002082",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3268315,
 			"sourceProductCode": "0097923002082",
@@ -1395,7 +1539,13 @@
 				"pitted dates",
 				"deglet noor dates"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/premium-pitted-organic-dates-deglet-no-op-1427501.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/008/925/708/4254/front_en.25.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0089257084254",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1427501,
 			"sourceProductCode": "0089257084254",
@@ -1440,7 +1590,13 @@
 				"blueberries",
 				"organic blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/blueberries-organic-op-2920199.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/086/000/184/1084/front_en.14.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0860001841084",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2920199,
 			"sourceProductCode": "0860001841084",
@@ -1485,7 +1641,13 @@
 				"blueberries",
 				"organic blueberries"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-blueberries-op-1845137.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/066/529/005/1387/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0665290051387",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1845137,
 			"sourceProductCode": "0665290051387",
@@ -1530,7 +1692,13 @@
 				"whole milk",
 				"organic whole milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-whole-milk-kids-op-3909559.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/406/146/222/8520/front_en.7.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4061462228520",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3909559,
 			"sourceProductCode": "4061462228520",
@@ -1576,7 +1744,13 @@
 				"low fat milk",
 				"low-fat milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/1-low-fat-milk-op-1748979.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/119/046/7211/front_en.24.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0041190467211",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1748979,
 			"sourceProductCode": "0041190467211",
@@ -1632,7 +1806,13 @@
 				"skim milk",
 				"organic skim milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-fat-free-milk-op-160541.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/074/236/526/4054/front_en.11.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0742365264054",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 160541,
 			"sourceProductCode": "0742365264054",
@@ -1687,7 +1867,13 @@
 				"whole milk",
 				"ultra-filtered milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/whole-ultra-filtered-milk-op-171718.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/162/002/0169/front_en.308.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0811620020169",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 171718,
 			"sourceProductCode": "0811620020169",
@@ -1732,7 +1918,13 @@
 				"almond milk",
 				"almondmilk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/almondmilk-op-25284.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/002/529/300/1497/front_en.111.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0025293001497",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 25284,
 			"sourceProductCode": "0025293001497",
@@ -1777,7 +1969,13 @@
 				"reduced fat milk",
 				"reduced-fat milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/reduced-fat-milk-op-1203745.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/215/901/2045/front_en.14.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0052159012045",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1203745,
 			"sourceProductCode": "0052159012045",
@@ -1821,7 +2019,13 @@
 			"synonyms": [
 				"whole milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/whole-milk-op-2651380.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/396/600/9989/front_en.54.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0093966009989",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2651380,
 			"sourceProductCode": "0093966009989",
@@ -1866,7 +2070,13 @@
 				"almond milk",
 				"unsweetened almond milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/almond-breeze-almondmilk-unsweetened-o-op-56778.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/157/005/4130/front_en.75.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0041570054130",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 56778,
 			"sourceProductCode": "0041570054130",
@@ -1931,7 +2141,13 @@
 				"2% milk",
 				"reduced fat milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/reduced-fat-milk-2-milkfat-op-1488577.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/900/0012/front_en.84.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0096619000012",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1488577,
 			"sourceProductCode": "0096619000012",
@@ -2112,7 +2328,13 @@
 				"fat free milk",
 				"skim milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/fat-free-milk-op-1696385.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/900/0128/front_en.4.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0096619000128",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1696385,
 			"sourceProductCode": "0096619000128",
@@ -2157,7 +2379,13 @@
 				"reduced fat milk",
 				"reduced-fat milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/reduced-fat-milk-op-20386.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/002/113/007/0114/front_en.13.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0021130070114",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 20386,
 			"sourceProductCode": "0021130070114",
@@ -2202,7 +2430,13 @@
 				"almond milk",
 				"almondmilk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/almondmilk-op-56792.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/157/005/6707/front_en.140.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0041570056707",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 56792,
 			"sourceProductCode": "0041570056707",
@@ -2248,7 +2482,13 @@
 				"low fat milk",
 				"low-fat milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/1-lowfat-milk-op-62017.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/410/010/2523/front_en.5.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0044100102523",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 62017,
 			"sourceProductCode": "0044100102523",
@@ -2294,7 +2534,13 @@
 				"low fat milk",
 				"low-fat milk"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/1-lowfat-milk-op-112348.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/008/523/928/4070/front_en.26.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0085239284070",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 112348,
 			"sourceProductCode": "0085239284070",
@@ -2339,7 +2585,13 @@
 				"bread",
 				"seed bread"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/seedtastic-jam-packed-with-seeds-bread-op-1852419.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/025/3108/front_en.45.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4099100253108",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1852419,
 			"sourceProductCode": "4099100253108",
@@ -2384,7 +2636,13 @@
 				"tortillas",
 				"flour tortillas"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/flour-tortillas-op-1822949.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/001/6031/front_en.23.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4099100016031",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1822949,
 			"sourceProductCode": "4099100016031",
@@ -2474,7 +2732,13 @@
 				"bread",
 				"the big 16"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/the-big-16-op-71889.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/104/0160/front_en.198.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0055991040160",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71889,
 			"sourceProductCode": "0055991040160",
@@ -2540,7 +2804,13 @@
 				"sprouted bread",
 				"whole grain bread"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/thin-sliced-organic-bread-sprouted-who-op-1077402.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/8074/front_en.105.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0013764028074",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1077402,
 			"sourceProductCode": "0013764028074",
@@ -2586,7 +2856,13 @@
 				"seed bread",
 				"good seed bread"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/organic-bread-good-seed-thin-sliced-op-13638.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/7121/front_en.144.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0013764027121",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13638,
 			"sourceProductCode": "0013764027121",
@@ -2633,6 +2909,1807 @@
 					"observedOn": "2026-07-30",
 					"isDiscounted": false,
 					"locationId": 4190,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "royal-blend-rice-blend-op-94408",
+			"barcode": "0074401760412",
+			"displayName": "Royal Blend Rice Blend",
+			"brand": "RiceSelect",
+			"category": "PANTRY",
+			"variantGroup": "royal-blend-rice",
+			"netQuantity": 595,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "20.99 oz (595 g)",
+			"synonyms": [
+				"rice blend",
+				"mixed rice"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 94408,
+			"sourceProductCode": "0074401760412",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1149,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332650,
+					"productCode": "0074401760412",
+					"priceMinor": 1149,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "brown-texmati-long-grain-basmati-rice-op-94385",
+			"barcode": "0074401310419",
+			"displayName": "Brown Texmati Basmati Rice",
+			"brand": "RiceSelect",
+			"category": "PANTRY",
+			"variantGroup": "brown-texmati-rice",
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"brown rice",
+				"brown basmati rice"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 94385,
+			"sourceProductCode": "0074401310419",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 899,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332649,
+					"productCode": "0074401310419",
+					"priceMinor": 899,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 337536,
+					"productCode": "0074401310419",
+					"priceMinor": 899,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-california-brown-jasmine-rice-op-92194",
+			"barcode": "0073416040588",
+			"displayName": "Organic Brown Jasmine Rice",
+			"brand": "Lundberg Family Farms",
+			"category": "PANTRY",
+			"variantGroup": "brown-jasmine-rice",
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"brown rice",
+				"jasmine rice"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 92194,
+			"sourceProductCode": "0073416040588",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332651,
+					"productCode": "0073416040588",
+					"priceMinor": 1299,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-brown-rice-texmati-op-94414",
+			"barcode": "0074401930419",
+			"displayName": "Organic Brown Texmati Rice",
+			"brand": "Riceselect",
+			"category": "PANTRY",
+			"variantGroup": "organic-brown-texmati-rice",
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"organic brown rice",
+				"texmati rice"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 94414,
+			"sourceProductCode": "0074401930419",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 337531,
+					"productCode": "0074401930419",
+					"priceMinor": 1299,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "jasmine-thai-fragrant-long-grain-rice-op-1438096",
+			"barcode": "0017400102357",
+			"displayName": "Jasmine Rice",
+			"brand": "Carolina",
+			"category": "PANTRY",
+			"variantGroup": "white-jasmine-rice",
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"white rice",
+				"jasmine rice"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1438096,
+			"sourceProductCode": "0017400102357",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 335721,
+					"productCode": "0017400102357",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "joe-s-os-op-41477",
+			"barcode": "00365925",
+			"displayName": "Joe's O's Cereal",
+			"brand": "Trader Joe's",
+			"category": "BREAKFAST",
+			"variantGroup": "joes-os-cereal",
+			"netQuantity": 340,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"oat cereal",
+				"cereal"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 41477,
+			"sourceProductCode": "00365925",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-26",
+				"observedTo": "2026-09-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 335939,
+					"productCode": "00365925",
+					"priceMinor": 199,
+					"currency": "USD",
+					"observedOn": "2026-09-26",
+					"isDiscounted": false,
+					"locationId": 4849,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "frosted-flakes-sweetened-flakes-of-cor-op-120478",
+			"barcode": "00946629",
+			"displayName": "Frosted Corn Flakes",
+			"brand": "Trader Joe's",
+			"category": "BREAKFAST",
+			"variantGroup": "trader-joes-frosted-flakes",
+			"netQuantity": 425,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "14.99 oz (425 g)",
+			"synonyms": [
+				"corn flakes",
+				"frosted flakes"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 120478,
+			"sourceProductCode": "00946629",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 279,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-26",
+				"observedTo": "2026-09-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 335936,
+					"productCode": "00946629",
+					"priceMinor": 279,
+					"currency": "USD",
+					"observedOn": "2026-09-26",
+					"isDiscounted": false,
+					"locationId": 4849,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "honey-o-s-sweetened-whole-grain-oats-c-op-1118890",
+			"barcode": "00385527",
+			"displayName": "Honey O's Cereal",
+			"brand": "Trader Joe's",
+			"category": "BREAKFAST",
+			"variantGroup": "honey-os-cereal",
+			"netQuantity": 382,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "13.47 oz (382 g)",
+			"synonyms": [
+				"honey cereal",
+				"oat cereal"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1118890,
+			"sourceProductCode": "00385527",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 269,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-26",
+				"observedTo": "2026-09-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 335934,
+					"productCode": "00385527",
+					"priceMinor": 269,
+					"currency": "USD",
+					"observedOn": "2026-09-26",
+					"isDiscounted": false,
+					"locationId": 4849,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "chocolate-sea-salt-ancient-grain-grano-op-185638",
+			"barcode": "0855140002687",
+			"displayName": "Chocolate Sea Salt Granola",
+			"brand": "purely elizabeth.",
+			"category": "BREAKFAST",
+			"variantGroup": "chocolate-sea-salt-granola",
+			"netQuantity": 226,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "7.97 oz (226 g)",
+			"synonyms": [
+				"granola",
+				"chocolate granola"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 185638,
+			"sourceProductCode": "0855140002687",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1049,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-16",
+				"observedTo": "2026-09-16",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 331655,
+					"productCode": "0855140002687",
+					"priceMinor": 1049,
+					"currency": "USD",
+					"observedOn": "2026-09-16",
+					"isDiscounted": false,
+					"locationId": 7292,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "steel-cut-oats-op-1270908",
+			"barcode": "0039978041401",
+			"displayName": "Steel Cut Oats",
+			"brand": "Bob's Red Mill",
+			"category": "BREAKFAST",
+			"variantGroup": "steel-cut-oats",
+			"netQuantity": 680,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"oats",
+				"steel cut oats"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1270908,
+			"sourceProductCode": "0039978041401",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 539,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2025-12-28",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332767,
+					"productCode": "0039978041401",
+					"priceMinor": 549,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 176015,
+					"productCode": "0039978041401",
+					"priceMinor": 529,
+					"currency": "USD",
+					"observedOn": "2025-12-28",
+					"isDiscounted": false,
+					"locationId": 4820,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-old-fashioned-rolled-oats-whol-op-1270892",
+			"barcode": "0039978039521",
+			"displayName": "Organic Rolled Oats",
+			"brand": "Bob's Red Mill",
+			"category": "BREAKFAST",
+			"variantGroup": "organic-rolled-oats",
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"organic oats",
+				"rolled oats"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1270892,
+			"sourceProductCode": "0039978039521",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 549,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332764,
+					"productCode": "0039978039521",
+					"priceMinor": 549,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "quaker-white-oats-op-466987",
+			"barcode": "5000108478119",
+			"displayName": "Quaker White Oats",
+			"brand": "Quaker",
+			"category": "BREAKFAST",
+			"variantGroup": "quaker-white-oats",
+			"netQuantity": 500,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "17.64 oz (500 g)",
+			"synonyms": [
+				"oats",
+				"white oats"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 466987,
+			"sourceProductCode": "5000108478119",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-28",
+				"observedTo": "2026-08-28",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 322800,
+					"productCode": "5000108478119",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-08-28",
+					"isDiscounted": false,
+					"locationId": 6997,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "quick-1-minute-oats-op-792093",
+			"barcode": "0030000011805",
+			"displayName": "Quick Oats",
+			"brand": "Quaker Oats",
+			"category": "BREAKFAST",
+			"variantGroup": "quick-oats",
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"quick oats",
+				"oatmeal"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 792093,
+			"sourceProductCode": "0030000011805",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 649,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-28",
+				"observedTo": "2026-08-28",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 322799,
+					"productCode": "0030000011805",
+					"priceMinor": 649,
+					"currency": "USD",
+					"observedOn": "2026-08-28",
+					"isDiscounted": false,
+					"locationId": 6997,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 168791,
+					"productCode": "0030000011805",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2025-10-31",
+					"isDiscounted": true,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "old-fashioned-rolled-oats-whole-grain-op-1080347",
+			"barcode": "0039978049520",
+			"displayName": "Old Fashioned Rolled Oats",
+			"brand": "Bob's Red Mill",
+			"category": "BREAKFAST",
+			"variantGroup": "rolled-oats",
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"oats",
+				"rolled oats",
+				"oatmeal"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1080347,
+			"sourceProductCode": "0039978049520",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 799,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2025-02-22",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 317983,
+					"productCode": "0039978049520",
+					"priceMinor": 799,
+					"currency": "USD",
+					"observedOn": "2026-08-20",
+					"isDiscounted": false,
+					"locationId": 4152,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 176017,
+					"productCode": "0039978049520",
+					"priceMinor": 849,
+					"currency": "USD",
+					"observedOn": "2025-12-28",
+					"isDiscounted": false,
+					"locationId": 4820,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 168938,
+					"productCode": "0039978049520",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2025-10-19",
+					"isDiscounted": true,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 147567,
+					"productCode": "0039978049520",
+					"priceMinor": 628,
+					"currency": "USD",
+					"observedOn": "2025-02-22",
+					"isDiscounted": false,
+					"locationId": 3984,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "honey-wheat-bread-op-90374",
+			"barcode": "0072945601369",
+			"displayName": "Honey Wheat Bread",
+			"brand": "Sara Lee",
+			"category": "BAKERY",
+			"variantGroup": "honey-wheat-bread",
+			"netQuantity": 567,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "20 oz (567 g)",
+			"synonyms": [
+				"bread",
+				"honey wheat bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 90374,
+			"sourceProductCode": "0072945601369",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 348,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-20",
+				"observedTo": "2026-09-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332912,
+					"productCode": "0072945601369",
+					"priceMinor": 348,
+					"currency": "USD",
+					"observedOn": "2026-09-20",
+					"isDiscounted": false,
+					"locationId": 7335,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "everything-bagels-op-1378899",
+			"barcode": "00922678",
+			"displayName": "Everything Bagels",
+			"brand": "Trader Joe's",
+			"category": "BAKERY",
+			"variantGroup": "everything-bagels",
+			"netQuantity": 510,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "17.99 oz (510 g)",
+			"synonyms": [
+				"bagels",
+				"everything bagels"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1378899,
+			"sourceProductCode": "00922678",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-19",
+				"observedTo": "2026-09-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332793,
+					"productCode": "00922678",
+					"priceMinor": 299,
+					"currency": "USD",
+					"observedOn": "2026-09-19",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "perfectly-crafted-multigrain-op-805947",
+			"barcode": "0072250020756",
+			"displayName": "Multigrain Bread",
+			"brand": "Nature's Own",
+			"category": "BAKERY",
+			"variantGroup": "natures-own-multigrain-bread",
+			"netQuantity": 623,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "21.98 oz (623 g)",
+			"synonyms": [
+				"bread",
+				"multigrain bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 805947,
+			"sourceProductCode": "0072250020756",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 479,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332356,
+					"productCode": "0072250020756",
+					"priceMinor": 479,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7283,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-bread-op-13645",
+			"barcode": "0013764027220",
+			"displayName": "Organic Bread",
+			"brand": "Dave's Killer Bread",
+			"category": "BAKERY",
+			"variantGroup": "daves-organic-bread",
+			"netQuantity": 680,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"bread",
+				"organic bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 13645,
+			"sourceProductCode": "0013764027220",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 749,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2026-07-25",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332352,
+					"productCode": "0013764027220",
+					"priceMinor": 749,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7283,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 332351,
+					"productCode": "0013764027220",
+					"priceMinor": 749,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7283,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 311896,
+					"productCode": "0013764027220",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-07-25",
+					"isDiscounted": false,
+					"locationId": 6583,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "organic-bread-good-seed-op-13633",
+			"barcode": "0013764027039",
+			"displayName": "Organic Good Seed Bread",
+			"brand": "Dave's Killer Bread",
+			"category": "BAKERY",
+			"variantGroup": "daves-good-seed-bread",
+			"netQuantity": 765,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "26.98 oz (765 g)",
+			"synonyms": [
+				"seeded bread",
+				"good seed bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 13633,
+			"sourceProductCode": "0013764027039",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 674,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-07-25",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 332353,
+					"productCode": "0013764027039",
+					"priceMinor": 749,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7283,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 311895,
+					"productCode": "0013764027039",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-07-25",
+					"isDiscounted": false,
+					"locationId": 6583,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "100-whole-wheat-bread-op-1130722",
+			"barcode": "4099100008616",
+			"displayName": "Whole Wheat Bread",
+			"brand": "Nature's Own",
+			"category": "BAKERY",
+			"variantGroup": "natures-own-whole-wheat-bread",
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"bread",
+				"whole wheat bread"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1130722,
+			"sourceProductCode": "4099100008616",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 359,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 5,
+				"observedFrom": "2026-03-14",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 331177,
+					"productCode": "4099100008616",
+					"priceMinor": 359,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 321529,
+					"productCode": "4099100008616",
+					"priceMinor": 359,
+					"currency": "USD",
+					"observedOn": "2026-08-28",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 289511,
+					"productCode": "4099100008616",
+					"priceMinor": 359,
+					"currency": "USD",
+					"observedOn": "2026-06-28",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 255069,
+					"productCode": "4099100008616",
+					"priceMinor": 359,
+					"currency": "USD",
+					"observedOn": "2026-03-28",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 244298,
+					"productCode": "4099100008616",
+					"priceMinor": 359,
+					"currency": "USD",
+					"observedOn": "2026-03-14",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "seeded-crackers-op-3475860",
+			"barcode": "4061461753764",
+			"displayName": "Seeded Crackers",
+			"brand": "Specially Selected",
+			"category": "SNACKS",
+			"variantGroup": "seeded-crackers",
+			"netQuantity": 155,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "5.47 oz (155 g)",
+			"synonyms": [
+				"crackers",
+				"seeded crackers"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3475860,
+			"sourceProductCode": "4061461753764",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 399,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-07",
+				"observedTo": "2026-10-07",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 342466,
+					"productCode": "4061461753764",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-10-07",
+					"isDiscounted": false,
+					"locationId": 6379,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "wavy-potato-chips-op-1134820",
+			"barcode": "4099100066692",
+			"displayName": "Wavy Potato Chips",
+			"brand": "Clancy's",
+			"category": "SNACKS",
+			"variantGroup": "wavy-potato-chips",
+			"netQuantity": 283,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "9.98 oz (283 g)",
+			"synonyms": [
+				"potato chips",
+				"chips"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1134820,
+			"sourceProductCode": "4099100066692",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 179,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 340932,
+					"productCode": "4099100066692",
+					"priceMinor": 179,
+					"currency": "USD",
+					"observedOn": "2026-10-04",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "fine-hazelnut-chocolates-op-3264",
+			"barcode": "0009800000715",
+			"displayName": "Hazelnut Chocolates",
+			"brand": "Ferrero Rocher",
+			"category": "SNACKS",
+			"variantGroup": "ferrero-hazelnut-chocolates",
+			"netQuantity": 150,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "5.29 oz (150 g)",
+			"synonyms": [
+				"chocolates",
+				"hazelnut chocolates"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3264,
+			"sourceProductCode": "0009800000715",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 399,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341312,
+					"productCode": "0009800000715",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-10-04",
+					"isDiscounted": false,
+					"locationId": 7508,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "dark-chocolate-op-38735",
+			"barcode": "0037466016450",
+			"displayName": "Dark Chocolate",
+			"brand": "Lindt",
+			"category": "SNACKS",
+			"variantGroup": "lindt-dark-chocolate",
+			"netQuantity": 99,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "3.49 oz (99 g)",
+			"synonyms": [
+				"chocolate",
+				"dark chocolate"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 38735,
+			"sourceProductCode": "0037466016450",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 449,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341301,
+					"productCode": "0037466016450",
+					"priceMinor": 449,
+					"currency": "USD",
+					"observedOn": "2026-10-04",
+					"isDiscounted": false,
+					"locationId": 7508,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "magic-all-one-chocolate-smooth-coconut-op-2151930",
+			"barcode": "0018787505595",
+			"displayName": "Coconut Praline Chocolate",
+			"brand": "Dr. Bronner's",
+			"category": "SNACKS",
+			"variantGroup": "coconut-praline-chocolate",
+			"netQuantity": 83,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "2.93 oz (83 g)",
+			"synonyms": [
+				"chocolate",
+				"coconut chocolate"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2151930,
+			"sourceProductCode": "0018787505595",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 649,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341147,
+					"productCode": "0018787505595",
+					"priceMinor": 649,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4393,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "pure-dark-70-cocoa-op-197212",
+			"barcode": "0898575001337",
+			"displayName": "Dark Chocolate 70% Cocoa",
+			"brand": "BEYOND GOOD",
+			"category": "SNACKS",
+			"variantGroup": "beyond-good-dark-chocolate-70",
+			"netQuantity": 75,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "2.65 oz (75 g)",
+			"synonyms": [
+				"chocolate",
+				"dark chocolate"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 197212,
+			"sourceProductCode": "0898575001337",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 549,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 341151,
+					"productCode": "0898575001337",
+					"priceMinor": 549,
+					"currency": "USD",
+					"observedOn": "2026-10-03",
+					"isDiscounted": false,
+					"locationId": 4393,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 336178,
+					"productCode": "0898575001337",
+					"priceMinor": 449,
+					"currency": "USD",
+					"observedOn": "2026-09-26",
+					"isDiscounted": true,
+					"locationId": 4058,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "sparkling-frost-sugar-plum-op-4701336",
+			"barcode": "4069365828779",
+			"displayName": "Sugar Plum Sparkling Water",
+			"brand": "PurAqua",
+			"category": "BEVERAGES",
+			"variantGroup": "sugar-plum-sparkling-water",
+			"netQuantity": 502,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "16.97 fl oz (502 mL)",
+			"synonyms": [
+				"sparkling water",
+				"flavored water"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 4701336,
+			"sourceProductCode": "4069365828779",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 65,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-07",
+				"observedTo": "2026-10-07",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 342387,
+					"productCode": "4069365828779",
+					"priceMinor": 65,
+					"currency": "USD",
+					"observedOn": "2026-10-07",
+					"isDiscounted": false,
+					"locationId": 6379,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "carbonated-natural-mineral-water-op-56513",
+			"barcode": "0041508800129",
+			"displayName": "Carbonated Mineral Water",
+			"brand": "S. Pellegrino",
+			"category": "BEVERAGES",
+			"variantGroup": "san-pellegrino-mineral-water",
+			"netQuantity": 750,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "25.36 fl oz (750 mL)",
+			"synonyms": [
+				"mineral water",
+				"sparkling water"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 56513,
+			"sourceProductCode": "0041508800129",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 299,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2026-01-03",
+				"observedTo": "2026-06-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 287738,
+					"productCode": "0041508800129",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-06-19",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 271107,
+					"productCode": "0041508800129",
+					"priceMinor": 299,
+					"currency": "USD",
+					"observedOn": "2026-05-02",
+					"isDiscounted": false,
+					"locationId": 4058,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 182187,
+					"productCode": "0041508800129",
+					"priceMinor": 349,
+					"currency": "USD",
+					"observedOn": "2026-01-03",
+					"isDiscounted": false,
+					"locationId": 4850,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "sparkling-natural-mineral-water-op-97984",
+			"barcode": "0075502386679",
+			"displayName": "Sparkling Mineral Water",
+			"brand": "Gerolsteiner",
+			"category": "BEVERAGES",
+			"variantGroup": "gerolsteiner-mineral-water",
+			"netQuantity": 750,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "25.36 fl oz (750 mL)",
+			"synonyms": [
+				"mineral water",
+				"sparkling water"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 97984,
+			"sourceProductCode": "0075502386679",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 249,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-06-19",
+				"observedTo": "2026-06-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 287739,
+					"productCode": "0075502386679",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-06-19",
+					"isDiscounted": false,
+					"locationId": 3999,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "sparkling-natural-mineral-water-op-56520",
+			"barcode": "0041508802185",
+			"displayName": "Sparkling Mineral Water",
+			"brand": "Sanpellegrino",
+			"category": "BEVERAGES",
+			"variantGroup": "sanpellegrino-mineral-water",
+			"netQuantity": 237,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "8.01 fl oz (237 mL)",
+			"synonyms": [
+				"mineral water",
+				"sparkling water"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 56520,
+			"sourceProductCode": "0041508802185",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 319,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-05-02",
+				"observedTo": "2026-05-02",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 271108,
+					"productCode": "0041508802185",
+					"priceMinor": 319,
+					"currency": "USD",
+					"observedOn": "2026-05-02",
+					"isDiscounted": false,
+					"locationId": 4058,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "fitness-water-op-69345",
+			"barcode": "0052000707786",
+			"displayName": "Propel Fitness Water",
+			"brand": "Propel",
+			"category": "BEVERAGES",
+			"variantGroup": "propel-fitness-water",
+			"netQuantity": 591,
+			"netQuantityUnit": "MILLILITER",
+			"sizeLabel": "19.98 fl oz (591 mL)",
+			"synonyms": [
+				"flavored water",
+				"propel water"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 69345,
+			"sourceProductCode": "0052000707786",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 229,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-04-08",
+				"observedTo": "2026-04-08",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 263228,
+					"productCode": "0052000707786",
+					"priceMinor": 229,
+					"currency": "USD",
+					"observedOn": "2026-04-08",
+					"isDiscounted": false,
+					"locationId": 5142,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "chorizo-seitan-op-147198",
+			"barcode": "0689076762779",
+			"displayName": "Chorizo Seitan",
+			"brand": "Upton's Naturals",
+			"category": "MEAT_SEAFOOD",
+			"variantGroup": "chorizo-seitan",
+			"netQuantity": 228,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "8.04 oz (228 g)",
+			"synonyms": [
+				"seitan",
+				"plant based chorizo"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 147198,
+			"sourceProductCode": "0689076762779",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-26",
+				"observedTo": "2026-09-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 336037,
+					"productCode": "0689076762779",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-09-26",
+					"isDiscounted": false,
+					"locationId": 7422,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "crispy-chicken-strips-op-1430378",
+			"barcode": "4099100006742",
+			"displayName": "Crispy Chicken Strips",
+			"brand": "KIRKWOOD",
+			"category": "MEAT_SEAFOOD",
+			"variantGroup": "crispy-chicken-strips",
+			"netQuantity": 708,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "24.97 oz (708 g)",
+			"synonyms": [
+				"chicken strips",
+				"breaded chicken"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1430378,
+			"sourceProductCode": "4099100006742",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-09-06",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 331176,
+					"productCode": "4099100006742",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 326185,
+					"productCode": "4099100006742",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-09-06",
+					"isDiscounted": false,
+					"locationId": 5042,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "spam-classic-op-38991",
+			"barcode": "0037600138727",
+			"displayName": "SPAM Classic",
+			"brand": "SPAM",
+			"category": "MEAT_SEAFOOD",
+			"variantGroup": "spam-classic",
+			"netQuantity": 340,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"spam",
+				"canned pork"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 38991,
+			"sourceProductCode": "0037600138727",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-07-19",
+				"observedTo": "2026-07-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 303991,
+					"productCode": "0037600138727",
+					"priceMinor": 372,
+					"currency": "USD",
+					"observedOn": "2026-08-03",
+					"isDiscounted": true,
+					"locationId": 6689,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 295656,
+					"productCode": "0037600138727",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-07-19",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "double-smoked-thick-sliced-bacon-op-1304012",
+			"barcode": "0031961306634",
+			"displayName": "Thick Sliced Smoked Bacon",
+			"brand": "Hills Premium Meats",
+			"category": "MEAT_SEAFOOD",
+			"variantGroup": "thick-sliced-smoked-bacon",
+			"netQuantity": 1360,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "47.97 oz (1,360 g)",
+			"synonyms": [
+				"bacon",
+				"smoked bacon"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1304012,
+			"sourceProductCode": "0031961306634",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 2299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-07-29",
+				"observedTo": "2026-07-29",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 300992,
+					"productCode": "0031961306634",
+					"priceMinor": 2299,
+					"currency": "USD",
+					"observedOn": "2026-07-29",
+					"isDiscounted": false,
+					"locationId": 5142,
+					"locationCountryCode": "US"
+				}
+			]
+		},
+		{
+			"sku": "lean-ground-beef-op-849617",
+			"barcode": "0011110979759",
+			"displayName": "Lean Ground Beef",
+			"brand": "Kroger",
+			"category": "MEAT_SEAFOOD",
+			"variantGroup": "lean-ground-beef",
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"ground beef",
+				"minced beef"
+			],
+			"image": null,
+			"source": "OPEN_PRICES",
+			"sourceProductId": 849617,
+			"sourceProductCode": "0011110979759",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 999,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-07-29",
+				"observedTo": "2026-07-29",
+				"approved": true,
+				"approvedAt": "2026-10-10T06:44:17Z"
+			},
+			"verification": [
+				{
+					"sourcePriceId": 300993,
+					"productCode": "0011110979759",
+					"priceMinor": 999,
+					"currency": "USD",
+					"observedOn": "2026-07-29",
+					"isDiscounted": false,
+					"locationId": 5142,
 					"locationCountryCode": "US"
 				}
 			]
