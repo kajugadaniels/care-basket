@@ -1,0 +1,134 @@
+.shell {
+	display: flex;
+	flex-direction: column;
+	min-block-size: 100dvh;
+	background: var(--color-surface-soft);
+	font-family: var(--font-readable);
+	font-size: var(--text-lg);
+}
+
+.header {
+	border-block-end: 1px solid var(--color-border);
+	background: var(--color-surface);
+}
+
+.headerInner,
+.main,
+.footer {
+	inline-size: 100%;
+	max-inline-size: calc(var(--content-max) + var(--gutter) * 2);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+.headerInner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3) var(--space-5);
+	padding-block: var(--space-3);
+}
+
+.identity {
+	font-family: var(--font-sans);
+	font-size: var(--text-lg);
+}
+.tools {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-3);
+}
+
+.shell a,
+.shell button,
+.shell summary,
+.shell label {
+	font-size: var(--text-md);
+}
+
+.shell button {
+	min-block-size: var(--control-height-lg);
+	font-family: var(--font-sans);
+}
+.shell h1 {
+	font-family: var(--font-sans);
+	font-size: var(--text-2xl);
+	overflow-wrap: anywhere;
+}
+:where(.shell) :where(h2, h3) {
+	font-size: var(--text-xl);
+	overflow-wrap: anywhere;
+}
+.main {
+	flex: 1;
+	min-inline-size: 0;
+	padding-block: var(--space-6) var(--space-7);
+}
+
+.footer {
+	display: grid;
+	gap: var(--space-2);
+	padding-block: var(--space-5);
+	border-block-start: 1px solid var(--color-border);
+	color: var(--color-text-muted);
+	font-size: var(--text-md);
+}
+
+.help summary {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	min-block-size: var(--control-height);
+	padding: var(--space-2) var(--space-3);
+	border: 1px solid var(--color-border-strong);
+	border-radius: var(--radius-full);
+	color: var(--color-primary);
+	font-family: var(--font-sans);
+	font-weight: var(--weight-semibold);
+	cursor: pointer;
+	list-style: none;
+}
+
+.help summary::-webkit-details-marker {
+	display: none;
+}
+
+/* Help stays in normal flow so zoom never hides it in a popover. */
+.help p {
+	max-inline-size: var(--reading-max);
+	margin-block-start: var(--space-3);
+	padding: var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background: var(--color-surface-accent);
+}
+
+.skip {
+	position: absolute;
+	inset-inline-start: var(--gutter);
+	inset-block-start: var(--space-3);
+	z-index: var(--z-header);
+	padding: var(--space-3) var(--space-4);
+	border: 1px solid var(--color-primary);
+	border-radius: var(--radius-md);
+	background: var(--color-surface);
+	transform: translateY(-200%);
+}
+
+.skip:focus {
+	transform: translateY(0);
+}
+
+@media (min-width: 64rem) {
+	.main {
+		padding-block: var(--space-7);
+	}
+}
+
+@media (hover: hover) {
+	.help summary:hover {
+		background: var(--color-surface-accent);
+	}
+}
