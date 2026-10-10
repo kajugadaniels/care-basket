@@ -35,6 +35,12 @@ describe("shopping request screens", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Keep shopping list" }));
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument(); expect(fake.cancel).not.toHaveBeenCalled(); expect(trigger).toHaveFocus();
 	});
+	it("keeps payment confirmation distinct from delivery for requesters", () => {
+		render(<RequestDetail request={makeOwnRequest({ status: "PAID", editable: false })} />);
+		expect(screen.getByRole("region", { name: "Payment confirmed" })).toHaveTextContent("This does not mean the groceries have been delivered.");
+		expect(screen.getByText("Demo only. No delivery has been arranged.")).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: /pay|checkout/i })).not.toBeInTheDocument();
+	});
 	it.each(["DECLINED", "CANCELLED", "PAID", "AWAITING_PAYMENT"] as const)("omits edit/cancel/decline controls for %s", (status) => {
 		render(<RequestDetail request={makeManagerRequest({ status, editable: false })} />);
 		expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
@@ -106,5 +112,13 @@ describe("shopping request screens", () => {
 		render(<><RequestSkeleton /><RequestError retry={retry} /></>);
 		expect(screen.getByRole("status")).toHaveTextContent("Loading shopping lists…");
 		fireEvent.click(screen.getByRole("button", { name: "Try again" })); expect(retry).toHaveBeenCalledOnce();
+	});
+	it("offers pictures and focuses the error on a requester failure", () => {
+		const retry = vi.fn();
+		render(<RequestError retry={retry} requester />);
+		expect(screen.getByRole("heading", { level: 1 })).toHaveFocus();
+		expect(screen.getByRole("link", { name: "Back to groceries" })).toHaveAttribute("href", "/shop/products");
+		fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+		expect(retry).toHaveBeenCalledOnce();
 	});
 });
