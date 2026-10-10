@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DraftProvider, useDraft } from "@/features/requests/components/DraftProvider/DraftProvider";
 import { assistantCopy as copy } from "../../copy";
@@ -7,6 +7,7 @@ import type { Proposal } from "../../types";
 import { AssistantProvider, useAssistant } from "../AssistantProvider/AssistantProvider";
 import { AssistantStart } from "../AssistantStart/AssistantStart";
 import { ProposalReviewScreen } from "./ProposalReviewScreen";
+import styles from "./ProposalReview.module.css";
 
 const fake = vi.hoisted(() => ({ push: vi.fn(), text: vi.fn(), budget: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: fake.push }) }));
@@ -51,6 +52,19 @@ describe("separate proposal review screen", () => {
 		expect(screen.getByRole("link", { name: copy.startAgain })).toHaveAttribute("href", "/shop/assistant");
 		expect(screen.getByRole("link", { name: copy.pictures })).toHaveAttribute("href", "/shop/products");
 		expect(screen.queryByRole("button", { name: copy.accept })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: copy.none })).not.toBeInTheDocument();
+	});
+
+	it("puts the title and both navigation choices in one header row", () => {
+		open(true);
+		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
+		const heading = screen.getByRole("heading", { level: 1, name: copy.review });
+		const row = heading.parentElement!;
+		expect(row).toHaveClass(styles.headerRow);
+		expect(within(row).getByRole("link", { name: copy.backToAssistant })).toHaveAttribute("href", "/shop/assistant");
+		expect(within(row).getByRole("link", { name: copy.none })).toHaveAttribute("href", "/shop/products");
+		expect(screen.getAllByRole("link", { name: copy.backToAssistant })).toHaveLength(1);
+		expect(screen.getAllByRole("link", { name: copy.none })).toHaveLength(1);
 	});
 
 	it("keeps input and the proposal when entry and review unmount during navigation", async () => {
