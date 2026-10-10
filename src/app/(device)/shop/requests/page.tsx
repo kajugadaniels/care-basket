@@ -1,11 +1,9 @@
 import { Suspense } from "react";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
-import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
-import { RequesterFrame } from "@/features/devices/components/RequesterFrame/RequesterFrame";
 import { ShopHome } from "@/features/devices/components/ShopHome/ShopHome";
 import { RequestList } from "@/features/requests/components/RequestUi/RequestList";
-import { RequestSkeleton } from "@/features/requests/components/RequestUi/RequestSkeleton";
+import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
 import { requestsCopy } from "@/features/requests/copy";
 import { listOwnRequests } from "@/features/requests/server/service";
 import { parseRequestSearchParams } from "@/features/requests/server/page-data";
@@ -21,11 +19,14 @@ async function HistoryContent({ searchParams }: Props) {
 		throw error;
 	}
 	const result = await listOwnRequests(actor, parseRequestSearchParams(await searchParams));
-	return <div className={`${styles.page} ${styles.requester}`}><h1>{requestsCopy.listTitle}</h1>
-		<ActionLink href="/shop" variant="secondary" size="lg">{requestsCopy.home}</ActionLink>
+	return <div className={`${styles.page} ${styles.requester} ${styles.reading}`}>
+		<header className={styles.pageHeading}>
+			<h1>{requestsCopy.listTitle}</h1>
+			<p className={styles.muted}>{requestsCopy.historyIntro}</p>
+		</header>
 		<RequestList result={result} />
 	</div>;
 }
 export default function HistoryPage(props: Props) {
-	return <RequesterFrame wide><Suspense fallback={<RequestSkeleton />}><HistoryContent {...props} /></Suspense></RequesterFrame>;
+	return <Suspense fallback={<ShopSkeleton variant="history" />}><HistoryContent {...props} /></Suspense>;
 }
