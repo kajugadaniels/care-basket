@@ -1,5 +1,13 @@
 export const assistantCopy = {
 	title: "Start my shopping list", speak: "Speak", type: "Type", pictures: "Pictures",
+	welcome: "Let's make your shopping list",
+	greeting: ({ name }: { name: string }) => `Hello, ${name}!`,
+	welcomeHelp: "Tell us what you need at home.",
+	voiceUnavailable: "Speaking isn't available here yet. Typing still works.",
+	voiceLoading: "Opening voice recording…",
+	typingHelp: "List your groceries and how many you need.",
+	reviewHelp: "Check your groceries before sending to your family.",
+	sentLists: "See my sent lists",
 	local: "Type a simple list or choose pictures. Voice and smart suggestions are not available here yet.",
 	disclosure: "Google AI helps us understand your list. We don't keep recordings.",
 	prompt: "What groceries do you need?", placeholder: "Try: two bags of rice and one carton of milk",
