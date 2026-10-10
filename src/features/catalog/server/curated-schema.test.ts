@@ -19,10 +19,10 @@ const approvedExpansionIds = new Set([
 ]);
 
 describe("reviewed catalog contract", () => {
-	it("accepts the 86 approved products in the committed seed catalog", () => {
+	it("accepts the 118 approved products in the committed seed catalog", () => {
 		const catalog = validateSeedCatalog(committedCatalog, now);
 
-		expect(catalog.products).toHaveLength(86);
+		expect(catalog.products).toHaveLength(118);
 		expect(catalog.products.every((product) => product.demoPrice.approved)).toBe(true);
 		expect(catalog.products.every((product) => !product.isChildSuitable)).toBe(true);
 	});
@@ -37,6 +37,58 @@ describe("reviewed catalog contract", () => {
 			expect(product.demoPrice.approvedAt).toBe("2026-10-10T06:44:17Z");
 			expect(product.demoPrice.basis).not.toBe("MANUAL_DEMO");
 			expect(product.verification.length).toBeGreaterThan(0);
+			expect(product.isChildSuitable).toBe(false);
+		}
+	});
+	it("preserves the 32 newly approved products and their reviewed demo prices", () => {
+		const approvedPrices = new Map<number, number>([
+			[2094258, 699],
+			[1548114, 1679],
+			[1128508, 235],
+			[2321416, 349],
+			[2102982, 215],
+			[3687815, 349],
+			[41260, 432],
+			[13639, 649],
+			[2249575, 499],
+			[3291331, 549],
+			[71890, 599],
+			[4276652, 699],
+			[71894, 619],
+			[94406, 1099],
+			[2870895, 599],
+			[1861034, 599],
+			[197245, 1295],
+			[117343, 824],
+			[1951785, 999],
+			[654592, 456],
+			[24296, 399],
+			[92367, 999],
+			[1201548, 499],
+			[1019070, 699],
+			[1237227, 199],
+			[92368, 899],
+			[1237027, 499],
+			[91683, 199],
+			[92363, 844],
+			[94379, 899],
+			[2375859, 749],
+			[13168, 199],
+		]);
+		const catalog = validateSeedCatalog(committedCatalog, now);
+		const additions = catalog.products.filter((product) => product.sourceProductId !== null && approvedPrices.has(product.sourceProductId));
+
+		expect(additions).toHaveLength(32);
+		for (const product of additions) {
+			expect(product.source).toBe("OPEN_PRICES");
+			expect(product.demoPrice).toMatchObject({
+				currency: "USD", approved: true, approvedAt: "2026-10-10T12:57:10Z",
+				priceMinor: approvedPrices.get(product.sourceProductId ?? 0),
+			});
+			expect(product.demoPrice.basis).not.toBe("MANUAL_DEMO");
+			expect(product.verification.length).toBeGreaterThan(0);
+			expect(product.variantGroup).not.toBe("");
+			expect(product.synonyms).toContain(product.displayName.toLowerCase());
 			expect(product.isChildSuitable).toBe(false);
 		}
 	});
