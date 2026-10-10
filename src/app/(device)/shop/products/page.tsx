@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
-import { RequesterFrame } from "@/features/devices/components/RequesterFrame/RequesterFrame";
 import { ShopHome } from "@/features/devices/components/ShopHome/ShopHome";
 import { CatalogBrowser } from "@/features/catalog/components/CatalogBrowser/CatalogBrowser";
 import { CatalogSkeleton } from "@/features/catalog/components/CatalogBrowser/CatalogSkeleton";
@@ -27,9 +26,5 @@ async function ProductsContent({ searchParams }: { searchParams: CatalogSearchPa
 }
 
 export default function ProductsPage({ searchParams }: { searchParams: CatalogSearchParams }) {
-	return (
-		<RequesterFrame wide>
-			<Suspense fallback={<CatalogSkeleton />}><ProductsContent searchParams={searchParams} /></Suspense>
-		</RequesterFrame>
-	);
+	return <Suspense fallback={<CatalogSkeleton />}><ProductsContent searchParams={searchParams} /></Suspense>;
 }
