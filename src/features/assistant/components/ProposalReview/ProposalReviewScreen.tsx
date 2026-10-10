@@ -7,7 +7,7 @@ import { useAssistant } from "../AssistantProvider/AssistantProvider";
 import { ProposalReview } from "./ProposalReview";
 import styles from "./ProposalReview.module.css";
 
-export function ProposalReviewScreen({ child }: { child: boolean }) {
+export function ProposalReviewScreen() {
 	const { proposal, revision, setProposal } = useAssistant();
 	const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -31,7 +31,6 @@ export function ProposalReviewScreen({ child }: { child: boolean }) {
 				<ProposalReview
 					key={revision}
 					proposal={proposal}
-					child={child}
 					onAccepted={() => setProposal(null)}
 				/>
 			) : (
