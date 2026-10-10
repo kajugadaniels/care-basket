@@ -28,6 +28,11 @@ export function ProposalReviewSkeleton() {
 								<Skeleton />
 							</div>
 							<div className={cardStyles.controls}>
+								<div className={`${cardStyles.quantity} ${styles.quantitySkeleton}`}>
+									<Skeleton />
+									<Skeleton shape="pill" />
+									<Skeleton shape="pill" />
+								</div>
 								<Skeleton shape="pill" />
 							</div>
 						</li>
