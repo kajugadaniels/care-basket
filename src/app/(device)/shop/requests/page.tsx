@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
-import { ShopHome } from "@/features/devices/components/ShopHome/ShopHome";
+import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
 import { RequestList } from "@/features/requests/components/RequestUi/RequestList";
 import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
 import { requestsCopy } from "@/features/requests/copy";
@@ -15,7 +15,7 @@ async function HistoryContent({ searchParams }: Props) {
 	let actor;
 	try { actor = await requireDevice(); }
 	catch (error) {
-		if (error instanceof AppError && error.code === "UNAUTHENTICATED") return <ShopHome profile={null} />;
+		if (error instanceof AppError && error.code === "UNAUTHENTICATED") return <ReconnectDevice />;
 		throw error;
 	}
 	const result = await listOwnRequests(actor, parseRequestSearchParams(await searchParams));
