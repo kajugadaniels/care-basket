@@ -14,13 +14,15 @@ import { assistantCopy as copy } from "../../copy";
 import type { Proposal, ProposalItem } from "../../types";
 import styles from "./ProposalReview.module.css";
 
-export function ProposalReview({ proposal, child, onBack }: { proposal: Proposal; child: boolean; onBack(): void }) {
+type Props = { proposal: Proposal; child: boolean; onBack(): void; onAccepted?(): void };
+
+export function ProposalReview({ proposal, child, onBack, onAccepted }: Props) {
 	const router = useRouter();
 	const { draft, locked, change } = useDraft();
 	const [items, setItems] = useState(proposal.items);
 	const [selected, setSelected] = useState(new Set(proposal.items.filter((p) => p.origin === "REQUESTED" && !p.uncertain).map((p) => p.sku)));
 	const [question, setQuestion] = useState(0);
-	const [budget, setBudget] = useState<number | null>(proposal.budgetMinor);
+	const [budget, setBudget] = useState<number | null>(child ? null : proposal.budgetMinor);
 	const [confirmed, setConfirmed] = useState(false);
 	const [line, setLine] = useState("");
 	const [error, setError] = useState("");
@@ -41,32 +43,38 @@ export function ProposalReview({ proposal, child, onBack }: { proposal: Proposal
 			sourceProof: proposal.sourceProof, ...(confirmed && budget !== null ? { budgetMinor: budget, budgetConfirmed: true as const } : {}) };
 		try { changeDraft(draft, addition, "preview"); } catch { setError(copy.error); return; }
 		change(addition);
+		onAccepted?.();
 		router.push("/shop/basket");
 	}
 	const current = proposal.questions[question];
 	return <div className={styles.page}>
-		{proposal.local ? <p>{copy.fallback}</p> : null}
-		{proposal.inputMode === "VOICE" ? <p>{copy.transcript} {proposal.inputText}</p> : null}
+		{proposal.local ? <p className={styles.notice}>{copy.fallback}</p> : null}
+		{proposal.inputMode === "VOICE" ? <p className={styles.transcript}>{copy.transcript} {proposal.inputText}</p> : null}
 		{current ? <section className={styles.panel} aria-labelledby="clarification-title">
 			<h2 id="clarification-title" ref={questionRef} tabIndex={-1}>{current.question}</h2>
-			<ul className={styles.grid}>{current.options.map((option) => <li key={option.sku}>
-				<ProductCard product={option} idPrefix={`clarification-${question}`} /><Button size="lg" disabled={locked || pending} onClick={() => {
+			<p className={styles.muted}>{copy.choiceHelp}</p>
+			<ul className={styles.choiceGrid}>{current.options.map((option) => <li key={option.sku} className={styles.choice}>
+				<ProductCard product={option} idPrefix={`clarification-${question}`} />
+				<Button size="lg" variant="secondary" className={styles.chooseButton} disabled={locked || pending}
+					aria-label={copy.chooseLabel({ name: option.displayName, size: option.sizeLabel })} onClick={() => {
 					const existing = items.find((p) => p.sku === option.sku);
 					modify(existing ? items.map((p) => p.sku === option.sku ? { ...p, quantity: Math.min(p.origin === "SUGGESTED" ? 6 : 20, p.quantity + option.quantity) } : p)
 						: [...items, option], new Set([...selected, option.sku]));
 					setQuestion(question + 1);
-				}}>{option.displayName} · {option.sizeLabel}</Button>
+				}}>{copy.chooseProduct}</Button>
 			</li>)}</ul>
-			<ActionLink href="/shop/products" variant="secondary" size="lg">{copy.none}</ActionLink>
+			<ActionLink href="/shop/products" variant="secondary" size="lg" className={styles.escape}>{copy.none}</ActionLink>
 		</section> : null}
-		{(["REQUESTED", "SUGGESTED"] as const).map((origin) => items.some((p) => p.origin === origin) ? <section key={origin}>
+		{(["REQUESTED", "SUGGESTED"] as const).map((origin) => items.some((p) => p.origin === origin) ? <section key={origin} className={styles.group}>
 			<h2>{origin === "REQUESTED" ? copy.requested : copy.suggested}</h2>
-			<ul className={styles.grid}>{items.filter((p) => p.origin === origin).map((item) => <li key={item.sku} className={styles.panel}>
+			<p className={styles.muted}>{origin === "REQUESTED" ? copy.selectedHelp : copy.suggestionHelp}</p>
+			<ul className={styles.grid}>{items.filter((p) => p.origin === origin).map((item) => <li key={item.sku}
+				className={styles.item} data-selected={selected.has(item.sku)}>
 				<ProductCard product={item} idPrefix="proposal" />
 				<label className={styles.check}><input type="checkbox" checked={selected.has(item.sku)} disabled={locked || pending}
 					onChange={(event) => {
 						const next = new Set(selected); if (event.target.checked) next.add(item.sku); else next.delete(item.sku); modify(items, next);
-					}} />{item.uncertain ? copy.uncertain : copy.accept}: {item.displayName}</label>
+					}} />{item.uncertain ? copy.uncertain : copy.keepItem}: {item.displayName}</label>
 				{item.isSubstitute ? <p>{item.substitutionNote}</p> : null}
 				<QuantityControl name={item.displayName} quantity={item.quantity} disabled={locked || pending}
 					maxQuantity={item.origin === "SUGGESTED" ? 6 : 20}
@@ -78,7 +86,7 @@ export function ProposalReview({ proposal, child, onBack }: { proposal: Proposal
 		{proposal.unrecognized.length ? <section className={styles.panel}><h2>{copy.uncaught}</h2>
 			<ul>{proposal.unrecognized.map((phrase, index) => <li key={index}>{phrase}</li>)}</ul>
 			<ActionLink href="/shop/products" size="lg" variant="secondary">{copy.pictures}</ActionLink></section> : null}
-		{!child ? <section className={styles.panel}>
+		{!child ? <section className={styles.budget}>
 			<label className={styles.field}>{copy.budget}<select value={budget ?? ""} disabled={pending || locked} onChange={(event) => {
 				setBudget(event.target.value ? Number(event.target.value) : null); setConfirmed(false); setLine("");
 			}}><option value="">{copy.noBudget}</option>
@@ -99,10 +107,13 @@ export function ProposalReview({ proposal, child, onBack }: { proposal: Proposal
 			{line ? <p role="status">{line}</p> : null}
 		</section> : null}
 		{error ? <p role="alert" ref={errorRef} tabIndex={-1} className={styles.error}>{error}</p> : null}
-		<div className={styles.actions}>
-			<Button size="lg" disabled={!chosen.length || !!current || locked || pending || (budget !== null && !confirmed)} onClick={accept}>{copy.accept}</Button>
-			<Button size="lg" variant="secondary" disabled={pending || locked} onClick={onBack}>{copy.type}</Button>
-			<ActionLink href="/shop/products" size="lg" variant="secondary">{copy.pictures}</ActionLink>
-		</div>
+		<footer className={styles.summary}>
+			<p>{copy.nothingSent}</p>
+			<div className={styles.actions}>
+				<Button size="lg" disabled={!chosen.length || !!current || locked || pending || (budget !== null && !confirmed)} onClick={accept}>{copy.accept}</Button>
+				<Button size="lg" variant="secondary" disabled={pending || locked} onClick={onBack}>{copy.backToAssistant}</Button>
+				<ActionLink href="/shop/products" size="lg" variant="secondary">{copy.pictures}</ActionLink>
+			</div>
+		</footer>
 	</div>;
 }
