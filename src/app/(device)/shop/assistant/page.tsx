@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
-import { RequesterFrame } from "@/features/devices/components/RequesterFrame/RequesterFrame";
 import { ShopHome } from "@/features/devices/components/ShopHome/ShopHome";
-import { RequestSkeleton } from "@/features/requests/components/RequestUi/RequestSkeleton";
+import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
 import { AssistantStart } from "@/features/assistant/components/AssistantStart/AssistantStart";
 import { assistantAvailability } from "@/features/assistant/server/service";
 import { assistantCopy } from "@/features/assistant/copy";
@@ -16,5 +15,5 @@ async function AssistantContent() {
 	return availability ? <AssistantStart {...availability} /> : <ShopHome profile={null} />;
 }
 export default function AssistantPage() {
-	return <RequesterFrame wide><Suspense fallback={<RequestSkeleton />}><AssistantContent /></Suspense></RequesterFrame>;
+	return <Suspense fallback={<ShopSkeleton variant="assistant" />}><AssistantContent /></Suspense>;
 }
