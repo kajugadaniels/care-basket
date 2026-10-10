@@ -97,35 +97,6 @@
 	font-size: var(--text-md);
 }
 
-.help summary {
-	display: flex;
-	align-items: center;
-	gap: var(--space-2);
-	min-block-size: var(--control-height);
-	padding: var(--space-2) var(--space-3);
-	border: 1px solid var(--color-border-strong);
-	border-radius: var(--radius-full);
-	color: var(--color-primary);
-	font-family: var(--font-sans);
-	font-weight: var(--weight-semibold);
-	cursor: pointer;
-	list-style: none;
-}
-
-.help summary::-webkit-details-marker {
-	display: none;
-}
-
-/* Help stays in normal flow so zoom never hides it in a popover. */
-.help p {
-	max-inline-size: var(--reading-max);
-	margin-block-start: var(--space-3);
-	padding: var(--space-4);
-	border: 1px solid var(--color-border);
-	border-radius: var(--radius-md);
-	background: var(--color-surface-accent);
-}
-
 .skip {
 	position: absolute;
 	inset-inline-start: var(--gutter);
@@ -145,11 +116,5 @@
 @media (min-width: 64rem) {
 	.main {
 		padding-block: var(--space-7);
-	}
-}
-
-@media (hover: hover) {
-	.help summary:hover {
-		background: var(--color-surface-accent);
 	}
 }
