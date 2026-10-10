@@ -24,10 +24,6 @@ export function ShopShell({ children }: { children: ReactNode }) {
 				</div>
 			</header>
 			<main id="shop-main" tabIndex={-1} className={styles.main}>{children}</main>
-			<footer className={styles.footer}>
-				<p>{devicesCopy.shopDemo}</p>
-				<p>{devicesCopy.disclaimer}</p>
-			</footer>
 		</div>
 	);
 }
