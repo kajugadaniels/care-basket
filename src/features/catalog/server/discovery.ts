@@ -17,6 +17,10 @@ type DiscoveryOptions = {
 	maxPagesPerCategory: number;
 	maxCandidates: number;
 	maxEnrichments: number;
+	categories?: ProductCategory[];
+	existingBarcodes?: string[];
+	existingSourceProductIds?: number[];
+	readyOnly?: boolean;
 	signal?: AbortSignal;
 };
 
@@ -37,20 +41,30 @@ export async function discoverCatalog(
 		maxPagesPerCategory: z.int().min(1).max(5),
 		maxCandidates: z.int().min(1).max(200),
 		maxEnrichments: z.int().min(0).max(100),
+		categories: z.array(z.enum(PRODUCT_CATEGORIES)).min(1).max(PRODUCT_CATEGORIES.length)
+			.refine((values) => new Set(values).size === values.length).optional(),
+		existingBarcodes: z.array(z.string().max(14).refine((value) => normalizeBarcode(value) === value)).max(200).optional(),
+		existingSourceProductIds: z.array(z.int().positive()).max(200).optional(),
+		readyOnly: z.boolean().optional(),
 	}).parse({
 		today: options.today, maxPagesPerCategory: options.maxPagesPerCategory,
 		maxCandidates: options.maxCandidates, maxEnrichments: options.maxEnrichments,
+		categories: options.categories, existingBarcodes: options.existingBarcodes,
+		existingSourceProductIds: options.existingSourceProductIds, readyOnly: options.readyOnly,
 	});
+	const categories = options.categories ?? PRODUCT_CATEGORIES;
+	const existingBarcodes = new Set(options.existingBarcodes);
+	const existingSourceProductIds = new Set(options.existingSourceProductIds);
 	const verify = createObservationVerifier((id) => client.location(id, options.signal));
 	const seenPrices = new Set<number>();
 	const groups = new Map<string, { source: OpenPricesProduct; observations: VerifiedObservation[]; category: ProductCategory }>();
 	const categoryCounts = new Map<ProductCategory, number>();
-	const categoryBudget = Math.ceil(options.maxCandidates / PRODUCT_CATEGORIES.length);
+	const categoryBudget = Math.ceil(options.maxCandidates / categories.length);
 	const reasons: Record<string, number> = {};
 	const counts = { fetched: 0, malformed: 0, verifiedObservations: 0, verifiedProducts: 0, incomplete: 0, excluded: 0, insufficientObservations: 0, requiresCuration: 0, enrichments: 0 };
 	const skip = (reason: string) => { reasons[reason] = (reasons[reason] ?? 0) + 1; };
 
-	for (const category of PRODUCT_CATEGORIES) {
+	for (const category of categories) {
 		// Share the existing request budget across tags before reading deeper pages.
 		// Sparse categories deliberately leave capacity unused rather than filling it with fruit.
 		const tags = CATEGORY_TAGS[category].map((tag) => ({ tag, page: 1, exhausted: false }));
@@ -71,6 +85,11 @@ export async function discoverCatalog(
 				counts.verifiedObservations += 1;
 				const barcode = normalizeBarcode(price.product_code);
 				if (!barcode || !price.product || normalizeBarcode(price.product.code) !== barcode) { skip("missing-or-mismatched-product"); continue; }
+				// Existing catalog entries must not consume the new-product quota or enrichment budget.
+				if (existingBarcodes.has(barcode) || existingSourceProductIds.has(price.product.id)) {
+					skip("already-curated-product");
+					continue;
+				}
 				let group = groups.get(barcode);
 				if (!group) {
 					if ((categoryCounts.get(category) ?? 0) >= categoryBudget) { skip("category-candidate-limit"); continue; }
@@ -89,7 +108,7 @@ export async function discoverCatalog(
 	const candidates: DiscoveryCandidate[] = [];
 	const reviewItems: { sourceProductId: number; sourceProductCode: string; status: string; reason: string }[] = [];
 	// Interleave enrichment too, so its smaller budget reaches multiple categories.
-	const buckets = PRODUCT_CATEGORIES.map((category) => [...groups.values()].filter((group) => group.category === category));
+	const buckets = categories.map((category) => [...groups.values()].filter((group) => group.category === category));
 	const balancedGroups = Array.from({ length: categoryBudget }, (_, index) => buckets.flatMap((bucket) => bucket[index] ? [bucket[index]] : [])).flat();
 	for (const { source, observations } of balancedGroups) {
 		let normalized = normalizeProduct(source);
@@ -111,9 +130,21 @@ export async function discoverCatalog(
 			continue;
 		}
 		counts.verifiedProducts += 1;
-		counts.requiresCuration += 1;
 		const suggestedDemoPrice = suggestDemoPrice(observations, options.today);
 		if (!suggestedDemoPrice) counts.insufficientObservations += 1;
+		const imageUrl = normalized.product.imageCandidateUrl;
+		const imageBarcode = imageUrl
+			? normalizeBarcode(new URL(imageUrl).pathname.split("/").slice(3, -1).join(""))
+			: null;
+		const matchingPhoto = imageUrl !== null && imageBarcode === normalized.product.barcode;
+		if (options.readyOnly && (!matchingPhoto || !suggestedDemoPrice)) {
+			const reason = !imageUrl ? "missing-image-candidate"
+				: !matchingPhoto ? "mismatched-image-product" : "no-recent-nondiscounted-prices";
+			skip(reason);
+			reviewItems.push({ sourceProductId: source.id, sourceProductCode: source.code, status: "HELD_FOR_COMPLETION", reason });
+			continue;
+		}
+		counts.requiresCuration += 1;
 		reviewItems.push({
 			sourceProductId: source.id, sourceProductCode: source.code,
 			status: suggestedDemoPrice ? "VERIFIED_REQUIRES_CURATION" : "INSUFFICIENT_OBSERVATIONS",
@@ -131,6 +162,7 @@ export async function discoverCatalog(
 		version: 1, market: CATALOG_MARKET, asOf: options.today,
 		license: "ODbL 1.0", attribution: "Open Food Facts and Open Prices contributors",
 		limits: { maxPagesPerCategory: options.maxPagesPerCategory, maxCandidates: options.maxCandidates, maxEnrichments: options.maxEnrichments },
+		filters: { categories, readyOnly: options.readyOnly ?? false, excludedBarcodes: existingBarcodes.size, excludedSourceProducts: existingSourceProductIds.size },
 		coverage: PRODUCT_CATEGORIES.map((category) => ({
 			category,
 			candidates: candidates.filter((candidate) => candidate.category === category).length,
