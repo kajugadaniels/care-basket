@@ -1,7 +1,11 @@
 export const requestsCopy = {
+	historyIntro: "See what you sent to your family.", detailTitle: "Your shopping list",
+	unavailableHelp: "Go back to see your other lists.",
+	readyToSend: "Ready to send?", sendHelp: "Your family will check your list first.",
+	listItems: "Groceries in your list", deliveryNotice: "Demo only. No delivery has been arranged.",
 	budget: "Requester’s budget (context only)",
 	basketTitle: "Check your shopping list",
-	basketIntro: "Make sure everything looks right before sending it to your family.",
+	basketIntro: "Check your groceries before sending your list.",
 	draftNotice: "Your unsent list stays here while you browse. Reloading or closing this page clears it.",
 	browse: "Back to groceries", basket: "Check My List", history: "My Shopping Lists", home: "Home",
 	emptyBasket: "Your shopping list is empty.", add: "Add to my list", remove: "Remove item", clear: "Clear my list",
