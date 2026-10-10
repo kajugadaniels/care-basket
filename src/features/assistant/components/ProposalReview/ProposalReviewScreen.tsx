@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { assistantCopy as copy } from "../../copy";
 import { useAssistant } from "../AssistantProvider/AssistantProvider";
@@ -9,7 +8,6 @@ import { ProposalReview } from "./ProposalReview";
 import styles from "./ProposalReview.module.css";
 
 export function ProposalReviewScreen({ child }: { child: boolean }) {
-	const router = useRouter();
 	const { proposal, revision, setProposal } = useAssistant();
 	const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -18,8 +16,15 @@ export function ProposalReviewScreen({ child }: { child: boolean }) {
 	return (
 		<div className={styles.screen}>
 			<header className={styles.heading}>
-				<ActionLink href="/shop/assistant" variant="secondary">{copy.backToAssistant}</ActionLink>
-				<h1 ref={headingRef} tabIndex={-1}>{proposal ? copy.review : copy.emptyReview}</h1>
+				<div className={styles.headerRow}>
+					<h1 ref={headingRef} tabIndex={-1}>{proposal ? copy.review : copy.emptyReview}</h1>
+					<div className={styles.headerActions}>
+						<ActionLink href="/shop/assistant" variant="secondary">{copy.backToAssistant}</ActionLink>
+						{proposal ? (
+							<ActionLink href="/shop/products" variant="secondary">{copy.none}</ActionLink>
+						) : null}
+					</div>
+				</div>
 				<p>{proposal ? copy.reviewIntro : copy.emptyReviewHelp}</p>
 			</header>
 			{proposal ? (
@@ -27,7 +32,6 @@ export function ProposalReviewScreen({ child }: { child: boolean }) {
 					key={revision}
 					proposal={proposal}
 					child={child}
-					onBack={() => router.push("/shop/assistant")}
 					onAccepted={() => setProposal(null)}
 				/>
 			) : (
