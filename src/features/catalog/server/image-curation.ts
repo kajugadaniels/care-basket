@@ -51,11 +51,13 @@ export function planCatalogImages(catalog: CuratedCatalog, input: unknown): { sk
 }
 
 export function renderImageAttribution(catalog: CuratedCatalog): string {
-	const lines = ["# Product image attribution", "", "Original product photos are served locally, without edits.", ""];
+	const lines = ["# Product image attribution", "", "Product photos are delivered through CareBasket's own image service. Migrated photos are stored in Cloudinary; unmigrated photos remain local. Original sources and licenses are retained below.", ""];
 	for (const product of catalog.products) {
 		const image = product.image;
 		if (!image) continue;
-		lines.push(`- [${product.sku}](${image.path}): [original image](${image.sourceUrl}), ` +
+		// Migrated entries link to the source record, not a removed local file or a CDN hotlink.
+		const link = image.cloudinary ? image.productUrl : image.path;
+		lines.push(`- [${product.sku}](${link}): [original image](${image.sourceUrl}), ` +
 			`[product record](${image.productUrl}). ${image.attribution}. ` +
 			"[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).", "");
 	}
