@@ -12,7 +12,7 @@ import { WorkingNotice } from "../WorkingNotice/WorkingNotice";
 import styles from "./AssistantStart.module.css";
 
 export function AssistantStart({ voice, child }: { voice: boolean; child: boolean }) {
-	const [mode, setMode] = useState<"text" | "voice" | null>(null);
+	const [mode, setMode] = useState<"text" | "voice" | null>("text");
 	const [text, setText] = useState("");
 	const [proposal, setProposal] = useState<Proposal | null>(null);
 	const [error, setError] = useState("");
@@ -22,15 +22,18 @@ export function AssistantStart({ voice, child }: { voice: boolean; child: boolea
 	useEffect(() => { if (error) statusRef.current?.focus(); }, [error]);
 	useEffect(() => { if (proposal) headingRef.current?.focus(); }, [proposal]);
 	return <div className={styles.page}>
-		<h1 ref={headingRef} tabIndex={-1}>{proposal ? copy.review : copy.title}</h1>
+		<header className={styles.heading}>
+			<h1 ref={headingRef} tabIndex={-1}>{proposal ? copy.review : copy.title}</h1>
+			{proposal ? null : <p className={styles.notice}>{copy.prompt}</p>}
+		</header>
 		{proposal ? <ProposalReview key={proposal.sourceProof} proposal={proposal} child={child}
 			onBack={() => setProposal(null)} /> : <>
-			<p className={styles.notice}>{voice ? copy.disclosure : copy.local}</p>
 			<div className={styles.choices}>
-				<Button size="lg" variant="secondary" disabled={!voice || pending} onClick={() => setMode("voice")}>{copy.speak}</Button>
-				<Button size="lg" variant="secondary" disabled={pending} onClick={() => setMode("text")}>{copy.type}</Button>
+				{voice ? <Button size="lg" variant="secondary" disabled={pending} aria-pressed={mode === "voice"} onClick={() => setMode("voice")}>{copy.speak}</Button> : null}
+				<Button size="lg" variant="secondary" disabled={pending} aria-pressed={mode === "text"} onClick={() => setMode("text")}>{copy.type}</Button>
 				<ActionLink href="/shop/products" size="lg" variant="secondary">{copy.pictures}</ActionLink>
 			</div>
+			<p className={styles.notice}>{voice ? copy.disclosure : copy.local}</p>
 			{mode === "text" ? <form className={styles.panel} onSubmit={(event) => {
 				event.preventDefault();
 				setError("");
