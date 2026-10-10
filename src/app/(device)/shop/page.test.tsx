@@ -1,20 +1,15 @@
-import { render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { AppError } from "@/server/errors";
-import { makeDeviceActor } from "@/test/factories/devices";
-const fake = vi.hoisted(() => ({ device: vi.fn(), shop: vi.fn() }));
-vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
-vi.mock("@/features/devices/server/service", () => ({ getShopHome: fake.shop }));
+import { describe, expect, it, vi } from "vitest";
+
+const fake = vi.hoisted(() => ({ redirect: vi.fn() }));
+vi.mock("next/navigation", () => ({ redirect: fake.redirect }));
+
 import ShopPage from "./page";
-describe("shop route actor isolation", () => {
-  beforeEach(() => vi.resetAllMocks());
-  it("uses only the device actor and assigned profile", async () => {
-    fake.device.mockResolvedValue(makeDeviceActor()); fake.shop.mockResolvedValue({ displayName: "Rose", avatarKey: "flower" });
-    render(await ShopPage()); expect(fake.shop).toHaveBeenCalledWith(makeDeviceActor());
-    expect(screen.getByRole("heading", { name: "Hello, Rose!" })).toBeInTheDocument();
-  });
-  it("does not load a private profile after invalid, expired, or revoked authentication", async () => {
-    fake.device.mockRejectedValue(new AppError("UNAUTHENTICATED")); render(await ShopPage());
-    expect(fake.shop).not.toHaveBeenCalled(); expect(screen.getByRole("link", { name: "Connect Again" })).toHaveAttribute("href", "/connect");
-  });
+
+describe("shop entry", () => {
+	it("replaces the old welcome page with a fixed assistant redirect", () => {
+		const redirect = new Error("NEXT_REDIRECT");
+		fake.redirect.mockImplementation(() => { throw redirect; });
+		expect(() => ShopPage()).toThrow(redirect);
+		expect(fake.redirect).toHaveBeenCalledExactlyOnceWith("/shop/assistant");
+	});
 });
