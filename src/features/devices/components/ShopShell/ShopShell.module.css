@@ -39,6 +39,27 @@
 	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--space-3);
+	min-inline-size: 0;
+}
+
+.navigation {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.navigation a {
+	padding-inline: var(--space-4);
+}
+
+@media (max-width: 39.999rem) {
+	.tools,
+	.navigation {
+		inline-size: 100%;
+	}
+	.navigation a {
+		flex: 1 1 auto;
+	}
 }
 
 .shell a,
