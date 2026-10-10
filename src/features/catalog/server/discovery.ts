@@ -20,6 +20,13 @@ type DiscoveryOptions = {
 	signal?: AbortSignal;
 };
 
+type DiscoveryCandidate = Extract<ReturnType<typeof normalizeProduct>, { ok: true }>["product"] & {
+	verification: VerifiedObservation[];
+	suggestedDemoPrice: ReturnType<typeof suggestDemoPrice>;
+	approved: false;
+	reviewRequired: string[];
+};
+
 export async function discoverCatalog(
 	client: OpenPricesClient,
 	enrich: (code: string, signal?: AbortSignal) => Promise<FoodFactsMetadata | null>,
@@ -79,7 +86,7 @@ export async function discoverCatalog(
 		}
 	}
 
-	const candidates = [];
+	const candidates: DiscoveryCandidate[] = [];
 	const reviewItems: { sourceProductId: number; sourceProductCode: string; status: string; reason: string }[] = [];
 	// Interleave enrichment too, so its smaller budget reaches multiple categories.
 	const buckets = PRODUCT_CATEGORIES.map((category) => [...groups.values()].filter((group) => group.category === category));
