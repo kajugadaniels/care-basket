@@ -19,10 +19,10 @@ const approvedExpansionIds = new Set([
 ]);
 
 describe("reviewed catalog contract", () => {
-	it("accepts the 118 approved products in the committed seed catalog", () => {
+	it("accepts the 150 approved products in the committed seed catalog", () => {
 		const catalog = validateSeedCatalog(committedCatalog, now);
 
-		expect(catalog.products).toHaveLength(118);
+		expect(catalog.products).toHaveLength(150);
 		expect(catalog.products.every((product) => product.demoPrice.approved)).toBe(true);
 		expect(catalog.products.every((product) => !product.isChildSuitable)).toBe(true);
 	});
@@ -85,6 +85,61 @@ describe("reviewed catalog contract", () => {
 				currency: "USD", approved: true, approvedAt: "2026-10-10T12:57:10Z",
 				priceMinor: approvedPrices.get(product.sourceProductId ?? 0),
 			});
+			expect(product.demoPrice.basis).not.toBe("MANUAL_DEMO");
+			expect(product.verification.length).toBeGreaterThan(0);
+			expect(product.variantGroup).not.toBe("");
+			expect(product.synonyms).toContain(product.displayName.toLowerCase());
+			expect(product.isChildSuitable).toBe(false);
+		}
+	});
+	it("includes exactly the final 32 approved products with reviewed names and prices", () => {
+		const reviewed = new Map<number, { displayName: string; priceMinor: number; category: string }>([
+			[1246788, { displayName: "Long Grain Brown Rice", priceMinor: 299, category: "PANTRY" }],
+			[1212816, { displayName: "White Jasmine Rice", priceMinor: 1099, category: "PANTRY" }],
+			[92219, { displayName: "California White Basmati Rice", priceMinor: 899, category: "PANTRY" }],
+			[2872959, { displayName: "Ready Rice Basmati", priceMinor: 599, category: "PANTRY" }],
+			[1522825, { displayName: "Elbow Macaroni", priceMinor: 189, category: "PANTRY" }],
+			[2255039, { displayName: "Fettuccine", priceMinor: 219, category: "PANTRY" }],
+			[1249729, { displayName: "Pappardelle", priceMinor: 339, category: "PANTRY" }],
+			[1210387, { displayName: "Spinach & Ricotta Ravioli", priceMinor: 689, category: "PANTRY" }],
+			[1316707, { displayName: "Chickpea Fusilli Pasta", priceMinor: 399, category: "PANTRY" }],
+			[30963, { displayName: "Shin Ramyun", priceMinor: 169, category: "PANTRY" }],
+			[67896, { displayName: "Vegetable Beef Condensed Soup", priceMinor: 299, category: "PANTRY" }],
+			[952023, { displayName: "Cream of Mushroom Soup", priceMinor: 319, category: "PANTRY" }],
+			[1194133, { displayName: "Cream of Chicken Soup", priceMinor: 319, category: "PANTRY" }],
+			[832431, { displayName: "Organic Diced Tomatoes", priceMinor: 479, category: "PANTRY" }],
+			[176952, { displayName: "Albacore Tuna", priceMinor: 699, category: "MEAT_SEAFOOD" }],
+			[4170463, { displayName: "Mandarin oranges", priceMinor: 149, category: "PANTRY" }],
+			[40082, { displayName: "Crushed Pineapple", priceMinor: 199, category: "PANTRY" }],
+			[2555368, { displayName: "All-purpose Flour", priceMinor: 1649, category: "PANTRY" }],
+			[82102, { displayName: "Whole Wheat Flour", priceMinor: 639, category: "PANTRY" }],
+			[82101, { displayName: "Bread Flour", priceMinor: 949, category: "PANTRY" }],
+			[1176062, { displayName: "Organic Brown Rice Flour", priceMinor: 199, category: "PANTRY" }],
+			[1316589, { displayName: "White Rice Flour", priceMinor: 499, category: "PANTRY" }],
+			[785845, { displayName: "Tapioca Flour", priceMinor: 499, category: "PANTRY" }],
+			[1239547, { displayName: "Natural Almond Flour", priceMinor: 1524, category: "PANTRY" }],
+			[15632, { displayName: "Self-Rising Flour", priceMinor: 699, category: "PANTRY" }],
+			[79074, { displayName: "Lentils", priceMinor: 249, category: "PANTRY" }],
+			[788046, { displayName: "Cuban Black Beans", priceMinor: 659, category: "PANTRY" }],
+			[3254722, { displayName: "Saucy Coconut Curry Chickpeas", priceMinor: 579, category: "PANTRY" }],
+			[2429133, { displayName: "Mexican Black Beans", priceMinor: 559, category: "PANTRY" }],
+			[1122910, { displayName: "Ranch Style Beans", priceMinor: 199, category: "PANTRY" }],
+			[1322498, { displayName: "Unsalted Dry-Roasted Peanuts", priceMinor: 379, category: "PANTRY" }],
+			[38960, { displayName: "Creamy Roasted Honey Nut Peanut Butter Spread", priceMinor: 474, category: "PANTRY" }],
+		]);
+		const catalog = validateSeedCatalog(committedCatalog, now);
+		const additions = catalog.products.filter((product) => product.sourceProductId !== null && reviewed.has(product.sourceProductId));
+
+		expect(additions).toHaveLength(32);
+		for (const product of additions) {
+			const approved = reviewed.get(product.sourceProductId ?? 0);
+			expect(product.displayName).toBe(approved?.displayName);
+			expect(product.category).toBe(approved?.category);
+			expect(product.demoPrice).toMatchObject({
+				currency: "USD", approved: true, approvedAt: "2026-10-10T14:27:55Z",
+				priceMinor: approved?.priceMinor,
+			});
+			expect(product.source).toBe("OPEN_PRICES");
 			expect(product.demoPrice.basis).not.toBe("MANUAL_DEMO");
 			expect(product.verification.length).toBeGreaterThan(0);
 			expect(product.variantGroup).not.toBe("");
