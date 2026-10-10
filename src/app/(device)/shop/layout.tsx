@@ -3,8 +3,8 @@ import type { DeviceActor } from "@/server/auth/device-policy";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
-import { RequestSkeleton } from "@/features/requests/components/RequestUi/RequestSkeleton";
-import { RequesterFrame } from "@/features/devices/components/RequesterFrame/RequesterFrame";
+import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
+import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
 
 async function DraftSession({ children }: { children: ReactNode }) {
 	let actor: DeviceActor;
@@ -20,7 +20,11 @@ async function DraftSession({ children }: { children: ReactNode }) {
 }
 
 export default function ShopLayout({ children }: { children: ReactNode }) {
-	return <Suspense fallback={<RequesterFrame wide><RequestSkeleton /></RequesterFrame>}>
-		<DraftSession>{children}</DraftSession>
-	</Suspense>;
+	return (
+		<ShopShell>
+			<Suspense fallback={<ShopSkeleton />}>
+				<DraftSession>{children}</DraftSession>
+			</Suspense>
+		</ShopShell>
+	);
 }
