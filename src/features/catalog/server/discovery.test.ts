@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, expectTypeOf, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 import type { OpenPricesClient } from "@/lib/open-prices/client";
 import { discoverCatalog } from "./discovery";
@@ -36,6 +36,10 @@ describe("bounded discovery", () => {
 		const report = await discoverCatalog(client(prices), vi.fn().mockResolvedValue(null), options);
 		expect(prices).toHaveBeenCalledTimes(PRODUCT_CATEGORIES.length * 2);
 		expect(report.candidates).toHaveLength(1);
+		expectTypeOf(report.candidates[0]).not.toBeAny();
+		expectTypeOf(report.candidates[0].imageCandidateUrl).toEqualTypeOf<string | null>();
+		expectTypeOf(report.candidates[0].approved).toEqualTypeOf<false>();
+		expect(report.coverage).toContainEqual({ category: "PANTRY", candidates: 1, imageCandidates: 0 });
 		expect(report.candidates[0]).toMatchObject({ approved: false, verification: expect.any(Array) });
 		expect(report.candidates[0].verification).toHaveLength(2);
 		expect(report.candidates[0].suggestedDemoPrice).toMatchObject({ basis: "OBSERVED_LIMITED", observationCount: 2 });
