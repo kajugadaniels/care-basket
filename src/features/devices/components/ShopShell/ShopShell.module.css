@@ -13,8 +13,7 @@
 }
 
 .headerInner,
-.main,
-.footer {
+.main {
 	inline-size: 100%;
 	max-inline-size: calc(var(--content-max) + var(--gutter) * 2);
 	margin-inline: auto;
@@ -86,15 +85,6 @@
 	flex: 1;
 	min-inline-size: 0;
 	padding-block: var(--space-6) var(--space-7);
-}
-
-.footer {
-	display: grid;
-	gap: var(--space-2);
-	padding-block: var(--space-5);
-	border-block-start: 1px solid var(--color-border);
-	color: var(--color-text-muted);
-	font-size: var(--text-md);
 }
 
 .skip {
