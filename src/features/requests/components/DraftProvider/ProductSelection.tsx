@@ -13,7 +13,7 @@ export function ProductSelection({ product, children }: { product: CatalogProduc
 	const { draft, locked, change } = useDraft();
 	const [quantity, setQuantity] = useState(1);
 	const selected = draft.items.find((item) => item.sku === product.sku);
-	return <div className={styles.requester}>
+	return <div className={`${styles.requester} ${styles.selection}`}>
 		{children}
 		<div className={styles.controls}>
 			<QuantityControl name={product.displayName} quantity={selected?.quantity ?? quantity} disabled={locked}
