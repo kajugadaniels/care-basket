@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+import { Suspense, type ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({ device: vi.fn(), list: vi.fn() }));
@@ -9,12 +9,19 @@ import ProductsPage from "./page";
 import { AppError } from "@/server/errors";
 
 async function content(searchParams = Promise.resolve({})) {
-	const frame = ProductsPage({ searchParams }) as ReactElement<{ children: ReactElement<{ children: ReactElement<{ searchParams: typeof searchParams }> }> }>;
-	const element = frame.props.children.props.children;
+	const boundary = ProductsPage({ searchParams }) as ReactElement<{ children: ReactElement<{ searchParams: typeof searchParams }> }>;
+	const element = boundary.props.children;
 	return (element.type as (props: typeof element.props) => Promise<ReactElement>)(element.props);
 }
 
 describe("protected requester catalog entry", () => {
+	it("keeps device reads inside the streamed content", () => {
+		mocks.device.mockClear();
+		const boundary = ProductsPage({ searchParams: Promise.resolve({}) });
+		expect(boundary.type).toBe(Suspense);
+		expect(boundary.props.fallback).toBeDefined();
+		expect(mocks.device).not.toHaveBeenCalled();
+	});
 	it.each(["missing", "revoked", "expired"])("shows reconnect for a %s session without reading the catalog", async () => {
 		mocks.list.mockClear();
 		mocks.device.mockRejectedValue(new AppError("UNAUTHENTICATED"));
