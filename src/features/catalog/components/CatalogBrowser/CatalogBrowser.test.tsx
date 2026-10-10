@@ -15,10 +15,10 @@ describe("catalog browsing", () => {
 		expect(screen.getByRole("link", { name: "More Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=beans&cursor=next");
 		expect(screen.queryByRole("link", { name: "Back to First Groceries" })).not.toBeInTheDocument();
 	});
-	it("renders a real empty state with a home path and no purchase controls", () => {
+	it("renders a real empty state without duplicating the shell's home action", () => {
 		render(<CatalogBrowser filters={{ q: "", limit: 24 }} result={{ products: [], nextCursor: null }} />);
 		expect(screen.getByText("There are no groceries to look at yet.")).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/shop");
+		expect(screen.queryByRole("link", { name: "Home" })).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /buy|pay|add|send/i })).not.toBeInTheDocument();
 	});
 	it("preserves search text and category, with labelled input and explicit search submit", () => {
