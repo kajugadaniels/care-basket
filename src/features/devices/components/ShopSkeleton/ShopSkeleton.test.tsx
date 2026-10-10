@@ -4,7 +4,7 @@ import { devicesCopy } from "../../copy";
 import { ShopSkeleton } from "./ShopSkeleton";
 
 describe("shopping loading states", () => {
-	it.each(["home", "assistant", "basket", "history", "detail"] as const)(
+	it.each(["assistant", "basket", "history", "detail"] as const)(
 		"announces %s loading without fake controls or additional landmarks",
 		(variant) => {
 			render(<ShopSkeleton variant={variant} />);
@@ -15,4 +15,11 @@ describe("shopping loading states", () => {
 			expect(screen.queryByRole("main")).not.toBeInTheDocument();
 		},
 	);
+
+	it("uses the assistant loading shape at the shop entry", () => {
+		const view = render(<ShopSkeleton />);
+		const entryShape = view.container.innerHTML;
+		view.rerender(<ShopSkeleton variant="assistant" />);
+		expect(view.container.innerHTML).toBe(entryShape);
+	});
 });
