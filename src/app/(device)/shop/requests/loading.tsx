@@ -1,6 +1,5 @@
-import { RequesterFrame } from "@/features/devices/components/RequesterFrame/RequesterFrame";
-import { RequestSkeleton } from "@/features/requests/components/RequestUi/RequestSkeleton";
+import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
 
 export default function HistoryLoading() {
-	return <RequesterFrame wide><RequestSkeleton /></RequesterFrame>;
+	return <ShopSkeleton variant="history" />;
 }
