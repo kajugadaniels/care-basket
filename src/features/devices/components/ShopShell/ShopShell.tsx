@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Home01Icon, InformationCircleIcon } from "@hugeicons/core-free-icons";
+import { Home01Icon, InformationCircleIcon, ShoppingBasket01Icon, Task01Icon } from "@hugeicons/core-free-icons";
 import { Brand } from "@/components/layout/Brand/Brand";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
@@ -16,7 +16,11 @@ export function ShopShell({ children }: { children: ReactNode }) {
 				<div className={styles.headerInner}>
 					<div className={styles.identity}><Brand /></div>
 					<div className={styles.tools}>
-						<ActionLink href="/shop" variant="secondary" icon={Home01Icon}>{devicesCopy.shopHome}</ActionLink>
+						<nav aria-label={devicesCopy.shopNav} className={styles.navigation}>
+							<ActionLink href="/shop/assistant" variant="secondary" icon={Home01Icon}>{devicesCopy.shopHome}</ActionLink>
+							<ActionLink href="/shop/products" variant="secondary" icon={ShoppingBasket01Icon}>{devicesCopy.shopProducts}</ActionLink>
+							<ActionLink href="/shop/basket" variant="secondary" icon={Task01Icon}>{devicesCopy.shopList}</ActionLink>
+						</nav>
 						<details className={styles.help}>
 							<summary><Icon icon={InformationCircleIcon} size={24} />{devicesCopy.askFamily}</summary>
 							<p>{devicesCopy.shopHelp}</p>
