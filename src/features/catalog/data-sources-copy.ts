@@ -11,6 +11,6 @@ export const dataSourcesCopy = {
 	review: "This describes our engineering approach, not legal advice. License compatibility and publication must be reviewed before release.",
 	download: "Download or reuse the curated catalog",
 	images: "Included product image attribution",
-	privacy: "We do not redistribute contributor usernames, comments, receipts, or proof images.",
+	privacy: "We do not redistribute contributor usernames, comments, receipts, or proof images. Licensed product photos may be stored in Cloudinary and are delivered through CareBasket's own image service. We do not upload family information or recordings to Cloudinary.",
 	home: "Back to Home",
 } as const;
