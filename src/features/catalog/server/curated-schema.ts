@@ -1,5 +1,6 @@
 import "server-only";
 import { z } from "zod";
+import { cloudinaryImageSchema, cloudinaryImageUrl, productPublicId } from "@/lib/cloudinary/catalog-images";
 import { CATALOG_MARKET } from "../config";
 import { PRODUCT_CATEGORIES } from "../taxonomy";
 import { normalizeBarcode } from "./barcode";
@@ -34,6 +35,7 @@ const imageSchema = z.strictObject({
 	sourceUrl: z.string().max(300).refine((value) => permittedImageUrl(value) !== null),
 	productUrl: z.string().max(300).regex(/^https:\/\/world\.openfoodfacts\.org\/product\/\d{8,14}$/),
 	license: z.literal("CC BY-SA 3.0"), attribution: z.literal("Open Food Facts contributors"),
+	cloudinary: cloudinaryImageSchema.optional(),
 });
 
 export const curatedProductSchema = z.strictObject({
@@ -50,6 +52,14 @@ export const curatedProductSchema = z.strictObject({
 	const issue = (message: string) => context.addIssue({ code: "custom", message });
 	if (isExcludedProduct([product.displayName, product.brand, product.variantGroup, ...product.synonyms].join(" "))) issue("Product excluded by safety policy.");
 	if (product.image && (product.image.path !== `/products/${product.sku}.${product.image.sourceUrl.split(".").pop()}` || product.sourceSystem !== "off" || product.image.productUrl !== `https://world.openfoodfacts.org/product/${product.sourceProductCode}`)) issue("Image path or provenance does not match this product.");
+	if (product.image?.cloudinary) {
+		const remote = product.image.cloudinary;
+		try {
+			if (remote.publicId !== productPublicId(product.sku, remote.sha256)
+				|| remote.format !== product.image.path.split(".").pop()) issue("Cloudinary identity does not match this product photo.");
+			cloudinaryImageUrl(remote);
+		} catch { issue("Invalid Cloudinary photo identity or URL length."); }
+	}
 	const price = product.demoPrice;
 	const approvedTime = new Date(price.approvedAt);
 	const approvedDate = Number.isFinite(approvedTime.getTime()) ? approvedTime.toISOString().slice(0, 10) : "";
