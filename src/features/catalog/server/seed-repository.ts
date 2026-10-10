@@ -1,6 +1,7 @@
 import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
 import { getDb } from "@/server/db/client";
+import { cloudinaryImageUrl } from "@/lib/cloudinary/catalog-images";
 import type { CuratedCatalog } from "./curated-schema";
 
 // Only the developer-run seed gets a larger, bounded budget for remote database
@@ -25,7 +26,8 @@ export async function upsertCuratedProducts(catalog: CuratedCatalog) {
 		const { image, demoPrice, verification, ...fields } = entry;
 		void verification; // Evidence stays in the published dataset, not a hypothetical observation table.
 		const productData = {
-			...fields, imagePath: image?.path ?? null, imageSourceUrl: image?.sourceUrl ?? null,
+			...fields, imagePath: image?.cloudinary ? cloudinaryImageUrl(image.cloudinary) : image?.path ?? null,
+			imageSourceUrl: image?.sourceUrl ?? null,
 			imageProductUrl: image?.productUrl ?? null, imageLicense: image?.license ?? null,
 			imageAttribution: image?.attribution ?? null,
 		} satisfies Prisma.CatalogProductCreateInput;
