@@ -37,9 +37,11 @@ describe("shared shopping shell", () => {
 		expect(within(screen.getByRole("main")).queryByRole("navigation")).not.toBeInTheDocument();
 	});
 
-	it("shows truthful demo information without account or payment controls", () => {
-		render(<ShopShell><p>Groceries</p></ShopShell>);
-		expect(screen.getByRole("contentinfo")).toHaveTextContent(devicesCopy.shopDemo);
+	it.each(["Assistant", "Products", "My List", "Requests"])("omits the shared footer on the %s page", (title) => {
+		render(<ShopShell><h1>{title}</h1></ShopShell>);
+		expect(screen.queryByRole("contentinfo")).not.toBeInTheDocument();
+		expect(screen.queryByText("This is a demo. No real orders or deliveries.")).not.toBeInTheDocument();
+		expect(within(screen.getByRole("main")).getByRole("heading", { name: title })).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /sign in|pay|checkout/i })).not.toBeInTheDocument();
 		expect(screen.getAllByRole("banner")).toHaveLength(1);
 	});
