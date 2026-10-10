@@ -1,8 +1,10 @@
-import { readFile, stat } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { loadScriptEnvironment } from "../src/lib/env/scripts";
+import { getCloudinaryCloudName } from "../src/lib/env/server";
 import { CatalogValidationError, validateSeedCatalog } from "../src/features/catalog/server/curated-schema";
 import { seedCatalog } from "../src/features/catalog/server/seed-service";
+import { validateSeedImages } from "../src/features/catalog/server/image-assets";
 import { closeSeedConnection } from "../src/features/catalog/server/seed-repository";
 import { describeSeedFailure, type SeedPhase } from "../src/features/catalog/server/seed-error";
 
@@ -14,14 +16,7 @@ async function main() {
 	const raw: unknown = JSON.parse(await readFile(resolve("prisma/catalog/catalog.us.json"), "utf8"));
 	const catalog = validateSeedCatalog(raw);
 	phase = "images";
-	// Validate every referenced local asset before making any database writes.
-	for (const product of catalog.products) {
-		if (!product.image) continue;
-		const file = await stat(resolve(`public${product.image.path}`));
-		if (!file.isFile() || file.size > 2 * 1024 * 1024 || file.size === 0) {
-			throw new Error("A curated product image is missing or exceeds 2 MB; no writes were made.");
-		}
-	}
+	await validateSeedImages(catalog, getCloudinaryCloudName());
 	seedStarted = true;
 	phase = "database";
 	const result = await seedCatalog(catalog);
