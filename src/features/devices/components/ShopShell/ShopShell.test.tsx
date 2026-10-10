@@ -4,15 +4,28 @@ import { devicesCopy } from "../../copy";
 import { ShopShell } from "./ShopShell";
 
 describe("shared shopping shell", () => {
-	it("renders one main landmark with persistent home and help", () => {
+	it("renders one main landmark with persistent home and a skip link", () => {
 		render(<ShopShell><h1>Shopping</h1></ShopShell>);
 		const main = screen.getByRole("main");
 		expect(main).toHaveAttribute("id", "shop-main");
 		expect(within(main).getByRole("heading", { level: 1 })).toHaveTextContent("Shopping");
 		expect(screen.getByRole("link", { name: devicesCopy.shopHome })).toHaveAttribute("href", "/shop/assistant");
-		expect(screen.getByText(devicesCopy.askFamily).closest("summary")).toBeInTheDocument();
-		expect(screen.getByText(devicesCopy.shopHelp).closest("details")).not.toHaveAttribute("open");
 		expect(screen.getByRole("link", { name: devicesCopy.skipShopping })).toHaveAttribute("href", "#shop-main");
+	});
+
+	it("links the logo and platform name together to the assistant", () => {
+		render(<ShopShell><h1>Shopping</h1></ShopShell>);
+		const brand = within(screen.getByRole("banner")).getByRole("link", { name: "CareBasket" });
+		expect(brand).toHaveAttribute("href", "/shop/assistant");
+		expect(brand).toHaveTextContent("CareBasket");
+		expect(brand.querySelector("svg")).toBeInTheDocument();
+	});
+
+	it("omits the family help disclosure from the top navigation", () => {
+		render(<ShopShell><h1>Shopping</h1></ShopShell>);
+		const header = screen.getByRole("banner");
+		expect(within(header).queryByText("Ask your family")).not.toBeInTheDocument();
+		expect(header.querySelector("details")).not.toBeInTheDocument();
 	});
 
 	it("keeps products and the draft list in the shared top navigation", () => {
