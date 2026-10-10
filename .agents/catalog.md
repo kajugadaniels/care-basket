@@ -3,7 +3,7 @@
 **Purpose:** The authoritative specification for where CareBasket's products come from, how U.S. price observations are verified, how source data becomes the curated catalog, how checkout prices differ from observed prices, and what licensing obligations apply.
 **Applies to:** Catalog models, the catalog importer and refresh scripts, product images, demo prices, data attribution, and anything that reads product or price data.
 **Related:** [database.md § 5](database.md#5-planned-models), [ai.md § 6](ai.md#6-catalog-grounding-and-matching), [payments.md § 4](payments.md#4-money-handling), [privacy.md](privacy.md), [security.md § 7](security.md#7-input-validation)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-10
 
 ---
 
@@ -179,6 +179,7 @@ Importer requirements (discover and refresh):
 - During curation, the developer downloads the chosen images into `public/products/<sku>.jpg` without editing them, and the curation file records the source URL, product page URL, license (`CC BY-SA 3.0`), and attribution ("Open Food Facts contributors").
 - `public/products/ATTRIBUTION.md` lists every image with its source and license. It is generated from the curation file.
 - Images are served from CareBasket's own domain through `next/image`. Browsers never load product images directly from third-party hosts ([privacy.md § 4](privacy.md#4-data-minimization-rules)).
+- Reviewed local photos may be migrated to Cloudinary only under the developer-approved [security.md § 15 exception](security.md#cloudinary-catalog-image-exception). Record the cloud name, content-addressed public ID, version, format and full SHA-256 alongside the unchanged local path and original provenance. Seeding maps approved metadata to the delivery URL without uploading or fetching images; retrieval stays behind CareBasket's image optimizer. Keep local files until separately approved cleanup after verification.
 - CareBasket-curated products without a licensed photo use a large category tile (Hugeicons icon on a soft surface). Never use images from retailer websites, search results, or stock sites without a verified license.
 - Product photos show packaging that may carry third-party trademarks and copyrighted artwork. Use them only to identify the product in the app; never in CareBasket branding or marketing.
 
