@@ -1,7 +1,7 @@
 export const devicesCopy = {
 	shopHome: "Home", skipShopping: "Skip to shopping",
 	shopNav: "Shopping", shopProducts: "Products", shopList: "My List",
-	shopDemo: "This is a demo. No real orders or deliveries.", loadingShopping: "Opening your shopping…",
+	loadingShopping: "Opening your shopping…",
   connectTitle: "Connect your device", connectDescription: "Someone in your family can help you start using CareBasket.",
   start: "Connect This Device", starting: "Getting your code…", codeLabel: "Your connection code",
   instructions: "Tell your family member this code so they can connect your device.",
