@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { RequesterFrame } from "@/features/devices/components/RequesterFrame/RequesterFrame";
 import { ShopHome } from "@/features/devices/components/ShopHome/ShopHome";
 import { devicesCopy } from "@/features/devices/copy";
 import { getShopHome } from "@/features/devices/server/service";
@@ -12,5 +11,5 @@ export default async function ShopPage() {
   let profile: ShopHomeDto | null = null;
   try { profile = await getShopHome(await requireDevice()); }
   catch (error) { if (!(error instanceof AppError) || error.code !== "UNAUTHENTICATED") throw error; }
-  return <RequesterFrame><ShopHome profile={profile} /></RequesterFrame>;
+  return <ShopHome profile={profile} />;
 }
