@@ -5,6 +5,7 @@ import { AppError } from "@/server/errors";
 import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
 import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
 import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { AssistantProvider } from "@/features/assistant/components/AssistantProvider/AssistantProvider";
 
 async function DraftSession({ children }: { children: ReactNode }) {
 	let actor: DeviceActor;
@@ -16,7 +17,11 @@ async function DraftSession({ children }: { children: ReactNode }) {
 		throw error;
 	}
 
-	return <DraftProvider key={`${actor.deviceId}:${actor.profileId}`}>{children}</DraftProvider>;
+	return (
+		<DraftProvider key={`${actor.deviceId}:${actor.profileId}`}>
+			<AssistantProvider>{children}</AssistantProvider>
+		</DraftProvider>
+	);
 }
 
 export default function ShopLayout({ children }: { children: ReactNode }) {
