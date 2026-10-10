@@ -47,11 +47,31 @@ vi.mock("server-only", () => ({}));
 vi.mock("@/server/db/client", () => ({ getDb: () => fake.db }));
 import { upsertCuratedProducts } from "./seed-repository";
 import { makeCuratedCatalog } from "@/test/factories/catalog";
+import { cloudinaryImageUrl, productPublicId } from "@/lib/cloudinary/catalog-images";
 
 describe("idempotent catalog writes", () => {
 	beforeEach(() => {
 		fake.products.clear(); fake.prices.clear(); fake.productUpserts.mockClear(); fake.priceUpserts.mockClear(); fake.state.failPrice = false;
 		fake.db.$transaction.mockClear();
+	});
+	it("writes Cloudinary delivery URLs while retaining original photo provenance and prices", async () => {
+		const catalog = makeCuratedCatalog();
+		const product = catalog.products[0];
+		const sha256 = "a".repeat(64);
+		const remote = { cloudName: "fixture-cloud", publicId: productPublicId(product.sku, sha256), sha256, version: 123, format: "jpg" as const };
+		// Repository mapping test; complete source validation belongs to the seed service.
+		product.image = {
+			path: `/products/${product.sku}.jpg`, sourceUrl: "https://images.openfoodfacts.org/images/products/001/234/567/8905/front_en.1.400.jpg",
+			productUrl: "https://world.openfoodfacts.org/product/012345678905",
+			license: "CC BY-SA 3.0", attribution: "Open Food Facts contributors", cloudinary: remote,
+		};
+		await upsertCuratedProducts(catalog);
+		expect(fake.productUpserts.mock.calls[0][0].create).toMatchObject({
+			imagePath: cloudinaryImageUrl(remote), imageSourceUrl: product.image.sourceUrl,
+			imageProductUrl: product.image.productUrl, imageLicense: product.image.license, imageAttribution: product.image.attribution,
+		});
+		expect(fake.priceUpserts.mock.calls[0][0].create.priceMinor).toBe(349);
+		expect(fake.productUpserts.mock.calls[0][0].create).not.toHaveProperty("cloudinary");
 	});
 	it("uses bounded seed-only transaction budgets for each product", async () => {
 		const catalog = makeCuratedCatalog();
