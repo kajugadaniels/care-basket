@@ -17,7 +17,7 @@ async function ReviewContent() {
 		if (!(error instanceof AppError && error.code === "UNAUTHENTICATED")) throw error;
 	}
 
-	return actor ? <ProposalReviewScreen child={actor.profileKind === "CHILD"} /> : <ReconnectDevice />;
+	return actor ? <ProposalReviewScreen /> : <ReconnectDevice />;
 }
 
 export default function ReviewPage() {
