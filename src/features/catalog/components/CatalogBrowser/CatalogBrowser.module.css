@@ -4,6 +4,20 @@
 	min-inline-size: 0;
 }
 
+.workspace,
+.catalogContent,
+.listPanel {
+	display: grid;
+	align-content: start;
+	gap: var(--space-5);
+	min-inline-size: 0;
+}
+
+/* Keep search, list review, then groceries in that order on narrow screens. */
+.withList .catalogContent { display: contents; }
+.withList .catalogContent > :first-child { grid-row: 1; }
+.withList .listPanel { grid-row: 2; }
+
 .requester {
 	font-family: var(--font-readable);
 	font-size: var(--text-lg);
@@ -11,6 +25,15 @@
 
 .requester a {
 	font-size: var(--text-md);
+}
+
+.requester[role="alert"] {
+	max-inline-size: var(--reading-max);
+	margin-inline: auto;
+	padding: var(--space-5);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface);
 }
 
 .header {
@@ -82,6 +105,7 @@
 
 .grid > li {
 	min-inline-size: 0;
+	display: grid;
 }
 
 .empty {
@@ -149,6 +173,7 @@
 	padding: var(--space-4);
 	border: 1px solid var(--color-border);
 	border-radius: var(--radius-lg);
+	background: var(--color-surface);
 }
 
 .cardBodySkeleton {
@@ -176,8 +201,21 @@
 }
 
 @media (min-width: 64rem) {
+	.withList {
+		grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+		align-items: start;
+	}
+
+	.withList .listPanel {
+		grid-row: auto;
+		position: sticky;
+		inset-block-start: var(--space-5);
+	}
+
+	.withList .catalogContent { display: grid; }
+
 	.grid {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 }
 
