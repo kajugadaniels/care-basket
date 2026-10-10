@@ -3,7 +3,7 @@
 **Purpose:** Define the security boundaries for CareBasket's sensitive operations: identities, family data, payments, AI, and secrets.
 **Applies to:** Any server code, any data access, any configuration. This document wins on any security question.
 **Related:** [authentication.md](authentication.md), [api.md](api.md), [payments.md](payments.md), [ai.md § 9](ai.md#9-prompt-injection-and-output-safety), [privacy.md](privacy.md)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-10
 
 ---
 
@@ -143,6 +143,16 @@ Configure in `next.config.ts` `headers()` (an implementation task, not done yet)
 - The developer reviews `npm audit` output before submission; agents do not run it.
 - Never load third-party scripts except the PayPal SDK (through `@paypal/react-paypal-js`) and Clerk. No analytics or tracking scripts.
 - **Outbound catalog requests** come only from developer-run scripts and only to allow-listed hosts: `prices.openfoodfacts.org`, `world.openfoodfacts.org`, and `images.openfoodfacts.org`. Image downloads check the host allow-list, require an `image/jpeg`, `image/png`, or `image/webp` content type, cap the size at 2 MB, follow no redirects to other hosts, and write only to `public/products/<sku>.<ext>` ([catalog.md § 9](catalog.md#9-images)). No server code fetches URLs supplied by users or by catalog data at request time.
+
+### Cloudinary catalog-image exception
+
+- Developer-run scripts may upload reviewed product images from `public/products` to `api.cloudinary.com`, using HTTPS and server-only credentials.
+- Uploads must target the configured Cloudinary account and the `care-based/products` folder. Never overwrite or delete existing assets automatically.
+- Approved catalog images may be retrieved from `res.cloudinary.com` through Next.js image optimization. Restrict retrieval to the configured cloud name and `care-based/products` public-ID prefix; arbitrary URLs and remote-fetch assets are prohibited.
+- Browsers must receive images through CareBasket's own domain, not directly from Cloudinary.
+- Preserve existing image validation, size limits, source provenance, licensing, and attribution requirements.
+- Keep local images until uploads and application display have been verified by the developer. Removing local files requires separate approval.
+- This exception changes image storage and delivery only. All other security requirements and agent execution restrictions remain unchanged.
 
 ## 16. Retention and deletion
 

@@ -25,7 +25,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/880/931/681/0561/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/8809316810561",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/shine-muscat-op-4238179-d86feebb3b65d9a7",
+					"version": 1791645941,
+					"format": "jpg",
+					"sha256": "d86feebb3b65d9a7a5be19077de5ba9a4587ebaf4c1471ea682f0c9174e8923e"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4238179,
@@ -75,7 +82,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/082/890/400/2186/front_en.4.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0828904002186",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/kiwi-berries-op-3484519-ce7a11594b0985b5",
+					"version": 1791645990,
+					"format": "jpg",
+					"sha256": "ce7a11594b0985b5b12688c3afdcd416e06ee028228a07359cf42455b1a3032b"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3484519,
@@ -135,7 +149,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/002/254/3043/front_en.30.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0850022543043",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/blueberries-op-2527655-701ad890a83d7455",
+					"version": 1791645992,
+					"format": "jpg",
+					"sha256": "701ad890a83d7455fb4bfee242f41441480a804755f77a816f85ffab2ee77141"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2527655,
@@ -226,7 +247,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/087/366/800/4709/front_en.8.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0873668004709",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-mango-chunks-op-3823301-e1ff77a403ff6509",
+					"version": 1791645995,
+					"format": "jpg",
+					"sha256": "e1ff77a403ff6509d243c40cc5a5778841be55bcfb52436af9ab8e4c3b3d9711"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3823301,
@@ -362,7 +390,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/786/119/300/0047/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/7861193000047",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-bananas-op-2071835-09e76ad710cd1920",
+					"version": 1791645997,
+					"format": "jpg",
+					"sha256": "09e76ad710cd1920f347542bad909f86e47d7fc291dc801719bf3d9ca70dbff7"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2071835,
@@ -423,7 +458,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/914/0466/front_en.26.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0096619140466",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-blueberries-op-1749988-2a80dea463c150a3",
+					"version": 1791645999,
+					"format": "jpg",
+					"sha256": "2a80dea463c150a3158101b00743af6fe0d0aaf75bc2f8a64f9dd8ca3025dc00"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1749988,
@@ -473,7 +515,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/650/0178/front_en.20.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0715756500178",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sweetest-batch-blueberries-op-1495979-3ac049868abc78e8",
+					"version": 1791646000,
+					"format": "jpg",
+					"sha256": "3ac049868abc78e80235ee7502763ae238765a244dea65e129028c33e8a78a58"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1495979,
@@ -523,7 +572,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/620/0221/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0715756200221",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/strawberries-op-1803783-e92da493a3ae568a",
+					"version": 1791646002,
+					"format": "jpg",
+					"sha256": "e92da493a3ae568af445bd1d6b7ac42920eca008f77f2201c8e6bcdb64b86e3d"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1803783,
@@ -574,7 +630,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/914/0497/front_en.25.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0096619140497",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-blueberries-op-2152751-0fc679e7e9dbc9e8",
+					"version": 1791646004,
+					"format": "jpg",
+					"sha256": "0fc679e7e9dbc9e898b97dedcf279c2b2f971db6a5d355a508311e2098751721"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2152751,
@@ -644,7 +707,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/752/461/1109/front_en.12.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0717524611109",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/bananas-3-lb-bag-30669-op-706374-4ac72ad4dd21bee2",
+					"version": 1791646006,
+					"format": "jpg",
+					"sha256": "4ac72ad4dd21bee2316521ed231be9eb76a4a73d89fb069e39b059dde9f23af4"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 706374,
@@ -705,7 +775,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/908/1417/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0096619081417",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-strawberries-op-2075389-697fd77debedfeed",
+					"version": 1791646008,
+					"format": "jpg",
+					"sha256": "697fd77debedfeed46d2668fff1edbb55685bae002a272464f0f25ef4c9c0277"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2075389,
@@ -776,7 +853,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/019/663/386/0330/front_en.67.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0196633860330",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/wild-blueberries-op-4036696-db310821447f5d67",
+					"version": 1791646009,
+					"format": "jpg",
+					"sha256": "db310821447f5d67e11b6b1683bb76235dda348ad92e0d996bc2d6b2611350d9"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4036696,
@@ -827,7 +911,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0286/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0715756100286",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/blackberry-organic-op-2457206-8c108e5813f63bd5",
+					"version": 1791646011,
+					"format": "jpg",
+					"sha256": "8c108e5813f63bd5d07c5935b0c7fbedc4223f97db22be7e233068a1824492d1"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2457206,
@@ -878,7 +969,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/067/170/400/0155/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0671704000155",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-blueberries-op-2152000-0bf047a08c8ef7c1",
+					"version": 1791646013,
+					"format": "jpg",
+					"sha256": "0bf047a08c8ef7c1830e0582cd542224e4086d02364d58d4888a86f75b5e4204"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2152000,
@@ -929,7 +1027,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/064/312/697/1962/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0643126971962",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/certified-organic-bananas-op-1651824-82cb378259fc4a51",
+					"version": 1791646015,
+					"format": "jpg",
+					"sha256": "82cb378259fc4a51eb084e72ec4b5986b019f15862584956bed774c148245ced"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1651824,
@@ -1065,7 +1170,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/884/902/0109/front_en.26.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0818849020109",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/zespri-organic-sungold-kiwifruit-op-1853431-6dec1a6e9fce18a5",
+					"version": 1791646017,
+					"format": "jpg",
+					"sha256": "6dec1a6e9fce18a5ae58ba94db6a1eb71375280d9133331e0a9de922880b11af"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1853431,
@@ -1116,7 +1228,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0040/front_en.22.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0715756100040",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-raspberries-op-152912-d3279579f116e0fc",
+					"version": 1791646019,
+					"format": "jpg",
+					"sha256": "d3279579f116e0fc34e21dd6d6cea9ab6456a23de9bd1315f5e1e41f29be50d3"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 152912,
@@ -1176,7 +1295,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0156/front_en.8.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0715756100156",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/raspberries-op-1413218-f54b725be9f94cfe",
+					"version": 1791646020,
+					"format": "jpg",
+					"sha256": "f54b725be9f94cfe46fd599ea2a3cbbb79a357add88b07f3cbcb1e874ed6eafd"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1413218,
@@ -1226,7 +1352,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/074/007/500/0047/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0740075000047",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/strawberries-op-2259908-ad7a5f50b37f1958",
+					"version": 1791646022,
+					"format": "jpg",
+					"sha256": "ad7a5f50b37f195895d5f5209fd65228cd55276e052cdee42ff90d8b8b668a6d"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2259908,
@@ -1277,7 +1410,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/071/575/610/0033/front_en.8.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0715756100033",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/framboises-op-152911-642056c329749f27",
+					"version": 1791646024,
+					"format": "jpg",
+					"sha256": "642056c329749f273ee32a89c9c263d2942a672172d764e006b3edb0ce7547fc"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 152911,
@@ -1329,7 +1469,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/410/722/1011/front_fr.8.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0054107221011",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/mandarinas-op-71174-f17f8a89852f34a7",
+					"version": 1791646026,
+					"format": "jpg",
+					"sha256": "f17f8a89852f34a71cdebadeb23abf8333ae1bbecfcb6154d19ecf8f9caeff6d"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71174,
@@ -1390,7 +1537,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/948/243/4267/front_en.15.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0099482434267",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/pitted-dates-op-119321-c0db46245f87abec",
+					"version": 1791646027,
+					"format": "jpg",
+					"sha256": "c0db46245f87abec72c416912eb2ca4b20d710d3611b0c134627a95ca79d2ba5"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 119321,
@@ -1441,7 +1595,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/792/300/2365/front_en.20.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0097923002365",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/medjool-dates-op-3454474-57d839cafa681eee",
+					"version": 1791646029,
+					"format": "jpg",
+					"sha256": "57d839cafa681eeefdcce0f39ef77ae15b0ffda877e28f2c6bdee9cfa1b36ed1"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3454474,
@@ -1492,7 +1653,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/792/300/2082/front_en.4.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0097923002082",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/medjool-dates-op-3268315-21b951fc45c5038f",
+					"version": 1791646031,
+					"format": "jpg",
+					"sha256": "21b951fc45c5038f48296fd903f01a4cab47bcfed520875428c388c5edb94a00"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3268315,
@@ -1544,7 +1712,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/008/925/708/4254/front_en.25.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0089257084254",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/premium-pitted-organic-dates-deglet-no-op-1427501-5c7845b65d3178a2",
+					"version": 1791646033,
+					"format": "jpg",
+					"sha256": "5c7845b65d3178a2f6567020b2fc187b0562d2bad46b4b9045c4a13d1da1f55c"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1427501,
@@ -1595,7 +1770,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/086/000/184/1084/front_en.14.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0860001841084",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/blueberries-organic-op-2920199-0152b8ec1b3df2fa",
+					"version": 1791646035,
+					"format": "jpg",
+					"sha256": "0152b8ec1b3df2faac2418cddae25a7a3e76cedb915a0a90bfe2d04c11ef058a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2920199,
@@ -1646,7 +1828,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/066/529/005/1387/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0665290051387",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-blueberries-op-1845137-6929f319eaf623e6",
+					"version": 1791646036,
+					"format": "jpg",
+					"sha256": "6929f319eaf623e612355fc299d5fb6a8fe4d43af73c1383d17b08adcd71d22a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1845137,
@@ -1697,7 +1886,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/406/146/222/8520/front_en.7.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4061462228520",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-whole-milk-kids-op-3909559-0374a815b7a005d1",
+					"version": 1791646038,
+					"format": "jpg",
+					"sha256": "0374a815b7a005d10c3bbfa8a46a2932f0aa20264686b42aa6846d9134872d51"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3909559,
@@ -1749,7 +1945,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/119/046/7211/front_en.24.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0041190467211",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/1-low-fat-milk-op-1748979-0319d65a08ec23a2",
+					"version": 1791646040,
+					"format": "jpg",
+					"sha256": "0319d65a08ec23a2c30bbabef336930d1a8e1f8b54cf5461ce599b301bd22057"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1748979,
@@ -1811,7 +2014,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/074/236/526/4054/front_en.11.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0742365264054",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-fat-free-milk-op-160541-ad9a01f54352b96e",
+					"version": 1791646042,
+					"format": "jpg",
+					"sha256": "ad9a01f54352b96ec1e4321fc56b0e77c805ef77f413e6a7027dee76472bfdd4"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 160541,
@@ -1872,7 +2082,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/162/002/0169/front_en.308.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0811620020169",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/whole-ultra-filtered-milk-op-171718-9e1209dd721423a0",
+					"version": 1791646044,
+					"format": "jpg",
+					"sha256": "9e1209dd721423a05dd1288f4c8641e63ed636b15b0910cac0dd68613df6cc07"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 171718,
@@ -1923,7 +2140,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/002/529/300/1497/front_en.111.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0025293001497",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/almondmilk-op-25284-484f403593fb007e",
+					"version": 1791646046,
+					"format": "jpg",
+					"sha256": "484f403593fb007e27f0f0f34b4c138b008d938b28960ad877c74c64f3219be9"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 25284,
@@ -1974,7 +2198,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/215/901/2045/front_en.14.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0052159012045",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/reduced-fat-milk-op-1203745-933a9f0e4f151586",
+					"version": 1791646048,
+					"format": "jpg",
+					"sha256": "933a9f0e4f151586c3a564ea9ce03196ee3bd0d9bad00bd56e0d612f8e9d0a2b"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1203745,
@@ -2024,7 +2255,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/396/600/9989/front_en.54.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0093966009989",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/whole-milk-op-2651380-1286c581db5d4e4c",
+					"version": 1791646049,
+					"format": "jpg",
+					"sha256": "1286c581db5d4e4cd7121d59131800184bd61f9bc005604e432bd67f5f2082db"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2651380,
@@ -2075,7 +2313,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/157/005/4130/front_en.75.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0041570054130",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/almond-breeze-almondmilk-unsweetened-o-op-56778-a55fc1989c76b379",
+					"version": 1791646051,
+					"format": "jpg",
+					"sha256": "a55fc1989c76b379cb2eecb4695a0867eeac30c992d226985a7ae4a58765209a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 56778,
@@ -2146,7 +2391,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/900/0012/front_en.84.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0096619000012",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/reduced-fat-milk-2-milkfat-op-1488577-e1f0e0dcf8c2708a",
+					"version": 1791646053,
+					"format": "jpg",
+					"sha256": "e1f0e0dcf8c2708afb5d6d0c59c9b694b25e5ad00efada543520ac118807e037"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1488577,
@@ -2333,7 +2585,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/900/0128/front_en.4.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0096619000128",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/fat-free-milk-op-1696385-09358ea3efa7b343",
+					"version": 1791646054,
+					"format": "jpg",
+					"sha256": "09358ea3efa7b3433b4bf79162934f2822668cf1cec6e5e28f1b0343dcc0fdef"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1696385,
@@ -2384,7 +2643,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/002/113/007/0114/front_en.13.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0021130070114",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/reduced-fat-milk-op-20386-2a1aad0b13d7b540",
+					"version": 1791646056,
+					"format": "jpg",
+					"sha256": "2a1aad0b13d7b54041d0af515e66cea1b842733213a0f49d0f6990befaac14b3"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 20386,
@@ -2435,7 +2701,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/157/005/6707/front_en.140.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0041570056707",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/almondmilk-op-56792-091339ceccdffa47",
+					"version": 1791646058,
+					"format": "jpg",
+					"sha256": "091339ceccdffa4787f25af73b9f425344516a5d812603a4ca6320afedae8999"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 56792,
@@ -2487,7 +2760,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/410/010/2523/front_en.5.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0044100102523",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/1-lowfat-milk-op-62017-1885e07459d3845b",
+					"version": 1791646060,
+					"format": "jpg",
+					"sha256": "1885e07459d3845beaa04cadc8d9d253278ac3f177d13136043d9c2023d16cee"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 62017,
@@ -2539,7 +2819,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/008/523/928/4070/front_en.26.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0085239284070",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/1-lowfat-milk-op-112348-9ba8334e7b264c71",
+					"version": 1791646061,
+					"format": "jpg",
+					"sha256": "9ba8334e7b264c71ebe1196ea8fe2737782c142828684d93e6fc3a348d2c8081"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 112348,
@@ -2590,7 +2877,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/025/3108/front_en.45.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4099100253108",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/seedtastic-jam-packed-with-seeds-bread-op-1852419-a536442cf788cf16",
+					"version": 1791646064,
+					"format": "jpg",
+					"sha256": "a536442cf788cf1618b1a3ec6a364d74df8a25b00a94c425d8cdc957944bb8b6"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1852419,
@@ -2641,7 +2935,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/001/6031/front_en.23.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4099100016031",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/flour-tortillas-op-1822949-03979ff1f2f489be",
+					"version": 1791646066,
+					"format": "jpg",
+					"sha256": "03979ff1f2f489be5bcc9c6bf3387756faff9eb209e219c22fb10ab3941257ee"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1822949,
@@ -2737,7 +3038,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/104/0160/front_en.198.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0055991040160",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/the-big-16-op-71889-2c6f366b34f098cd",
+					"version": 1791646067,
+					"format": "jpg",
+					"sha256": "2c6f366b34f098cd2168e7cfd4eefede64810078ed922caaff30a7e171c71ee2"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71889,
@@ -2809,7 +3117,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/8074/front_en.105.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0013764028074",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/thin-sliced-organic-bread-sprouted-who-op-1077402-42c122641ae144dc",
+					"version": 1791646069,
+					"format": "jpg",
+					"sha256": "42c122641ae144dc6849ebbe1f3181c817a0e8ecb6da42e32fcda17f39acc0a8"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1077402,
@@ -2861,7 +3176,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/7121/front_en.144.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0013764027121",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-bread-good-seed-thin-sliced-op-13638-a4a73a0976e4b5f4",
+					"version": 1791646071,
+					"format": "jpg",
+					"sha256": "a4a73a0976e4b5f4ba2e1e692f848d597df5de796159cac339d726128cac6c6f"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13638,
@@ -2932,7 +3254,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/440/176/0412/front_en.7.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0074401760412",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/royal-blend-rice-blend-op-94408-cef7ead57fd08263",
+					"version": 1791646073,
+					"format": "jpg",
+					"sha256": "cef7ead57fd08263f071b5b069f9e037d5aa1ffbb51bf0017657447afe134667"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 94408,
@@ -2983,7 +3312,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/440/131/0419/front_en.8.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0074401310419",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/brown-texmati-long-grain-basmati-rice-op-94385-bb29fa05c1073e4d",
+					"version": 1791646074,
+					"format": "jpg",
+					"sha256": "bb29fa05c1073e4d1eb74765f2754ec2903cd6b99392d72b146718585a095360"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 94385,
@@ -3044,7 +3380,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/341/604/0588/front_en.6.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0073416040588",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-california-brown-jasmine-rice-op-92194-8c05e99d8be8045f",
+					"version": 1791646076,
+					"format": "jpg",
+					"sha256": "8c05e99d8be8045f5864a82ab3722c79647209fbff07cff0e8cdbdb438663939"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92194,
@@ -3095,7 +3438,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/440/193/0419/front_en.5.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0074401930419",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-brown-rice-texmati-op-94414-ad685dbe6b6996db",
+					"version": 1791646078,
+					"format": "jpg",
+					"sha256": "ad685dbe6b6996db825dd7871d54249710ecf049e05c7a4bbd5e635a90303a8a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 94414,
@@ -3146,7 +3496,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/740/010/2357/front_en.23.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0017400102357",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/jasmine-thai-fragrant-long-grain-rice-op-1438096-1c7ef56c039b3940",
+					"version": 1791646080,
+					"format": "jpg",
+					"sha256": "1c7ef56c039b3940e0483bee7a3f8572c246257383cd7ae6545d578579de9ab4"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1438096,
@@ -3332,7 +3689,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/514/000/2687/front_en.47.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0855140002687",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/chocolate-sea-salt-ancient-grain-grano-op-185638-242eab29f189a604",
+					"version": 1791646081,
+					"format": "jpg",
+					"sha256": "242eab29f189a604184f2233eeb5da46825978413c81bdeb9c1d445658e8c7f9"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 185638,
@@ -3383,7 +3747,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/804/1401/front_en.22.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0039978041401",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/steel-cut-oats-op-1270908-0aaea5d0dd2f8c83",
+					"version": 1791646083,
+					"format": "jpg",
+					"sha256": "0aaea5d0dd2f8c839143cc62a51ab4fd48e2a2c3a5f3cd90f887a882c05e9b3b"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1270908,
@@ -3444,7 +3815,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/803/9521/front_en.14.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0039978039521",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-old-fashioned-rolled-oats-whol-op-1270892-695ee2007ba3d8a3",
+					"version": 1791646085,
+					"format": "jpg",
+					"sha256": "695ee2007ba3d8a3b24a45a58b53c1d1d5b56a815f407bb4d990807473e1e000"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1270892,
@@ -3495,7 +3873,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/500/010/847/8119/front_en.88.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/5000108478119",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/quaker-white-oats-op-466987-a13d20a11087eea1",
+					"version": 1791646087,
+					"format": "jpg",
+					"sha256": "a13d20a11087eea1816f29563654885d0e27fa2ed74b6c0b19d98e3378a92b3c"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 466987,
@@ -3546,7 +3931,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/000/001/1805/front_en.121.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0030000011805",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/quick-1-minute-oats-op-792093-dcd40650a9512836",
+					"version": 1791646088,
+					"format": "jpg",
+					"sha256": "dcd40650a95128364a1f84a4176f86239feed24109cb606f3f8a0af0d1151801"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 792093,
@@ -3608,7 +4000,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/804/9520/front_en.70.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0039978049520",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/old-fashioned-rolled-oats-whole-grain-op-1080347-4c1024ec6a925848",
+					"version": 1791646090,
+					"format": "jpg",
+					"sha256": "4c1024ec6a92584809369ee724203538fb13246e3689a8775df9bfe031c5c289"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1080347,
@@ -3689,7 +4088,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/294/560/1369/front_en.108.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0072945601369",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/honey-wheat-bread-op-90374-b44c75d3d15ed5ba",
+					"version": 1791646092,
+					"format": "jpg",
+					"sha256": "b44c75d3d15ed5bae0fdfeae2820a8e25321117c19ff2ece25224ea33cdce122"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 90374,
@@ -3785,7 +4191,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/225/002/0756/front_en.80.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0072250020756",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/perfectly-crafted-multigrain-op-805947-d2c9ef482b7b22f7",
+					"version": 1791646093,
+					"format": "jpg",
+					"sha256": "d2c9ef482b7b22f792bfee88ad34c1138402d9675fdc7f8510fa2513d8b0fa44"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 805947,
@@ -3836,7 +4249,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/7220/front_en.73.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0013764027220",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-bread-op-13645-d79f7464bfec7eda",
+					"version": 1791646095,
+					"format": "jpg",
+					"sha256": "d79f7464bfec7edaa43a4bf58130eb65c4a6dea40c922158fc7829bbecc78e3a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13645,
@@ -3907,7 +4327,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/7039/front_en.131.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0013764027039",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-bread-good-seed-op-13633-e9be49b8dbff6581",
+					"version": 1791646097,
+					"format": "jpg",
+					"sha256": "e9be49b8dbff658178ee5ce10e93a3a907b9250aa8516684148f297b0284bf2e"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13633,
@@ -3968,7 +4395,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/000/8616/front_en.36.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4099100008616",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/100-whole-wheat-bread-op-1130722-944f6f6c7dc44bdf",
+					"version": 1791646098,
+					"format": "jpg",
+					"sha256": "944f6f6c7dc44bdf6c4357c27e14f19e3be37d0bf0b9959534a71de5baf22546"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1130722,
@@ -4059,7 +4493,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/406/146/175/3764/front_en.25.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4061461753764",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/seeded-crackers-op-3475860-3fc2efdd79b7dc76",
+					"version": 1791646100,
+					"format": "jpg",
+					"sha256": "3fc2efdd79b7dc76d3f040d231b6810cf8b42aac694ed8d16b59a61d5f9b6be6"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3475860,
@@ -4110,7 +4551,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/006/6692/front_en.18.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4099100066692",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/wavy-potato-chips-op-1134820-dae6add9b7296127",
+					"version": 1791646102,
+					"format": "jpg",
+					"sha256": "dae6add9b7296127ea1f82d9dc3c6c6361a78976d4db9f3cdc70c5e62db22b40"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1134820,
@@ -4161,7 +4609,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/000/980/000/0715/front_en.5.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0009800000715",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/fine-hazelnut-chocolates-op-3264-0055168d88f448a5",
+					"version": 1791646103,
+					"format": "jpg",
+					"sha256": "0055168d88f448a54f1dacda8e98e6de5f01ef4f4ef99250873e2c62871a4f64"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3264,
@@ -4212,7 +4667,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/746/601/6450/front_en.100.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0037466016450",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/dark-chocolate-op-38735-90f63d047080a065",
+					"version": 1791646105,
+					"format": "jpg",
+					"sha256": "90f63d047080a065791db9d3d17151104712799ea0a8724b2ab1f6c924848b42"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 38735,
@@ -4263,7 +4725,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/878/750/5595/front_en.20.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0018787505595",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/magic-all-one-chocolate-smooth-coconut-op-2151930-5183c512584d5ca8",
+					"version": 1791646107,
+					"format": "jpg",
+					"sha256": "5183c512584d5ca86700310e653d78e510abd5fa32ec7a4dbe39bd27a13d9925"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2151930,
@@ -4314,7 +4783,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/089/857/500/1337/front_en.23.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0898575001337",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/pure-dark-70-cocoa-op-197212-6683ea8001b13042",
+					"version": 1791646108,
+					"format": "jpg",
+					"sha256": "6683ea8001b13042cb3725c0e32e6f539f499c0908465f8f82a23ba7932c92ef"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 197212,
@@ -4375,7 +4851,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/406/936/582/8779/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4069365828779",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sparkling-frost-sugar-plum-op-4701336-3fd3e8c1caf9f03e",
+					"version": 1791646110,
+					"format": "jpg",
+					"sha256": "3fd3e8c1caf9f03e8b7a31eea2aa884bc8e73485334f9d0b1d79979324330011"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4701336,
@@ -4426,7 +4909,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/150/880/0129/front_en.32.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0041508800129",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/carbonated-natural-mineral-water-op-56513-5e6073dc340b32c6",
+					"version": 1791646112,
+					"format": "jpg",
+					"sha256": "5e6073dc340b32c652ad3438d00bebc295e338e7db82e998e657b6f4c26b90d5"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 56513,
@@ -4497,7 +4987,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/550/238/6679/front_en.13.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0075502386679",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sparkling-natural-mineral-water-op-97984-138de7515df8c85a",
+					"version": 1791646113,
+					"format": "jpg",
+					"sha256": "138de7515df8c85a720baeadc6b5137fff7be5d7adbb4d7babedcf169ba8f174"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 97984,
@@ -4548,7 +5045,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/150/880/2185/front_en.24.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0041508802185",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sparkling-natural-mineral-water-op-56520-6287b4eb3f1904c3",
+					"version": 1791646115,
+					"format": "jpg",
+					"sha256": "6287b4eb3f1904c3625340952e5dc9ac616ea0c5d4ae17703084a11440187ebd"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 56520,
@@ -4599,7 +5103,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/200/070/7786/front_en.17.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0052000707786",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/fitness-water-op-69345-82274be3c5a12ff2",
+					"version": 1791646117,
+					"format": "jpg",
+					"sha256": "82274be3c5a12ff21ca62c2815851457c46213db29a994a55fdff302f1c83f59"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 69345,
@@ -4650,7 +5161,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/068/907/676/2779/front_en.9.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0689076762779",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/chorizo-seitan-op-147198-e9e054e6b1186fe2",
+					"version": 1791646119,
+					"format": "jpg",
+					"sha256": "e9e054e6b1186fe2096fbbb6b0812a8b4548dd97cebe9f91f6202fba3fa0692d"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 147198,
@@ -4701,7 +5219,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/000/6742/front_en.23.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4099100006742",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/crispy-chicken-strips-op-1430378-f7938aaef211282c",
+					"version": 1791646120,
+					"format": "jpg",
+					"sha256": "f7938aaef211282caeaec136db5dd0c45f16d0d7c52e8e110d87a0c6ec36232c"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1430378,
@@ -4762,7 +5287,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/760/013/8727/front_en.66.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0037600138727",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/spam-classic-op-38991-b4a49566a810a08f",
+					"version": 1791646122,
+					"format": "jpg",
+					"sha256": "b4a49566a810a08f6b7efbe298f3196f5f145549d83da389567e7757cc8dfda5"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 38991,
@@ -4823,7 +5355,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/196/130/6634/front_en.12.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0031961306634",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/double-smoked-thick-sliced-bacon-op-1304012-d312421b8752e82f",
+					"version": 1791646124,
+					"format": "jpg",
+					"sha256": "d312421b8752e82f27fbf6b9b917ab2f69d6a3ded415ee95ac614e45e9c32023"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1304012,
@@ -4874,7 +5413,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/111/097/9759/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0011110979759",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/lean-ground-beef-op-849617-da39b4e7b05a4242",
+					"version": 1791646125,
+					"format": "jpg",
+					"sha256": "da39b4e7b05a4242410af37ab42b5c69740677cc3fcf661acd638cba3e1b762f"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 849617,
@@ -4924,7 +5470,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/368/700/4355/front_en.16.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0853687004355",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-avocado-bite-sized-pieces-op-2094258-d82bfe28425fedcc",
+					"version": 1791646127,
+					"format": "jpg",
+					"sha256": "d82bfe28425fedcc2b08086f604f80626ee39bab16996e6fef481a8a692a015e"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2094258,
@@ -4974,7 +5527,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/062/790/709/0783/front_en.101.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0627907090783",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/fully-cooked-chicken-breast-bites-op-1548114-7a1d60da0dae402b",
+					"version": 1791646129,
+					"format": "jpg",
+					"sha256": "7a1d60da0dae402bb2e697c572263fabbbf6689094b187c9d41460e28f6f5aae"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1548114,
@@ -5024,7 +5584,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/006/3684/front_en.30.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4099100063684",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/vanilla-wafers-op-1128508-7e2280f4f0ba4d53",
+					"version": 1791646131,
+					"format": "jpg",
+					"sha256": "7e2280f4f0ba4d536f1420fbd07d5f3b5ea9c30f716a38ba0fbb813d777e64c0"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1128508,
@@ -5074,7 +5641,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/064/667/051/1592/front_en.13.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0646670511592",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-berry-medley-op-2321416-7e978723f408d867",
+					"version": 1791646132,
+					"format": "jpg",
+					"sha256": "7e978723f408d867d3958adb3729059533d99c1254b756d1384d284ae2560ed4"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2321416,
@@ -5124,7 +5698,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/006/0942/front_en.15.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/4099100060942",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/waffle-cones-op-2102982-e4e6ad96b3520f86",
+					"version": 1791646134,
+					"format": "jpg",
+					"sha256": "e4e6ad96b3520f8620c03bc91b989ee1e97590261479b8fb25ad59f78e06a127"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2102982,
@@ -5174,7 +5755,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/064/667/051/4166/front_en.21.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0646670514166",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-banana-op-3687815-fbd7575784c50819",
+					"version": 1791646136,
+					"format": "jpg",
+					"sha256": "fbd7575784c50819a0ed869ab5c6c421f885fa4689027f4fcfbe30ac0c2e58f8"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3687815,
@@ -5224,7 +5812,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/850/1035/front_en.122.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0039978501035",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/old-country-style-muesli-op-41260-aa263e64bda0d93b",
+					"version": 1791646138,
+					"format": "jpg",
+					"sha256": "aa263e64bda0d93b74a4c17df966098fafb67c6434b9c58c4f35e5a45996892a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 41260,
@@ -5274,7 +5869,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/7138/front_en.427.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0013764027138",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/thin-sliced-op-13639-32cc2b8e260d2a52",
+					"version": 1791646139,
+					"format": "jpg",
+					"sha256": "32cc2b8e260d2a5248797a560fcc852384109e0afd13891fbec8a65e4a544435"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13639,
@@ -5324,7 +5926,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/077/185/646/8732/front_en.10.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0771856468732",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/cornbread-mini-loaves-op-2249575-fe657b3482d41c6c",
+					"version": 1791646141,
+					"format": "jpg",
+					"sha256": "fe657b3482d41c6c6b10fc4bc1d61c1eef0676ed40796e65df4b0ceba4daf104"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2249575,
@@ -5434,7 +6043,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/089/857/500/3249/front_en.11.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0898575003249",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sea-salt-op-3291331-cda21beb15fa504d",
+					"version": 1791646143,
+					"format": "jpg",
+					"sha256": "cda21beb15fa504dcca2ed29a570f6cdebdc84ee0efa8d6d2af13a9ff6fa3d35"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3291331,
@@ -5484,7 +6100,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/104/0450/front_en.89.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0055991040450",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/squirrelly-op-71890-5e250f7240ed444d",
+					"version": 1791646145,
+					"format": "jpg",
+					"sha256": "5e250f7240ed444d17f96e2e82164b7f7e473736da79a5d8fafb897435390ede"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71890,
@@ -5534,7 +6157,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/089/857/500/3768/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0898575003768",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/dark-chocolate-with-sea-salt-and-nibs-op-4276652-7d65b72f436c8323",
+					"version": 1791646147,
+					"format": "jpg",
+					"sha256": "7d65b72f436c8323475ebacea464a66bdcacddce77476f63ece617a1dc52f655"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4276652,
@@ -5584,7 +6214,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/104/0863/front_en.117.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0055991040863",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/little-big-bread-op-71894-4b85a71897b6ff85",
+					"version": 1791646148,
+					"format": "jpg",
+					"sha256": "4b85a71897b6ff85554e54c276f0ca9f9ffe744fe57e61d5b25d448245e1bae7"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71894,
@@ -5654,7 +6291,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/440/176/0320/front_en.5.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0074401760320",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/royal-blend-texmati-brown-wild-rice-wi-op-94406-9b6bda886e8f3b61",
+					"version": 1791646150,
+					"format": "jpg",
+					"sha256": "9b6bda886e8f3b6174fc0aeeda4532a2f0cf030ceb87c87ffc92cad3138c9cb9"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 94406,
@@ -5704,7 +6348,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/107/9146/front_en.21.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0055991079146",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/bread-op-2870895-795cab51d28e2513",
+					"version": 1791646151,
+					"format": "jpg",
+					"sha256": "795cab51d28e25136c1f965e895958601be996129f9b43521db4bb5279af94a5"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2870895,
@@ -5754,7 +6405,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/767/001/1898/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0817670011898",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/raspberry-blackout-organic-dark-chocol-op-1861034-4ac2447a2af53dbf",
+					"version": 1791646153,
+					"format": "jpg",
+					"sha256": "4ac2447a2af53dbf21f41aae8b8910ec83a90f225db9a68baa34c9f7f1f04ab4"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1861034,
@@ -5804,7 +6462,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/089/865/500/0182/front_en.6.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0898655000182",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/merry-maraschino-cherries-op-197245-d7e6d97780e4fb97",
+					"version": 1791646155,
+					"format": "jpg",
+					"sha256": "d7e6d97780e4fb97ce7ef208d66b0114456190b76316a7394428c7c48b20d384"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 197245,
@@ -5854,7 +6519,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/396/651/6005/front_en.12.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0093966516005",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-valley-0-milk-op-117343-0bcf537b0c6e609f",
+					"version": 1791646157,
+					"format": "jpg",
+					"sha256": "0bcf537b0c6e609f83186eb87de7f117992515f876a494721e24074340d9534f"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 117343,
@@ -5914,7 +6586,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/253/700/5634/front_en.18.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0852537005634",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/cinnamon-raisin-bread-op-1951785-d230c172a6b04951",
+					"version": 1791646159,
+					"format": "jpg",
+					"sha256": "d230c172a6b04951b27acee46d6fe83e5c277caabc90eacf6f0c0df24e06e6f6"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1951785,
@@ -5964,7 +6643,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/760/017/5340/front_en.28.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0037600175340",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/spam-lite-op-654592-c3c15c2dcf119f1f",
+					"version": 1791646160,
+					"format": "jpg",
+					"sha256": "c3c15c2dcf119f1fb4038afb0b4fc88031886ae23f73a6de29d7ddce7b43693d"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 654592,
@@ -6024,7 +6710,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/002/400/016/7136/front_en.27.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0024000167136",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sliced-peaches-op-24296-e06e433b450cd3ea",
+					"version": 1791646162,
+					"format": "jpg",
+					"sha256": "e06e433b450cd3eafeac3544e4f454be90597bc83281d993caeddc909da0e83c"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 24296,
@@ -6094,7 +6787,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/347/200/1417/front_en.21.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0073472001417",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/flourless-sprouted-grain-seed-bread-op-92367-8da6431a71c560af",
+					"version": 1791646164,
+					"format": "jpg",
+					"sha256": "8da6431a71c560afeb294940fc3b33254cd32769139f9f9dd81307fb4701f83a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92367,
@@ -6144,7 +6844,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/074/840/442/0184/front_en.36.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0748404420184",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-quinoa-brown-red-rice-with-fla-op-1201548-f5203c49b091543d",
+					"version": 1791646165,
+					"format": "jpg",
+					"sha256": "f5203c49b091543d49905a0c090a8b4b67270da709d7aeab1f0dfc44035ddbc0"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1201548,
@@ -6194,7 +6901,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/019/064/663/0089/front_en.93.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0190646630089",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/full-fat-oatmilk-op-1019070-70b813e9c07f915a",
+					"version": 1791646167,
+					"format": "jpg",
+					"sha256": "70b813e9c07f915a1494995f9482f7a12213d0de4c1bb1822990128b965ea3fd"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1019070,
@@ -6244,7 +6958,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/600/014/1544/front_en.4.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0016000141544",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/cinnamon-toast-crunch-op-1237227-1cab78822e67caeb",
+					"version": 1791646169,
+					"format": "jpg",
+					"sha256": "1cab78822e67caebd6875a0e5da2e8f206d3ba3a13ff4a20f6efe7fff381654a"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1237227,
@@ -6294,7 +7015,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/347/200/1530/front_en.53.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0073472001530",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/flourless-sprouted-grain-bread-op-92368-456643eccd4c32ee",
+					"version": 1791646171,
+					"format": "jpg",
+					"sha256": "456643eccd4c32eef0bbe9328aee6ed71f3fdce29216ec5b9c67fa78492a641c"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92368,
@@ -6344,7 +7072,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/760/033/6581/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0037600336581",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/canned-meat-op-1237027-aaf7aedaf057f37e",
+					"version": 1791646172,
+					"format": "jpg",
+					"sha256": "aaf7aedaf057f37eba699cb75a9a651982f2ca4cab55b92cd951a1da8cfbc160"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1237027,
@@ -6394,7 +7129,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/336/023/7515/front_en.43.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0073360237515",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sparkling-water-op-91683-1f8bd47dca50b2a5",
+					"version": 1791646175,
+					"format": "jpg",
+					"sha256": "1f8bd47dca50b2a5932b87aa00bfe8c1206cc9b1b608dc344a10893a5ba85bcd"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 91683,
@@ -6444,7 +7186,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/347/200/1233/front_en.76.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0073472001233",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/flourless-sprouted-grain-bread-sesame-op-92363-f39d5294fe9785fd",
+					"version": 1791646176,
+					"format": "jpg",
+					"sha256": "f39d5294fe9785fd4af75022f6ac66b50d42f698ac5a4ebab0d19e011533662c"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92363,
@@ -6504,7 +7253,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/440/111/0415/front_en.5.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0074401110415",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/aromatic-long-grain-rice-op-94379-c499f4287e2e49b7",
+					"version": 1791646178,
+					"format": "jpg",
+					"sha256": "c499f4287e2e49b7468ea83901c63a132b341d8b770d09325e3af7198aff2709"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 94379,
@@ -6554,7 +7310,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/000/156/1253/front_en.3.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0810001561253",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/protein-toaster-waffles-op-2375859-6d1bfe400939df6d",
+					"version": 1791646180,
+					"format": "jpg",
+					"sha256": "6d1bfe400939df6d64a9d960111f3207bb32769dc5098c6e715aa9abdb9e6890"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2375859,
@@ -6604,7 +7367,14 @@
 				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/299/344/1074/front_en.14.400.jpg",
 				"productUrl": "https://world.openfoodfacts.org/product/0012993441074",
 				"license": "CC BY-SA 3.0",
-				"attribution": "Open Food Facts contributors"
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/sparkling-water-op-13168-297d6fab4cbedd6f",
+					"version": 1791646182,
+					"format": "jpg",
+					"sha256": "297d6fab4cbedd6f7b6ae31a48e35e8b6c30fbd022484bd8d8c5bb83ce9acfd3"
+				}
 			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13168,
@@ -6643,12 +7413,26 @@
 			"brand": "Signature Select",
 			"category": "PANTRY",
 			"variantGroup": "long-grain-brown-rice",
-			"synonyms": [
-				"long grain brown rice"
-			],
 			"netQuantity": 907,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"long grain brown rice"
+			],
+			"image": {
+				"path": "/products/long-grain-whole-grain-brown-rice-op-1246788.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/002/113/050/2103/front_en.5.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0021130502103",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/long-grain-whole-grain-brown-rice-op-1246788-48f1cac3d44b7c29",
+					"version": 1791646184,
+					"format": "jpg",
+					"sha256": "48f1cac3d44b7c294d0c24f5e6e0714884ee4cb2a1d53e2eb3db6cce62fb0c19"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1246788,
 			"sourceProductCode": "0021130502103",
@@ -6656,6 +7440,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 309706,
@@ -6667,18 +7461,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 299,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-11",
-				"observedTo": "2026-08-11",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "white-rice-jasmine-op-1212816",
@@ -6687,12 +7470,26 @@
 			"brand": "Lundberg Family Farms",
 			"category": "PANTRY",
 			"variantGroup": "white-jasmine-rice",
-			"synonyms": [
-				"white jasmine rice"
-			],
 			"netQuantity": 907,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"white jasmine rice"
+			],
+			"image": {
+				"path": "/products/white-rice-jasmine-op-1212816.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/341/604/0281/front_en.23.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0073416040281",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/white-rice-jasmine-op-1212816-12811f8a9902540e",
+					"version": 1791646186,
+					"format": "jpg",
+					"sha256": "12811f8a9902540e327c7e82740f04f46ef8a335f8957f39944d2dccde75a07e"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1212816,
 			"sourceProductCode": "0073416040281",
@@ -6700,6 +7497,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1099,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 309097,
@@ -6711,18 +7518,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 1099,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-11",
-				"observedTo": "2026-08-11",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "california-white-basmati-gourmet-rice-op-92219",
@@ -6731,12 +7527,26 @@
 			"brand": "Lundberg Family Farms",
 			"category": "PANTRY",
 			"variantGroup": "california-white-basmati-rice",
-			"synonyms": [
-				"california white basmati rice"
-			],
 			"netQuantity": 907,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"california white basmati rice"
+			],
+			"image": {
+				"path": "/products/california-white-basmati-gourmet-rice-op-92219.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/341/640/1532/front_en.14.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0073416401532",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/california-white-basmati-gourmet-rice-op-92219-04e8d75b2ab08d1b",
+					"version": 1791646187,
+					"format": "jpg",
+					"sha256": "04e8d75b2ab08d1ba84aed22905d749053708400ba212c0d08b281dd7efaf1c6"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92219,
 			"sourceProductCode": "0073416401532",
@@ -6744,6 +7554,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 899,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 308208,
@@ -6755,18 +7575,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 899,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-11",
-				"observedTo": "2026-08-11",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "ready-rice-basmati-op-2872959",
@@ -6775,12 +7584,26 @@
 			"brand": "Ben's Original",
 			"category": "PANTRY",
 			"variantGroup": "ready-rice-basmati",
-			"synonyms": [
-				"ready rice basmati"
-			],
 			"netQuantity": 490,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "17.28 oz (490 g)",
+			"synonyms": [
+				"ready rice basmati"
+			],
+			"image": {
+				"path": "/products/ready-rice-basmati-op-2872959.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/480/042/4559/front_en.37.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0054800424559",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/ready-rice-basmati-op-2872959-d29e91aeb862a058",
+					"version": 1791646189,
+					"format": "jpg",
+					"sha256": "d29e91aeb862a058af25b95c9b1627521815fa08905d9aa3c219f3880d1ddc5d"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2872959,
 			"sourceProductCode": "0054800424559",
@@ -6788,6 +7611,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 599,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 308218,
@@ -6799,18 +7632,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 599,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-11",
-				"observedTo": "2026-08-11",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "elbow-macaroni-op-1522825",
@@ -6819,12 +7641,26 @@
 			"brand": "Reggano",
 			"category": "PANTRY",
 			"variantGroup": "elbow-macaroni",
-			"synonyms": [
-				"elbow macaroni"
-			],
 			"netQuantity": 907,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"elbow macaroni"
+			],
+			"image": {
+				"path": "/products/elbow-macaroni-op-1522825.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/000/2867/front_en.18.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4099100002867",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/elbow-macaroni-op-1522825-b1835e4dcbf17184",
+					"version": 1791646191,
+					"format": "jpg",
+					"sha256": "b1835e4dcbf171849534f9c3d89655b5ce57bbd372c1fe76eedd69365f911c04"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1522825,
 			"sourceProductCode": "4099100002867",
@@ -6832,6 +7668,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 189,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-22",
+				"observedTo": "2026-08-22",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 315712,
@@ -6843,18 +7689,7 @@
 					"locationId": 6907,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 189,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-22",
-				"observedTo": "2026-08-22",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "fettuccine-op-2255039",
@@ -6863,12 +7698,26 @@
 			"brand": "Reggano",
 			"category": "PANTRY",
 			"variantGroup": "fettuccine",
-			"synonyms": [
-				"fettuccine"
-			],
 			"netQuantity": 907,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"fettuccine"
+			],
+			"image": {
+				"path": "/products/fettuccine-op-2255039.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/018/2552/front_en.14.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4099100182552",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/fettuccine-op-2255039-3365cd3980858992",
+					"version": 1791646192,
+					"format": "jpg",
+					"sha256": "3365cd3980858992589d4b2a21514637bbf3991b24b3cd34cb3da308b1f0ae90"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2255039,
 			"sourceProductCode": "4099100182552",
@@ -6876,6 +7725,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 219,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-21",
+				"observedTo": "2026-08-21",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 315065,
@@ -6887,18 +7746,7 @@
 					"locationId": 6896,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 219,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-21",
-				"observedTo": "2026-08-21",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "pappardelle-op-1249729",
@@ -6907,12 +7755,26 @@
 			"brand": "Giovanni Rana",
 			"category": "PANTRY",
 			"variantGroup": "pappardelle",
-			"synonyms": [
-				"pappardelle"
-			],
 			"netQuantity": 255,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "8.99 oz (255 g)",
+			"synonyms": [
+				"pappardelle"
+			],
+			"image": {
+				"path": "/products/pappardelle-op-1249729.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/087/744/800/4774/front_en.7.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0877448004774",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/pappardelle-op-1249729-520b47493d31caf1",
+					"version": 1791646194,
+					"format": "jpg",
+					"sha256": "520b47493d31caf1379125815688102b706edcfa74bc5c911f2cebc2815c6ccb"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1249729,
 			"sourceProductCode": "0877448004774",
@@ -6920,6 +7782,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 339,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-14",
+				"observedTo": "2026-09-14",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332083,
@@ -6931,18 +7803,7 @@
 					"locationId": 7263,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 339,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-14",
-				"observedTo": "2026-09-14",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "spinach-ricotta-ravioli-op-1210387",
@@ -6951,12 +7812,26 @@
 			"brand": "Giovanni Rana",
 			"category": "PANTRY",
 			"variantGroup": "spinach-ricotta-ravioli",
-			"synonyms": [
-				"spinach & ricotta ravioli"
-			],
 			"netQuantity": 283,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "9.98 oz (283 g)",
+			"synonyms": [
+				"spinach & ricotta ravioli"
+			],
+			"image": {
+				"path": "/products/spinach-ricotta-ravioli-op-1210387.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/087/744/800/3685/front_en.37.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0877448003685",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/spinach-ricotta-ravioli-op-1210387-6a1b116b6bad7b25",
+					"version": 1791646196,
+					"format": "jpg",
+					"sha256": "6a1b116b6bad7b258f2226279e68f91876e65d23aa71716e5a85fe54253a9ab4"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1210387,
 			"sourceProductCode": "0877448003685",
@@ -6964,6 +7839,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 689,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-14",
+				"observedTo": "2026-09-14",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 333883,
@@ -6975,18 +7860,7 @@
 					"locationId": 7263,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 689,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-14",
-				"observedTo": "2026-09-14",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "chickpea-fusilli-pasta-op-1316707",
@@ -6995,12 +7869,26 @@
 			"brand": "O organics",
 			"category": "PANTRY",
 			"variantGroup": "chickpea-fusilli-pasta",
-			"synonyms": [
-				"chickpea fusilli pasta"
-			],
 			"netQuantity": 226,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "7.97 oz (226 g)",
+			"synonyms": [
+				"chickpea fusilli pasta"
+			],
+			"image": {
+				"path": "/products/chickpea-fusilli-pasta-op-1316707.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/989/350/5206/front_en.4.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0079893505206",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/chickpea-fusilli-pasta-op-1316707-6917e8510d05d579",
+					"version": 1791646197,
+					"format": "jpg",
+					"sha256": "6917e8510d05d57968603de6882eea9862839087f8fda2507e32b2ef2662c3cd"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1316707,
 			"sourceProductCode": "0079893505206",
@@ -7008,6 +7896,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 399,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 308158,
@@ -7019,18 +7917,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 399,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-11",
-				"observedTo": "2026-08-11",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "shin-ramyun-op-30963",
@@ -7039,12 +7926,26 @@
 			"brand": "NONGSHIM",
 			"category": "PANTRY",
 			"variantGroup": "shin-ramyun",
-			"synonyms": [
-				"shin ramyun"
-			],
 			"netQuantity": 120,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "4.23 oz (120 g)",
+			"synonyms": [
+				"shin ramyun"
+			],
+			"image": {
+				"path": "/products/shin-ramyun-op-30963.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/114/615/0601/front_en.297.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0031146150601",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/shin-ramyun-op-30963-a838baa2dea0adf5",
+					"version": 1791646199,
+					"format": "jpg",
+					"sha256": "a838baa2dea0adf5d082b92e3bb0ebce94a4d1b64e2d51f42137893b0a1eed7c"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 30963,
 			"sourceProductCode": "0031146150601",
@@ -7052,6 +7953,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 169,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332271,
@@ -7063,18 +7974,7 @@
 					"locationId": 7284,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 169,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-15",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "vegetable-beef-condensed-soup-op-67896",
@@ -7083,12 +7983,26 @@
 			"brand": "Campbell's",
 			"category": "PANTRY",
 			"variantGroup": "vegetable-beef-condensed-soup",
-			"synonyms": [
-				"vegetable beef condensed soup"
-			],
 			"netQuantity": 297,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "10.48 oz (297 g)",
+			"synonyms": [
+				"vegetable beef condensed soup"
+			],
+			"image": {
+				"path": "/products/vegetable-beef-condensed-soup-op-67896.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/100/001/2319/front_en.29.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0051000012319",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/vegetable-beef-condensed-soup-op-67896-26247557d2eeb588",
+					"version": 1791646200,
+					"format": "jpg",
+					"sha256": "26247557d2eeb588402f51507fb5e36797b7c60454e4cd52d0cf14a4dcdf1405"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 67896,
 			"sourceProductCode": "0051000012319",
@@ -7096,6 +8010,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 331892,
@@ -7107,18 +8031,7 @@
 					"locationId": 7284,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 299,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-15",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "cream-of-mushroom-soup-op-952023",
@@ -7127,12 +8040,26 @@
 			"brand": "Campbell's",
 			"category": "PANTRY",
 			"variantGroup": "cream-of-mushroom-soup",
-			"synonyms": [
-				"cream of mushroom soup"
-			],
 			"netQuantity": 297,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "10.48 oz (297 g)",
+			"synonyms": [
+				"cream of mushroom soup"
+			],
+			"image": {
+				"path": "/products/cream-of-mushroom-soup-op-952023.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/100/006/0075/front_en.35.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0051000060075",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/cream-of-mushroom-soup-op-952023-ae56ce6277b25a42",
+					"version": 1791646202,
+					"format": "jpg",
+					"sha256": "ae56ce6277b25a425bb417c0bc3a551a5334d009e81e5bc61b5d5bc489d2a9ba"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 952023,
 			"sourceProductCode": "0051000060075",
@@ -7140,6 +8067,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 319,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 331893,
@@ -7151,8 +8088,42 @@
 					"locationId": 7284,
 					"locationCountryCode": "US"
 				}
+			]
+		},
+		{
+			"sku": "cream-of-chicken-soup-op-1194133",
+			"barcode": "0051000059772",
+			"displayName": "Cream of Chicken Soup",
+			"brand": "Campbell's",
+			"category": "PANTRY",
+			"variantGroup": "cream-of-chicken-soup",
+			"netQuantity": 297,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "10.48 oz (297 g)",
+			"synonyms": [
+				"cream of chicken soup"
 			],
-			"image": null,
+			"image": {
+				"path": "/products/cream-of-chicken-soup-op-1194133.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/100/005/9772/front_en.34.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0051000059772",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/cream-of-chicken-soup-op-1194133-eec0ab52dcc82733",
+					"version": 1791646204,
+					"format": "jpg",
+					"sha256": "eec0ab52dcc827331fade6a54557120e9c7bf39177bf22fc77811ff9b74e7d52"
+				}
+			},
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1194133,
+			"sourceProductCode": "0051000059772",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
 			"demoPrice": {
 				"currency": "USD",
 				"priceMinor": 319,
@@ -7162,28 +8133,7 @@
 				"observedTo": "2026-09-15",
 				"approved": true,
 				"approvedAt": "2026-10-10T14:27:55Z"
-			}
-		},
-		{
-			"sku": "cream-of-chicken-soup-op-1194133",
-			"barcode": "0051000059772",
-			"displayName": "Cream of Chicken Soup",
-			"brand": "Campbell's",
-			"category": "PANTRY",
-			"variantGroup": "cream-of-chicken-soup",
-			"synonyms": [
-				"cream of chicken soup"
-			],
-			"netQuantity": 297,
-			"netQuantityUnit": "GRAM",
-			"sizeLabel": "10.48 oz (297 g)",
-			"source": "OPEN_PRICES",
-			"sourceProductId": 1194133,
-			"sourceProductCode": "0051000059772",
-			"sourceSystem": "off",
-			"sourceLicense": "ODbL 1.0",
-			"isActive": true,
-			"isChildSuitable": false,
+			},
 			"verification": [
 				{
 					"sourcePriceId": 331894,
@@ -7195,18 +8145,7 @@
 					"locationId": 7284,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 319,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-15",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "organic-diced-tomatoes-op-832431",
@@ -7215,12 +8154,26 @@
 			"brand": "Muir Glen",
 			"category": "PANTRY",
 			"variantGroup": "organic-diced-tomatoes",
-			"synonyms": [
-				"organic diced tomatoes"
-			],
 			"netQuantity": 411,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "14.5 oz (411 g)",
+			"synonyms": [
+				"organic diced tomatoes"
+			],
+			"image": {
+				"path": "/products/organic-diced-tomatoes-op-832431.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/072/534/226/0713/front_en.7.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0725342260713",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-diced-tomatoes-op-832431-45daae51770d57cb",
+					"version": 1791646205,
+					"format": "jpg",
+					"sha256": "45daae51770d57cbdd20704da6e69285608321c22a6a5c73361a8f0e46318f3c"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 832431,
 			"sourceProductCode": "0725342260713",
@@ -7228,6 +8181,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 479,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332959,
@@ -7239,18 +8202,7 @@
 					"locationId": 7284,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 479,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-15",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "albacore-tuna-op-176952",
@@ -7259,12 +8211,26 @@
 			"brand": "Wild Planet",
 			"category": "MEAT_SEAFOOD",
 			"variantGroup": "albacore-tuna",
-			"synonyms": [
-				"albacore tuna"
-			],
 			"netQuantity": 141,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "4.97 oz (141 g)",
+			"synonyms": [
+				"albacore tuna"
+			],
+			"image": {
+				"path": "/products/albacore-tuna-op-176952.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/082/969/600/0534/front_en.115.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0829696000534",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/albacore-tuna-op-176952-acdb3ac840e71d79",
+					"version": 1791646207,
+					"format": "jpg",
+					"sha256": "acdb3ac840e71d79e1811c3d5d5c2e53e553d8747107fa2f1b261e9d9703a513"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 176952,
 			"sourceProductCode": "0829696000534",
@@ -7272,6 +8238,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 331871,
@@ -7283,18 +8259,7 @@
 					"locationId": 7284,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 699,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-15",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "mandarin-oranges-op-4170463",
@@ -7303,12 +8268,26 @@
 			"brand": "Sweet Harvest",
 			"category": "PANTRY",
 			"variantGroup": "mandarin-oranges",
-			"synonyms": [
-				"mandarin oranges"
-			],
 			"netQuantity": 425,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "14.99 oz (425 g)",
+			"synonyms": [
+				"mandarin oranges"
+			],
+			"image": {
+				"path": "/products/mandarin-oranges-op-4170463.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/406/146/240/2890/front_en.10.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4061462402890",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/mandarin-oranges-op-4170463-66ae98143c4fd94d",
+					"version": 1791646209,
+					"format": "jpg",
+					"sha256": "66ae98143c4fd94d7e8485cc7b0d3dcc31b6f1e11dce4fec4176fcd7488cf6bf"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4170463,
 			"sourceProductCode": "4061462402890",
@@ -7316,6 +8295,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 149,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-07",
+				"observedTo": "2026-10-07",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 342433,
@@ -7327,18 +8316,7 @@
 					"locationId": 6379,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 149,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-07",
-				"observedTo": "2026-10-07",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "crushed-pineapple-op-40082",
@@ -7347,12 +8325,26 @@
 			"brand": "Dole",
 			"category": "PANTRY",
 			"variantGroup": "crushed-pineapple",
-			"synonyms": [
-				"crushed pineapple"
-			],
 			"netQuantity": 567,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "20 oz (567 g)",
+			"synonyms": [
+				"crushed pineapple"
+			],
+			"image": {
+				"path": "/products/crushed-pineapple-op-40082.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/890/000/6136/front_en.7.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0038900006136",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/crushed-pineapple-op-40082-0c0f2ae3e05eb2d4",
+					"version": 1791646211,
+					"format": "jpg",
+					"sha256": "0c0f2ae3e05eb2d4822691c09f3328db42e30697a6b0be8f7061f434e35a052b"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 40082,
 			"sourceProductCode": "0038900006136",
@@ -7360,6 +8352,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-28",
+				"observedTo": "2026-08-28",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 322796,
@@ -7371,18 +8373,7 @@
 					"locationId": 6997,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 199,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-28",
-				"observedTo": "2026-08-28",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "all-purpose-flour-op-2555368",
@@ -7391,12 +8382,26 @@
 			"brand": "Kirkland Signature",
 			"category": "PANTRY",
 			"variantGroup": "all-purpose-flour",
-			"synonyms": [
-				"all-purpose flour"
-			],
 			"netQuantity": 4540,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "160.14 oz (4,540 g)",
+			"synonyms": [
+				"all-purpose flour"
+			],
+			"image": {
+				"path": "/products/all-purpose-flour-op-2555368.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/661/906/0221/front_en.22.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0096619060221",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/all-purpose-flour-op-2555368-41ac13aeb8d4d1be",
+					"version": 1791646212,
+					"format": "jpg",
+					"sha256": "41ac13aeb8d4d1be01401c211e6f66c94075902e1c64e39e58710e14b51a4167"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2555368,
 			"sourceProductCode": "0096619060221",
@@ -7404,6 +8409,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1649,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-01-04",
+				"observedTo": "2026-01-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 183388,
@@ -7415,18 +8430,7 @@
 					"locationId": 4120,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 1649,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-01-04",
-				"observedTo": "2026-01-04",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "whole-wheat-flour-op-82102",
@@ -7435,12 +8439,26 @@
 			"brand": "King Arthur",
 			"category": "PANTRY",
 			"variantGroup": "whole-wheat-flour",
-			"synonyms": [
-				"whole wheat flour"
-			],
 			"netQuantity": 2267,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "79.97 oz (2,267 g)",
+			"synonyms": [
+				"whole wheat flour"
+			],
+			"image": {
+				"path": "/products/whole-wheat-flour-op-82102.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/101/205/0505/front_en.22.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0071012050505",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/whole-wheat-flour-op-82102-8c47d0921d088821",
+					"version": 1791646214,
+					"format": "jpg",
+					"sha256": "8c47d0921d088821b3ab123461ebb910f34134db9b71378e0385fab70a3ca78e"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 82102,
 			"sourceProductCode": "0071012050505",
@@ -7448,6 +8466,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 639,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2025-09-14",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341321,
@@ -7479,18 +8507,7 @@
 					"locationId": 4031,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 639,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2025-09-14",
-				"observedTo": "2026-10-04",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "bread-flour-op-82101",
@@ -7499,12 +8516,26 @@
 			"brand": "King Arthur Baking",
 			"category": "PANTRY",
 			"variantGroup": "bread-flour",
-			"synonyms": [
-				"bread flour"
-			],
 			"netQuantity": 2267,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "79.97 oz (2,267 g)",
+			"synonyms": [
+				"bread flour"
+			],
+			"image": {
+				"path": "/products/bread-flour-op-82101.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/101/204/1053/front_en.28.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0071012041053",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/bread-flour-op-82101-f9eae0ca97b72464",
+					"version": 1791646216,
+					"format": "jpg",
+					"sha256": "f9eae0ca97b7246439a9650aeffb530707bffbaee25d1a3df004650112402429"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 82101,
 			"sourceProductCode": "0071012041053",
@@ -7512,6 +8543,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 949,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2025-10-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 165845,
@@ -7523,18 +8564,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 949,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2025-10-19",
-				"observedTo": "2025-10-19",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "organic-brown-rice-flour-op-1176062",
@@ -7543,12 +8573,26 @@
 			"brand": "Arrowhead Mills",
 			"category": "PANTRY",
 			"variantGroup": "organic-brown-rice-flour",
-			"synonyms": [
-				"organic brown rice flour"
-			],
 			"netQuantity": 680,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"organic brown rice flour"
+			],
+			"image": {
+				"path": "/products/organic-brown-rice-flour-op-1176062.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/433/368/4237/front_en.26.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0074333684237",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/organic-brown-rice-flour-op-1176062-7d7c40a759eabeb6",
+					"version": 1791646218,
+					"format": "jpg",
+					"sha256": "7d7c40a759eabeb62917368263fcd667913373863435fe2e9083b16a1753e243"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1176062,
 			"sourceProductCode": "0074333684237",
@@ -7556,6 +8600,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341322,
@@ -7567,18 +8621,7 @@
 					"locationId": 7508,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 199,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-04",
-				"observedTo": "2026-10-04",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "white-rice-flour-op-1316589",
@@ -7587,12 +8630,26 @@
 			"brand": "Bob's Red Mill",
 			"category": "PANTRY",
 			"variantGroup": "white-rice-flour",
-			"synonyms": [
-				"white rice flour"
-			],
 			"netQuantity": 680,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"white rice flour"
+			],
+			"image": {
+				"path": "/products/white-rice-flour-op-1316589.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/802/3162/front_en.12.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0039978023162",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/white-rice-flour-op-1316589-d9a52bfbc4621739",
+					"version": 1791646219,
+					"format": "jpg",
+					"sha256": "d9a52bfbc46217399577b1fc7258c25cae6231731bed63b2176a84c28201fe67"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1316589,
 			"sourceProductCode": "0039978023162",
@@ -7600,6 +8657,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2025-10-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 165838,
@@ -7611,18 +8678,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 499,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2025-10-19",
-				"observedTo": "2025-10-19",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "tapioca-flour-op-785845",
@@ -7631,12 +8687,26 @@
 			"brand": "Bob's Red Mill",
 			"category": "PANTRY",
 			"variantGroup": "tapioca-flour",
-			"synonyms": [
-				"tapioca flour"
-			],
 			"netQuantity": 453,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"tapioca flour"
+			],
+			"image": {
+				"path": "/products/tapioca-flour-op-785845.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/803/5356/front_en.31.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0039978035356",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/tapioca-flour-op-785845-0f3d353f87b90db4",
+					"version": 1791646221,
+					"format": "jpg",
+					"sha256": "0f3d353f87b90db48410dfd3384d3f66b02aee3b31049e952130f2d537fc8b02"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 785845,
 			"sourceProductCode": "0039978035356",
@@ -7644,6 +8714,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2026-03-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 252512,
@@ -7675,18 +8755,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 499,
-				"basis": "OBSERVED_MEDIAN",
-				"observationCount": 3,
-				"observedFrom": "2025-10-19",
-				"observedTo": "2026-03-26",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "natural-almond-flour-op-1239547",
@@ -7695,12 +8764,26 @@
 			"brand": "Bob's Red Mill",
 			"category": "PANTRY",
 			"variantGroup": "natural-almond-flour",
-			"synonyms": [
-				"natural almond flour"
-			],
 			"netQuantity": 453,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"natural almond flour"
+			],
+			"image": {
+				"path": "/products/natural-almond-flour-op-1239547.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/802/3803/front_en.9.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0039978023803",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/natural-almond-flour-op-1239547-1618ced1ada9d6db",
+					"version": 1791646223,
+					"format": "jpg",
+					"sha256": "1618ced1ada9d6dbe84bd5d458066728e9283435a81db20dff5ff868b637344f"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1239547,
 			"sourceProductCode": "0039978023803",
@@ -7708,6 +8791,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1524,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332417,
@@ -7729,18 +8822,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 1524,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2025-10-19",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "self-rising-flour-op-15632",
@@ -7749,12 +8831,26 @@
 			"brand": "GOLD Medal",
 			"category": "PANTRY",
 			"variantGroup": "self-rising-flour",
-			"synonyms": [
-				"self-rising flour"
-			],
 			"netQuantity": 2267,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "79.97 oz (2,267 g)",
+			"synonyms": [
+				"self-rising flour"
+			],
+			"image": {
+				"path": "/products/self-rising-flour-op-15632.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/600/011/6108/front_en.18.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0016000116108",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/self-rising-flour-op-15632-8a2ddafbe7d763e2",
+					"version": 1791646224,
+					"format": "jpg",
+					"sha256": "8a2ddafbe7d763e2725ebdb2cd9ebc4d632ed7bbd5af0fe67dc5fc374f89c0b9"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 15632,
 			"sourceProductCode": "0016000116108",
@@ -7762,6 +8858,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2025-10-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 168715,
@@ -7773,18 +8879,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 699,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2025-10-19",
-				"observedTo": "2025-10-19",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "lentils-op-79074",
@@ -7793,12 +8888,26 @@
 			"brand": "Jack Rabbit",
 			"category": "PANTRY",
 			"variantGroup": "lentils",
-			"synonyms": [
-				"lentils"
-			],
 			"netQuantity": 453,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"lentils"
+			],
+			"image": {
+				"path": "/products/lentils-op-79074.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/062/000/1282/front_en.9.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0070620001282",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/lentils-op-79074-b2f61f8af68dcd1a",
+					"version": 1791646226,
+					"format": "jpg",
+					"sha256": "b2f61f8af68dcd1ab57cc51e0643b0386b6bcc6e6ae235745c956d8f1ecdd32f"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 79074,
 			"sourceProductCode": "0070620001282",
@@ -7806,6 +8915,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 249,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 335728,
@@ -7817,18 +8936,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 249,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "cuban-black-beans-op-788046",
@@ -7837,12 +8945,26 @@
 			"brand": "Beans and Sofrito Fillo’s",
 			"category": "PANTRY",
 			"variantGroup": "cuban-black-beans",
-			"synonyms": [
-				"cuban black beans"
-			],
 			"netQuantity": 283,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "9.98 oz (283 g)",
+			"synonyms": [
+				"cuban black beans"
+			],
+			"image": {
+				"path": "/products/cuban-black-beans-op-788046.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/086/970/700/0207/front_en.22.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0869707000207",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/cuban-black-beans-op-788046-763445cfb39b93ea",
+					"version": 1791646228,
+					"format": "jpg",
+					"sha256": "763445cfb39b93eaf2db46197ca34c41ff7796e8fa049f18cefd823f4401cca5"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 788046,
 			"sourceProductCode": "0869707000207",
@@ -7850,6 +8972,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 659,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 343300,
@@ -7861,18 +8993,7 @@
 					"locationId": 4152,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 659,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-20",
-				"observedTo": "2026-08-20",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "saucy-coconut-curry-chickpeas-op-3254722",
@@ -7881,12 +9002,26 @@
 			"brand": "Heyday Canning",
 			"category": "PANTRY",
 			"variantGroup": "saucy-coconut-curry-chickpeas",
-			"synonyms": [
-				"saucy coconut curry chickpeas"
-			],
 			"netQuantity": 425,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "14.99 oz (425 g)",
+			"synonyms": [
+				"saucy coconut curry chickpeas"
+			],
+			"image": {
+				"path": "/products/saucy-coconut-curry-chickpeas-op-3254722.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/004/336/9028/front_en.23.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0850043369028",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/saucy-coconut-curry-chickpeas-op-3254722-930536e349a48722",
+					"version": 1791646230,
+					"format": "jpg",
+					"sha256": "930536e349a48722fa9b12c0d0da95e709f913065cc293674a08206115966e60"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3254722,
 			"sourceProductCode": "0850043369028",
@@ -7894,6 +9029,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 579,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 343299,
@@ -7905,18 +9050,7 @@
 					"locationId": 4152,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 579,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-20",
-				"observedTo": "2026-08-20",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "mexican-black-beans-op-2429133",
@@ -7925,12 +9059,26 @@
 			"brand": "SOMOS",
 			"category": "PANTRY",
 			"variantGroup": "mexican-black-beans",
-			"synonyms": [
-				"mexican black beans"
-			],
 			"netQuantity": 283,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "9.98 oz (283 g)",
+			"synonyms": [
+				"mexican black beans"
+			],
+			"image": {
+				"path": "/products/mexican-black-beans-op-2429133.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/002/963/2030/front_fr.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0850029632030",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/mexican-black-beans-op-2429133-531fdd63aad87508",
+					"version": 1791646231,
+					"format": "jpg",
+					"sha256": "531fdd63aad875089327a23fe6aa9b09b718abf575d5ee332cfba9c6aca03652"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2429133,
 			"sourceProductCode": "0850029632030",
@@ -7938,6 +9086,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 559,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 343297,
@@ -7949,18 +9107,7 @@
 					"locationId": 4152,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 559,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-20",
-				"observedTo": "2026-08-20",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "ranch-style-beans-op-1122910",
@@ -7969,12 +9116,26 @@
 			"brand": "Ranch Style",
 			"category": "PANTRY",
 			"variantGroup": "ranch-style-beans",
-			"synonyms": [
-				"ranch style beans"
-			],
 			"netQuantity": 425,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "14.99 oz (425 g)",
+			"synonyms": [
+				"ranch style beans"
+			],
+			"image": {
+				"path": "/products/ranch-style-beans-op-1122910.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/004/690/000/1082/front_en.60.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0046900001082",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/ranch-style-beans-op-1122910-c961acf474ee09f9",
+					"version": 1791646233,
+					"format": "jpg",
+					"sha256": "c961acf474ee09f9632e8a4585c5326c8ebc5fc85e28e2c992d2255c669a91e6"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1122910,
 			"sourceProductCode": "0046900001082",
@@ -7982,6 +9143,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 343279,
@@ -7993,18 +9164,7 @@
 					"locationId": 4152,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 199,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-20",
-				"observedTo": "2026-08-20",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "dry-roasted-peanuts-unsalted-op-1322498",
@@ -8013,12 +9173,26 @@
 			"brand": "365 Whole Foods Market",
 			"category": "PANTRY",
 			"variantGroup": "unsalted-dry-roasted-peanuts",
-			"synonyms": [
-				"unsalted dry-roasted peanuts"
-			],
 			"netQuantity": 453,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"unsalted dry-roasted peanuts"
+			],
+			"image": {
+				"path": "/products/dry-roasted-peanuts-unsalted-op-1322498.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/948/248/2237/front_en.14.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0099482482237",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/dry-roasted-peanuts-unsalted-op-1322498-17e94c10dfa6794a",
+					"version": 1791646235,
+					"format": "jpg",
+					"sha256": "17e94c10dfa6794a6f92a635ca64d4f1584aa22eb0a3a60ccc3ebfb33f66fd53"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1322498,
 			"sourceProductCode": "0099482482237",
@@ -8026,6 +9200,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 379,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-26",
+				"observedTo": "2026-09-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 336238,
@@ -8037,18 +9221,7 @@
 					"locationId": 7422,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 379,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-26",
-				"observedTo": "2026-09-26",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		},
 		{
 			"sku": "peanut-butter-spread-roasted-honey-nut-op-38960",
@@ -8057,12 +9230,26 @@
 			"brand": "SKIPPY",
 			"category": "PANTRY",
 			"variantGroup": "creamy-roasted-honey-nut-peanut-butter-spread",
-			"synonyms": [
-				"creamy roasted honey nut peanut butter spread"
-			],
 			"netQuantity": 462,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "16.3 oz (462 g)",
+			"synonyms": [
+				"creamy roasted honey nut peanut butter spread"
+			],
+			"image": {
+				"path": "/products/peanut-butter-spread-roasted-honey-nut-op-38960.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/760/011/0877/front_es.17.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0037600110877",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors",
+				"cloudinary": {
+					"cloudName": "dqm9b6gzc",
+					"publicId": "care-based/products/peanut-butter-spread-roasted-honey-nut-op-38960-f51ca3e7f2622b13",
+					"version": 1791646237,
+					"format": "jpg",
+					"sha256": "f51ca3e7f2622b13d8fa6b216a16e63afc0f6f6500810ef04d55e44f1ea5b005"
+				}
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 38960,
 			"sourceProductCode": "0037600110877",
@@ -8070,6 +9257,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 474,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-08-28",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 333316,
@@ -8091,18 +9288,7 @@
 					"locationId": 6997,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 474,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2026-08-28",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T14:27:55Z"
-			}
+			]
 		}
 	]
 }
