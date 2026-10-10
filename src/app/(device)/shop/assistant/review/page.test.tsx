@@ -10,8 +10,8 @@ const fake = vi.hoisted(() => ({ device: vi.fn(), review: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
 vi.mock("@/features/assistant/components/ProposalReview/ProposalReviewScreen", () => ({
-	ProposalReviewScreen: (props: { child: boolean }) => {
-		fake.review(props);
+	ProposalReviewScreen: () => {
+		fake.review();
 		return <h1>{assistantCopy.review}</h1>;
 	},
 }));
@@ -30,10 +30,11 @@ describe("dedicated assistant review route", () => {
 		expect(metadata.title).toBe(assistantCopy.reviewPageTitle);
 	});
 
-	it.each(["ASSISTED_ADULT", "CHILD"] as const)("derives child controls from the %s device actor", async (profileKind) => {
+	it.each(["ASSISTED_ADULT", "CHILD"] as const)("authenticates the %s device before showing the budget-free review", async (profileKind) => {
 		fake.device.mockResolvedValue({ ...makeDeviceActor(), profileKind });
 		render(await resolveServerTree(ReviewPage()));
-		expect(fake.review).toHaveBeenCalledExactlyOnceWith({ child: profileKind === "CHILD" });
+		expect(fake.device).toHaveBeenCalledOnce();
+		expect(fake.review).toHaveBeenCalledExactlyOnceWith();
 	});
 
 	it.each(["missing", "expired", "revoked"])("shows reconnect instead of review for a %s device", async () => {
