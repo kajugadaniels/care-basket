@@ -1,0 +1,72 @@
+.page,
+.heading,
+.home,
+.rows,
+.panel,
+.lines {
+	display: grid;
+	gap: var(--space-4);
+	min-inline-size: 0;
+}
+.page {
+	gap: var(--space-5);
+}
+.reading {
+	max-inline-size: var(--reading-max);
+	margin-inline: auto;
+}
+.heading {
+	max-inline-size: var(--reading-max);
+	font-size: var(--text-2xl);
+}
+.heading > :last-child {
+	font-size: var(--text-lg);
+}
+
+.panel,
+.row {
+	padding: var(--space-5);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface);
+}
+
+.panel {
+	align-content: start;
+}
+.panel > :last-child {
+	block-size: var(--control-height-lg);
+}
+.row {
+	display: flex;
+	align-items: start;
+	gap: var(--space-4);
+}
+.lines {
+	flex: 1;
+}
+.picture {
+	inline-size: var(--space-8);
+	block-size: var(--space-8);
+	flex-shrink: 0;
+}
+.textarea {
+	block-size: calc(var(--control-height-lg) * 3);
+}
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+}
+
+@media (min-width: 64rem) {
+	.home,
+	.basket {
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+		align-items: start;
+	}
+	.picture {
+		inline-size: calc(var(--space-8) * 2);
+		block-size: calc(var(--space-8) * 2);
+	}
+}
