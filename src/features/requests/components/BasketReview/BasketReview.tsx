@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
+import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/Button/Button";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import { Icon } from "@/components/ui/Icon/Icon";
 import { submitRequestAction } from "../../actions";
 import { requestsCopy } from "../../copy";
 import { useDraft } from "../DraftProvider/DraftProvider";
@@ -36,19 +38,24 @@ export function BasketReview() {
 			}
 		});
 	}
-	if (requestId) return <section className={`${styles.panel} ${styles.requester}`}>
+	if (requestId) return <section className={`${styles.panel} ${styles.requester} ${styles.reading}`}>
+		<Icon icon={CheckmarkCircle02Icon} size={48} className={styles.confirmationIcon} />
 		<h1 ref={successRef} tabIndex={-1}>{requestsCopy.sent}</h1>
 		<p>{requestsCopy.sentHelp}</p><p role="status">{requestsCopy.statuses.PENDING_REVIEW}</p>
 		<ActionLink href={`/shop/requests/${requestId}`} size="lg">{requestsCopy.view}</ActionLink>
 		<ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink>
 	</section>;
 	return <div className={`${styles.page} ${styles.requester}`}>
-		<h1>{requestsCopy.basketTitle}</h1><p>{requestsCopy.basketIntro}</p>
-		<div className={styles.actions}><ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink>
-			<ActionLink href="/shop/requests" variant="secondary" size="lg">{requestsCopy.history}</ActionLink></div>
+		<header className={styles.header}>
+			<div className={styles.pageHeading}>
+				<h1>{requestsCopy.basketTitle}</h1>
+				<p className={styles.muted}>{requestsCopy.basketIntro}</p>
+			</div>
+			<ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink>
+		</header>
 		{error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
-		{draft.items.length ? <>
-			<ul className={styles.list}>{draft.items.map((item) => <li key={item.sku} className={styles.panel}>
+		{draft.items.length ? <div className={styles.basketLayout}>
+			<ul className={styles.list} aria-label={requestsCopy.listItems}>{draft.items.map((item) => <li key={item.sku} className={styles.panel}>
 				<RequestItem product={item}>
 					{item.origin === "SUGGESTED" ? <p>{requestsCopy.origins.SUGGESTED}</p> : null}
 					{item.isSubstitute ? <p>{requestsCopy.substitute}</p> : null}
@@ -59,11 +66,14 @@ export function BasketReview() {
 						onClick={() => change({ type: "remove", sku: item.sku })}>{requestsCopy.remove}</Button>
 				</RequestItem>
 			</li>)}</ul>
-			<div className={styles.actions}>
+			<aside className={styles.sendPanel} aria-labelledby="send-list-title">
+				<h2 id="send-list-title">{requestsCopy.readyToSend}</h2>
+				<p>{requestsCopy.draftCount(draft.items.length)}</p>
+				<p className={styles.muted}>{requestsCopy.sendHelp}</p>
 				<Button size="lg" loading={pending || locked} onClick={send}>{pending || locked ? requestsCopy.sending : requestsCopy.send}</Button>
 				<Button size="lg" variant="secondary" disabled={locked} onClick={() => change({ type: "clear" })}>{requestsCopy.clear}</Button>
-			</div>
-		</> : <p className={styles.panel}>{requestsCopy.emptyBasket}</p>}
+			</aside>
+		</div> : <p className={styles.panel}>{requestsCopy.emptyBasket}</p>}
 		<p role="status">{pending || locked ? requestsCopy.sending : ""}</p>
 		<p className={styles.muted}>{requestsCopy.draftNotice}</p>
 	</div>;
