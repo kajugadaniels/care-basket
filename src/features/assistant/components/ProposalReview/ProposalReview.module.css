@@ -87,35 +87,10 @@
 	list-style: none;
 }
 
-.chooseButton {
-	inline-size: 100%;
-	white-space: normal;
-	overflow-wrap: anywhere;
-}
-
-.item[data-selected="true"] {
-	border-color: var(--color-primary);
-	outline: 1px solid var(--color-primary);
-	outline-offset: -1px;
-}
-
-.check {
-	display: flex;
-	align-items: center;
-	gap: var(--space-3);
-	min-block-size: var(--control-height);
-	padding: var(--space-2);
+.annotation {
+	padding-inline: var(--space-4);
 	font-size: var(--text-md);
 	overflow-wrap: anywhere;
-	cursor: pointer;
-}
-
-.item .check input {
-	flex-shrink: 0;
-	inline-size: var(--space-5);
-	block-size: var(--space-5);
-	min-block-size: var(--space-5);
-	accent-color: var(--color-primary);
 }
 
 .actions {
@@ -160,6 +135,10 @@
 	padding: var(--space-4);
 }
 
+.quantitySkeleton > :first-child {
+	grid-column: 1 / -1;
+}
+
 @media (min-width: 40rem) {
 	.panel {
 		padding: var(--space-5);
@@ -176,12 +155,5 @@
 	}
 	.grid {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
-}
-
-@media (forced-colors: active) {
-	.item[data-selected="true"] {
-		border-color: Highlight;
-		outline-color: Highlight;
 	}
 }
