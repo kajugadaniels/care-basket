@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { curatedCatalogSchema, validateSeedCatalog } from "./curated-schema";
 import { makeCuratedCatalog } from "@/test/factories/catalog";
+import { productPublicId } from "@/lib/cloudinary/catalog-images";
 
 const now = new Date("2026-10-10T23:59:59Z");
 const committedCatalog: unknown = JSON.parse(readFileSync(resolve("prisma/catalog/catalog.us.json"), "utf8"));
@@ -19,6 +20,28 @@ const approvedExpansionIds = new Set([
 ]);
 
 describe("reviewed catalog contract", () => {
+	it("accepts uploaded photo metadata while preserving provenance and approvals", () => {
+		const catalog = validateSeedCatalog(committedCatalog, now);
+		const product = catalog.products.find((entry) => entry.image?.path.endsWith(".jpg"));
+		if (!product?.image) throw new Error("Expected a reviewed local photo.");
+		const sha256 = "a".repeat(64);
+		product.image.cloudinary = { cloudName: "fixture-cloud", publicId: productPublicId(product.sku, sha256),
+			sha256, version: 123, format: "jpg" };
+		expect(validateSeedCatalog(catalog, now).products).toHaveLength(150);
+		product.image.cloudinary.publicId = productPublicId("different-product", sha256);
+		expect(() => validateSeedCatalog(catalog, now)).toThrow(/validation/);
+	});
+	it("rejects changing uploaded-photo format, folder or attribution", () => {
+		for (const patch of [{ format: "png" }, { publicId: "elsewhere/photo" }]) {
+			const catalog = validateSeedCatalog(committedCatalog, now);
+			const product = catalog.products.find((entry) => entry.image?.path.endsWith(".jpg"));
+			if (!product?.image) throw new Error("Expected a reviewed local photo.");
+			const sha256 = "a".repeat(64);
+			const remote = { cloudName: "fixture-cloud", publicId: productPublicId(product.sku, sha256), sha256, version: 123, format: "jpg", ...patch };
+			const raw = { ...product, image: { ...product.image, cloudinary: remote } };
+			expect(() => validateSeedCatalog({ ...catalog, products: [raw] }, now)).toThrow(/validation/);
+		}
+	});
 	it("accepts the 150 approved products in the committed seed catalog", () => {
 		const catalog = validateSeedCatalog(committedCatalog, now);
 
