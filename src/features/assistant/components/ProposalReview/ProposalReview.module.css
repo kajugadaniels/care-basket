@@ -59,7 +59,6 @@
 }
 
 .panel,
-.budget,
 .empty {
 	display: grid;
 	gap: var(--space-4);
@@ -119,26 +118,6 @@
 	accent-color: var(--color-primary);
 }
 
-.budget {
-	max-inline-size: var(--reading-max);
-}
-
-.field {
-	display: grid;
-	gap: var(--space-2);
-}
-
-.field select {
-	inline-size: 100%;
-	min-block-size: var(--control-height-lg);
-	padding: var(--space-3);
-	border: 1px solid var(--color-border-strong);
-	border-radius: var(--radius-md);
-	background: var(--color-surface);
-	color: var(--color-text);
-	font: inherit;
-}
-
 .actions {
 	display: flex;
 	flex-wrap: wrap;
@@ -182,8 +161,7 @@
 }
 
 @media (min-width: 40rem) {
-	.panel,
-	.budget {
+	.panel {
 		padding: var(--space-5);
 	}
 	.grid,
