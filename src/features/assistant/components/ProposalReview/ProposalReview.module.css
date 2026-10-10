@@ -14,8 +14,38 @@
 }
 
 .heading {
-	justify-items: start;
 	gap: var(--space-3);
+	padding-block-end: var(--space-5);
+	border-block-end: 1px solid var(--color-border);
+}
+
+.headerRow,
+.headerActions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-3);
+	min-inline-size: 0;
+}
+
+.headerRow {
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+.headerRow h1 {
+	min-inline-size: 0;
+	overflow-wrap: anywhere;
+}
+
+.headerActions > * {
+	min-inline-size: 0;
+	font-size: var(--text-md);
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+
+.heading > p {
 	max-inline-size: var(--reading-max);
 }
 
@@ -30,8 +60,7 @@
 
 .panel,
 .budget,
-.empty,
-.summary {
+.empty {
 	display: grid;
 	gap: var(--space-4);
 	min-inline-size: 0;
@@ -41,7 +70,6 @@
 	background: var(--color-surface);
 }
 
-.notice,
 .transcript {
 	max-inline-size: var(--reading-max);
 	padding: var(--space-4);
@@ -60,60 +88,16 @@
 	list-style: none;
 }
 
-.choice,
-.item {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
-	min-inline-size: 0;
-}
-
-.choice {
-	padding: var(--space-4);
-	border: 1px solid var(--color-border);
-	border-radius: var(--radius-lg);
-	background: var(--color-surface);
-}
-
-/* ProductCard normally fills a catalog cell. Reserve a separate, natural-height
- * row for controls here so buttons cannot overlap the next row at zoom. */
-.choice > article,
-.item > article {
-	flex: 1;
-	block-size: auto;
-	padding: 0;
-	border: 0;
-}
-
-.choice h2,
-.item h2 {
-	font-size: var(--text-lg);
-}
-
-.choice p,
-.item p {
-	font-size: var(--text-md);
-}
-
 .chooseButton {
 	inline-size: 100%;
 	white-space: normal;
 	overflow-wrap: anywhere;
 }
 
-.escape {
-	justify-self: start;
-}
-
-.item {
-	padding: var(--space-3);
-	border: 2px solid var(--color-border-strong);
-	border-radius: var(--radius-lg);
-	background: var(--color-surface);
-}
-
 .item[data-selected="true"] {
 	border-color: var(--color-primary);
+	outline: 1px solid var(--color-primary);
+	outline-offset: -1px;
 }
 
 .check {
@@ -127,10 +111,11 @@
 	cursor: pointer;
 }
 
-.check input {
+.item .check input {
 	flex-shrink: 0;
 	inline-size: var(--space-5);
 	block-size: var(--space-5);
+	min-block-size: var(--space-5);
 	accent-color: var(--color-primary);
 }
 
@@ -154,10 +139,6 @@
 	font: inherit;
 }
 
-.summary p {
-	color: var(--color-text-muted);
-}
-
 .actions {
 	display: flex;
 	flex-wrap: wrap;
@@ -167,6 +148,7 @@
 .actions > * {
 	flex: 1 1 auto;
 	min-inline-size: 0;
+	max-inline-size: var(--reading-max);
 	white-space: normal;
 	overflow-wrap: anywhere;
 }
@@ -188,10 +170,20 @@
 	aspect-ratio: 1;
 }
 
+.titleSkeleton {
+	inline-size: min(100%, calc(var(--reading-max) * 0.7));
+	font-size: var(--text-2xl);
+}
+
+.skeletonBody {
+	display: grid;
+	gap: var(--space-4);
+	padding: var(--space-4);
+}
+
 @media (min-width: 40rem) {
 	.panel,
-	.budget,
-	.summary {
+	.budget {
 		padding: var(--space-5);
 	}
 	.grid,
@@ -205,12 +197,13 @@
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 	.grid {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 }
 
 @media (forced-colors: active) {
 	.item[data-selected="true"] {
 		border-color: Highlight;
+		outline-color: Highlight;
 	}
 }
