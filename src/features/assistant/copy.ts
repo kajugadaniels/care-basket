@@ -34,7 +34,7 @@ export const assistantCopy = {
 	permissionError: "Allow microphone access to speak, or type your list instead.",
 	recordingUnavailable: "This browser can't record here. Type your list or use pictures instead.",
 	listening: "Listening…", warning: "Ten seconds left.", transcript: "I heard:",
-	remove: "Remove", budget: "Budget for this list", noBudget: "No budget", confirmBudget: "Use this budget",
+	remove: "Remove",
 	consentTitle: "Voice and smart suggestions", blocked: "Google AI is unavailable pending deployment eligibility review. Typing and pictures still work.",
 	consent: "This person understands and agrees that Google AI may process their shopping requests.",
 	enable: "Enable voice and smart suggestions", revoke: "Revoke AI consent", saved: "AI preference saved.",
