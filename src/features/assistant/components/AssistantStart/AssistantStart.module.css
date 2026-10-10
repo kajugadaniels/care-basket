@@ -1,10 +1,16 @@
 .page {
 	display: grid;
 	gap: var(--space-5);
-	max-inline-size: var(--content-max);
+	inline-size: 100%;
+	max-inline-size: var(--reading-max);
 	margin-inline: auto;
 	font-family: var(--font-readable);
 	font-size: var(--text-lg);
+}
+
+.heading {
+	display: grid;
+	gap: var(--space-2);
 }
 .panel {
 	display: grid;
@@ -18,6 +24,16 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-3);
+}
+
+.choices {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--sidebar-width)), 1fr));
+}
+
+.choices button[aria-pressed="true"] {
+	background: var(--color-surface-accent);
+	border-color: var(--color-primary);
 }
 .grid {
 	display: grid;
@@ -39,7 +55,7 @@
 	background: var(--color-surface);
 	color: var(--color-text);
 }
-.field textarea { min-block-size: 10rem; resize: vertical; }
+.field textarea { min-block-size: calc(var(--control-height-lg) * 3); resize: vertical; }
 .check {
 	display: flex;
 	align-items: center;
@@ -48,10 +64,16 @@
 }
 .check input { inline-size: 1.5rem; block-size: 1.5rem; }
 .notice { color: var(--color-text-muted); }
-.error { color: var(--color-danger); }
+.error {
+	padding: var(--space-4);
+	border: 1px solid var(--color-danger);
+	border-radius: var(--radius-md);
+	background: var(--color-danger-bg);
+	color: var(--color-danger);
+}
 @media (min-width: 48rem) {
 	.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 64rem) {
-	.grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
