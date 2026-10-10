@@ -9,9 +9,9 @@ import { AssistantStart } from "../AssistantStart/AssistantStart";
 import { ProposalReviewScreen } from "./ProposalReviewScreen";
 import styles from "./ProposalReview.module.css";
 
-const fake = vi.hoisted(() => ({ push: vi.fn(), text: vi.fn(), budget: vi.fn() }));
+const fake = vi.hoisted(() => ({ push: vi.fn(), text: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: fake.push }) }));
-vi.mock("../../actions", () => ({ interpretTextAction: fake.text, estimateShoppingBudgetAction: fake.budget }));
+vi.mock("../../actions", () => ({ interpretTextAction: fake.text }));
 
 const proposal: Proposal = {
 	inputMode: "TEXT", inputText: "milk", budgetMinor: null, local: true,
@@ -30,7 +30,7 @@ function Flow({ child }: { child: boolean }) {
 			<button onClick={() => setProposal(proposal)}>Load proposal</button>
 			<button onClick={() => setReview(false)}>Open entry</button>
 			<button onClick={() => setReview(true)}>Open review</button>
-			{review ? <ProposalReviewScreen child={child} /> : <AssistantStart voice={false} child={child} />}
+			{review ? <ProposalReviewScreen /> : <AssistantStart voice={false} child={child} />}
 			<output aria-label="Draft quantity">{draft.items[0]?.quantity ?? 0}</output>
 		</>
 	);
