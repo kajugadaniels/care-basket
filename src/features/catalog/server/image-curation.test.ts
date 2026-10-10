@@ -2,6 +2,7 @@
 import { describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 import { makeCuratedCatalog } from "@/test/factories/catalog";
+import { productPublicId } from "@/lib/cloudinary/catalog-images";
 import { validateSeedCatalog } from "./curated-schema";
 import { planCatalogImages, renderImageAttribution } from "./image-curation";
 
@@ -23,6 +24,21 @@ function fixture() {
 }
 
 describe("curated product photo plan", () => {
+	it("keeps attribution usable after the local Cloudinary copies are removed", () => {
+		const { catalog, report } = fixture();
+		const image = planCatalogImages(catalog, report)[0].image;
+		const sha256 = "a".repeat(64);
+		image.cloudinary = { cloudName: "fixture-cloud", publicId: productPublicId(catalog.products[0].sku, sha256),
+			sha256, version: 123, format: "jpg" };
+		catalog.products[0].image = image;
+		const attribution = renderImageAttribution(catalog);
+		expect(attribution).not.toContain(image.path);
+		expect(attribution).toContain(`[example-demo-rice](${image.productUrl})`);
+		expect(attribution).toContain(image.sourceUrl);
+		expect(attribution).toContain("Open Food Facts contributors");
+		expect(attribution).toContain("https://creativecommons.org/licenses/by-sa/3.0/");
+		expect(attribution).toContain("Cloudinary");
+	});
 	it("links matching source photos to local paths without importing prices or safety flags", () => {
 		const { catalog, report } = fixture();
 		const before = structuredClone(catalog);
