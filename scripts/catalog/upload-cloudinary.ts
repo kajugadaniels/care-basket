@@ -68,10 +68,18 @@ async function main() {
 	for (const product of selected) {
 		if (!product.image) continue;
 		const format = z.enum(["jpg", "png", "webp"]).parse(extname(product.image.path).slice(1));
-		const sha256 = validateUploadImage(await readLocalImage(product.image.path), format);
+		const remote = product.image.cloudinary;
+		let bytes: Buffer;
+		try {
+			bytes = await readLocalImage(product.image.path);
+		} catch (error) {
+			// A previously uploaded copy may have been removed by approved cleanup.
+			if (remote && error instanceof Error && "code" in error && error.code === "ENOENT") continue;
+			throw error;
+		}
+		const sha256 = validateUploadImage(bytes, format);
 		cloudinaryImageUrl({ cloudName, publicId: productPublicId(product.sku, sha256),
 			format, sha256, version: Number.MAX_SAFE_INTEGER });
-		const remote = product.image.cloudinary;
 		if (remote) {
 			if (remote.cloudName !== cloudName || remote.sha256 !== sha256) throw new Error("Existing Cloudinary mapping differs from the account or local photo. Review manually.");
 			continue;
