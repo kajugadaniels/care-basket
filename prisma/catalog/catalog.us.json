@@ -4913,12 +4913,19 @@
 			"brand": "Pitaya Foods",
 			"category": "FROZEN",
 			"variantGroup": "organic-avocado-bite-sized-pieces",
-			"synonyms": [
-				"organic avocado bite-sized pieces"
-			],
 			"netQuantity": 50,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "1.76 oz (50 g)",
+			"synonyms": [
+				"organic avocado bite-sized pieces"
+			],
+			"image": {
+				"path": "/products/organic-avocado-bite-sized-pieces-op-2094258.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/368/700/4355/front_en.16.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0853687004355",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2094258,
 			"sourceProductCode": "0853687004355",
@@ -4926,6 +4933,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341803,
@@ -4937,18 +4954,7 @@
 					"locationId": 4393,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 699,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-03",
-				"observedTo": "2026-10-03",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "fully-cooked-chicken-breast-bites-op-1548114",
@@ -4957,12 +4963,19 @@
 			"brand": "fresh additions",
 			"category": "MEAT_SEAFOOD",
 			"variantGroup": "fully-cooked-chicken-breast-bites",
-			"synonyms": [
-				"fully cooked chicken breast bites"
-			],
 			"netQuantity": 90,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "3.17 oz (90 g)",
+			"synonyms": [
+				"fully cooked chicken breast bites"
+			],
+			"image": {
+				"path": "/products/fully-cooked-chicken-breast-bites-op-1548114.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/062/790/709/0783/front_en.101.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0627907090783",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1548114,
 			"sourceProductCode": "0627907090783",
@@ -4970,6 +4983,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1679,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-27",
+				"observedTo": "2026-09-27",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 336521,
@@ -4981,18 +5004,7 @@
 					"locationId": 7430,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 1679,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-27",
-				"observedTo": "2026-09-27",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "vanilla-wafers-op-1128508",
@@ -5001,12 +5013,19 @@
 			"brand": "BENTON'S",
 			"category": "SNACKS",
 			"variantGroup": "vanilla-wafers",
-			"synonyms": [
-				"vanilla wafers"
-			],
 			"netQuantity": 11,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "0.39 oz (11 g)",
+			"synonyms": [
+				"vanilla wafers"
+			],
+			"image": {
+				"path": "/products/vanilla-wafers-op-1128508.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/006/3684/front_en.30.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4099100063684",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1128508,
 			"sourceProductCode": "4099100063684",
@@ -5014,6 +5033,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 235,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 340942,
@@ -5025,18 +5054,7 @@
 					"locationId": 5042,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 235,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-04",
-				"observedTo": "2026-10-04",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "organic-berry-medley-op-2321416",
@@ -5045,12 +5063,19 @@
 			"brand": "Sprouts",
 			"category": "PRODUCE",
 			"variantGroup": "organic-berry-medley",
-			"synonyms": [
-				"organic berry medley"
-			],
 			"netQuantity": 283,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "9.98 oz (283 g)",
+			"synonyms": [
+				"organic berry medley"
+			],
+			"image": {
+				"path": "/products/organic-berry-medley-op-2321416.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/064/667/051/1592/front_en.13.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0646670511592",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2321416,
 			"sourceProductCode": "0646670511592",
@@ -5058,6 +5083,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 349,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341812,
@@ -5069,18 +5104,7 @@
 					"locationId": 4393,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 349,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-03",
-				"observedTo": "2026-10-03",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "waffle-cones-op-2102982",
@@ -5089,12 +5113,19 @@
 			"brand": "Benton's",
 			"category": "FROZEN",
 			"variantGroup": "waffle-cones",
-			"synonyms": [
-				"waffle cones"
-			],
 			"netQuantity": 198,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "6.98 oz (198 g)",
+			"synonyms": [
+				"waffle cones"
+			],
+			"image": {
+				"path": "/products/waffle-cones-op-2102982.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/409/910/006/0942/front_en.15.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/4099100060942",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2102982,
 			"sourceProductCode": "4099100060942",
@@ -5102,6 +5133,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 215,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 340938,
@@ -5113,18 +5154,7 @@
 					"locationId": 5042,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 215,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-04",
-				"observedTo": "2026-10-04",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "organic-banana-op-3687815",
@@ -5133,12 +5163,19 @@
 			"brand": "Sprouts",
 			"category": "PRODUCE",
 			"variantGroup": "organic-banana",
-			"synonyms": [
-				"organic banana"
-			],
 			"netQuantity": 283,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "9.98 oz (283 g)",
+			"synonyms": [
+				"organic banana"
+			],
+			"image": {
+				"path": "/products/organic-banana-op-3687815.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/064/667/051/4166/front_en.21.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0646670514166",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3687815,
 			"sourceProductCode": "0646670514166",
@@ -5146,6 +5183,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 349,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341813,
@@ -5157,18 +5204,7 @@
 					"locationId": 4393,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 349,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-03",
-				"observedTo": "2026-10-03",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "old-country-style-muesli-op-41260",
@@ -5177,12 +5213,19 @@
 			"brand": "Bob's Red Mill",
 			"category": "BREAKFAST",
 			"variantGroup": "old-country-style-muesli",
-			"synonyms": [
-				"old country style muesli"
-			],
 			"netQuantity": 32,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "1.13 oz (32 g)",
+			"synonyms": [
+				"old country style muesli"
+			],
+			"image": {
+				"path": "/products/old-country-style-muesli-op-41260.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/997/850/1035/front_en.122.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0039978501035",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 41260,
 			"sourceProductCode": "0039978501035",
@@ -5190,6 +5233,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 432,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-07",
+				"observedTo": "2026-09-07",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 326424,
@@ -5201,18 +5254,7 @@
 					"locationId": 7107,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 432,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-07",
-				"observedTo": "2026-09-07",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "thin-sliced-op-13639",
@@ -5221,12 +5263,19 @@
 			"brand": "Dave’s Killer Bread",
 			"category": "BAKERY",
 			"variantGroup": "thin-sliced",
-			"synonyms": [
-				"thin-sliced"
-			],
 			"netQuantity": 581,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "20.49 oz (581 g)",
+			"synonyms": [
+				"thin-sliced"
+			],
+			"image": {
+				"path": "/products/thin-sliced-op-13639.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/376/402/7138/front_en.427.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0013764027138",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13639,
 			"sourceProductCode": "0013764027138",
@@ -5234,6 +5283,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 649,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332355,
@@ -5245,18 +5304,7 @@
 					"locationId": 7283,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 649,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-15",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "cornbread-mini-loaves-op-2249575",
@@ -5265,12 +5313,19 @@
 			"brand": "Concord Bakery",
 			"category": "BAKERY",
 			"variantGroup": "cornbread-mini-loaves",
-			"synonyms": [
-				"cornbread mini loaves"
-			],
 			"netQuantity": 680,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"cornbread mini loaves"
+			],
+			"image": {
+				"path": "/products/cornbread-mini-loaves-op-2249575.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/077/185/646/8732/front_en.10.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0771856468732",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2249575,
 			"sourceProductCode": "0771856468732",
@@ -5278,6 +5333,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 6,
+				"observedFrom": "2026-02-07",
+				"observedTo": "2026-09-13",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 331008,
@@ -5349,18 +5414,7 @@
 					"locationId": 4805,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 499,
-				"basis": "OBSERVED_MEDIAN",
-				"observationCount": 6,
-				"observedFrom": "2026-02-07",
-				"observedTo": "2026-09-13",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "sea-salt-op-3291331",
@@ -5369,12 +5423,19 @@
 			"brand": "BEYOND GOOD",
 			"category": "SNACKS",
 			"variantGroup": "sea-salt",
-			"synonyms": [
-				"sea salt"
-			],
 			"netQuantity": 75,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "2.65 oz (75 g)",
+			"synonyms": [
+				"sea salt"
+			],
+			"image": {
+				"path": "/products/sea-salt-op-3291331.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/089/857/500/3249/front_en.11.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0898575003249",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 3291331,
 			"sourceProductCode": "0898575003249",
@@ -5382,6 +5443,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 549,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341152,
@@ -5393,18 +5464,7 @@
 					"locationId": 4393,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 549,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-03",
-				"observedTo": "2026-10-03",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "squirrelly-op-71890",
@@ -5413,12 +5473,19 @@
 			"brand": "Silver Hills",
 			"category": "BAKERY",
 			"variantGroup": "squirrelly",
-			"synonyms": [
-				"squirrelly"
-			],
 			"netQuantity": 600,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "21.16 oz (600 g)",
+			"synonyms": [
+				"squirrelly"
+			],
+			"image": {
+				"path": "/products/squirrelly-op-71890.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/104/0450/front_en.89.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0055991040450",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71890,
 			"sourceProductCode": "0055991040450",
@@ -5426,6 +5493,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 599,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 335430,
@@ -5437,18 +5514,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 599,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "dark-chocolate-with-sea-salt-and-nibs-op-4276652",
@@ -5457,12 +5523,19 @@
 			"brand": "Beyond good",
 			"category": "SNACKS",
 			"variantGroup": "dark-chocolate-with-sea-salt-and-nibs",
-			"synonyms": [
-				"dark chocolate with sea salt and nibs"
-			],
 			"netQuantity": 30,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "1.06 oz (30 g)",
+			"synonyms": [
+				"dark chocolate with sea salt and nibs"
+			],
+			"image": {
+				"path": "/products/dark-chocolate-with-sea-salt-and-nibs-op-4276652.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/089/857/500/3768/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0898575003768",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 4276652,
 			"sourceProductCode": "0898575003768",
@@ -5470,6 +5543,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341153,
@@ -5481,18 +5564,7 @@
 					"locationId": 4393,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 699,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-03",
-				"observedTo": "2026-10-03",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "little-big-bread-op-71894",
@@ -5501,12 +5573,19 @@
 			"brand": "Silver Hills",
 			"category": "BAKERY",
 			"variantGroup": "little-big-bread",
-			"synonyms": [
-				"little big bread"
-			],
 			"netQuantity": 430,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "15.17 oz (430 g)",
+			"synonyms": [
+				"little big bread"
+			],
+			"image": {
+				"path": "/products/little-big-bread-op-71894.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/104/0863/front_en.117.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0055991040863",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 71894,
 			"sourceProductCode": "0055991040863",
@@ -5514,6 +5593,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 619,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-07-28",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 335429,
@@ -5545,18 +5634,7 @@
 					"locationId": 4058,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 619,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2026-07-28",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "royal-blend-texmati-brown-wild-rice-wi-op-94406",
@@ -5565,12 +5643,19 @@
 			"brand": "RICESELECT",
 			"category": "PANTRY",
 			"variantGroup": "royal-blend-texmati-brown-wild-rice-wi",
-			"synonyms": [
-				"royal blend texmati brown & wild rice with soft wheat & rye"
-			],
 			"netQuantity": 793,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "27.97 oz (793 g)",
+			"synonyms": [
+				"royal blend texmati brown & wild rice with soft wheat & rye"
+			],
+			"image": {
+				"path": "/products/royal-blend-texmati-brown-wild-rice-wi-op-94406.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/440/176/0320/front_en.5.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0074401760320",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 94406,
 			"sourceProductCode": "0074401760320",
@@ -5578,6 +5663,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1099,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 337538,
@@ -5589,18 +5684,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 1099,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "bread-op-2870895",
@@ -5609,12 +5693,19 @@
 			"brand": "Silver Hills",
 			"category": "BAKERY",
 			"variantGroup": "bread",
-			"synonyms": [
-				"bread"
-			],
 			"netQuantity": 595,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "20.99 oz (595 g)",
+			"synonyms": [
+				"bread"
+			],
+			"image": {
+				"path": "/products/bread-op-2870895.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/005/599/107/9146/front_en.21.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0055991079146",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2870895,
 			"sourceProductCode": "0055991079146",
@@ -5622,6 +5713,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 599,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 335426,
@@ -5633,18 +5734,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 599,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "raspberry-blackout-organic-dark-chocol-op-1861034",
@@ -5653,12 +5743,19 @@
 			"brand": "Alter Eco",
 			"category": "SNACKS",
 			"variantGroup": "raspberry-blackout-organic-dark-chocol",
-			"synonyms": [
-				"raspberry blackout organic dark chocolate"
-			],
 			"netQuantity": 75,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "2.65 oz (75 g)",
+			"synonyms": [
+				"raspberry blackout organic dark chocolate"
+			],
+			"image": {
+				"path": "/products/raspberry-blackout-organic-dark-chocol-op-1861034.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/767/001/1898/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0817670011898",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1861034,
 			"sourceProductCode": "0817670011898",
@@ -5666,6 +5763,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 599,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341157,
@@ -5677,18 +5784,7 @@
 					"locationId": 4393,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 599,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-03",
-				"observedTo": "2026-10-03",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "merry-maraschino-cherries-op-197245",
@@ -5697,12 +5793,19 @@
 			"brand": "Tillen Farms",
 			"category": "PRODUCE",
 			"variantGroup": "merry-maraschino-cherries",
-			"synonyms": [
-				"merry maraschino cherries"
-			],
 			"netQuantity": 396,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "13.97 oz (396 g)",
+			"synonyms": [
+				"merry maraschino cherries"
+			],
+			"image": {
+				"path": "/products/merry-maraschino-cherries-op-197245.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/089/865/500/0182/front_en.6.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0898655000182",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 197245,
 			"sourceProductCode": "0898655000182",
@@ -5710,6 +5813,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1295,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 342815,
@@ -5721,18 +5834,7 @@
 					"locationId": 4152,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 1295,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-08-20",
-				"observedTo": "2026-08-20",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "organic-valley-0-milk-op-117343",
@@ -5741,12 +5843,19 @@
 			"brand": "Cooperative Regions Of Organic Producer Pools",
 			"category": "DAIRY_EGGS",
 			"variantGroup": "organic-valley-0-milk",
-			"synonyms": [
-				"organic valley 0% milk"
-			],
 			"netQuantity": 1814,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "63.99 oz (1,814 g)",
+			"synonyms": [
+				"organic valley 0% milk"
+			],
+			"image": {
+				"path": "/products/organic-valley-0-milk-op-117343.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/009/396/651/6005/front_en.12.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0093966516005",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 117343,
 			"sourceProductCode": "0093966516005",
@@ -5754,6 +5863,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 824,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-16",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 331577,
@@ -5775,18 +5894,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 824,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-16",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "cinnamon-raisin-bread-op-1951785",
@@ -5795,12 +5903,19 @@
 			"brand": "BASE CULTURE",
 			"category": "BAKERY",
 			"variantGroup": "cinnamon-raisin-bread",
-			"synonyms": [
-				"cinnamon raisin bread"
-			],
 			"netQuantity": 453,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "15.98 oz (453 g)",
+			"synonyms": [
+				"cinnamon raisin bread"
+			],
+			"image": {
+				"path": "/products/cinnamon-raisin-bread-op-1951785.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/085/253/700/5634/front_en.18.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0852537005634",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1951785,
 			"sourceProductCode": "0852537005634",
@@ -5808,6 +5923,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 999,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 335421,
@@ -5819,18 +5944,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 999,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "spam-lite-op-654592",
@@ -5839,12 +5953,19 @@
 			"brand": "SPAM",
 			"category": "MEAT_SEAFOOD",
 			"variantGroup": "spam-lite",
-			"synonyms": [
-				"spam lite"
-			],
 			"netQuantity": 340,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"spam lite"
+			],
+			"image": {
+				"path": "/products/spam-lite-op-654592.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/760/017/5340/front_en.28.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0037600175340",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 654592,
 			"sourceProductCode": "0037600175340",
@@ -5852,6 +5973,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 456,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-07-19",
+				"observedTo": "2026-07-25",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 297368,
@@ -5873,18 +6004,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 456,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2026-07-19",
-				"observedTo": "2026-07-25",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "sliced-peaches-op-24296",
@@ -5893,12 +6013,19 @@
 			"brand": "Del Monte",
 			"category": "PRODUCE",
 			"variantGroup": "sliced-peaches",
-			"synonyms": [
-				"sliced peaches"
-			],
 			"netQuantity": 425,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "14.99 oz (425 g)",
+			"synonyms": [
+				"sliced peaches"
+			],
+			"image": {
+				"path": "/products/sliced-peaches-op-24296.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/002/400/016/7136/front_en.27.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0024000167136",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 24296,
 			"sourceProductCode": "0024000167136",
@@ -5906,6 +6033,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 399,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-07-27",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 323978,
@@ -5937,18 +6074,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 399,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2026-07-27",
-				"observedTo": "2026-08-20",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "flourless-sprouted-grain-seed-bread-op-92367",
@@ -5957,12 +6083,19 @@
 			"brand": "GENESIS 1:29",
 			"category": "BAKERY",
 			"variantGroup": "flourless-sprouted-grain-seed-bread",
-			"synonyms": [
-				"flourless sprouted grain & seed bread"
-			],
 			"netQuantity": 680,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"flourless sprouted grain & seed bread"
+			],
+			"image": {
+				"path": "/products/flourless-sprouted-grain-seed-bread-op-92367.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/347/200/1417/front_en.21.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0073472001417",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92367,
 			"sourceProductCode": "0073472001417",
@@ -5970,6 +6103,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 999,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332761,
@@ -5981,18 +6124,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 999,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "organic-quinoa-brown-red-rice-with-fla-op-1201548",
@@ -6001,12 +6133,19 @@
 			"brand": "Seeds of Change",
 			"category": "PANTRY",
 			"variantGroup": "organic-quinoa-brown-red-rice-with-fla",
-			"synonyms": [
-				"organic quinoa, brown & red rice with flaxseed"
-			],
 			"netQuantity": 240,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "8.47 oz (240 g)",
+			"synonyms": [
+				"organic quinoa, brown & red rice with flaxseed"
+			],
+			"image": {
+				"path": "/products/organic-quinoa-brown-red-rice-with-fla-op-1201548.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/074/840/442/0184/front_en.36.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0748404420184",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1201548,
 			"sourceProductCode": "0748404420184",
@@ -6014,6 +6153,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 337385,
@@ -6025,18 +6174,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 499,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "full-fat-oatmilk-op-1019070",
@@ -6045,12 +6183,19 @@
 			"brand": "Oatly",
 			"category": "DAIRY_EGGS",
 			"variantGroup": "full-fat-oatmilk",
-			"synonyms": [
-				"full fat oatmilk"
-			],
 			"netQuantity": 1814,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "63.99 oz (1,814 g)",
+			"synonyms": [
+				"full fat oatmilk"
+			],
+			"image": {
+				"path": "/products/full-fat-oatmilk-op-1019070.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/019/064/663/0089/front_en.93.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0190646630089",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1019070,
 			"sourceProductCode": "0190646630089",
@@ -6058,6 +6203,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332664,
@@ -6069,18 +6224,7 @@
 					"locationId": 7283,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 699,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-15",
-				"observedTo": "2026-09-15",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "cinnamon-toast-crunch-op-1237227",
@@ -6089,12 +6233,19 @@
 			"brand": "General Mills",
 			"category": "BREAKFAST",
 			"variantGroup": "cinnamon-toast-crunch",
-			"synonyms": [
-				"cinnamon toast crunch"
-			],
 			"netQuantity": 56,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "1.98 oz (56 g)",
+			"synonyms": [
+				"cinnamon toast crunch"
+			],
+			"image": {
+				"path": "/products/cinnamon-toast-crunch-op-1237227.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/600/014/1544/front_en.4.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0016000141544",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1237227,
 			"sourceProductCode": "0016000141544",
@@ -6102,6 +6253,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-07-24",
+				"observedTo": "2026-07-24",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 312013,
@@ -6113,18 +6274,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 199,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-07-24",
-				"observedTo": "2026-07-24",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "flourless-sprouted-grain-bread-op-92368",
@@ -6133,12 +6283,19 @@
 			"brand": "Food for Life",
 			"category": "FROZEN",
 			"variantGroup": "flourless-sprouted-grain-bread",
-			"synonyms": [
-				"flourless sprouted grain bread"
-			],
 			"netQuantity": 680,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"flourless sprouted grain bread"
+			],
+			"image": {
+				"path": "/products/flourless-sprouted-grain-bread-op-92368.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/347/200/1530/front_en.53.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0073472001530",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92368,
 			"sourceProductCode": "0073472001530",
@@ -6146,6 +6303,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 899,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332757,
@@ -6157,18 +6324,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 899,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "canned-meat-op-1237027",
@@ -6177,12 +6333,19 @@
 			"brand": "Hornet Spam",
 			"category": "MEAT_SEAFOOD",
 			"variantGroup": "canned-meat",
-			"synonyms": [
-				"canned meat"
-			],
 			"netQuantity": 340,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "11.99 oz (340 g)",
+			"synonyms": [
+				"canned meat"
+			],
+			"image": {
+				"path": "/products/canned-meat-op-1237027.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/003/760/033/6581/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0037600336581",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 1237027,
 			"sourceProductCode": "0037600336581",
@@ -6190,6 +6353,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-07-19",
+				"observedTo": "2026-07-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 295170,
@@ -6201,18 +6374,7 @@
 					"locationId": 3998,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 499,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-07-19",
-				"observedTo": "2026-07-19",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "sparkling-water-op-91683",
@@ -6221,12 +6383,19 @@
 			"brand": "La croix",
 			"category": "BEVERAGES",
 			"variantGroup": "sparkling-water",
-			"synonyms": [
-				"sparkling water"
-			],
 			"netQuantity": 355,
 			"netQuantityUnit": "MILLILITER",
 			"sizeLabel": "12 fl oz (355 mL)",
+			"synonyms": [
+				"sparkling water"
+			],
+			"image": {
+				"path": "/products/sparkling-water-op-91683.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/336/023/7515/front_en.43.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0073360237515",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 91683,
 			"sourceProductCode": "0073360237515",
@@ -6234,6 +6403,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-01-10",
+				"observedTo": "2026-01-10",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 184156,
@@ -6245,18 +6424,7 @@
 					"locationId": 4895,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 199,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-01-10",
-				"observedTo": "2026-01-10",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "flourless-sprouted-grain-bread-sesame-op-92363",
@@ -6265,12 +6433,19 @@
 			"brand": "Food For Life",
 			"category": "BAKERY",
 			"variantGroup": "flourless-sprouted-grain-bread-sesame",
-			"synonyms": [
-				"flourless sprouted grain bread sesame"
-			],
 			"netQuantity": 680,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "23.99 oz (680 g)",
+			"synonyms": [
+				"flourless sprouted grain bread sesame"
+			],
+			"image": {
+				"path": "/products/flourless-sprouted-grain-bread-sesame-op-92363.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/347/200/1233/front_en.76.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0073472001233",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 92363,
 			"sourceProductCode": "0073472001233",
@@ -6278,6 +6453,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 844,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-01-25",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 332756,
@@ -6299,18 +6484,7 @@
 					"locationId": 4191,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 844,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 2,
-				"observedFrom": "2026-01-25",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "aromatic-long-grain-rice-op-94379",
@@ -6319,12 +6493,19 @@
 			"brand": "RICESELECT",
 			"category": "PANTRY",
 			"variantGroup": "aromatic-long-grain-rice",
-			"synonyms": [
-				"aromatic long grain rice"
-			],
 			"netQuantity": 907,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "31.99 oz (907 g)",
+			"synonyms": [
+				"aromatic long grain rice"
+			],
+			"image": {
+				"path": "/products/aromatic-long-grain-rice-op-94379.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/007/440/111/0415/front_en.5.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0074401110415",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 94379,
 			"sourceProductCode": "0074401110415",
@@ -6332,6 +6513,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 899,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 337539,
@@ -6343,18 +6534,7 @@
 					"locationId": 7241,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 899,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-09-12",
-				"observedTo": "2026-09-12",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "protein-toaster-waffles-op-2375859",
@@ -6363,12 +6543,19 @@
 			"brand": "Birch Benders",
 			"category": "SNACKS",
 			"variantGroup": "protein-toaster-waffles",
-			"synonyms": [
-				"protein toaster waffles"
-			],
 			"netQuantity": 221,
 			"netQuantityUnit": "GRAM",
 			"sizeLabel": "7.8 oz (221 g)",
+			"synonyms": [
+				"protein toaster waffles"
+			],
+			"image": {
+				"path": "/products/protein-toaster-waffles-op-2375859.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/081/000/156/1253/front_en.3.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0810001561253",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 2375859,
 			"sourceProductCode": "0810001561253",
@@ -6376,6 +6563,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 749,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-03",
+				"observedTo": "2026-10-03",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 341780,
@@ -6387,18 +6584,7 @@
 					"locationId": 4393,
 					"locationCountryCode": "US"
 				}
-			],
-			"image": null,
-			"demoPrice": {
-				"currency": "USD",
-				"priceMinor": 749,
-				"basis": "OBSERVED_LIMITED",
-				"observationCount": 1,
-				"observedFrom": "2026-10-03",
-				"observedTo": "2026-10-03",
-				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
-			}
+			]
 		},
 		{
 			"sku": "sparkling-water-op-13168",
@@ -6407,12 +6593,19 @@
 			"brand": "Winter Brook Corporation",
 			"category": "BEVERAGES",
 			"variantGroup": "sparkling-water",
-			"synonyms": [
-				"sparkling water"
-			],
 			"netQuantity": 354,
 			"netQuantityUnit": "MILLILITER",
 			"sizeLabel": "11.97 fl oz (354 mL)",
+			"synonyms": [
+				"sparkling water"
+			],
+			"image": {
+				"path": "/products/sparkling-water-op-13168.jpg",
+				"sourceUrl": "https://images.openfoodfacts.org/images/products/001/299/344/1074/front_en.14.400.jpg",
+				"productUrl": "https://world.openfoodfacts.org/product/0012993441074",
+				"license": "CC BY-SA 3.0",
+				"attribution": "Open Food Facts contributors"
+			},
 			"source": "OPEN_PRICES",
 			"sourceProductId": 13168,
 			"sourceProductCode": "0012993441074",
@@ -6420,6 +6613,16 @@
 			"sourceLicense": "ODbL 1.0",
 			"isActive": true,
 			"isChildSuitable": false,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-01-10",
+				"observedTo": "2026-01-10",
+				"approved": true,
+				"approvedAt": "2026-10-10T12:57:10Z"
+			},
 			"verification": [
 				{
 					"sourcePriceId": 184149,
@@ -6431,6 +6634,743 @@
 					"locationId": 4895,
 					"locationCountryCode": "US"
 				}
+			]
+		},
+		{
+			"sku": "long-grain-whole-grain-brown-rice-op-1246788",
+			"barcode": "0021130502103",
+			"displayName": "Long Grain Brown Rice",
+			"brand": "Signature Select",
+			"category": "PANTRY",
+			"variantGroup": "long-grain-brown-rice",
+			"synonyms": [
+				"long grain brown rice"
+			],
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1246788,
+			"sourceProductCode": "0021130502103",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 309706,
+					"productCode": "0021130502103",
+					"priceMinor": 299,
+					"currency": "USD",
+					"observedOn": "2026-08-11",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "white-rice-jasmine-op-1212816",
+			"barcode": "0073416040281",
+			"displayName": "White Jasmine Rice",
+			"brand": "Lundberg Family Farms",
+			"category": "PANTRY",
+			"variantGroup": "white-jasmine-rice",
+			"synonyms": [
+				"white jasmine rice"
+			],
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1212816,
+			"sourceProductCode": "0073416040281",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 309097,
+					"productCode": "0073416040281",
+					"priceMinor": 1099,
+					"currency": "USD",
+					"observedOn": "2026-08-11",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1099,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "california-white-basmati-gourmet-rice-op-92219",
+			"barcode": "0073416401532",
+			"displayName": "California White Basmati Rice",
+			"brand": "Lundberg Family Farms",
+			"category": "PANTRY",
+			"variantGroup": "california-white-basmati-rice",
+			"synonyms": [
+				"california white basmati rice"
+			],
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 92219,
+			"sourceProductCode": "0073416401532",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 308208,
+					"productCode": "0073416401532",
+					"priceMinor": 899,
+					"currency": "USD",
+					"observedOn": "2026-08-11",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 899,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "ready-rice-basmati-op-2872959",
+			"barcode": "0054800424559",
+			"displayName": "Ready Rice Basmati",
+			"brand": "Ben's Original",
+			"category": "PANTRY",
+			"variantGroup": "ready-rice-basmati",
+			"synonyms": [
+				"ready rice basmati"
+			],
+			"netQuantity": 490,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "17.28 oz (490 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2872959,
+			"sourceProductCode": "0054800424559",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 308218,
+					"productCode": "0054800424559",
+					"priceMinor": 599,
+					"currency": "USD",
+					"observedOn": "2026-08-11",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 599,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "elbow-macaroni-op-1522825",
+			"barcode": "4099100002867",
+			"displayName": "Elbow Macaroni",
+			"brand": "Reggano",
+			"category": "PANTRY",
+			"variantGroup": "elbow-macaroni",
+			"synonyms": [
+				"elbow macaroni"
+			],
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1522825,
+			"sourceProductCode": "4099100002867",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 315712,
+					"productCode": "4099100002867",
+					"priceMinor": 189,
+					"currency": "USD",
+					"observedOn": "2026-08-22",
+					"isDiscounted": false,
+					"locationId": 6907,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 189,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-22",
+				"observedTo": "2026-08-22",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "fettuccine-op-2255039",
+			"barcode": "4099100182552",
+			"displayName": "Fettuccine",
+			"brand": "Reggano",
+			"category": "PANTRY",
+			"variantGroup": "fettuccine",
+			"synonyms": [
+				"fettuccine"
+			],
+			"netQuantity": 907,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "31.99 oz (907 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2255039,
+			"sourceProductCode": "4099100182552",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 315065,
+					"productCode": "4099100182552",
+					"priceMinor": 219,
+					"currency": "USD",
+					"observedOn": "2026-08-21",
+					"isDiscounted": false,
+					"locationId": 6896,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 219,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-21",
+				"observedTo": "2026-08-21",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "pappardelle-op-1249729",
+			"barcode": "0877448004774",
+			"displayName": "Pappardelle",
+			"brand": "Giovanni Rana",
+			"category": "PANTRY",
+			"variantGroup": "pappardelle",
+			"synonyms": [
+				"pappardelle"
+			],
+			"netQuantity": 255,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "8.99 oz (255 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1249729,
+			"sourceProductCode": "0877448004774",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 332083,
+					"productCode": "0877448004774",
+					"priceMinor": 339,
+					"currency": "USD",
+					"observedOn": "2026-09-14",
+					"isDiscounted": false,
+					"locationId": 7263,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 339,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-14",
+				"observedTo": "2026-09-14",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "spinach-ricotta-ravioli-op-1210387",
+			"barcode": "0877448003685",
+			"displayName": "Spinach & Ricotta Ravioli",
+			"brand": "Giovanni Rana",
+			"category": "PANTRY",
+			"variantGroup": "spinach-ricotta-ravioli",
+			"synonyms": [
+				"spinach & ricotta ravioli"
+			],
+			"netQuantity": 283,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "9.98 oz (283 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1210387,
+			"sourceProductCode": "0877448003685",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 333883,
+					"productCode": "0877448003685",
+					"priceMinor": 689,
+					"currency": "USD",
+					"observedOn": "2026-09-14",
+					"isDiscounted": false,
+					"locationId": 7263,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 689,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-14",
+				"observedTo": "2026-09-14",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "chickpea-fusilli-pasta-op-1316707",
+			"barcode": "0079893505206",
+			"displayName": "Chickpea Fusilli Pasta",
+			"brand": "O organics",
+			"category": "PANTRY",
+			"variantGroup": "chickpea-fusilli-pasta",
+			"synonyms": [
+				"chickpea fusilli pasta"
+			],
+			"netQuantity": 226,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "7.97 oz (226 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1316707,
+			"sourceProductCode": "0079893505206",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 308158,
+					"productCode": "0079893505206",
+					"priceMinor": 399,
+					"currency": "USD",
+					"observedOn": "2026-08-11",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 399,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-11",
+				"observedTo": "2026-08-11",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "shin-ramyun-op-30963",
+			"barcode": "0031146150601",
+			"displayName": "Shin Ramyun",
+			"brand": "NONGSHIM",
+			"category": "PANTRY",
+			"variantGroup": "shin-ramyun",
+			"synonyms": [
+				"shin ramyun"
+			],
+			"netQuantity": 120,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "4.23 oz (120 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 30963,
+			"sourceProductCode": "0031146150601",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 332271,
+					"productCode": "0031146150601",
+					"priceMinor": 169,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 169,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "vegetable-beef-condensed-soup-op-67896",
+			"barcode": "0051000012319",
+			"displayName": "Vegetable Beef Condensed Soup",
+			"brand": "Campbell's",
+			"category": "PANTRY",
+			"variantGroup": "vegetable-beef-condensed-soup",
+			"synonyms": [
+				"vegetable beef condensed soup"
+			],
+			"netQuantity": 297,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "10.48 oz (297 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 67896,
+			"sourceProductCode": "0051000012319",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 331892,
+					"productCode": "0051000012319",
+					"priceMinor": 299,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 299,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "cream-of-mushroom-soup-op-952023",
+			"barcode": "0051000060075",
+			"displayName": "Cream of Mushroom Soup",
+			"brand": "Campbell's",
+			"category": "PANTRY",
+			"variantGroup": "cream-of-mushroom-soup",
+			"synonyms": [
+				"cream of mushroom soup"
+			],
+			"netQuantity": 297,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "10.48 oz (297 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 952023,
+			"sourceProductCode": "0051000060075",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 331893,
+					"productCode": "0051000060075",
+					"priceMinor": 319,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 319,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "cream-of-chicken-soup-op-1194133",
+			"barcode": "0051000059772",
+			"displayName": "Cream of Chicken Soup",
+			"brand": "Campbell's",
+			"category": "PANTRY",
+			"variantGroup": "cream-of-chicken-soup",
+			"synonyms": [
+				"cream of chicken soup"
+			],
+			"netQuantity": 297,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "10.48 oz (297 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1194133,
+			"sourceProductCode": "0051000059772",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 331894,
+					"productCode": "0051000059772",
+					"priceMinor": 319,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 319,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "organic-diced-tomatoes-op-832431",
+			"barcode": "0725342260713",
+			"displayName": "Organic Diced Tomatoes",
+			"brand": "Muir Glen",
+			"category": "PANTRY",
+			"variantGroup": "organic-diced-tomatoes",
+			"synonyms": [
+				"organic diced tomatoes"
+			],
+			"netQuantity": 411,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "14.5 oz (411 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 832431,
+			"sourceProductCode": "0725342260713",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 332959,
+					"productCode": "0725342260713",
+					"priceMinor": 479,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 479,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "albacore-tuna-op-176952",
+			"barcode": "0829696000534",
+			"displayName": "Albacore Tuna",
+			"brand": "Wild Planet",
+			"category": "MEAT_SEAFOOD",
+			"variantGroup": "albacore-tuna",
+			"synonyms": [
+				"albacore tuna"
+			],
+			"netQuantity": 141,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "4.97 oz (141 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 176952,
+			"sourceProductCode": "0829696000534",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 331871,
+					"productCode": "0829696000534",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-15",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "mandarin-oranges-op-4170463",
+			"barcode": "4061462402890",
+			"displayName": "Mandarin oranges",
+			"brand": "Sweet Harvest",
+			"category": "PANTRY",
+			"variantGroup": "mandarin-oranges",
+			"synonyms": [
+				"mandarin oranges"
+			],
+			"netQuantity": 425,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "14.99 oz (425 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 4170463,
+			"sourceProductCode": "4061462402890",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 342433,
+					"productCode": "4061462402890",
+					"priceMinor": 149,
+					"currency": "USD",
+					"observedOn": "2026-10-07",
+					"isDiscounted": false,
+					"locationId": 6379,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 149,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-07",
+				"observedTo": "2026-10-07",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "crushed-pineapple-op-40082",
+			"barcode": "0038900006136",
+			"displayName": "Crushed Pineapple",
+			"brand": "Dole",
+			"category": "PANTRY",
+			"variantGroup": "crushed-pineapple",
+			"synonyms": [
+				"crushed pineapple"
+			],
+			"netQuantity": 567,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "20 oz (567 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 40082,
+			"sourceProductCode": "0038900006136",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 322796,
+					"productCode": "0038900006136",
+					"priceMinor": 199,
+					"currency": "USD",
+					"observedOn": "2026-08-28",
+					"isDiscounted": false,
+					"locationId": 6997,
+					"locationCountryCode": "US"
+				}
 			],
 			"image": null,
 			"demoPrice": {
@@ -6438,10 +7378,730 @@
 				"priceMinor": 199,
 				"basis": "OBSERVED_LIMITED",
 				"observationCount": 1,
-				"observedFrom": "2026-01-10",
-				"observedTo": "2026-01-10",
+				"observedFrom": "2026-08-28",
+				"observedTo": "2026-08-28",
 				"approved": true,
-				"approvedAt": "2026-10-10T12:57:10Z"
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "all-purpose-flour-op-2555368",
+			"barcode": "0096619060221",
+			"displayName": "All-purpose Flour",
+			"brand": "Kirkland Signature",
+			"category": "PANTRY",
+			"variantGroup": "all-purpose-flour",
+			"synonyms": [
+				"all-purpose flour"
+			],
+			"netQuantity": 4540,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "160.14 oz (4,540 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2555368,
+			"sourceProductCode": "0096619060221",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 183388,
+					"productCode": "0096619060221",
+					"priceMinor": 1649,
+					"currency": "USD",
+					"observedOn": "2026-01-04",
+					"isDiscounted": false,
+					"locationId": 4120,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1649,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-01-04",
+				"observedTo": "2026-01-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "whole-wheat-flour-op-82102",
+			"barcode": "0071012050505",
+			"displayName": "Whole Wheat Flour",
+			"brand": "King Arthur",
+			"category": "PANTRY",
+			"variantGroup": "whole-wheat-flour",
+			"synonyms": [
+				"whole wheat flour"
+			],
+			"netQuantity": 2267,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "79.97 oz (2,267 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 82102,
+			"sourceProductCode": "0071012050505",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 341321,
+					"productCode": "0071012050505",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-10-04",
+					"isDiscounted": false,
+					"locationId": 7508,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 162479,
+					"productCode": "0071012050505",
+					"priceMinor": 799,
+					"currency": "USD",
+					"observedOn": "2025-10-19",
+					"isDiscounted": true,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 138171,
+					"productCode": "0071012050505",
+					"priceMinor": 779,
+					"currency": "USD",
+					"observedOn": "2025-09-14",
+					"isDiscounted": false,
+					"locationId": 4031,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 639,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2025-09-14",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "bread-flour-op-82101",
+			"barcode": "0071012041053",
+			"displayName": "Bread Flour",
+			"brand": "King Arthur Baking",
+			"category": "PANTRY",
+			"variantGroup": "bread-flour",
+			"synonyms": [
+				"bread flour"
+			],
+			"netQuantity": 2267,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "79.97 oz (2,267 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 82101,
+			"sourceProductCode": "0071012041053",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 165845,
+					"productCode": "0071012041053",
+					"priceMinor": 949,
+					"currency": "USD",
+					"observedOn": "2025-10-19",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 949,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2025-10-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "organic-brown-rice-flour-op-1176062",
+			"barcode": "0074333684237",
+			"displayName": "Organic Brown Rice Flour",
+			"brand": "Arrowhead Mills",
+			"category": "PANTRY",
+			"variantGroup": "organic-brown-rice-flour",
+			"synonyms": [
+				"organic brown rice flour"
+			],
+			"netQuantity": 680,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "23.99 oz (680 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1176062,
+			"sourceProductCode": "0074333684237",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 341322,
+					"productCode": "0074333684237",
+					"priceMinor": 199,
+					"currency": "USD",
+					"observedOn": "2026-10-04",
+					"isDiscounted": false,
+					"locationId": 7508,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-10-04",
+				"observedTo": "2026-10-04",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "white-rice-flour-op-1316589",
+			"barcode": "0039978023162",
+			"displayName": "White Rice Flour",
+			"brand": "Bob's Red Mill",
+			"category": "PANTRY",
+			"variantGroup": "white-rice-flour",
+			"synonyms": [
+				"white rice flour"
+			],
+			"netQuantity": 680,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "23.99 oz (680 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1316589,
+			"sourceProductCode": "0039978023162",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 165838,
+					"productCode": "0039978023162",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2025-10-19",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2025-10-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "tapioca-flour-op-785845",
+			"barcode": "0039978035356",
+			"displayName": "Tapioca Flour",
+			"brand": "Bob's Red Mill",
+			"category": "PANTRY",
+			"variantGroup": "tapioca-flour",
+			"synonyms": [
+				"tapioca flour"
+			],
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 785845,
+			"sourceProductCode": "0039978035356",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 252512,
+					"productCode": "0039978035356",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-03-26",
+					"isDiscounted": false,
+					"locationId": 5142,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 250514,
+					"productCode": "0039978035356",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-03-24",
+					"isDiscounted": false,
+					"locationId": 5206,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 158896,
+					"productCode": "0039978035356",
+					"priceMinor": 549,
+					"currency": "USD",
+					"observedOn": "2025-10-19",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 499,
+				"basis": "OBSERVED_MEDIAN",
+				"observationCount": 3,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2026-03-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "natural-almond-flour-op-1239547",
+			"barcode": "0039978023803",
+			"displayName": "Natural Almond Flour",
+			"brand": "Bob's Red Mill",
+			"category": "PANTRY",
+			"variantGroup": "natural-almond-flour",
+			"synonyms": [
+				"natural almond flour"
+			],
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1239547,
+			"sourceProductCode": "0039978023803",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 332417,
+					"productCode": "0039978023803",
+					"priceMinor": 1549,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7284,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 165835,
+					"productCode": "0039978023803",
+					"priceMinor": 1499,
+					"currency": "USD",
+					"observedOn": "2025-10-19",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 1524,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "self-rising-flour-op-15632",
+			"barcode": "0016000116108",
+			"displayName": "Self-Rising Flour",
+			"brand": "GOLD Medal",
+			"category": "PANTRY",
+			"variantGroup": "self-rising-flour",
+			"synonyms": [
+				"self-rising flour"
+			],
+			"netQuantity": 2267,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "79.97 oz (2,267 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 15632,
+			"sourceProductCode": "0016000116108",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 168715,
+					"productCode": "0016000116108",
+					"priceMinor": 699,
+					"currency": "USD",
+					"observedOn": "2025-10-19",
+					"isDiscounted": false,
+					"locationId": 3998,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 699,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2025-10-19",
+				"observedTo": "2025-10-19",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "lentils-op-79074",
+			"barcode": "0070620001282",
+			"displayName": "Lentils",
+			"brand": "Jack Rabbit",
+			"category": "PANTRY",
+			"variantGroup": "lentils",
+			"synonyms": [
+				"lentils"
+			],
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 79074,
+			"sourceProductCode": "0070620001282",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 335728,
+					"productCode": "0070620001282",
+					"priceMinor": 249,
+					"currency": "USD",
+					"observedOn": "2026-09-12",
+					"isDiscounted": false,
+					"locationId": 7241,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 249,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-12",
+				"observedTo": "2026-09-12",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "cuban-black-beans-op-788046",
+			"barcode": "0869707000207",
+			"displayName": "Cuban Black Beans",
+			"brand": "Beans and Sofrito Fillo’s",
+			"category": "PANTRY",
+			"variantGroup": "cuban-black-beans",
+			"synonyms": [
+				"cuban black beans"
+			],
+			"netQuantity": 283,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "9.98 oz (283 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 788046,
+			"sourceProductCode": "0869707000207",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 343300,
+					"productCode": "0869707000207",
+					"priceMinor": 659,
+					"currency": "USD",
+					"observedOn": "2026-08-20",
+					"isDiscounted": false,
+					"locationId": 4152,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 659,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "saucy-coconut-curry-chickpeas-op-3254722",
+			"barcode": "0850043369028",
+			"displayName": "Saucy Coconut Curry Chickpeas",
+			"brand": "Heyday Canning",
+			"category": "PANTRY",
+			"variantGroup": "saucy-coconut-curry-chickpeas",
+			"synonyms": [
+				"saucy coconut curry chickpeas"
+			],
+			"netQuantity": 425,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "14.99 oz (425 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 3254722,
+			"sourceProductCode": "0850043369028",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 343299,
+					"productCode": "0850043369028",
+					"priceMinor": 579,
+					"currency": "USD",
+					"observedOn": "2026-08-20",
+					"isDiscounted": false,
+					"locationId": 4152,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 579,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "mexican-black-beans-op-2429133",
+			"barcode": "0850029632030",
+			"displayName": "Mexican Black Beans",
+			"brand": "SOMOS",
+			"category": "PANTRY",
+			"variantGroup": "mexican-black-beans",
+			"synonyms": [
+				"mexican black beans"
+			],
+			"netQuantity": 283,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "9.98 oz (283 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 2429133,
+			"sourceProductCode": "0850029632030",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 343297,
+					"productCode": "0850029632030",
+					"priceMinor": 559,
+					"currency": "USD",
+					"observedOn": "2026-08-20",
+					"isDiscounted": false,
+					"locationId": 4152,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 559,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "ranch-style-beans-op-1122910",
+			"barcode": "0046900001082",
+			"displayName": "Ranch Style Beans",
+			"brand": "Ranch Style",
+			"category": "PANTRY",
+			"variantGroup": "ranch-style-beans",
+			"synonyms": [
+				"ranch style beans"
+			],
+			"netQuantity": 425,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "14.99 oz (425 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1122910,
+			"sourceProductCode": "0046900001082",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 343279,
+					"productCode": "0046900001082",
+					"priceMinor": 199,
+					"currency": "USD",
+					"observedOn": "2026-08-20",
+					"isDiscounted": false,
+					"locationId": 4152,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 199,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-08-20",
+				"observedTo": "2026-08-20",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "dry-roasted-peanuts-unsalted-op-1322498",
+			"barcode": "0099482482237",
+			"displayName": "Unsalted Dry-Roasted Peanuts",
+			"brand": "365 Whole Foods Market",
+			"category": "PANTRY",
+			"variantGroup": "unsalted-dry-roasted-peanuts",
+			"synonyms": [
+				"unsalted dry-roasted peanuts"
+			],
+			"netQuantity": 453,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "15.98 oz (453 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 1322498,
+			"sourceProductCode": "0099482482237",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 336238,
+					"productCode": "0099482482237",
+					"priceMinor": 379,
+					"currency": "USD",
+					"observedOn": "2026-09-26",
+					"isDiscounted": false,
+					"locationId": 7422,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 379,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 1,
+				"observedFrom": "2026-09-26",
+				"observedTo": "2026-09-26",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
+			}
+		},
+		{
+			"sku": "peanut-butter-spread-roasted-honey-nut-op-38960",
+			"barcode": "0037600110877",
+			"displayName": "Creamy Roasted Honey Nut Peanut Butter Spread",
+			"brand": "SKIPPY",
+			"category": "PANTRY",
+			"variantGroup": "creamy-roasted-honey-nut-peanut-butter-spread",
+			"synonyms": [
+				"creamy roasted honey nut peanut butter spread"
+			],
+			"netQuantity": 462,
+			"netQuantityUnit": "GRAM",
+			"sizeLabel": "16.3 oz (462 g)",
+			"source": "OPEN_PRICES",
+			"sourceProductId": 38960,
+			"sourceProductCode": "0037600110877",
+			"sourceSystem": "off",
+			"sourceLicense": "ODbL 1.0",
+			"isActive": true,
+			"isChildSuitable": false,
+			"verification": [
+				{
+					"sourcePriceId": 333316,
+					"productCode": "0037600110877",
+					"priceMinor": 449,
+					"currency": "USD",
+					"observedOn": "2026-09-15",
+					"isDiscounted": false,
+					"locationId": 7279,
+					"locationCountryCode": "US"
+				},
+				{
+					"sourcePriceId": 323479,
+					"productCode": "0037600110877",
+					"priceMinor": 499,
+					"currency": "USD",
+					"observedOn": "2026-08-28",
+					"isDiscounted": false,
+					"locationId": 6997,
+					"locationCountryCode": "US"
+				}
+			],
+			"image": null,
+			"demoPrice": {
+				"currency": "USD",
+				"priceMinor": 474,
+				"basis": "OBSERVED_LIMITED",
+				"observationCount": 2,
+				"observedFrom": "2026-08-28",
+				"observedTo": "2026-09-15",
+				"approved": true,
+				"approvedAt": "2026-10-10T14:27:55Z"
 			}
 		}
 	]
