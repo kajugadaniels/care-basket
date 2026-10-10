@@ -7,11 +7,10 @@ import styles from "../RequestUi/RequestUi.module.css";
 
 export function DraftSummary() {
 	const { draft, message } = useDraft();
-	return <div className={`${styles.panel} ${styles.requester}`}>
-		<div className={styles.header}>
-			<p>{requestsCopy.draftCount(draft.items.length)}</p>
-			<ActionLink href="/shop/basket" size="lg">{requestsCopy.basket}</ActionLink>
-		</div>
-		<p role="status">{message}</p>
+	return <div className={`${styles.panel} ${styles.requester} ${styles.draftSummary}`}>
+		<h2>{requestsCopy.detailTitle}</h2>
+		<p>{requestsCopy.draftCount(draft.items.length)}</p>
+		<ActionLink href="/shop/basket" size="lg">{requestsCopy.basket}</ActionLink>
+		<p role="status" className={styles.announcement}>{message}</p>
 	</div>;
 }
