@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requester } from "@/test/factories/requests";
 import { AppError } from "@/server/errors";
 import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
+import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
 
 const mocks = vi.hoisted(() => ({ device: vi.fn() }));
 vi.mock("server-only", () => ({}));
@@ -14,7 +15,8 @@ type SessionProps = { children: ReactNode };
 
 function session(children: ReactNode) {
 	const layout = ShopLayout({ children });
-	const element = layout.props.children as ReactElement<SessionProps>;
+	const boundary = layout.props.children as ReactElement<SessionProps>;
+	const element = boundary.props.children as ReactElement<SessionProps>;
 	const resolve = element.type as (props: SessionProps) => Promise<ReactNode>;
 	return resolve(element.props);
 }
@@ -27,8 +29,10 @@ describe("requester draft layout", () => {
 
 	it("defers session access to a child inside Suspense", () => {
 		const layout = ShopLayout({ children: <p>Shopping</p> });
-		expect(layout.type).toBe(Suspense);
-		expect(layout.props.fallback).toBeDefined();
+		expect(layout.type).toBe(ShopShell);
+		const boundary = layout.props.children as ReactElement<{ fallback: ReactNode }>;
+		expect(boundary.type).toBe(Suspense);
+		expect(boundary.props.fallback).toBeDefined();
 		expect(mocks.device).not.toHaveBeenCalled();
 	});
 
