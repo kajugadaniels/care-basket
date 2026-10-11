@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { CheckListIcon, Delete02Icon } from "@hugeicons/core-free-icons";
+import { CheckListIcon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
@@ -23,13 +23,6 @@ export function DraftSummary() {
 	const remaining = draft.items.length - items.length;
 	const canUndo = removed !== null && !draft.items.some((item) => item.sku === removed.item.sku);
 	const feedback = message || (canUndo ? requestsCopy.draftRemoved({ name: removed.item.displayName }) : "");
-
-	function removeItem(item: DraftItem) {
-		if (!change({ type: "remove", sku: item.sku })) return;
-		setRemoved({ item, draft });
-		// The pressed control disappears; leave keyboard focus on a stable heading.
-		headingRef.current?.focus({ preventScroll: true });
-	}
 
 	function undoRemoval() {
 		if (!removed || !canUndo || locked) return;
@@ -74,11 +67,6 @@ export function DraftSummary() {
 								{item.origin === "SUGGESTED" ? <p className={styles.badge}>{requestsCopy.origins.SUGGESTED}</p> : null}
 								{item.isSubstitute ? <p className={styles.badge}>{requestsCopy.substitute}</p> : null}
 							</div>
-							<Button variant="secondary" icon={Delete02Icon} disabled={locked} className={styles.remove}
-								aria-label={requestsCopy.draftRemoveLabel({ name: item.displayName })}
-								onClick={() => removeItem(item)}>
-								{requestsCopy.draftRemove}
-							</Button>
 						</li>
 					))}
 				</ul>
