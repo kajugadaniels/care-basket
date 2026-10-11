@@ -58,8 +58,7 @@
 	gap: var(--space-5);
 }
 
-.panel,
-.empty {
+.panel {
 	display: grid;
 	gap: var(--space-4);
 	min-inline-size: 0;
@@ -93,20 +92,6 @@
 	overflow-wrap: anywhere;
 }
 
-.actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-3);
-}
-
-.actions > * {
-	flex: 1 1 auto;
-	min-inline-size: 0;
-	max-inline-size: var(--reading-max);
-	white-space: normal;
-	overflow-wrap: anywhere;
-}
-
 .error {
 	padding: var(--space-4);
 	border: 1px solid var(--color-danger);
@@ -116,11 +101,95 @@
 }
 
 .empty {
-	justify-items: start;
+	display: grid;
+	justify-items: center;
+	gap: var(--space-5);
+	min-inline-size: 0;
+	inline-size: 100%;
 	max-inline-size: var(--reading-max);
+	margin-block: var(--space-5);
+	margin-inline: auto;
+	padding: var(--space-5);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+	text-align: center;
+}
+
+.emptyIcon {
+	display: grid;
+	place-items: center;
+	padding: var(--space-4);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface-accent);
+	color: var(--color-primary);
+}
+
+.emptyMessage {
+	display: grid;
+	gap: var(--space-3);
+	min-inline-size: 0;
+	overflow-wrap: anywhere;
+}
+
+.emptyMessage h1 {
+	font-size: var(--text-2xl);
+}
+
+.emptyMessage p {
+	color: var(--color-text-muted);
+}
+
+.emptyActions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--space-3);
+	inline-size: 100%;
+}
+
+.emptyActions > a {
+	min-inline-size: 0;
+	inline-size: 100%;
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+
+/* The illustration responds to the next action, never animating on its own. */
+@media (prefers-reduced-motion: no-preference) {
+	.emptyIcon {
+		transition: transform var(--duration-base) var(--ease-standard);
+	}
+
+	.empty:has(.emptyActions a:focus-visible) .emptyIcon {
+		transform: translateY(calc(-1 * var(--space-1)));
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+	.empty:has(.emptyActions a:hover) .emptyIcon {
+		transform: translateY(calc(-1 * var(--space-1)));
+	}
+}
+
+@media (forced-colors: active) {
+	.emptyIcon {
+		outline: 1px solid CanvasText;
+	}
 }
 
 @media (min-width: 40rem) {
+	.empty {
+		gap: var(--space-6);
+		padding: var(--space-7);
+	}
+
+	.emptyActions > a {
+		flex: 1 1 0;
+		inline-size: auto;
+	}
+
 	.panel {
 		padding: var(--space-5);
 	}
