@@ -3,7 +3,7 @@
 **Purpose:** Define how adults sign in with Clerk, how managed profiles get restricted access through securely paired devices, and how every request is authorized on the server.
 **Applies to:** Sign-in, onboarding, families, profiles, devices, sessions, permissions.
 **Related:** [security.md](security.md), [privacy.md](privacy.md), [database.md § 5](database.md#5-planned-models), [api.md](api.md)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -138,6 +138,7 @@ All authorization lives in `src/server/auth/`:
 | Approve or reject pairing; revoke devices | ✓ | ✓ | — | — |
 | View all family requests | ✓ | ✓ | — | — |
 | Create a request (own profile only) | — | — | ✓ | ✓ |
+| Save/restore an unsubmitted review (own device and profile only, [ai.md § 5.3](ai.md#53-reloadable-private-reviews)) | — | — | ✓ | ✓ |
 | View own requests and their status | — | — | ✓ | ✓ |
 | Cancel own request before review | — | — | ✓ | ✓ |
 | Edit a basket during review, decline a request | ✓ | ✓ | — | — |
