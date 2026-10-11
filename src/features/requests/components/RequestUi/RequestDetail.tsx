@@ -27,7 +27,6 @@ export function RequestDetail({ request }: { request: RequestDetailDto | Manager
 			{manager ? null : <p className={styles.muted}>{requestsCopy.deliveryNotice}</p>}
 		</section>
 		{manager ? <>
-			<p className={styles.notice}>{requestsCopy.demo}</p>
 			{request.inputText ? <section className={styles.panel}><h2>{requestsCopy.original}</h2><p>{request.inputText}</p></section> : null}
 			<ManagerBasket request={request} />
 		</> : <ul className={styles.list} aria-label={requestsCopy.listItems}>{request.items.map((item) => <li key={item.id} className={styles.panel}>
