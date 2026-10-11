@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { ProfileList } from "@/features/profiles/components/ProfileList/ProfileList";
-import { ProfileListSkeleton } from "@/features/profiles/components/ProfileList/ProfileListSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { profilesCopy } from "@/features/profiles/copy";
 import { listManagedProfilesSchema } from "@/features/profiles/schemas";
 import { listManagedProfiles } from "@/features/profiles/server/service";
@@ -26,7 +26,7 @@ export default function MembersPage({ searchParams }: MembersPageProps) {
 				description={profilesCopy.description}
 				actions={<ActionLink href="/family/members/add">{profilesCopy.add}</ActionLink>}
 			/>
-			<Suspense fallback={<ProfileListSkeleton />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<MemberDirectory searchParams={searchParams} />
 			</Suspense>
 		</div>
