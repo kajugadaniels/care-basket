@@ -3,7 +3,7 @@ import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
 import { BasketReview } from "@/features/requests/components/BasketReview/BasketReview";
-import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 import { requestsCopy } from "@/features/requests/copy";
 
 export const metadata = { title: requestsCopy.basketTitle };
@@ -16,5 +16,5 @@ async function BasketContent() {
 	return <BasketReview />;
 }
 export default function BasketPage() {
-	return <Suspense fallback={<ShopSkeleton variant="basket" />}><BasketContent /></Suspense>;
+	return <Suspense fallback={<ShopLoading />}><BasketContent /></Suspense>;
 }
