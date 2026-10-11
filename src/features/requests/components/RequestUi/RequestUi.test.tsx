@@ -47,11 +47,12 @@ describe("shopping request screens", () => {
 		expect(screen.queryByRole("button", { name: "Decline request" })).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: "Cancel this list" })).not.toBeInTheDocument();
 	});
-	it("shows demo snapshots, totals and requested origin to managers", () => {
+	it("shows snapshot prices with neutral labels and no repeated manager notice", () => {
 		render(<RequestDetail request={makeManagerRequest()} />);
-		expect(screen.getByText("Demo unit price: $2.50")).toBeInTheDocument();
-		expect(screen.getByText("Demo line total: $5.00")).toBeInTheDocument();
-		expect(screen.getByText("Demo basket total: $5.00")).toBeInTheDocument();
+		expect(screen.getByText("Unit price: $2.50")).toBeInTheDocument();
+		expect(screen.getByText("Line total: $5.00")).toBeInTheDocument();
+		expect(screen.getByText("Basket total: $5.00")).toBeInTheDocument();
+		expect(screen.queryByText(/CareBasket Demo Market|demo (unit|line|basket)/i)).not.toBeInTheDocument();
 		expect(screen.getByText("Selected by requester")).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /pay|approve/i })).not.toBeInTheDocument();
 	});
@@ -86,7 +87,7 @@ describe("shopping request screens", () => {
 		render(<RequestDetail request={makeManagerRequest()} />);
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
 		const error = await screen.findByRole("alert"); await waitFor(() => expect(error).toHaveFocus());
-		expect(fake.refresh).not.toHaveBeenCalled(); expect(screen.getByText("Demo basket total: $5.00")).toBeInTheDocument();
+		expect(fake.refresh).not.toHaveBeenCalled(); expect(screen.getByText("Basket total: $5.00")).toBeInTheDocument();
 	});
 	it("requires confirmation before declining", async () => {
 		render(<RequestDetail request={makeManagerRequest()} />);
@@ -107,13 +108,13 @@ describe("shopping request screens", () => {
 		expect(screen.getByText("No shopping requests yet.")).toBeInTheDocument();
 		expect(screen.queryByRole("link", { name: "Review request" })).not.toBeInTheDocument();
 	});
-	it("shows member metadata, UTC submission time and labelled demo totals", () => {
+	it("shows member metadata, UTC submission time and labelled basket totals", () => {
 		render(<RequestList result={{ requests: [makeManagerRequest()], nextCursor: null }} manager />);
 		expect(screen.getByRole("heading", { name: "Demo Grandma" })).toBeInTheDocument();
 		expect(screen.getByText("October 9, 2026")).toHaveAttribute("dateTime", "2026-10-09T12:00:00.000Z");
 		expect(screen.getByText("12:00 PM UTC")).toBeInTheDocument();
 		expect(screen.getByText("1 product")).toBeInTheDocument();
-		expect(screen.getByText("Demo basket total")).toBeInTheDocument();
+		expect(screen.getByText("Basket total")).toBeInTheDocument();
 		expect(screen.getByText("$5.00")).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Review request from Demo Grandma" })).toHaveAttribute("href", `/family/requests/${requestIds.request}`);
 	});
