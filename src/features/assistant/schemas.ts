@@ -1,4 +1,8 @@
 import { z } from "zod";
+export const reviewPageSchema = z.strictObject({
+	reviewId: z.uuid(),
+	offset: z.int().min(0).max(192).multipleOf(12).default(0),
+});
 export const textRequestSchema = z.strictObject({
 	text: z.string().trim().min(1).max(500).regex(/^[^\p{Cc}\p{Cf}<>]*$/u),
 });
