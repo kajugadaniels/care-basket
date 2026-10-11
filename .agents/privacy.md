@@ -3,7 +3,7 @@
 **Purpose:** Protect older adults, children, and family information by collecting as little as possible, being clear about consent and ownership, and deleting data on schedule.
 **Applies to:** Any personal data, voice input, deletion, third-party processing, and anything shown in public demos.
 **Related:** [security.md](security.md), [authentication.md § 5](authentication.md#5-managed-profiles-consent-and-ownership), [ai.md](ai.md), [database.md § 9](database.md#9-sensitive-data-deletion-and-retention), [submission.md](submission.md)
-**Last reviewed:** 2026-10-10
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -35,6 +35,7 @@
 | Device label, browser and OS summary, last use | Adult and device | Device management and revocation | `AuthorizedDevice` |
 | Device token and pairing secrets | Generated | Authentication | Hashes only |
 | Request text or transcript | Requester | Shows the manager what was asked | `ShoppingRequest.inputText` |
+| Unsubmitted interpretation, input text/transcript, and signed provenance | Requester + server | Restore the private review after reload | One encrypted `AssistantReview` snapshot per device; no audio or prices |
 | Optional per-request budget | Requester | Budget-aware suggestions; context for the manager | `ShoppingRequest.budgetMinor` |
 | AI consent confirmation (assisted adults) | Adult | Accountability for AI processing | `ManagedProfile` |
 | Basket items and prices | Server | Review and payment | `ShoppingBasket`, `BasketItem` |
@@ -80,6 +81,7 @@ Not collected in the MVP: dates of birth, ages, addresses, phone numbers, photos
 | Data | Retention |
 | --- | --- |
 | Voice audio | Not stored |
+| Unsubmitted assistant review | Inaccessible after 30 minutes (or earlier proof expiry); replaced on the next interpretation; expired rows hard-deleted through developer-invoked `purgeDeviceData` maintenance |
 | Pending, rejected, or expired pairings | Deleted 24 hours after expiry or completion |
 | Revoked or expired devices | Deleted 30 days after revocation or expiry |
 | `inputText` (typed text or transcript) | Cleared 90 days after the request reaches a final status |
@@ -92,6 +94,7 @@ Not collected in the MVP: dates of birth, ages, addresses, phone numbers, photos
 Deletion rules:
 
 - **Profile deletion:** revokes all its devices immediately and deletes its requests, baskets, items, and payment records in one transaction, after a confirmation dialog that explains this.
+- Private assistant reviews cascade on device, profile, or family deletion. Revoked/expired devices cannot retrieve them. URLs contain only access-controlled lookup IDs, never request contents or signed proofs. Review reads do not extend expiry or perform cleanup writes.
 - **Family or account deletion (`OWNER`):** deletes the family and everything that cascades from it, then deletes the Clerk user ([authentication.md § 10](authentication.md#10-account-and-family-deletion)). The UI states that this cannot be undone.
 - Deletion is a hard delete. Soft-delete flags are used only for catalog products.
 - Database backups (Neon point-in-time restore) age out on Neon's schedule; the privacy page says so.
