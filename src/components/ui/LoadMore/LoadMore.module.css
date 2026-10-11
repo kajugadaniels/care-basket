@@ -1,0 +1,23 @@
+.loadMore {
+	display: grid;
+	justify-items: center;
+	gap: var(--space-3);
+	padding-block: var(--space-5);
+	font-family: var(--font-readable);
+	font-size: var(--text-md);
+	text-align: center;
+}
+
+.status {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	min-block-size: var(--space-6);
+	color: var(--color-text-muted);
+}
+
+.error {
+	max-inline-size: var(--reading-max);
+	color: var(--color-danger);
+}
