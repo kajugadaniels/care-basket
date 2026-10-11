@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { CheckmarkCircle02Icon, KeyboardIcon, Mic01Icon } from "@hugeicons/core-free-icons";
-import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Button } from "@/components/ui/Button/Button";
 import { interpretTextAction } from "../../actions";
 import { assistantCopy as copy } from "../../copy";
@@ -36,7 +35,8 @@ export function AssistantStart({ displayName, voice, child }: Props) {
 	function review(proposal: Proposal) {
 		setText(proposal.inputText);
 		setProposal(proposal);
-		router.push("/shop/assistant/review");
+		const query = proposal.reviewId ? new URLSearchParams({ review: proposal.reviewId }).toString() : "";
+		router.push(`/shop/assistant/review${query ? `?${query}` : ""}`);
 	}
 
 	return (
@@ -80,17 +80,13 @@ export function AssistantStart({ displayName, voice, child }: Props) {
 						</label>
 						<p id={hintId} className={styles.notice}>{copy.typingHelp}</p>
 						<Button className={styles.submit} size="lg" type="submit" loading={pending}>
-							{pending ? copy.working : copy.continue}
+							{copy.continue}
 						</Button>
 					</form>
 				) : null}
 			</section>
 			{mode === "voice" && canSpeak ? <VoiceRecorder onProposal={review} onType={() => setMode("text")} /> : null}
 			{pending ? <WorkingNotice /> : null}
-			<div className={styles.nextSteps}>
-				<p className={styles.notice}>{copy.reviewHelp}</p>
-				<ActionLink href="/shop/requests" variant="secondary">{copy.sentLists}</ActionLink>
-			</div>
 			{error ? <p ref={statusRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
 		</div>
 	);
