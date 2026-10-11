@@ -24,7 +24,7 @@ const proposal: Proposal = {
 	questions: [], unrecognized: [],
 };
 
-function Flow({ child }: { child: boolean }) {
+function Flow({ child, savedProposal }: { child: boolean; savedProposal?: Proposal | null }) {
 	const [review, setReview] = useState(true);
 	const { setProposal } = useAssistant();
 	const { draft } = useDraft();
@@ -35,20 +35,37 @@ function Flow({ child }: { child: boolean }) {
 			<button onClick={() => setProposal(null)}>Clear proposal</button>
 			<button onClick={() => setReview(false)}>Open entry</button>
 			<button onClick={() => setReview(true)}>Open review</button>
-			{review ? <ProposalReviewScreen /> : <AssistantStart voice={false} child={child} />}
+			{review ? <ProposalReviewScreen savedProposal={savedProposal} /> : <AssistantStart voice={false} child={child} />}
 			<output aria-label="Draft quantity">{draft.items[0]?.quantity ?? 0}</output>
 		</>
 	);
 }
 
-function open(child = false) {
-	render(<ShopShell><DraftProvider><AssistantProvider><Flow child={child} /></AssistantProvider></DraftProvider></ShopShell>);
+function open(child = false, savedProposal?: Proposal | null) {
+	render(<ShopShell><DraftProvider><AssistantProvider><Flow child={child} savedProposal={savedProposal} /></AssistantProvider></DraftProvider></ShopShell>);
 }
 
 describe("separate proposal review screen", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
 		fake.text.mockResolvedValue({ ok: true, data: proposal });
+	});
+
+	it("shows restored products after a reload with empty client state without adding them", () => {
+		open(false, { ...proposal, reviewId: "0199a100-0000-7000-8000-000000000007" });
+		expect(screen.getByRole("heading", { level: 1, name: copy.review })).toHaveFocus();
+		expect(screen.getByRole("article", { name: "Milk" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: requestsCopy.add })).toBeEnabled();
+		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("0");
+		expect(fake.text).not.toHaveBeenCalled();
+		expect(fake.push).not.toHaveBeenCalled();
+	});
+
+	it("never falls back to an unrelated in-memory proposal for an inaccessible URL", () => {
+		open(false, null);
+		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
+		expect(screen.getByRole("heading", { level: 1, name: copy.emptyReview })).toBeInTheDocument();
+		expect(screen.queryByRole("article", { name: "Milk" })).not.toBeInTheDocument();
 	});
 
 	it("offers recovery when opened directly or after a full reload", () => {
