@@ -3,7 +3,7 @@
 **Purpose:** Define a practical test strategy for CareBasket's highest-risk behaviour: authorization, family isolation, pairing, AI output, and payments.
 **Applies to:** Writing or changing tests, and the end of every coding task.
 **Related:** [workflow.md](workflow.md), [security.md](security.md), [payments.md](payments.md), [ai.md](ai.md), [accessibility.md](accessibility.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -91,7 +91,7 @@ The developer runs these against a local or preview deployment with Sandbox cred
 7. Use the demo control to simulate delivery; confirm both views update separately.
 8. Revoke the device; confirm the device shows the reconnect screen on its next action.
 9. Check the PayPal Sandbox dashboard and webhook delivery log for the transaction.
-10. Confirm that every price is labelled "Demo price", and that `/data-sources` shows the Open Food Facts and Open Prices attribution and licenses.
+10. Confirm price disclosures follow [payments.md § 8](payments.md#8-user-facing-states): every family page has one shared test-environment notice, manager price labels are neutral without repeated notices, and requester disclosures remain intact. Check that `/data-sources` shows the Open Food Facts and Open Prices attribution and licenses.
 11. Repeat steps 3–6 on a phone-sized viewport, a tablet, and a desktop, and with a keyboard only.
 
 ## 8. Commands for the developer
