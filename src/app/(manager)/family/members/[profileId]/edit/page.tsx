@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ProfileForm } from "@/features/profiles/components/ProfileForm/ProfileForm";
-import { ProfileFormSkeleton } from "@/features/profiles/components/ProfileForm/ProfileFormSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { profilesCopy } from "@/features/profiles/copy";
 import { getManagedProfile } from "@/features/profiles/server/service";
 import { cx } from "@/lib/class-names";
@@ -25,7 +25,7 @@ export default function EditMemberPage({ params }: EditMemberPageProps) {
 				description={profilesCopy.editDescription}
 				back={{ href: "/family/members", label: profilesCopy.back }}
 			/>
-			<Suspense fallback={<ProfileFormSkeleton isEditing />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<EditMemberForm params={params} />
 			</Suspense>
 		</div>
