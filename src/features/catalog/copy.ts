@@ -1,7 +1,7 @@
 export const catalogCopy = {
 	requesterTitle: "Look for groceries",
 	managerTitle: "Product catalog",
-	requesterIntro: "Look at the things you may need.",
+	requesterIntro: "Choose your groceries, then check your list.",
 	managerIntro: "Browse the curated catalog. Prices are approved demo prices, not real store offers.",
 	browse: "Look at Groceries",
 	home: "Home",
