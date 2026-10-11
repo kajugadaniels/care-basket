@@ -1,4 +1,4 @@
-import { InformationCircleIcon, ShoppingBasket01Icon } from "@hugeicons/core-free-icons";
+import { Search01Icon, ShoppingBasket01Icon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { cx } from "@/lib/class-names";
@@ -21,7 +21,7 @@ type Props = {
 
 const BASE = "/shop/products";
 
-// Same catalog panel as the manager area, without prices or manager-only data.
+// Browsing and the unsent list share a workspace without exposing manager-only data.
 export function CatalogBrowser({ filters, result, selectable = false, child = false }: Props) {
 	const hasFilters = Boolean(filters.q || filters.category);
 	const hasPagination = Boolean(result.previousCursor || filters.cursor || filters.before);
@@ -35,22 +35,36 @@ export function CatalogBrowser({ filters, result, selectable = false, child = fa
 				</div>
 			</header>
 
+			<CatalogToolbar action={BASE} filters={filters} audience="requester" />
+
+			{hasFilters ? (
+				<div className={styles.resultsBar}>
+					<ul className={styles.activeFilters} aria-label={catalogCopy.activeFilters}>
+						{filters.q ? (
+							<li className={styles.filterChip}>
+								<Icon icon={Search01Icon} size={24} />
+								{filters.q}
+							</li>
+						) : null}
+						{filters.category ? (
+							<li className={styles.filterChip}>
+								<Icon icon={CATEGORY_ICONS[filters.category]} size={24} />
+								{catalogCopy.categories[filters.category]}
+							</li>
+						) : null}
+					</ul>
+					<ActionLink href={BASE} variant="secondary">{catalogCopy.clear}</ActionLink>
+				</div>
+			) : null}
+
 			<div className={cx(styles.workspace, selectable && styles.withList)}>
+				{selectable ? (
+					<aside className={styles.listPanel} aria-label={requestsCopy.detailTitle}>
+						<DraftSummary />
+					</aside>
+				) : null}
+
 				<div className={styles.catalogContent}>
-					<CatalogToolbar action={BASE} filters={filters} audience="requester" />
-
-					<div className={styles.resultsBar}>
-						<div className={styles.summary}>
-							{filters.category ? (
-								<span className={styles.filterChip}>
-									<Icon icon={CATEGORY_ICONS[filters.category]} size={24} />
-									{catalogCopy.categories[filters.category]}
-								</span>
-							) : null}
-						</div>
-						{hasFilters ? <ActionLink href={BASE} variant="secondary">{catalogCopy.clear}</ActionLink> : null}
-					</div>
-
 					{result.products.length ? (
 						<RequesterProductFeed key={catalogHref(BASE, filters)} filters={filters} initial={result} selectable={selectable} />
 					) : (
@@ -70,15 +84,8 @@ export function CatalogBrowser({ filters, result, selectable = false, child = fa
 							) : null}
 						</nav>
 					) : null}
+					{!selectable ? <p className={styles.readOnly}>{catalogCopy.readOnly}</p> : null}
 				</div>
-
-				<aside className={styles.listPanel} aria-label={requestsCopy.detailTitle}>
-					{selectable ? <DraftSummary /> : null}
-					<div className={styles.notice}>
-						<Icon icon={InformationCircleIcon} size={24} />
-						<p>{selectable ? requestsCopy.sendHelp : catalogCopy.readOnly}</p>
-					</div>
-				</aside>
 			</div>
 		</div>
 	);
