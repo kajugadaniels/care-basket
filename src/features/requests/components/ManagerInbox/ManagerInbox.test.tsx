@@ -50,7 +50,7 @@ describe("manager request inbox", () => {
 		const results = screen.getByRole("region", { name: copy.inboxResults });
 		expect(within(results).getByText("1 request on this page")).toBeInTheDocument();
 		expect(within(results).getByText(copy.inboxOrder)).toBeInTheDocument();
-		expect(within(results).getByText(copy.demo)).toBeInTheDocument();
+		expect(within(results).queryByText(/CareBasket Demo Market|no real purchase/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole("link", { name: copy.clearFilter })).not.toBeInTheDocument();
 	});
 
