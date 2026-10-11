@@ -22,6 +22,8 @@ export const requestsCopy = {
 	limit: "Your list can have up to 30 different products and 20 of each product.",
 	count: (count: number) => `${count} ${count === 1 ? "product" : "products"}`,
 	draftCount: (count: number) => `${count} ${count === 1 ? "product" : "products"} in your list`,
+	draftEmptyHelp: "Add groceries to see them here.",
+	draftMore: ({ count }: { count: number }) => `${count} more ${count === 1 ? "product" : "products"} in your list`,
 	managerTitle: (name: string) => `${name}'s shopping list`, substitute: "Substitute",
 	pendingCount: (count: number) => `${count} ${count === 1 ? "request" : "requests"} waiting for review`,
 	statuses: {
