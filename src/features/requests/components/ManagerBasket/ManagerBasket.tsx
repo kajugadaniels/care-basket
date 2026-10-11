@@ -1,24 +1,19 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button/Button";
-import { Toast, type ToastNotice } from "@/components/ui/Toast/Toast";
-import { updateRequestItemAction, removeRequestItemAction } from "../../actions";
+import { Toast } from "@/components/ui/Toast/Toast";
 import { requestsCopy } from "../../copy";
 import { MAX_ITEM_QUANTITY } from "../../limits";
-import { useRequestMutation } from "../../hooks/use-request-mutation";
+import { useManagerBasket } from "../../hooks/use-manager-basket";
 import type { ManagerDetailDto } from "../../types";
 import { RequestItem } from "../RequestUi/RequestItem";
 import styles from "./ManagerBasket.module.css";
 
 export function ManagerBasket({ request, children }: { request: ManagerDetailDto; children?: ReactNode }) {
 	const id = useId();
-	const { pending, pendingKey, error, errorRef, run } = useRequestMutation();
-	const [notice, setNotice] = useState<ToastNotice | null>(null);
-
-	function confirm(message: string) {
-		setNotice((previous) => ({ id: (previous?.id ?? 0) + 1, message }));
-	}
+	const { pending, pendingKey, error, errorRef, preview, notice, dismiss, sound, save, remove } = useManagerBasket(request);
+	const previewing = pendingKey?.startsWith("save:") ?? false;
 
 	return (
 		<div className={styles.layout}>
@@ -26,11 +21,14 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 				<header className={styles.itemsHeader}>
 					<h2 id={`${id}-items-title`}>{requestsCopy.managerItems}</h2>
 					<span className={styles.caption}>{requestsCopy.count(request.items.length)}</span>
+					{request.editable ? <Button variant="secondary" size="sm" aria-pressed={sound.enabled} onClick={sound.toggle}>
+						{sound.enabled ? requestsCopy.soundOn : requestsCopy.soundOff}
+					</Button> : null}
 				</header>
 				{error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
 				{request.items.length ? (
 					<ul className={styles.list} aria-label={requestsCopy.managerItems}>
-						{request.items.map((item) => (
+						{preview.items.map((item, index) => (
 							<li key={item.id} className={styles.row}>
 								<RequestItem product={item} variant="manager">
 									<p className={styles.origin}>
@@ -55,16 +53,13 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 										if (pending) return;
 										const data = new FormData(event.currentTarget);
 										const quantity = Number(data.get("quantity"));
-										setNotice(null);
-										run(() => updateRequestItemAction({
-											requestId: request.id, revision: request.revision,
-											itemId: item.id, quantity,
-										}), () => confirm(requestsCopy.managerQuantitySaved({ name: item.displayName, quantity })), `save:${item.id}`);
+										save(item, quantity);
 									}}>
 										<div className={styles.quantity}>
 											<label htmlFor={`${id}-${item.id}`}>{requestsCopy.quantity}</label>
+											{/* Only confirmed quantity changes reset a field; previews must preserve its draft. */}
 											<input
-												key={`${item.id}:${item.quantity}`}
+												key={`${item.id}:${request.items[index].quantity}`}
 												id={`${id}-${item.id}`}
 												name="quantity"
 												type="number"
@@ -72,28 +67,24 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 												max={MAX_ITEM_QUANTITY}
 												aria-label={`${requestsCopy.quantity}: ${item.displayName}`}
 												step={1}
-												defaultValue={item.quantity}
+											defaultValue={request.items[index].quantity}
 												required
 												disabled={pendingKey === `save:${item.id}` || pendingKey === `remove:${item.id}`}
 											/>
 										</div>
-										<Button type="submit" variant="secondary" disabled={pending} loading={pendingKey === `save:${item.id}`}>
-											{pendingKey === `save:${item.id}` ? requestsCopy.managerSaving : requestsCopy.save}
+										<Button type="submit" variant="secondary" disabled={pending}>
+											{requestsCopy.save}
 										</Button>
 										<Button
 											variant="destructive"
 											loading={pendingKey === `remove:${item.id}`}
 											disabled={pending || request.items.length === 1}
 											aria-label={`${requestsCopy.remove}: ${item.displayName}`}
-											onClick={() => {
-												setNotice(null);
-												run(() => removeRequestItemAction({
-													requestId: request.id, revision: request.revision, itemId: item.id,
-												}), () => confirm(requestsCopy.managerItemRemoved({ name: item.displayName })), `remove:${item.id}`);
-											}}
+											onClick={() => remove(item)}
 										>
 											{pendingKey === `remove:${item.id}` ? requestsCopy.managerRemoving : requestsCopy.remove}
 										</Button>
+										{pendingKey === `save:${item.id}` ? <span className={styles.syncing} aria-live="polite">{requestsCopy.managerSyncing}</span> : null}
 									</form>
 								) : <p className={styles.readOnlyQuantity}>{requestsCopy.quantity}: {item.quantity}</p>}
 							</li>
@@ -107,8 +98,9 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 				<p className={styles.caption}>{requestsCopy.count(request.items.length)}</p>
 				<dl className={styles.total}>
 					<dt>{requestsCopy.total}</dt>
-					<dd>{request.subtotal}</dd>
+					<dd>{preview.subtotal}</dd>
 				</dl>
+				{previewing ? <p className={styles.syncing} aria-live="polite">{requestsCopy.managerPreview}</p> : null}
 				{request.budget ? (
 					<dl className={styles.budget}>
 						<dt>{requestsCopy.budget}</dt>
@@ -116,9 +108,9 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 					</dl>
 				) : null}
 				{request.editable ? <p className={styles.note}>{requestsCopy.managerReviewHelp}</p> : null}
-				<div className={styles.summaryActions}>{children}</div>
+				<fieldset className={styles.summaryActions} disabled={pending}>{children}</fieldset>
 			</section>
-			<Toast notice={notice} dismissLabel={requestsCopy.dismissSuccess} onDismiss={() => setNotice(null)} />
+			<Toast notice={notice} dismissLabel={notice?.kind === "error" ? requestsCopy.dismissError : requestsCopy.dismissSuccess} onDismiss={dismiss} />
 		</div>
 	);
 }
