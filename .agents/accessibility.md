@@ -3,7 +3,7 @@
 **Purpose:** Make CareBasket usable by older adults, children, and people with limited technical experience, meeting WCAG 2.2 Level AA as a minimum.
 **Applies to:** Any UI, copy, media, or interaction work. This document wins over [design.md](design.md) on any conflict.
 **Related:** [design.md](design.md), [ai.md § 7](ai.md#7-voice-input), [testing.md § 6](testing.md#6-accessibility-checks)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -48,7 +48,7 @@
 - Use semantic HTML first: `header`, `nav`, `main`, `footer`, `h1`–`h3` in order, `ul`/`li` for lists, `button` for actions, `a` for navigation, `fieldset`/`legend` for groups.
 - One `h1` per page, which matches the page purpose. Set a unique `<title>` per route via `metadata`.
 - Every input has a visible `<label>`. Hints and errors are linked with `aria-describedby`; invalid fields set `aria-invalid="true"`.
-- Status changes are announced through a polite live region: recording started or stopped, "Understanding your list…", items added, "Sent to Anna", payment status. Use `role="alert"` only for errors that need immediate attention.
+- Status changes are announced through a polite live region: recording started or stopped, grocery interpretation progress, items added, "Sent to Anna", payment status. Interpretation may use screen-reader-only text alongside a visibly busy button with a spinner; retain visible delayed feedback for slow operations. Use `role="alert"` only for errors that need immediate attention.
 - Product images have `alt` text equal to the product name and size. Decorative images and icons use `alt=""` or `aria-hidden="true"`.
 - Prefer native elements over ARIA. Any custom widget follows the WAI-ARIA Authoring Practices pattern for its role.
 - `<html lang>` is set from the active locale.
