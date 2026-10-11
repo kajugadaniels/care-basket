@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolveServerTree } from "@/test/resolve-server-tree";
+import { resolveServerTree, serverFallbackTree } from "@/test/resolve-server-tree";
 
 const mocks = vi.hoisted(() => ({
 	requireAdult: vi.fn(),
@@ -115,12 +115,16 @@ describe("FamilyPage", () => {
 });
 
 describe("FamilyLoading", () => {
-	it("announces the overview loading while showing the static preview", () => {
+	it("uses the shared manager loading state without placeholder controls", () => {
 		render(<FamilyLoading />);
 
-		expect(screen.getByRole("status")).toHaveTextContent("Loading your family…");
-		expect(screen.getByRole("heading", { name: "Coming next" })).toBeInTheDocument();
+		expect(screen.getByRole("status")).toHaveTextContent("Loading your family workspace…");
 		expect(screen.queryByRole("heading", { level: 1 })).not.toBeInTheDocument();
 		expect(screen.queryByRole("link")).not.toBeInTheDocument();
+	});
+	it("keeps the real static preview while the overview streams", () => {
+		render(serverFallbackTree(FamilyPage()));
+		expect(screen.getByRole("status")).toHaveTextContent("Loading your family workspace…");
+		expect(screen.getByRole("heading", { name: "Coming next" })).toBeInTheDocument();
 	});
 });
