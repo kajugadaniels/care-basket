@@ -3,7 +3,7 @@
 **Purpose:** Define an accurate, tamper-resistant PayPal payment workflow in which only a family manager pays, the server decides every amount, and "paid" is never confused with "delivered".
 **Applies to:** Baskets, prices, checkout, capture, webhooks, payment status display.
 **Related:** [security.md § 11](security.md#11-payment-tamper-resistance), [database.md § 5](database.md#5-planned-models), [api.md § 6](api.md#6-idempotency-for-sensitive-mutations), [testing.md](testing.md), [hackathon.md](hackathon.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -117,12 +117,13 @@ Recoverable PayPal errors (for example `INSTRUMENT_DECLINED`) keep the payment o
 | Checkout in progress | PayPal button, pending indicator | "Anna is looking at your list." |
 | Payment pending at PayPal | "PayPal is processing this payment." | "Anna is paying. We'll tell you when it's done." |
 | Payment confirmed | "Paid with PayPal on 14 Oct, 10:42. Transaction ID …" | "Your shopping is paid for. Anna paid on Tuesday." |
-| Fulfillment (simulated) | Separate badge: "Delivery: Not started / Preparing / Delivered (demo)" | Separate line: "Delivery: not arranged yet (demo)" |
+| Fulfillment (simulated) | Separate badge: "Delivery: Not started / Preparing / Delivered", within the disclosed test environment | Separate line: "Delivery: not arranged yet (demo)" |
 | Declined | "You declined this request." | "Anna can't get this right now." |
 | Payment failed | "Payment didn't go through. You were not charged." (only when verified) | No change; still "Anna is looking at your list." |
 
 - Requesters never see PayPal, payment errors, transaction IDs, or item prices. The only amount a requester may see is the server-calculated estimated total against a budget they set for that request, labelled as demo prices ([design.md § 8](design.md#8-requester-interface-assisted-adults-and-children)).
-- Every price shown to managers is labelled "Demo price".
+- **Manager disclosure (developer-approved, 2026-10-11):** every `/family` page shares one visible, discreet layout notice: "Test environment — no real purchases". Within that area, use neutral labels such as "Price", "Unit price", "Line total", and "Basket total"; omit repeated demo-price badges and merchant/simulation notices. Prices remain approved `DemoMerchantPrice` values, never live retailer offers. Manager-facing prices outside that layout still require an explicit "Demo price" disclosure.
+- This presentation exception does not change Sandbox-only payments, capture verification, requester disclosures, data attribution, or the requirement to identify simulated fulfillment controls explicitly (§10). Official payment components retain factual Sandbox identification.
 - "Paid" and "Delivered" use different icons, words, and positions ([design.md § 5](design.md#5-component-patterns)).
 
 ## 9. Claims we must never make
@@ -135,7 +136,7 @@ Recoverable PayPal errors (for example `INSTRUMENT_DECLINED`) keep the payment o
 - That payments are live. They are **PayPal Sandbox** test payments.
 - That buyer protection or refunds apply in any specific way.
 
-These disclosures appear in the app's demo banner, the README, the Devpost description, and the video ([submission.md](submission.md)).
+These disclosures appear in the app (the shared family-layout notice in §8 replaces repeated manager notices), the README, the Devpost description, and the video ([submission.md](submission.md)).
 
 ## 10. Demonstration merchant and fulfillment
 
