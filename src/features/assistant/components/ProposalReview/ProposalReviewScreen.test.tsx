@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { readFileSync } from "node:fs";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DraftProvider, useDraft } from "@/features/requests/components/DraftProvider/DraftProvider";
 import { requestsCopy } from "@/features/requests/copy";
+import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
+import { devicesCopy } from "@/features/devices/copy";
 import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
 import { AssistantProvider, useAssistant } from "../AssistantProvider/AssistantProvider";
@@ -29,6 +32,7 @@ function Flow({ child }: { child: boolean }) {
 	return (
 		<>
 			<button onClick={() => setProposal(proposal)}>Load proposal</button>
+			<button onClick={() => setProposal(null)}>Clear proposal</button>
 			<button onClick={() => setReview(false)}>Open entry</button>
 			<button onClick={() => setReview(true)}>Open review</button>
 			{review ? <ProposalReviewScreen /> : <AssistantStart voice={false} child={child} />}
@@ -38,7 +42,7 @@ function Flow({ child }: { child: boolean }) {
 }
 
 function open(child = false) {
-	render(<DraftProvider><AssistantProvider><Flow child={child} /></AssistantProvider></DraftProvider>);
+	render(<ShopShell><DraftProvider><AssistantProvider><Flow child={child} /></AssistantProvider></DraftProvider></ShopShell>);
 }
 
 describe("separate proposal review screen", () => {
@@ -49,11 +53,29 @@ describe("separate proposal review screen", () => {
 
 	it("offers recovery when opened directly or after a full reload", () => {
 		open();
+		const empty = screen.getByRole("region", { name: copy.emptyReview });
+		expect(empty).toHaveAccessibleDescription(copy.emptyReviewHelp);
+		expect(empty).toHaveClass(styles.empty);
+		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
 		expect(screen.getByRole("heading", { level: 1, name: copy.emptyReview })).toHaveFocus();
-		expect(screen.getByRole("link", { name: copy.startAgain })).toHaveAttribute("href", "/shop/assistant");
-		expect(screen.getByRole("link", { name: copy.pictures })).toHaveAttribute("href", "/shop/products");
-		expect(screen.queryByRole("button", { name: copy.basket })).not.toBeInTheDocument();
+		expect(within(empty).getAllByRole("link")).toHaveLength(2);
+		expect(within(empty).getByRole("link", { name: copy.startAgain })).toHaveAttribute("href", "/shop/assistant");
+		expect(within(empty).getByRole("link", { name: copy.browseProducts })).toHaveAttribute("href", "/shop/products");
+		expect(empty.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+		expect(empty.querySelector("svg")).toHaveAttribute("focusable", "false");
+		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: copy.backToAssistant })).not.toBeInTheDocument();
 		expect(screen.queryByRole("link", { name: copy.none })).not.toBeInTheDocument();
+	});
+
+	it("keeps empty-state actions responsive and icon motion opt-in", () => {
+		const css = readFileSync(new URL("./ProposalReview.module.css", import.meta.url), "utf8");
+		expect(css).toMatch(/\.emptyActions > a\s*\{[^}]*inline-size: 100%;[^}]*white-space: normal;/);
+		expect(css).toMatch(/@media \(min-width: 40rem\)[\s\S]*\.emptyActions > a\s*\{[^}]*inline-size: auto;/);
+		expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\)\s*\{[\s\S]*transition: transform var\(--duration-base\)/);
+		expect(css).toContain(".empty:has(.emptyActions a:focus-visible) .emptyIcon");
+		expect(css).toContain("(hover: hover) and (pointer: fine)");
+		expect(css).not.toContain("@keyframes");
 	});
 
 	it("puts the title and both navigation choices in one header row", () => {
@@ -82,7 +104,7 @@ describe("separate proposal review screen", () => {
 		expect(screen.getByRole("textbox", { name: copy.prompt })).toHaveValue("milk");
 	});
 
-	it("keeps the proposal after adding and consumes it only when opening the basket", () => {
+	it("keeps the proposal after adding and leaves list navigation in the top bar", () => {
 		open(true);
 		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("0");
@@ -90,11 +112,20 @@ describe("separate proposal review screen", () => {
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("1");
 		expect(screen.getByRole("heading", { name: copy.review })).toBeInTheDocument();
 		expect(fake.push).not.toHaveBeenCalled();
-		fireEvent.click(screen.getByRole("button", { name: copy.basket }));
-		expect(fake.push).toHaveBeenCalledWith("/shop/basket");
+		const navigation = screen.getByRole("navigation", { name: devicesCopy.shopNav });
+		expect(within(navigation).getByRole("link", { name: devicesCopy.shopList })).toHaveAttribute("href", "/shop/basket");
+		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
+	});
+
+	it("focuses the recovery heading without clearing added groceries when the proposal is cleared", () => {
+		open();
+		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.add }));
+		fireEvent.click(screen.getByRole("button", { name: "Clear proposal" }));
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("1");
-		expect(screen.getByRole("heading", { name: copy.emptyReview })).toBeInTheDocument();
-		expect(screen.queryByRole("button", { name: copy.basket })).not.toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: copy.emptyReview })).toHaveFocus();
+		expect(screen.getByRole("link", { name: devicesCopy.shopList })).toHaveAttribute("href", "/shop/basket");
+		expect(fake.push).not.toHaveBeenCalled();
 	});
 
 	it("resets unadded quantities for a fresh interpretation with identical words", () => {
@@ -104,7 +135,7 @@ describe("separate proposal review screen", () => {
 		expect(screen.getByText("Quantity: 2")).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Load proposal" }));
 		expect(screen.getByText("Quantity: 1")).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: copy.basket })).toBeDisabled();
+		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("0");
 	});
 
