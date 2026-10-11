@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CatalogBrowser } from "./CatalogBrowser";
 import { CatalogSkeleton } from "./CatalogSkeleton";
 import { CatalogError } from "./CatalogError";
@@ -10,10 +10,18 @@ const product: CatalogProductDto = { sku: "example-rice", displayName: "Example 
 vi.mock("../../actions", () => ({ loadRequesterProductsAction: vi.fn() }));
 
 describe("catalog browsing", () => {
-	it("keeps filters on Previous and provides a manual progressive-load fallback", () => {
+	beforeEach(() => {
+		vi.stubGlobal("IntersectionObserver", class {
+			observe = vi.fn();
+			disconnect = vi.fn();
+		});
+	});
+	afterEach(() => vi.unstubAllGlobals());
+	it("keeps filters on Previous and loads automatically without a load-more button", () => {
 		render(<CatalogBrowser filters={{ q: "beans", category: "PANTRY", before: "boundary", limit: 24 }} result={{ products: [product], previousCursor: "previous", nextCursor: "next" }} />);
 		expect(screen.getByRole("link", { name: "Previous Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=beans&before=previous");
-		expect(screen.getByRole("button", { name: "Load more groceries" })).toBeEnabled();
+		expect(screen.queryByRole("button", { name: "Load more groceries" })).not.toBeInTheDocument();
+		expect(screen.getByRole("region", { name: "More groceries load automatically" })).toHaveAttribute("tabindex", "0");
 		expect(screen.queryByRole("link", { name: "Back to First Groceries" })).not.toBeInTheDocument();
 	});
 	it("renders a real empty state without duplicating the shell's home action", () => {
@@ -34,7 +42,7 @@ describe("catalog browsing", () => {
 	});
 	it("retains filters in bounded pagination and resets the cursor for category changes", () => {
 		render(<CatalogBrowser filters={{ q: "rice", category: "PANTRY", cursor: "old", limit: 24 }} result={{ products: [product], nextCursor: "next" }} />);
-		expect(screen.getByRole("button", { name: "Load more groceries" })).toBeEnabled();
+		expect(screen.queryByRole("button", { name: "Load more groceries" })).not.toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Back to First Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=rice");
 		expect(screen.getByRole("navigation", { name: "Catalog pages" })).toBeInTheDocument();
 		expect(catalogHref("/shop/products", { q: "rice & beans" })).toBe("/shop/products?q=rice+%26+beans");
