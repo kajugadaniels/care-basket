@@ -4,7 +4,7 @@ import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
 import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
-import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 import { AssistantProvider } from "@/features/assistant/components/AssistantProvider/AssistantProvider";
 
 async function DraftSession({ children }: { children: ReactNode }) {
@@ -27,7 +27,7 @@ async function DraftSession({ children }: { children: ReactNode }) {
 export default function ShopLayout({ children }: { children: ReactNode }) {
 	return (
 		<ShopShell>
-			<Suspense fallback={<ShopSkeleton />}>
+			<Suspense fallback={<ShopLoading />}>
 				<DraftSession>{children}</DraftSession>
 			</Suspense>
 		</ShopShell>
