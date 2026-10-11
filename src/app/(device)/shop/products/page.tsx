@@ -21,8 +21,9 @@ async function ProductsContent({ searchParams }: { searchParams: CatalogSearchPa
 	}
 	const parsed = parseCatalogSearchParams(await searchParams);
 	if (!parsed.success) throw new AppError("VALIDATION_FAILED");
-	const result = await listRequesterProducts(actor, parsed.data);
-	return <CatalogBrowser filters={parsed.data} result={result} selectable child={actor.profileKind === "CHILD"} />;
+	const filters = { ...parsed.data, limit: 12 };
+	const result = await listRequesterProducts(actor, filters);
+	return <CatalogBrowser filters={filters} result={result} selectable child={actor.profileKind === "CHILD"} />;
 }
 
 export default function ProductsPage({ searchParams }: { searchParams: CatalogSearchParams }) {
