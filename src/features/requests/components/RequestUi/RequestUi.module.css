@@ -279,11 +279,6 @@
 	font-size: var(--text-md);
 }
 
-.total {
-	font-size: var(--text-xl);
-	font-weight: var(--weight-bold);
-}
-
 .skeleton {
 	min-block-size: 10rem;
 	background: var(--color-surface-soft);
@@ -322,5 +317,40 @@
 	.sendPanel {
 		position: sticky;
 		inset-block-start: var(--space-5);
+	}
+}
+
+/* The same product content becomes a compact row only in manager request details. */
+.managerItem.item {
+	grid-template-columns: var(--space-8) minmax(0, 1fr);
+	gap: var(--space-4);
+}
+
+.managerItem .body {
+	gap: var(--space-2);
+}
+
+.managerItem h3 {
+	font-size: var(--text-base);
+	line-height: var(--leading-body);
+	overflow-wrap: anywhere;
+}
+
+.managerItem .muted {
+	font-size: var(--text-base);
+	overflow-wrap: anywhere;
+}
+
+.managerItem .picture {
+	overflow: hidden;
+}
+
+.managerItem .picture img {
+	padding: var(--space-2);
+}
+
+@media (min-width: 40rem) {
+	.managerItem.item {
+		grid-template-columns: calc(var(--control-height-lg) + var(--space-6)) minmax(0, 1fr);
 	}
 }
