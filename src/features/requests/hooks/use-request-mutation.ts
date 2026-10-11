@@ -13,8 +13,13 @@ export function useRequestMutation() {
 
 	useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
 
+	// Event-only check: the ref closes the gap before React renders pending state.
+	function isRunning() {
+		return inFlight.current || pending;
+	}
+
 	function run(action: () => Promise<RequestMutationResult>, onSuccess?: () => void, key?: string) {
-		if (inFlight.current) return;
+		if (isRunning()) return;
 		inFlight.current = true;
 		setError("");
 		setPendingKey(key ?? null);
@@ -30,5 +35,5 @@ export function useRequestMutation() {
 		});
 	}
 
-	return { pending, pendingKey: pending ? pendingKey : null, error, errorRef, run };
+	return { pending, pendingKey: pending ? pendingKey : null, error, errorRef, run, isRunning };
 }
