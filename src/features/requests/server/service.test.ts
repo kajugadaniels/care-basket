@@ -69,8 +69,8 @@ describe("shopping request service authorization and DTOs", () => {
 		fake.family.mockResolvedValue({ ...row, profile: { displayName: "Demo Grandma" }, inputText: null,
 			basket: { ...row.basket, subtotalMinor: 500, currency: "USD", items: [{ ...row.basket.items[0], unitPriceMinor: 250,
 				origin: "REQUESTED", isSubstitute: false, substitutionNote: null }] } });
-		expect(await getFamilyRequest(requestManager, requestIds.request)).toMatchObject({ subtotal: "$5.00",
-			items: [{ unitPrice: "$2.50", lineTotal: "$5.00" }] });
+		expect(await getFamilyRequest(requestManager, requestIds.request)).toMatchObject({ subtotal: "$5.00", subtotalMinor: 500, currency: "USD",
+			items: [{ unitPriceMinor: 250, unitPrice: "$2.50", lineTotal: "$5.00" }] });
 	});
 	it.each(["DECLINED", "CANCELLED", "PAID", "AWAITING_PAYMENT"])("does not expose editing for %s", async (status) => {
 		fake.own.mockResolvedValue({ ...row, status });
