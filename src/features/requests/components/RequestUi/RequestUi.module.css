@@ -189,8 +189,7 @@
 	color: var(--color-text-muted);
 }
 
-.status,
-.notice {
+.status {
 	padding: var(--space-3) var(--space-4);
 	border-radius: var(--radius-md);
 	background: var(--color-info-bg);
