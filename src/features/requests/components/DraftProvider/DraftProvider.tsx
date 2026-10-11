@@ -7,7 +7,7 @@ import { requestsCopy } from "../../copy";
 
 type DraftContextValue = {
 	draft: Draft; locked: boolean; message: string;
-	change: (change: DraftChange) => void;
+	change: (change: DraftChange) => boolean;
 	begin: () => SubmitRequestInput | null;
 	finish: (key: string, succeeded: boolean) => void;
 };
@@ -20,14 +20,18 @@ export function DraftProvider({ children }: { children: ReactNode }) {
 	const [message, setMessage] = useState("");
 	const current = useRef({ draft: EMPTY_DRAFT, locked: false });
 
-	function change(change: DraftChange) {
-		if (current.current.locked) return;
+	function change(change: DraftChange): boolean {
+		if (current.current.locked) return false;
 		try {
 			const next = changeDraft(current.current.draft, change, createDraftKey());
 			current.current.draft = next;
 			setDraft(next);
 			setMessage(change.type === "add" ? requestsCopy.added(change.item.displayName) : "");
-		} catch { setMessage(requestsCopy.limit); }
+			return true;
+		} catch {
+			setMessage(requestsCopy.limit);
+			return false;
+		}
 	}
 	function begin(): SubmitRequestInput | null {
 		const state = current.current;
