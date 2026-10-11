@@ -3,7 +3,7 @@
 **Purpose:** Keep CareBasket fast on older phones and slow mobile connections, with responsive server operations that let every user continue without avoidable waiting.
 **Applies to:** UI, Server Actions, Route Handlers, data loading, database queries, integrations, images, caching, and third-party scripts.
 **Related:** [architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project), [api.md](api.md), [design.md](design.md), [database.md § 6](database.md#6-access-boundaries-queries-and-performance)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -103,6 +103,7 @@ The endpoint targets exclude browser latency and external providers such as Cler
 
 - Every loading state uses a skeleton or reserved space with the final layout ([design.md § 7](design.md#7-screen-states)).
 - Buttons show immediate pending feedback on press.
+- Item-scoped feedback and preservation of unrelated edits follow [design.md §6.1](design.md#61-ux-craftsmanship-and-feedback-developer-requirement-2026-10-12). Do not append a client `router.refresh()` when the Server Action already revalidates the current path and returns its updated UI; verify the installed Next.js behavior and retain regression tests for that invalidation contract.
 - Use optimistic UI only for low-risk, reversible actions (for example, changing a quantity in a draft basket). Never for payment or status changes.
 - Fonts load through `next/font` with `display: 'swap'` and the Latin subset only: DM Sans (preloaded, variable) for the interface, and Atkinson Hyperlegible (`preload: false`) used only for requester reading text, so other screens never download it ([design.md § 3.3](design.md#33-typography)). No other font families.
 
