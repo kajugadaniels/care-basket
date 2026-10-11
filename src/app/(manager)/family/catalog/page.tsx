@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ManagerCatalog } from "@/features/catalog/components/ManagerCatalog/ManagerCatalog";
-import { ManagerCatalogSkeleton } from "@/features/catalog/components/ManagerCatalog/ManagerCatalogSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { catalogCopy } from "@/features/catalog/copy";
 import { parseCatalogSearchParams } from "@/features/catalog/schemas";
 import { listManagerProducts } from "@/features/catalog/server/service";
@@ -22,7 +22,7 @@ export default function CatalogPage({ searchParams }: CatalogPageProps) {
 	return (
 		<div className={styles.page}>
 			<PageHeader title={catalogCopy.managerTitle} description={catalogCopy.managerIntro} />
-			<Suspense fallback={<ManagerCatalogSkeleton />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<CatalogContent searchParams={searchParams} />
 			</Suspense>
 		</div>
