@@ -25,7 +25,7 @@ export const assistantCopy = {
 	review: "Here is what I understood", requested: "Your groceries", suggested: "Suggested for you",
 	uncertain: "Is this right?", question: "Which one would you like?", none: "None of these",
 	substitution: "A different product or package was suggested. Please check this choice.",
-	uncaught: "I didn't catch these things.",
+	unrecognized: ({ phrases }: { phrases: string[] }) => `We couldn't find: ${phrases.join(", ")}.`,
 	addError: "Your list is full. Remove a product or an extra idea, then try again.",
 	error: "We couldn't understand that right now. Try again, or use pictures.",
 	voiceError: "We couldn't hear that. Try again, or type your list.", start: "Start speaking", stop: "Stop",
