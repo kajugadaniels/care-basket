@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
 import { requestsCopy } from "@/features/requests/copy";
 import type { CatalogProductDto } from "../../types";
@@ -14,15 +14,21 @@ const beans: CatalogProductDto = { ...rice, sku: "fictional-beans", displayName:
 describe("requester product feed", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
+		vi.stubGlobal("IntersectionObserver", class {
+			observe = vi.fn();
+			disconnect = vi.fn();
+		});
 		fake.page.mockResolvedValue({ ok: true, data: { items: [rice, beans], nextCursor: null } });
 	});
+	afterEach(() => vi.unstubAllGlobals());
 	it("preserves filters and quantity controls while appending unique products", async () => {
 		render(<DraftProvider><RequesterProductFeed selectable filters={{ q: "rice", category: "PANTRY", limit: 12 }}
 			initial={{ products: [rice], nextCursor: "next" }} /></DraftProvider>);
 		const controls = within(screen.getByRole("article", { name: "Rice" }).parentElement!);
 		fireEvent.click(controls.getByRole("button", { name: requestsCopy.increase("Rice") }));
 		fireEvent.click(controls.getByRole("button", { name: requestsCopy.add }));
-		fireEvent.click(screen.getByRole("button", { name: "Load more groceries" }));
+		expect(screen.queryByRole("button", { name: "Load more groceries" })).not.toBeInTheDocument();
+		fireEvent.focus(screen.getByRole("region", { name: "More groceries load automatically" }));
 		await screen.findByRole("article", { name: "Beans" });
 		expect(fake.page).toHaveBeenCalledWith({ q: "rice", category: "PANTRY", cursor: "next" });
 		expect(screen.getAllByRole("article", { name: "Rice" })).toHaveLength(1);
@@ -41,7 +47,7 @@ describe("requester product feed", () => {
 	it("keeps products visible on failure and allows retry", async () => {
 		fake.page.mockResolvedValueOnce({ ok: false, error: { code: "INTERNAL", message: "safe error" } });
 		render(<RequesterProductFeed selectable={false} filters={{ q: "", limit: 12 }} initial={{ products: [rice], nextCursor: "next" }} />);
-		fireEvent.click(screen.getByRole("button", { name: "Load more groceries" }));
+		fireEvent.focus(screen.getByRole("region", { name: "More groceries load automatically" }));
 		await screen.findByRole("alert");
 		expect(screen.getByRole("article", { name: "Rice" })).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Try loading again" }));
