@@ -44,6 +44,12 @@
   min-height: var(--control-height);
 }
 
+.environmentNotice {
+	padding-block-start: var(--space-3);
+	color: var(--color-text-muted);
+	font-size: var(--text-base);
+}
+
 /* Bottom padding keeps content clear of the fixed navigation bar on small screens. */
 .body {
   padding-block: var(--space-6) calc(var(--space-8) + var(--space-6));
