@@ -3,7 +3,7 @@
 **Purpose:** Define how CareBasket is built on Next.js 16 App Router: rendering, server boundaries, layers, error handling, and integrations.
 **Applies to:** Any code change.
 **Related:** [folder-structure.md](folder-structure.md), [api.md](api.md), [security.md](security.md), [database.md](database.md), [catalog.md](catalog.md), [ai.md](ai.md), [performance.md](performance.md)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -113,7 +113,7 @@ Services receive the actor (or an explicit `familyId` derived from it) and never
   ```
 - Route Handlers map errors to the JSON envelope in [api.md § 4](api.md#4-response-and-error-format).
 - Unexpected errors are logged server-side with a request ID and shown to users as a friendly, actionable message. Stack traces, Prisma errors, and provider messages never reach the client.
-- Each route segment that loads data has an `error.tsx` boundary with a retry action, and a `loading.tsx` or Suspense fallback whose layout matches the loaded content.
+- Each route segment that loads data has an `error.tsx` boundary with a retry action, and a local/inherited `loading.tsx` or explicit Suspense fallback. Fallbacks match the loaded layout except manager routes, which use the shared reserved-space loader in [design.md §7](design.md#7-screen-states).
 - Objects outside the actor's family return **not found**, never "forbidden", to avoid revealing that they exist.
 
 ## 9. External integrations
