@@ -5,6 +5,8 @@ import { CatalogBrowser } from "@/features/catalog/components/CatalogBrowser/Cat
 import { DraftProvider, useDraft } from "./DraftProvider";
 import { ProductSelection } from "./ProductSelection";
 
+vi.mock("@/features/catalog/actions", () => ({ loadRequesterProductsAction: vi.fn() }));
+
 function SuggestedSelection() {
 	const { change } = useDraft();
 	return <>
