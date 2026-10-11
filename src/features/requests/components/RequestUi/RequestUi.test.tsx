@@ -151,16 +151,28 @@ describe("shopping request screens", () => {
 		expect(otherInput).toHaveValue(4);
 		expect(screen.getAllByText(requestsCopy.managerSyncing)).toHaveLength(1);
 		for (const save of screen.getAllByRole("button", { name: "Save quantity" })) {
-			expect(save).toBeDisabled();
+			expect(save).toBeEnabled();
 			expect(save).not.toHaveAttribute("aria-busy");
 		}
 		const summary = screen.getByRole("region", { name: requestsCopy.managerSummary });
 		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
 		expect(within(summary).getByText(requestsCopy.managerPreview)).toBeInTheDocument();
 		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$7.50")).toBeInTheDocument();
-		expect(within(summary).getByRole("button", { name: requestsCopy.decline })).toBeDisabled();
-		for (const button of screen.getAllByRole("button", { name: /^Remove item:/ })) expect(button).toBeDisabled();
+		expect(within(summary).getByRole("button", { name: requestsCopy.decline })).toBeEnabled();
+		for (const button of screen.getAllByRole("button", { name: /^Remove item:/ })) expect(button).toBeEnabled();
 		expect(screen.getByRole("status")).toBeEmptyDOMElement();
+		fireEvent.click(screen.getAllByRole("button", { name: requestsCopy.save })[0]);
+		fireEvent.click(screen.getAllByRole("button", { name: requestsCopy.save })[1]);
+		fireEvent.click(screen.getByRole("button", { name: "Remove item: Demo bread" }));
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.decline }));
+		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusyTitle);
+		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusy);
+		expect(fake.update).toHaveBeenCalledOnce();
+		expect(fake.remove).not.toHaveBeenCalled();
+		expect(fake.decline).not.toHaveBeenCalled();
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+		expect(otherInput).toHaveValue(4);
+		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
 	});
 	it("preserves another row's draft across a confirmed save and server revision update", async () => {
 		const request = makeManagerRequest();
@@ -184,12 +196,12 @@ describe("shopping request screens", () => {
 		fireEvent.submit(form);
 		fireEvent.submit(form);
 		expect(fake.update).toHaveBeenCalledOnce();
-		expect(screen.getByRole("status")).toBeEmptyDOMElement();
+		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusy);
 		await act(async () => finish({ ok: true, data: { requestId: requestIds.request } }));
 		expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 2.");
 		expect(fake.refresh).not.toHaveBeenCalled();
 	});
-	it("does not turn quantity saves into loading indicators during item removal", async () => {
+	it("keeps removal controls enabled and rejects repeats without a button spinner", async () => {
 		fake.remove.mockImplementation(() => new Promise(() => {}));
 		const request = makeManagerRequest();
 		request.items.push({ ...request.items[0], id: requestIds.other, sku: "demo-bread", displayName: "Demo bread" });
@@ -197,9 +209,16 @@ describe("shopping request screens", () => {
 		const remove = screen.getByRole("button", { name: "Remove item: Demo bread" });
 		fireEvent.click(remove);
 		await waitFor(() => expect(fake.remove).toHaveBeenCalledOnce());
-		expect(remove).toHaveAttribute("aria-busy", "true");
-		expect(remove).toHaveTextContent(requestsCopy.managerRemoving);
+		expect(remove).toBeEnabled();
+		expect(remove).not.toHaveAttribute("aria-busy");
+		expect(remove).toHaveTextContent(requestsCopy.remove);
+		expect(screen.getByText(requestsCopy.managerRemoving)).toBeInTheDocument();
 		for (const save of screen.getAllByRole("button", { name: "Save quantity" })) expect(save).not.toHaveAttribute("aria-busy");
+		fireEvent.click(remove);
+		fireEvent.click(screen.getAllByRole("button", { name: requestsCopy.save })[0]);
+		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusy);
+		expect(fake.remove).toHaveBeenCalledOnce();
+		expect(fake.update).not.toHaveBeenCalled();
 	});
 	it("preserves a failed quantity edit and offers retry without a success toast", async () => {
 		fake.update.mockRejectedValue(new Error("Connection interrupted"));
