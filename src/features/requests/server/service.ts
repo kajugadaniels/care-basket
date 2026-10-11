@@ -74,8 +74,10 @@ export async function getFamilyRequest(actor: AdultActor, id: string): Promise<M
 	return { id: row.id, status: row.status, submittedAt: row.submittedAt.toISOString(), revision: row.revision,
 		itemCount: row.basket.items.length, editable: row.status === "PENDING_REVIEW" && row.basket.lockedAt === null,
 		displayName: row.profile.displayName, inputText: row.inputText, subtotal: formatMoney(row.basket.subtotalMinor, currency),
+		currency, subtotalMinor: row.basket.subtotalMinor,
 		budget: row.budgetMinor == null ? null : formatMoney(row.budgetMinor, "USD"),
 		items: row.basket.items.map((item) => ({ ...item.product, id: item.id, quantity: item.quantity,
+			unitPriceMinor: item.unitPriceMinor,
 			unitPrice: formatMoney(item.unitPriceMinor, currency), lineTotal: formatMoney(item.quantity * item.unitPriceMinor, currency),
 			origin: item.origin, isSubstitute: item.isSubstitute, substitutionNote: item.substitutionNote })) };
 }
