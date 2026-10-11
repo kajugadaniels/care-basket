@@ -16,7 +16,7 @@ import { aiPreferenceSchema, textRequestSchema } from "../schemas";
 import type { Proposal } from "../types";
 import { AI_CONSENT_VERSION, readAiPreference, readAssistantCatalog, readAssistantProfile, readProviderContext, writeAiPreference } from "./repository";
 import { matchKeywords } from "./keyword-matcher";
-import { groundInterpretation } from "./grounding";
+import { groundInterpretation, type GroundedProposal } from "./grounding";
 import { fitBudget } from "./budget";
 import { assistantCopy } from "../copy";
 
@@ -37,7 +37,7 @@ export async function enforceAssistantLimits(actor: DeviceActor) {
 	await enforceRateLimit(`ai:device:${actor.deviceId}`, 30, 60 * 60_000);
 	await enforceRateLimit(`ai:family:${actor.familyId}`, 200, 24 * 60 * 60_000);
 }
-export async function interpretShopping(actor: DeviceActor, request: InterpretInput["request"], voiceRateLimited = false): Promise<Proposal> {
+export async function interpretShopping(actor: DeviceActor, request: InterpretInput["request"], voiceRateLimited = false): Promise<Proposal & GroundedProposal> {
 	const deadline = Date.now() + 25_000;
 	const availability = await assistantAvailability(actor);
 	if (request.kind === "audio") await requireVoicePermission(actor);
@@ -69,7 +69,7 @@ export async function interpretShopping(actor: DeviceActor, request: InterpretIn
 	const budgetMinor = !availability.child && cents !== null && cents >= 100 && cents <= 50_000 ? cents : null;
 	const items = budgetMinor === null ? grounded.items : fitBudget(grounded.items, currentCatalog, budgetMinor,
 		new Set(raw.items.filter((item) => item.priority === "optional").map((item) => item.sku ?? ""))).items;
-	const proposal: Proposal = { ...grounded, items, inputMode: request.kind === "audio" ? "VOICE" : "TEXT",
+	const proposal: Proposal & GroundedProposal = { ...grounded, items, inputMode: request.kind === "audio" ? "VOICE" : "TEXT",
 		inputText: request.kind === "text" ? request.text : raw.transcript!, budgetMinor, local };
 	const proof = signShoppingProposal(actor, { inputMode: proposal.inputMode, inputText: proposal.inputText,
 		items: [...items, ...grounded.questions.flatMap((question) => question.options)].map(({ sku, origin, isSubstitute, substitutionNote }) =>
