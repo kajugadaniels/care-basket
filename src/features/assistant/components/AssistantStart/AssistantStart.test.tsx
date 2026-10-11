@@ -76,7 +76,11 @@ describe("assistant entry", () => {
 		const input = screen.getByRole("textbox", { name: copy.prompt });
 		fireEvent.change(input, { target: { value: "milk" } });
 		fireEvent.click(screen.getByRole("button", { name: copy.continue }));
-		expect(await screen.findByRole("alert")).toHaveFocus();
+		const alert = await screen.findByRole("alert");
+		await waitFor(() => {
+			expect(alert).toHaveFocus();
+			expect(input).toBeEnabled();
+		});
 		expect(input).toHaveValue("milk");
 		expect(fake.text).toHaveBeenCalledWith({ text: "milk" });
 	});
