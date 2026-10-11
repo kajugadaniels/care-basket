@@ -1,5 +1,5 @@
-import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 
 export default function AssistantLoading() {
-	return <ShopSkeleton variant="assistant" />;
+	return <ShopLoading />;
 }
