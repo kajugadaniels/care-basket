@@ -2,14 +2,13 @@ import { InformationCircleIcon, ShoppingBasket01Icon } from "@hugeicons/core-fre
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { cx } from "@/lib/class-names";
-import { ProductSelection } from "@/features/requests/components/DraftProvider/ProductSelection";
 import { DraftSummary } from "@/features/requests/components/DraftProvider/DraftSummary";
 import { requestsCopy } from "@/features/requests/copy";
 import { CATEGORY_ICONS } from "../../category-icons";
 import { catalogCopy } from "../../copy";
 import type { CatalogFilters, CatalogPage, CatalogProductDto } from "../../types";
 import { CatalogToolbar } from "../ManagerCatalog/CatalogToolbar";
-import { ProductCard } from "../ProductCard/ProductCard";
+import { RequesterProductFeed } from "./RequesterProductFeed";
 import { catalogHref } from "./catalog-href";
 import styles from "./CatalogBrowser.module.css";
 
@@ -25,7 +24,7 @@ const BASE = "/shop/products";
 // Same catalog panel as the manager area, without prices or manager-only data.
 export function CatalogBrowser({ filters, result, selectable = false, child = false }: Props) {
 	const hasFilters = Boolean(filters.q || filters.category);
-	const hasPagination = Boolean(result.nextCursor || result.previousCursor || filters.cursor || filters.before);
+	const hasPagination = Boolean(result.previousCursor || filters.cursor || filters.before);
 
 	return (
 		<div className={cx(styles.page, styles.requester)}>
@@ -42,7 +41,6 @@ export function CatalogBrowser({ filters, result, selectable = false, child = fa
 
 					<div className={styles.resultsBar}>
 						<div className={styles.summary}>
-							<p role="status" className={styles.results}>{catalogCopy.results({ count: result.products.length })}</p>
 							{filters.category ? (
 								<span className={styles.filterChip}>
 									<Icon icon={CATEGORY_ICONS[filters.category]} size={24} />
@@ -54,11 +52,7 @@ export function CatalogBrowser({ filters, result, selectable = false, child = fa
 					</div>
 
 					{result.products.length ? (
-						<ul className={styles.grid} aria-label={catalogCopy.requesterTitle}>
-							{result.products.map((product) => <li key={product.sku}>
-								{selectable ? <ProductSelection product={product}><ProductCard product={product} /></ProductSelection> : <ProductCard product={product} />}
-							</li>)}
-						</ul>
+						<RequesterProductFeed key={catalogHref(BASE, filters)} filters={filters} initial={result} selectable={selectable} />
 					) : (
 						<div className={styles.empty}>
 							<span className={styles.emptyIcon}><Icon icon={ShoppingBasket01Icon} size={32} /></span>
@@ -74,7 +68,6 @@ export function CatalogBrowser({ filters, result, selectable = false, child = fa
 							) : filters.cursor || filters.before ? (
 								<ActionLink href={catalogHref(BASE, { ...filters, cursor: undefined, before: undefined })} variant="secondary" size="lg">{catalogCopy.first}</ActionLink>
 							) : null}
-							{result.nextCursor ? <ActionLink href={catalogHref(BASE, { ...filters, before: undefined, cursor: result.nextCursor })} size="lg">{catalogCopy.more}</ActionLink> : null}
 						</nav>
 					) : null}
 				</div>
