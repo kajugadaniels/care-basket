@@ -20,16 +20,18 @@ async function acquireRevision(tx: Prisma.TransactionClient, actor: Actor, reque
 		where: { ...ownedRequest(actor, requestId), revision, status: "PENDING_REVIEW", basket: { lockedAt: null } },
 		data: { ...data, revision: { increment: 1 } },
 	});
-	if (updated.count !== 1) throw new AppError("CONFLICT");
+	if (updated.count !== 1) {
+		// Only the failure path needs an existence read; keep it family/profile-scoped.
+		const request = await tx.shoppingRequest.findFirst({
+			where: ownedRequest(actor, requestId), select: { id: true },
+		});
+		throw new AppError(request ? "CONFLICT" : "NOT_FOUND");
+	}
 }
 
 export async function editRequestItem(actor: AdultActor, input: UpdateRequestItemInput | RemoveRequestItemInput) {
 	try {
 		return await getDb().$transaction(async (tx) => {
-			const request = await tx.shoppingRequest.findFirst({
-				where: ownedRequest(actor, input.requestId), select: { id: true },
-			});
-			if (!request) throw new AppError("NOT_FOUND");
 			// Conditional update obtains the request row lock before reading basket contents.
 			// A simultaneous edit/cancel/decline cannot mutate using the old revision.
 			await acquireRevision(tx, actor, input.requestId, input.revision);
