@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
+import { CheckmarkCircle02Icon, ShoppingBasket01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/Button/Button";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
@@ -11,6 +11,7 @@ import { useDraft } from "../DraftProvider/DraftProvider";
 import { QuantityControl } from "../RequestUi/QuantityControl";
 import { RequestItem } from "../RequestUi/RequestItem";
 import styles from "../RequestUi/RequestUi.module.css";
+import basketStyles from "./BasketReview.module.css";
 
 export function BasketReview() {
 	const { draft, locked, change, begin, finish } = useDraft();
@@ -49,12 +50,12 @@ export function BasketReview() {
 		<header className={styles.header}>
 			<div className={styles.pageHeading}>
 				<h1>{requestsCopy.basketTitle}</h1>
-				<p className={styles.muted}>{requestsCopy.basketIntro}</p>
+				{draft.items.length > 0 ? <p className={styles.muted}>{requestsCopy.basketIntro}</p> : null}
 			</div>
-			<ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink>
+			{draft.items.length > 0 ? <ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink> : null}
 		</header>
 		{error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
-		{draft.items.length ? <div className={styles.basketLayout}>
+		{draft.items.length > 0 ? <div className={styles.basketLayout}>
 			<ul className={styles.list} aria-label={requestsCopy.listItems}>{draft.items.map((item) => <li key={item.sku} className={styles.panel}>
 				<RequestItem product={item}>
 					{item.origin === "SUGGESTED" ? <p>{requestsCopy.origins.SUGGESTED}</p> : null}
@@ -73,8 +74,20 @@ export function BasketReview() {
 				<Button size="lg" loading={pending || locked} onClick={send}>{pending || locked ? requestsCopy.sending : requestsCopy.send}</Button>
 				<Button size="lg" variant="secondary" disabled={locked} onClick={() => change({ type: "clear" })}>{requestsCopy.clear}</Button>
 			</aside>
-		</div> : <p className={styles.panel}>{requestsCopy.emptyBasket}</p>}
+		</div> : (
+			<section className={basketStyles.empty} aria-labelledby="empty-shopping-list-title">
+				<span className={basketStyles.emptyIcon}>
+					<Icon icon={ShoppingBasket01Icon} size={48} />
+				</span>
+				<div className={basketStyles.emptyCopy}>
+					<h2 id="empty-shopping-list-title">{requestsCopy.emptyBasket}</h2>
+					<p>{requestsCopy.emptyBasketHelp}</p>
+				</div>
+				<ActionLink href="/shop/products" size="lg" className={basketStyles.emptyAction}>
+					{requestsCopy.emptyBasketBrowse}
+				</ActionLink>
+			</section>
+		)}
 		<p role="status">{pending || locked ? requestsCopy.sending : ""}</p>
-		<p className={styles.muted}>{requestsCopy.draftNotice}</p>
 	</div>;
 }
