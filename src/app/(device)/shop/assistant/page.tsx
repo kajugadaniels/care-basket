@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
-import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 import { getShopHome } from "@/features/devices/server/service";
 import { AssistantStart } from "@/features/assistant/components/AssistantStart/AssistantStart";
 import { assistantAvailability } from "@/features/assistant/server/service";
@@ -30,7 +30,7 @@ async function AssistantContent() {
 
 export default function AssistantPage() {
 	return (
-		<Suspense fallback={<ShopSkeleton variant="assistant" />}>
+		<Suspense fallback={<ShopLoading />}>
 			<AssistantContent />
 		</Suspense>
 	);
