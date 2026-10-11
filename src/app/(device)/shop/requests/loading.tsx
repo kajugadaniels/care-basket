@@ -1,5 +1,6 @@
-import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
+import { requestsCopy } from "@/features/requests/copy";
 
 export default function HistoryLoading() {
-	return <ShopSkeleton variant="history" />;
+	return <ShopLoading label={requestsCopy.loading} />;
 }
