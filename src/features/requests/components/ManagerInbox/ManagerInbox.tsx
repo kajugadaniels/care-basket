@@ -1,5 +1,5 @@
 import Form from "next/form";
-import { FilterHorizontalIcon } from "@hugeicons/core-free-icons";
+import { ArrowDown01Icon, FilterHorizontalIcon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
@@ -23,12 +23,21 @@ export function ManagerInbox({ result, status }: ManagerInboxProps) {
 						<Icon icon={FilterHorizontalIcon} size={20} />
 						{copy.statusFilter}
 					</label>
-					<select key={status ?? ""} id="request-status" name="status" defaultValue={status ?? ""}>
-						<option value="">{copy.allStatuses}</option>
-						{REQUEST_STATUSES.map((value) => (
-							<option key={value} value={value}>{copy.statuses[value]}</option>
-						))}
-					</select>
+					<div className={styles.control}>
+						<select
+							key={status ?? ""}
+							id="request-status"
+							name="status"
+							defaultValue={status ?? ""}
+							className={styles.select}
+						>
+							<option value="">{copy.allStatuses}</option>
+							{REQUEST_STATUSES.map((value) => (
+								<option key={value} value={value}>{copy.statuses[value]}</option>
+							))}
+						</select>
+						<Icon icon={ArrowDown01Icon} size={20} className={styles.trailingIcon} />
+					</div>
 				</div>
 				<Button type="submit">{copy.applyFilter}</Button>
 				{status ? (
