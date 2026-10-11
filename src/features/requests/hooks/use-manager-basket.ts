@@ -16,13 +16,20 @@ export function useManagerBasket(request: ManagerDetailDto) {
 	const sequence = useRef(0);
 	const sound = useToastSound();
 
-	function notify(kind: "success" | "error", message: string) {
-		setNotice({ id: ++sequence.current, kind, title: kind === "success" ? copy.toastSuccess : copy.toastError, message });
+	function notify(kind: "success" | "error", message: string, title: string = kind === "success" ? copy.toastSuccess : copy.toastError) {
+		setNotice({ id: ++sequence.current, kind, title, message });
 		sound.play(kind);
 	}
 
+	function blockIfBusy() {
+		if (!mutation.isRunning()) return false;
+		sound.prepare();
+		notify("error", copy.actionBusy, copy.actionBusyTitle);
+		return true;
+	}
+
 	function execute(action: () => Promise<RequestMutationResult>, message: string, key: string, edit?: QuantityPreview) {
-		if (mutation.pending) return;
+		if (blockIfBusy()) return;
 		sound.prepare();
 		mutation.run(async () => {
 			setNotice(null);
@@ -48,5 +55,5 @@ export function useManagerBasket(request: ManagerDetailDto) {
 			copy.managerItemRemoved({ name: item.displayName }), `remove:${item.id}`);
 	}
 
-	return { ...mutation, preview, notice, dismiss: () => setNotice(null), sound, save, remove };
+	return { ...mutation, preview, notice, dismiss: () => setNotice(null), sound, save, remove, blockIfBusy };
 }
