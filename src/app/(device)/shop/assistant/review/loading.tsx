@@ -1,5 +1,6 @@
-import { ProposalReviewSkeleton } from "@/features/assistant/components/ProposalReview/ProposalReviewSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
+import { assistantCopy } from "@/features/assistant/copy";
 
 export default function ReviewLoading() {
-	return <ProposalReviewSkeleton />;
+	return <ShopLoading label={assistantCopy.reviewLoading} />;
 }
