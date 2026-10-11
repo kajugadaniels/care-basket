@@ -48,7 +48,7 @@ The endpoint targets exclude browser latency and external providers such as Cler
 ## 4. Server-first rendering
 
 - Pages and layouts are Server Components; data is fetched on the server close to the database.
-- With Cache Components, static parts of a page render into the static shell; request-time parts stream inside `<Suspense>` with layout-matching fallbacks ([architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project)).
+- With Cache Components, static parts of a page render into the static shell; request-time parts stream inside `<Suspense>` with layout-matching fallbacks or the reserved-space manager loading pattern ([design.md §7](design.md#7-screen-states), [architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project)).
 - Fetch independent data in parallel (`Promise.all`), not in sequence.
 - Never fetch our own API from Server Components.
 
@@ -101,7 +101,7 @@ The endpoint targets exclude browser latency and external providers such as Cler
 
 ## 10. Perceived performance and stable layout
 
-- Every loading state uses a skeleton or reserved space with the final layout ([design.md § 7](design.md#7-screen-states)).
+- Every loading state uses a skeleton or reserved space with the final layout, except manager routes, which follow the shared non-skeleton pattern in [design.md § 7](design.md#7-screen-states).
 - Buttons show immediate pending feedback on press.
 - Item-scoped feedback and preservation of unrelated edits follow [design.md §6.1](design.md#61-ux-craftsmanship-and-feedback-developer-requirement-2026-10-12). Do not append a client `router.refresh()` when the Server Action already revalidates the current path and returns its updated UI; verify the installed Next.js behavior and retain regression tests for that invalidation contract.
 - Use optimistic UI only for low-risk, reversible actions (for example, changing a quantity in a draft basket). Never for payment or status changes.
@@ -136,7 +136,7 @@ The endpoint targets exclude browser latency and external providers such as Cler
 
 ## 14. Acceptance criteria
 
-- [ ] New pages render on the server with Suspense fallbacks that match the final layout.
+- [ ] New pages render on the server with layout-matching Suspense fallbacks or the approved reserved-space manager loader.
 - [ ] New or changed endpoints meet the applicable §1 budget with warm and cold measurements supplied by the developer.
 - [ ] Independent authorized work runs in parallel; dependent work remains explicit.
 - [ ] DTOs, query projections, list sizes, response sizes, and query counts are bounded.
