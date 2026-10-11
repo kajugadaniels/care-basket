@@ -58,14 +58,16 @@
 	gap: var(--space-5);
 }
 
-.panel {
+.results {
 	display: grid;
-	gap: var(--space-4);
+	gap: var(--space-2);
 	min-inline-size: 0;
-	padding: var(--space-4);
-	border: 1px solid var(--color-border);
-	border-radius: var(--radius-lg);
-	background: var(--color-surface);
+}
+
+.unrecognized {
+	color: var(--color-danger);
+	font-size: var(--text-md);
+	overflow-wrap: anywhere;
 }
 
 .transcript {
@@ -189,9 +191,6 @@
 		inline-size: auto;
 	}
 
-	.panel {
-		padding: var(--space-5);
-	}
 	.grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
