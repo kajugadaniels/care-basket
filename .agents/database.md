@@ -3,7 +3,7 @@
 **Purpose:** Define how CareBasket models, accesses, migrates, and retains data in Neon PostgreSQL using Prisma ORM 7.
 **Applies to:** Schema changes, queries, repositories, seed data, migrations.
 **Related:** [catalog.md](catalog.md), [security.md § 3](security.md#3-family-isolation-and-object-ownership), [privacy.md § 7](privacy.md#7-deletion-and-retention), [payments.md](payments.md), [authentication.md](authentication.md)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -165,7 +165,7 @@ RateLimitCounter  { key VarChar(128); windowStart DateTime; count Int; expiresAt
 Design notes:
 
 - **ShoppingRequest vs. ShoppingBasket:** the request holds what was asked and its workflow; the basket holds priced items. They are 1:1 in the MVP. The basket is editable during review and immutable while `lockedAt` is set, from checkout start until the checkout is cancelled or the payment is denied ([payments.md § 3](payments.md#3-payment-workflow)).
-- **No draft table:** before submission, the AI proposal lives in the requester's client state. On submit, the server re-validates SKUs and quantities and creates the request, basket, and items in one transaction.
+- **No priced draft basket:** the shopping list stays in client state until submission. The approved `AssistantReview` exception stores one bounded encrypted proposal per device, expiring within 30 minutes; see [ai.md § 5.3](ai.md#53-reloadable-private-reviews). Its opaque encrypted snapshot is not a queryable business record. Ownership and expiry are typed columns, with cascading family/profile/device relations and a unique device key. On **Send**, the server still re-validates SKUs and quantities and creates the request, basket, and items in one transaction.
 - **Request `status` vs. `Payment.status`:** the request becomes `PAID` only inside the same transaction that records a verified capture. `fulfillmentStatus` is separate and simulated; it never changes because of payment events.
 - **No email or payer details** are stored. Clerk holds adult emails; PayPal holds payer data.
 - **Two kinds of price, never mixed:** `DemoMerchantPrice` is the only checkout price; `PriceObservation` is reference data from Open Prices and is never read for totals ([catalog.md § 6](catalog.md#6-observed-prices-vs-demo-merchant-prices)).
