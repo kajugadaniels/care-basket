@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { LoadMore } from "@/components/ui/LoadMore/LoadMore";
 import { usePagedList } from "@/components/ui/LoadMore/use-paged-list";
 import { ProductCard } from "@/features/catalog/components/ProductCard/ProductCard";
@@ -69,9 +68,14 @@ export function ProposalReview({ proposal }: Props) {
 
 	return <div className={styles.page}>
 		{proposal.inputMode === "VOICE" ? <p className={styles.transcript}>{copy.transcript} {proposal.inputText}</p> : null}
-		{feed.items.length ? <p role="status" aria-live="polite" aria-atomic="true" className={styles.muted}>
-			{catalogCopy.results({ count: feed.items.length })}
-		</p> : null}
+		{feed.items.length || proposal.unrecognized.length ? <div className={styles.results}>
+			<p role="status" aria-live="polite" aria-atomic="true" className={styles.muted}>
+				{catalogCopy.results({ count: feed.items.length })}
+			</p>
+			{proposal.unrecognized.length ? <p className={styles.unrecognized}>
+				{copy.unrecognized({ phrases: proposal.unrecognized })}
+			</p> : null}
+		</div> : null}
 		{(["REQUESTED", "SUGGESTED"] as const).map((origin) => feed.items.some((item) => item.origin === origin) ? <section key={origin} className={styles.group}>
 			<h2>{origin === "REQUESTED" ? copy.requested : copy.suggested}</h2>
 			<p className={styles.muted}>{origin === "REQUESTED" ? copy.selectedHelp : copy.suggestionHelp}</p>
@@ -80,9 +84,6 @@ export function ProposalReview({ proposal }: Props) {
 			</li>)}</ul>
 		</section> : null)}
 		{feed.items.length || feed.hasMore ? <LoadMore {...feed} onLoad={feed.loadMore} labels={catalogCopy.feed} /> : null}
-		{proposal.unrecognized.length ? <section className={styles.panel}><h2>{copy.uncaught}</h2>
-			<ul>{proposal.unrecognized.map((phrase, index) => <li key={index}>{phrase}</li>)}</ul>
-			<ActionLink href="/shop/products" size="lg" variant="secondary">{copy.pictures}</ActionLink></section> : null}
 		<p role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
 		{error ? <p role="alert" ref={errorRef} tabIndex={-1} className={styles.error}>{error}</p> : null}
 	</div>;
