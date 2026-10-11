@@ -8,14 +8,20 @@ import type { DeviceActor } from "./device-policy";
 const claimItemSchema = z.strictObject({ sku: z.string().max(60), origin: z.enum(["REQUESTED", "SUGGESTED"]),
 	isSubstitute: z.boolean(), substitutionNote: z.string().max(120).nullable() });
 const claimSchema = z.strictObject({ deviceId: z.uuid(), familyId: z.uuid(), profileId: z.uuid(), expiresAt: z.number().int(),
-	inputMode: z.enum(["TEXT", "VOICE"]), inputText: z.string().max(1000), items: z.array(claimItemSchema).max(42) });
+	inputMode: z.enum(["TEXT", "VOICE"]), inputText: z.string().max(1000), items: z.array(claimItemSchema).max(42),
+	reviewDigest: z.string().regex(/^[a-f0-9]{64}$/).optional() });
 type Claim = z.infer<typeof claimSchema>;
 function signature(payload: string) {
 	return createHmac("sha256", getDeviceEnv().DEVICE_AUTH_SECRET).update(`shopping-proposal:v1:${payload}`).digest();
 }
-export function signShoppingProposal(actor: DeviceActor, input: Pick<Claim, "inputMode" | "inputText" | "items">) {
+export function signShoppingProposal(actor: DeviceActor, input: Pick<Claim, "inputMode" | "inputText" | "items" | "reviewDigest">,
+	expiresAt = Date.now() + 30 * 60_000) {
+	// Paging may derive a choice proof, but never renew the original review's lifetime.
+	if (!Number.isInteger(expiresAt) || expiresAt <= Date.now() || expiresAt > Date.now() + 30 * 60_000) {
+		throw new AppError("VALIDATION_FAILED");
+	}
 	const claim = claimSchema.parse({ ...input, deviceId: actor.deviceId, familyId: actor.familyId,
-		profileId: actor.profileId, expiresAt: Date.now() + 30 * 60_000 });
+		profileId: actor.profileId, expiresAt });
 	const payload = Buffer.from(JSON.stringify(claim)).toString("base64url");
 	const proof = `${payload}.${signature(payload).toString("base64url")}`;
 	if (proof.length > 16_000) throw new AppError("AI_UNAVAILABLE");
