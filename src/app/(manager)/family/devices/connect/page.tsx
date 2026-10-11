@@ -4,7 +4,7 @@ import { z } from "zod";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { ApprovalForm } from "@/features/devices/components/ApprovalForm/ApprovalForm";
-import { ApprovalFormSkeleton } from "@/features/devices/components/ApprovalForm/ApprovalFormSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { devicesCopy } from "@/features/devices/copy";
 import { getManagedProfile, listManagedProfiles } from "@/features/profiles/server/service";
 import { requireAdult } from "@/server/auth/require-adult";
@@ -28,7 +28,7 @@ export default function DeviceConnectPage({ searchParams }: DeviceConnectPagePro
 				description={devicesCopy.approvalDescription}
 				back={{ href: "/family/devices", label: devicesCopy.backDevices }}
 			/>
-			<Suspense fallback={<ApprovalFormSkeleton />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<DeviceApproval searchParams={searchParams} />
 			</Suspense>
 		</div>
