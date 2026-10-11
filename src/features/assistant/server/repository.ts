@@ -39,7 +39,7 @@ export async function readAssistantCatalog(child: boolean, filter: { text?: stri
 		where: { isActive: true, archivedAt: null, ...(child ? { isChildSuitable: true } : {}),
 			...(filter.skus ? { sku: { in: filter.skus } } : {}),
 			demoPrices: { some: { currency: "USD", approvedAt: { lte: new Date() }, priceMinor: { gt: 0, lte: 50_000 } } } },
-		orderBy: { id: "asc" }, take: 201,
+		orderBy: { id: "asc" }, take: filter.skus ? Math.min(filter.skus.length, 200) : 201,
 		select: { sku: true, displayName: true, category: true, sizeLabel: true, imagePath: true,
 			variantGroup: true, synonyms: true, netQuantity: true, netQuantityUnit: true,
 			demoPrices: { where: { currency: "USD", approvedAt: { lte: new Date() }, priceMinor: { gt: 0, lte: 50_000 } },
