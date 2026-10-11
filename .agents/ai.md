@@ -3,7 +3,7 @@
 **Purpose:** Define what CareBasket's AI does and must never do, the full request workflow and its states, how outputs are grounded in the catalog and validated, and how voice, clarification, budgets, and audiences are handled.
 **Applies to:** Anything touching AI, transcription, catalog matching, suggestions, budgets, or voice capture.
 **Related:** [catalog.md](catalog.md), [privacy.md](privacy.md), [security.md](security.md), [accessibility.md § 7](accessibility.md#7-voice-audio-and-feedback), [api.md § 3](api.md#3-route-handlers), [testing.md](testing.md)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -87,14 +87,23 @@ type InterpretInput = {
 | `idle` | Speak / Type / Pictures | `listening`, `typing`, picture browsing |
 | `listening` | Listening indicator, timer, Stop | `interpreting`, `idle` (cancel) |
 | `typing` | Large text field, Continue | `interpreting` |
-| `interpreting` | "Understanding your list…"; after 6 seconds also "Still working…" and **Use pictures instead** | `reviewing`, `clarifying`, `fallback` |
+| `interpreting` | Busy submit button with its original label and spinner; screen-reader progress announcement; after 6 seconds "Still working…" | `reviewing`, `clarifying`, `fallback` |
 | `clarifying` | One short question with 2–4 picture options and "None of these" | next clarification, `reviewing` |
 | `reviewing` | Basket cards, suggestions, edit controls, Say more, Continue | `confirming`, `listening`, `typing` |
 | `confirming` | Final list and **Send to {manager}** | `submitted`, `reviewing` |
 | `submitted` | "Sent to Anna. She'll look at it soon." | — |
 | `fallback` | Calm message, typed text kept, picture browsing open | `reviewing` |
 
-The draft lives in client state until submission; nothing is stored server-side before **Send**.
+The shopping-list draft lives in client state until **Send**. A developer-approved exception stores one encrypted, short-lived interpretation per authorized device so review can survive reloads. This is not a submitted request or priced basket.
+
+### 5.3 Reloadable private reviews
+
+- Text/voice submission may save a minimal, server-generated proposal snapshot in `AssistantReview`. Saving is limited to 30 reviews per device per hour, including deterministic matches. New interpretations replace the previous review for that device.
+- The URL contains only an opaque review ID, never input text, transcripts, signed proofs, session tokens, quantities, or serialized proposals. IDs are lookup keys, not access credentials.
+- Every read authenticates the device and scopes to its family, profile, and device. No shared caching, public sharing, or provider calls on reload.
+- Reviews expire no later than the original 30-minute signed proof. Reads never extend expiry, re-sign proofs, approve choices, add to the shopping list, or submit requests.
+- Restore labels and images from the current active catalog, preserving child-suitability checks and suggestion/substitution provenance. Invalid, expired, or inaccessible IDs show the same recovery state.
+- Review data is encrypted at rest; retention and deletion follow [privacy.md § 7](privacy.md#7-deletion-and-retention). Nothing is persisted in browser storage. Voice audio is never stored.
 
 ## 6. Catalog grounding and matching
 
@@ -268,7 +277,7 @@ Follow [privacy.md § 5](privacy.md#5-ai-and-voice-data): no audio retention, no
 - Silently removing requested items to fit a budget
 - AI-triggered side effects (writes, payments, messages)
 - Voice-only flows; auto-starting recording; chat-style long paragraphs
-- Storing or logging audio, prompts, or transcripts outside the request record
+- Storing or logging audio or prompts; storing transcripts outside a request record or the narrowly scoped encrypted review in §5.3
 - Hard-coded model IDs or provider calls outside `src/lib/ai/`
 
 ## 16. Acceptance criteria
