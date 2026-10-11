@@ -34,6 +34,6 @@ describe("protected requester catalog entry", () => {
 		mocks.device.mockResolvedValue(actor);
 		mocks.list.mockResolvedValue({ products: [], nextCursor: null });
 		await content(Promise.resolve({ category: "PANTRY", q: "rice" }));
-		expect(mocks.list).toHaveBeenLastCalledWith(actor, { category: "PANTRY", q: "rice", limit: 24 });
+		expect(mocks.list).toHaveBeenLastCalledWith(actor, { category: "PANTRY", q: "rice", limit: 12 });
 	});
 });
