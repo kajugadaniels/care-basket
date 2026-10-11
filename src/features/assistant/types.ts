@@ -9,6 +9,7 @@ export type ProposalItem = CatalogProductDto & {
 };
 export type Proposal = {
 	reviewId?: string;
+	nextOffset?: number | null;
 	items: ProposalItem[]; questions: { question: string; options: ProposalItem[] }[];
 	unrecognized: string[]; inputMode: "TEXT" | "VOICE"; inputText: string;
 	budgetMinor: number | null; local: boolean; sourceProof?: string;
