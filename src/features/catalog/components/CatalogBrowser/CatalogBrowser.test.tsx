@@ -1,5 +1,8 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
+import { requestsCopy } from "@/features/requests/copy";
+import { catalogCopy } from "../../copy";
 import { CatalogBrowser } from "./CatalogBrowser";
 import { CatalogSkeleton } from "./CatalogSkeleton";
 import { CatalogError } from "./CatalogError";
@@ -30,6 +33,30 @@ describe("catalog browsing", () => {
 		expect(screen.queryByRole("link", { name: "Home" })).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /buy|pay|add|send/i })).not.toBeInTheDocument();
 	});
+	it("puts search before the workspace and removes the family-check notice", () => {
+		render(<DraftProvider><CatalogBrowser selectable filters={{ q: "", limit: 12 }}
+			result={{ products: [product], nextCursor: null }} /></DraftProvider>);
+		const search = screen.getByRole("search");
+		const preview = screen.getByRole("complementary", { name: requestsCopy.detailTitle });
+		expect(search.compareDocumentPosition(preview) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		expect(within(preview).getByText(requestsCopy.draftEmptyHelp)).toBeInTheDocument();
+		expect(screen.queryByText(requestsCopy.sendHelp)).not.toBeInTheDocument();
+	});
+	it("previews selected products and keeps their quantities synchronized with the cards", () => {
+		const picturedProduct = { ...product, imagePath: "/products/example-rice.jpg" };
+		render(<DraftProvider><CatalogBrowser selectable filters={{ q: "", limit: 12 }}
+			result={{ products: [picturedProduct], nextCursor: null }} /></DraftProvider>);
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.add }));
+		const preview = within(screen.getByRole("complementary", { name: requestsCopy.detailTitle }));
+		expect(preview.getByText(product.displayName)).toBeInTheDocument();
+		expect(preview.getByRole("img", { name: "Example Rice, 1 lb" })).toBeInTheDocument();
+		expect(preview.getByRole("definition")).toHaveTextContent("1");
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.increase(product.displayName) }));
+		expect(preview.getByRole("definition")).toHaveTextContent("2");
+		fireEvent.click(screen.getByRole("button", { name: `${requestsCopy.remove}: ${product.displayName}` }));
+		expect(preview.queryByRole("list")).not.toBeInTheDocument();
+		expect(preview.getByText(requestsCopy.draftEmptyHelp)).toBeInTheDocument();
+	});
 	it("preserves search text and category, with labelled input and explicit search submit", () => {
 		render(<CatalogBrowser filters={{ q: "rice", category: "PANTRY", limit: 24 }} result={{ products: [product], nextCursor: null }} />);
 		expect(screen.getByRole("searchbox", { name: "Find groceries" })).toHaveValue("rice");
@@ -39,6 +66,10 @@ describe("catalog browsing", () => {
 		expect(within(form).getByRole("combobox", { name: "Choose a category" })).toHaveValue("PANTRY");
 		expect(within(form).getByRole("option", { name: "Drinks" })).toHaveValue("BEVERAGES");
 		expect(form.querySelector('[name="cursor"]')).toBeNull();
+		const activeFilters = screen.getByRole("list", { name: catalogCopy.activeFilters });
+		expect(within(activeFilters).getAllByRole("listitem")).toHaveLength(2);
+		expect(within(activeFilters).getByText("rice")).toBeInTheDocument();
+		expect(within(activeFilters).getByText(catalogCopy.categories.PANTRY)).toBeInTheDocument();
 	});
 	it("retains filters in bounded pagination and resets the cursor for category changes", () => {
 		render(<CatalogBrowser filters={{ q: "rice", category: "PANTRY", cursor: "old", limit: 24 }} result={{ products: [product], nextCursor: "next" }} />);
