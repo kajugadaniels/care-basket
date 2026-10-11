@@ -105,6 +105,7 @@ The endpoint targets exclude browser latency and external providers such as Cler
 - Buttons show immediate pending feedback on press.
 - Item-scoped feedback and preservation of unrelated edits follow [design.md §6.1](design.md#61-ux-craftsmanship-and-feedback-developer-requirement-2026-10-12). Do not append a client `router.refresh()` when the Server Action already revalidates the current path and returns its updated UI; verify the installed Next.js behavior and retain regression tests for that invalidation contract.
 - Use optimistic UI only for low-risk, reversible actions (for example, changing a quantity in a draft basket). Never for payment or status changes.
+- Manager quantity saves may show the explicitly provisional snapshot-price preview defined in [design.md §6.1](design.md#61-ux-craftsmanship-and-feedback-developer-requirement-2026-10-12). Server confirmation, revision locking, authoritative totals, and transactional audits remain required; perceived speed never means acknowledging an uncommitted write.
 - Fonts load through `next/font` with `display: 'swap'` and the Latin subset only: DM Sans (preloaded, variable) for the interface, and Atkinson Hyperlegible (`preload: false`) used only for requester reading text, so other screens never download it ([design.md § 3.3](design.md#33-typography)). No other font families.
 
 ## 11. Animation
