@@ -6,7 +6,8 @@ vi.mock("server-only", () => ({}));
 vi.mock("next/navigation", () => ({ unstable_rethrow: vi.fn() }));
 vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
 vi.mock("@/lib/env/server", () => ({ getAppOrigin: () => "https://example.test" }));
-vi.mock("@/features/assistant/server/service", () => ({ requireVoicePermission: fake.permission, enforceAssistantLimits: fake.limit, interpretShopping: fake.interpret }));
+vi.mock("@/features/assistant/server/service", () => ({ requireVoicePermission: fake.permission, enforceAssistantLimits: fake.limit }));
+vi.mock("@/features/assistant/server/saved-review", () => ({ interpretShoppingForReview: fake.interpret }));
 vi.mock("@/features/assistant/server/voice-upload", async (original) => ({ ...await original<typeof import("@/features/assistant/server/voice-upload")>(), readVoiceUpload: fake.read }));
 import { AppError } from "@/server/errors";
 import { RateLimitError } from "@/server/rate-limit/limiter";
@@ -39,9 +40,18 @@ describe("voice endpoint boundaries", () => {
 		fake.read.mockRejectedValue(new AudioUploadError(status));
 		expect((await POST(request())).status).toBe(status); expect(fake.interpret).not.toHaveBeenCalled();
 	});
+	it("returns no-store and Retry-After when the private review quota is exceeded", async () => {
+		fake.interpret.mockRejectedValue(new RateLimitError(120));
+		const response = await POST(request());
+		expect(response.status).toBe(429);
+		expect(response.headers.get("retry-after")).toBe("120");
+		expect(response.headers.get("cache-control")).toBe("no-store");
+	});
 	it("returns no-store proposals and does not apply the same quota twice", async () => {
+		fake.interpret.mockResolvedValue({ items: [], reviewId: "0199a100-0000-7000-8000-000000000007" });
 		const response = await POST(request()); expect(response.status).toBe(200);
 		expect(fake.interpret).toHaveBeenCalledWith(requester, { kind: "audio" }, true);
 		expect(response.headers.get("cache-control")).toBe("no-store");
+		expect(await response.json()).toMatchObject({ data: { reviewId: "0199a100-0000-7000-8000-000000000007" } });
 	});
 });
