@@ -6,7 +6,8 @@ import { RateLimitError } from "@/server/rate-limit/limiter";
 import { logSecurityFailure } from "@/server/logger";
 import { getAppOrigin } from "@/lib/env/server";
 import { assistantCopy } from "@/features/assistant/copy";
-import { enforceAssistantLimits, interpretShopping, requireVoicePermission } from "@/features/assistant/server/service";
+import { enforceAssistantLimits, requireVoicePermission } from "@/features/assistant/server/service";
+import { interpretShoppingForReview } from "@/features/assistant/server/saved-review";
 import { AudioUploadError, readVoiceUpload } from "@/features/assistant/server/voice-upload";
 
 export const maxDuration = 30;
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
 		if (request.headers.get("origin") !== getAppOrigin()) throw new AppError("FORBIDDEN");
 		await enforceAssistantLimits(actor);
 		const audio = await readVoiceUpload(request);
-		return Response.json({ data: await interpretShopping(actor, audio, true) }, { headers });
+		return Response.json({ data: await interpretShoppingForReview(actor, audio, true) }, { headers });
 	} catch (error) {
 		unstable_rethrow(error);
 		const code = error instanceof AppError ? error.code : "INTERNAL";
