@@ -13,7 +13,7 @@ export const catalogCopy = {
 	clear: "Show All",
 	more: "More Groceries",
 	feed: {
-		more: "Load more groceries",
+		automatic: "More groceries load automatically",
 		loading: "Loading more groceries…",
 		retry: "Try loading again",
 		error: "We couldn't load more groceries. Try again.",
