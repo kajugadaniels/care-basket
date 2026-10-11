@@ -33,6 +33,12 @@ export async function purgeDeviceData(familyId: string, now = new Date()) {
     const audits = await tx.auditLog.findMany({ where: { ...pairingScope, createdAt: { lte: new Date(now.getTime() - 180 * day) } },
       select: { id: true }, take: 50, orderBy: { id: "asc" } });
     await tx.auditLog.deleteMany({ where: { ...pairingScope, id: { in: audits.map((a) => a.id) } } });
-    return { devices: devices.length, pairings: pairings.length, counters: counters.length, audits: audits.length };
+		const reviews = await tx.assistantReview.findMany({
+			where: { familyId, expiresAt: { lte: now } }, select: { id: true }, take: 50, orderBy: { id: "asc" },
+		});
+		if (reviews.length) await tx.assistantReview.deleteMany({
+			where: { familyId, expiresAt: { lte: now }, id: { in: reviews.map((review) => review.id) } },
+		});
+    return { devices: devices.length, pairings: pairings.length, counters: counters.length, audits: audits.length, reviews: reviews.length };
   });
 }
