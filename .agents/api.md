@@ -3,7 +3,7 @@
 **Purpose:** Make every server entry point consistent, typed, validated, authorized, and safe to call twice.
 **Applies to:** Every Server Action and Route Handler.
 **Related:** [architecture.md § 4](architecture.md#4-server-actions-and-route-handlers), [security.md](security.md), [payments.md](payments.md), [ai.md](ai.md)
-**Last reviewed:** 2026-10-10
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -103,7 +103,7 @@ Buttons that trigger these show a pending state and ignore repeat presses, but t
 
 - Only for lists that can grow (manager's request history, audit views). Cursor-based: `cursor` (last seen `id`) and `limit` (default 20, maximum 50). Return `nextCursor` or `null`.
 - Requester history screens show a short, fixed list (for example, the five most recent requests) instead of pagination.
-- Narrow exception: `/shop/products` may paginate the growing, reviewed catalog. Use labelled Previous/More links, server-side search and category filters, and mutually exclusive `cursor` (after) or `before` ID boundaries. Catalog pages default to 24 products, maximum 49 plus one lookahead row (at most 50 rows per query). Return `nextCursor` and, when available, `previousCursor`. No infinite scrolling, requester prices, or relaxation of device authentication or child-suitability filtering.
+- Developer-approved exception: `/shop/products` and `/shop/assistant/review` progressively load 12 products per batch near the end of the visible results, with an accessible **Load more** fallback. Stop at exhaustion, pause in hidden tabs, prevent concurrent/repeated cursor requests, and require explicit retry after failure. Preserve search/category filters, existing cards, quantities, list selections and keyboard focus. Catalog reads retain cursor boundaries and one lookahead row; manager pages remain at 24 by default (maximum 49). Private review paging follows [ai.md § 5.3](ai.md#53-reloadable-private-reviews), never repeats interpretation and exposes no input or proofs in URLs. Every subsequent batch authenticates the device and applies child-suitability checks; requester prices remain prohibited.
 
 ## 8. Logging
 
