@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { getFamilyOverview } from "@/features/family/server/service";
 import { ProfileDetails } from "@/features/profiles/components/ProfileDetails/ProfileDetails";
-import { ProfileDetailsSkeleton } from "@/features/profiles/components/ProfileDetails/ProfileDetailsSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { profilesCopy } from "@/features/profiles/copy";
 import { getManagedProfile } from "@/features/profiles/server/service";
 import { requireAdult } from "@/server/auth/require-adult";
@@ -23,7 +23,7 @@ export default function MemberPage({ params }: MemberPageProps) {
 	return (
 		<div className={styles.page}>
 			<PageHeader title={profilesCopy.detailTitle} back={{ href: "/family/members", label: profilesCopy.back }} />
-			<Suspense fallback={<ProfileDetailsSkeleton />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<MemberDetails params={params} />
 			</Suspense>
 		</div>
