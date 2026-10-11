@@ -3,7 +3,7 @@
 **Purpose:** The authoritative specification for where CareBasket's products come from, how U.S. price observations are verified, how source data becomes the curated catalog, how checkout prices differ from observed prices, and what licensing obligations apply.
 **Applies to:** Catalog models, the catalog importer and refresh scripts, product images, demo prices, data attribution, and anything that reads product or price data.
 **Related:** [database.md § 5](database.md#5-planned-models), [ai.md § 6](ai.md#6-catalog-grounding-and-matching), [payments.md § 4](payments.md#4-money-handling), [privacy.md](privacy.md), [security.md § 7](security.md#7-input-validation)
-**Last reviewed:** 2026-10-10
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -96,7 +96,7 @@ Rules:
 | Meaning | A crowdsourced report that someone saw this price at a U.S. store on a date | The price CareBasket Demo Market charges in the Sandbox checkout |
 | Source | Open Prices, U.S.-verified (§5) | Approved by the developer in the curated catalog file |
 | Used for checkout | **Never** | **Always**, and only this |
-| Shown to | Family managers, labelled "Reference price (Open Prices, observed {date})" | Family managers, and requesters only as an estimated total against their own stated budget ([payments.md § 8](payments.md#8-user-facing-states)), always labelled "Demo price" |
+| Shown to | Family managers, labelled "Reference price (Open Prices, observed {date})" | Family managers, and requesters only as an estimated total against their own stated budget; disclosure and manager label rules are owned by [payments.md § 8](payments.md#8-user-facing-states) |
 | Model | `PriceObservation` | `DemoMerchantPrice` |
 
 Deriving a demo price:
