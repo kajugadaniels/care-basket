@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProposalReviewScreen } from "@/features/assistant/components/ProposalReview/ProposalReviewScreen";
-import { ProposalReviewSkeleton } from "@/features/assistant/components/ProposalReview/ProposalReviewSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 import { assistantCopy } from "@/features/assistant/copy";
 import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
 import { requireDevice } from "@/server/auth/require-device";
@@ -22,7 +22,7 @@ async function ReviewContent() {
 
 export default function ReviewPage() {
 	return (
-		<Suspense fallback={<ProposalReviewSkeleton />}>
+		<Suspense fallback={<ShopLoading label={assistantCopy.reviewLoading} />}>
 			<ReviewContent />
 		</Suspense>
 	);
