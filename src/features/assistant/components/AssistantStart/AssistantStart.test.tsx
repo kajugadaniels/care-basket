@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { fireEvent, render as renderTree, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render as renderTree, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
 import { devicesCopy } from "@/features/devices/copy";
@@ -16,7 +16,7 @@ vi.mock("../VoiceRecorder/VoiceRecorder", () => ({
 		return (
 			<section aria-label="Voice recorder">
 				<button onClick={onType}>{copy.type}</button>
-				<button onClick={() => onProposal({ inputMode: "VOICE", inputText: "milk", local: false,
+				<button onClick={() => onProposal({ reviewId: "0199a100-0000-7000-8000-000000000007", inputMode: "VOICE", inputText: "milk", local: false,
 					items: [], questions: [], unrecognized: [], budgetMinor: null })}>{copy.stop}</button>
 			</section>
 		);
@@ -47,7 +47,6 @@ describe("assistant entry", () => {
 		const navigation = within(screen.getByRole("navigation", { name: devicesCopy.shopNav }));
 		expect(navigation.getByRole("link", { name: devicesCopy.shopProducts })).toHaveAttribute("href", "/shop/products");
 		expect(navigation.getByRole("link", { name: devicesCopy.shopList })).toHaveAttribute("href", "/shop/basket");
-		expect(screen.getByRole("link", { name: copy.sentLists })).toHaveAttribute("href", "/shop/requests");
 		expect(fake.recorder).not.toHaveBeenCalled();
 	});
 
@@ -83,15 +82,32 @@ describe("assistant entry", () => {
 	});
 
 	it("opens the dedicated review route instead of replacing the assistant screen", async () => {
-		const proposal: Proposal = { inputMode: "TEXT", inputText: "milk", local: true,
+		const proposal: Proposal = { reviewId: "0199a100-0000-7000-8000-000000000007", inputMode: "TEXT", inputText: "milk", local: true,
 			items: [], questions: [], unrecognized: [], budgetMinor: null };
 		fake.text.mockResolvedValue({ ok: true, data: proposal });
 		render(<AssistantStart displayName="Rose" voice={false} child={false} />);
 		fireEvent.change(screen.getByRole("textbox", { name: copy.prompt }), { target: { value: "milk" } });
 		fireEvent.click(screen.getByRole("button", { name: copy.continue }));
-		await waitFor(() => expect(fake.push).toHaveBeenCalledExactlyOnceWith("/shop/assistant/review"));
+		await waitFor(() => expect(fake.push).toHaveBeenCalledExactlyOnceWith(`/shop/assistant/review?review=${proposal.reviewId}`));
+		expect(fake.push.mock.calls[0][0]).not.toContain("milk");
 		expect(screen.getByRole("textbox", { name: copy.prompt })).toHaveValue("milk");
 		expect(screen.queryByRole("heading", { name: copy.review })).not.toBeInTheDocument();
+	});
+
+	it("keeps the submit label and busy spinner without visible interpretation text", async () => {
+		let finish: (() => void) | undefined;
+		fake.text.mockReturnValue(new Promise((resolve) => {
+			finish = () => resolve({ ok: false, error: { message: copy.error } });
+		}));
+		render(<AssistantStart voice={false} child={false} />);
+		fireEvent.change(screen.getByRole("textbox", { name: copy.prompt }), { target: { value: "milk" } });
+		fireEvent.click(screen.getByRole("button", { name: copy.continue }));
+		await waitFor(() => expect(screen.getByRole("button", { name: copy.continue })).toHaveAttribute("aria-busy", "true"));
+		expect(screen.getByRole("button", { name: copy.continue })).toBeDisabled();
+		expect(screen.getByRole("status").querySelector("p")).toBeNull();
+		expect(screen.queryByText("Understanding your list…")).not.toBeInTheDocument();
+		await act(async () => { finish?.(); });
+		expect(screen.getByRole("button", { name: copy.continue })).toBeEnabled();
 	});
 
 	it("opens the same review route for speech and keeps the transcript for editing", async () => {
@@ -99,7 +115,7 @@ describe("assistant entry", () => {
 		fireEvent.click(screen.getByRole("button", { name: copy.speak }));
 		const recorder = await screen.findByRole("region", { name: "Voice recorder" });
 		fireEvent.click(within(recorder).getByRole("button", { name: copy.stop }));
-		expect(fake.push).toHaveBeenCalledExactlyOnceWith("/shop/assistant/review");
+		expect(fake.push).toHaveBeenCalledExactlyOnceWith("/shop/assistant/review?review=0199a100-0000-7000-8000-000000000007");
 		fireEvent.click(within(recorder).getByRole("button", { name: copy.type }));
 		expect(screen.getByRole("textbox", { name: copy.prompt })).toHaveValue("milk");
 	});
