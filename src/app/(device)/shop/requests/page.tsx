@@ -3,7 +3,7 @@ import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
 import { RequestList } from "@/features/requests/components/RequestUi/RequestList";
-import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 import { requestsCopy } from "@/features/requests/copy";
 import { listOwnRequests } from "@/features/requests/server/service";
 import { parseRequestSearchParams } from "@/features/requests/server/page-data";
@@ -28,5 +28,5 @@ async function HistoryContent({ searchParams }: Props) {
 	</div>;
 }
 export default function HistoryPage(props: Props) {
-	return <Suspense fallback={<ShopSkeleton variant="history" />}><HistoryContent {...props} /></Suspense>;
+	return <Suspense fallback={<ShopLoading label={requestsCopy.loading} />}><HistoryContent {...props} /></Suspense>;
 }
