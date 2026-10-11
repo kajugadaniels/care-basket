@@ -7,12 +7,13 @@ import { catalogHref } from "./catalog-href";
 import type { CatalogProductDto } from "../../types";
 
 const product: CatalogProductDto = { sku: "example-rice", displayName: "Example Rice", category: "PANTRY", sizeLabel: "1 lb", imagePath: null };
+vi.mock("../../actions", () => ({ loadRequesterProductsAction: vi.fn() }));
 
 describe("catalog browsing", () => {
-	it("keeps filters and clears the opposite direction on Previous and More links", () => {
+	it("keeps filters on Previous and provides a manual progressive-load fallback", () => {
 		render(<CatalogBrowser filters={{ q: "beans", category: "PANTRY", before: "boundary", limit: 24 }} result={{ products: [product], previousCursor: "previous", nextCursor: "next" }} />);
 		expect(screen.getByRole("link", { name: "Previous Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=beans&before=previous");
-		expect(screen.getByRole("link", { name: "More Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=beans&cursor=next");
+		expect(screen.getByRole("button", { name: "Load more groceries" })).toBeEnabled();
 		expect(screen.queryByRole("link", { name: "Back to First Groceries" })).not.toBeInTheDocument();
 	});
 	it("renders a real empty state without duplicating the shell's home action", () => {
@@ -33,7 +34,7 @@ describe("catalog browsing", () => {
 	});
 	it("retains filters in bounded pagination and resets the cursor for category changes", () => {
 		render(<CatalogBrowser filters={{ q: "rice", category: "PANTRY", cursor: "old", limit: 24 }} result={{ products: [product], nextCursor: "next" }} />);
-		expect(screen.getByRole("link", { name: "More Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=rice&cursor=next");
+		expect(screen.getByRole("button", { name: "Load more groceries" })).toBeEnabled();
 		expect(screen.getByRole("link", { name: "Back to First Groceries" })).toHaveAttribute("href", "/shop/products?category=PANTRY&q=rice");
 		expect(screen.getByRole("navigation", { name: "Catalog pages" })).toBeInTheDocument();
 		expect(catalogHref("/shop/products", { q: "rice & beans" })).toBe("/shop/products?q=rice+%26+beans");
