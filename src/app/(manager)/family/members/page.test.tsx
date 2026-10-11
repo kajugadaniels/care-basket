@@ -1,13 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolveServerTree } from "@/test/resolve-server-tree";
+import { resolveServerTree, serverFallbackTree } from "@/test/resolve-server-tree";
 
 const mocks = vi.hoisted(() => ({ requireAdult: vi.fn(), list: vi.fn(), notFound: vi.fn(() => { throw new Error("NOT_FOUND"); }) }));
 vi.mock("@/server/auth/require-adult", () => ({ requireAdult: mocks.requireAdult }));
 vi.mock("@/features/profiles/server/service", () => ({ listManagedProfiles: mocks.list }));
 vi.mock("next/navigation", () => ({ notFound: mocks.notFound }));
 import MembersPage from "./page";
-import MembersLoading from "./loading";
 
 const actor = { type: "adult", userId: "user-rose", familyId: "family-rose", role: "OWNER" };
 
@@ -42,11 +41,11 @@ describe("MembersPage", () => {
 	});
 });
 
-describe("MembersLoading", () => {
+describe("MembersPage loading", () => {
 	it("shows the real header and add action while the profile cards load", () => {
-		render(<MembersLoading />);
+		render(serverFallbackTree(MembersPage({ searchParams: Promise.resolve({}) })));
 		expect(screen.getByRole("heading", { level: 1, name: "Family Members" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
-		expect(screen.getByRole("status")).toHaveTextContent("Loading family members…");
+		expect(screen.getByRole("status")).toHaveTextContent("Loading your family workspace…");
 	});
 });
