@@ -2,16 +2,37 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requester, requestManager, requestIds } from "@/test/factories/requests";
 import { assistantCatalog } from "@/test/factories/assistant";
-const fake = vi.hoisted(() => ({ profile: vi.fn(), catalog: vi.fn(), update: vi.fn(), audit: vi.fn(), transaction: vi.fn() }));
+const fake = vi.hoisted(() => ({ profile: vi.fn(), catalog: vi.fn(), update: vi.fn(), audit: vi.fn(), transaction: vi.fn(),
+	readReview: vi.fn(), writeReview: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ cacheLife: vi.fn(), cacheTag: vi.fn() }));
-vi.mock("@/server/db/client", () => ({ getDb: () => ({ managedProfile: { findFirst: fake.profile }, catalogProduct: { findMany: fake.catalog }, $transaction: fake.transaction }) }));
-import { readAssistantCatalog, readAssistantProfile, readProviderContext, writeAiPreference } from "./repository";
+vi.mock("@/server/db/client", () => ({ getDb: () => ({ managedProfile: { findFirst: fake.profile }, catalogProduct: { findMany: fake.catalog },
+	assistantReview: { findFirst: fake.readReview, upsert: fake.writeReview }, $transaction: fake.transaction }) }));
+import { readAssistantCatalog, readAssistantProfile, readProviderContext, writeAiPreference, readAssistantReview, writeAssistantReview } from "./repository";
 describe("assistant scoped repository", () => {
 	beforeEach(() => {
 		vi.resetAllMocks(); fake.update.mockResolvedValue({ count: 1 });
 		fake.transaction.mockImplementation((work) => work({ managedProfile: { updateMany: fake.update }, auditLog: { create: fake.audit } }));
 		fake.catalog.mockResolvedValue(assistantCatalog.map(({ priceMinor, ...product }) => ({ ...product, demoPrices: [{ priceMinor }] })));
+	});
+	it("reads reviews only within the device, profile, family and original expiry", async () => {
+		await readAssistantReview(requester, requestIds.key);
+		expect(fake.readReview).toHaveBeenCalledWith({ where: {
+			reviewId: requestIds.key, familyId: requester.familyId, profileId: requester.profileId, deviceId: requester.deviceId,
+			expiresAt: { gt: expect.any(Date) },
+		}, select: { payload: true } });
+		expect(fake.writeReview).not.toHaveBeenCalled();
+	});
+	it("atomically replaces one device snapshot and rotates its lookup ID without changing ownership", async () => {
+		const expiry = new Date("2026-10-09T12:30:00Z");
+		await writeAssistantReview(requester, requestIds.key, "encrypted-snapshot", expiry);
+		expect(fake.writeReview).toHaveBeenCalledWith({
+			where: { deviceId: requester.deviceId, familyId: requester.familyId, profileId: requester.profileId },
+			create: { deviceId: requester.deviceId, familyId: requester.familyId, profileId: requester.profileId,
+				reviewId: requestIds.key, payload: "encrypted-snapshot", expiresAt: expiry },
+			update: { reviewId: requestIds.key, payload: "encrypted-snapshot", expiresAt: expiry },
+			select: { reviewId: true },
+		});
 	});
 	it("derives profile and family scope from the authenticated actor", async () => {
 		await readAssistantProfile(requester);
