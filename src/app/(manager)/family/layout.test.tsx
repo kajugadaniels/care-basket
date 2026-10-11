@@ -1,5 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { familyLayoutCopy } from "@/features/family/copy";
 import FamilyLayout from "./layout";
 
 vi.mock("@clerk/nextjs", () => import("@/test/mocks/clerk-nextjs"));
@@ -14,6 +15,13 @@ function renderLayout() {
 }
 
 describe("FamilyLayout", () => {
+	it("shows one shared test-environment notice outside the page content", () => {
+		renderLayout();
+
+		expect(screen.getAllByText(familyLayoutCopy.testEnvironment)).toHaveLength(1);
+		expect(within(screen.getByRole("main")).queryByText(familyLayoutCopy.testEnvironment)).not.toBeInTheDocument();
+	});
+
   it("starts with a skip link to the family main content", () => {
     renderLayout();
 
@@ -49,6 +57,6 @@ describe("FamilyLayout", () => {
     renderLayout();
 
     const hrefs = screen.getAllByRole("link").map((link) => link.getAttribute("href"));
-    expect(new Set(hrefs)).toEqual(new Set(["#family-main", "/family", "/family/members", "/family/devices", "/family/catalog"]));
+		expect(new Set(hrefs)).toEqual(new Set(["#family-main", "/family", "/family/members", "/family/devices", "/family/catalog", "/family/requests"]));
   });
 });
