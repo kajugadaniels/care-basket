@@ -158,7 +158,7 @@ Build these once in `src/components/ui/` and reuse them.
 | **Product card** | Large square image on `--color-surface-soft` (at least 50% of card height), name and size in `--font-readable`, quantity stepper with − and + buttons (48px), badges for "Suggested" and "Substitute". Missing photo: large category icon tile. |
 | **Field** | Visible label above, optional hint, error below with an icon; `1px` `--color-border-strong`, `--radius-md`, height at least `--control-height`. |
 | **Dialog** | Native `<dialog>` with `showModal()`, a title, one primary action, a clearly labelled cancel, `--shadow-md`. Never for content that could be a page. Exception: sign-in and sign-up use Clerk's own dialogs, themed through `src/lib/clerk/appearance.ts` (developer decision, 2026-10-08). |
-| **Status badge** | Icon + text + tinted background (`-bg` tokens). "Paid" and "Delivered" use different icons, words, and positions ([payments.md § 8](payments.md#8-user-facing-states)). "Demo price" uses the warning tint. |
+| **Status badge** | Icon + text + tinted background (`-bg` tokens). "Paid" and "Delivered" use different icons, words, and positions ([payments.md § 8](payments.md#8-user-facing-states)). Price disclosures follow the same rule; neutral manager price labels are plain muted text, not warning badges. |
 | **Confirmation screen** | One large status icon, one headline, the key fact (for example the amount), secondary details below, one primary next action. Used for payment results and sent requests. |
 | **Navigation (manager)** | Bottom bar with up to four items (icon + label) on small screens; left side navigation from `lg`. No hamburger menus. |
 | **Navigation (requester)** | No menu. A persistent **Home** action, **Back** where needed, and help ("Ask {manager name}") always in the same place. |
@@ -211,7 +211,7 @@ The manager can create profiles, authorize devices, review requests, inspect pro
   - The requester's stated budget, if any.
   - Optionally, an Open Prices reference price, clearly labelled ([catalog.md § 6](catalog.md#6-observed-prices-vs-demo-merchant-prices)).
   - The total, then actions: the **official PayPal button**, **Decline**, and **Edit**.
-- **Payment confirmation:** the confirmation screen pattern with the amount, "Paid with PayPal (Sandbox)", date, and transaction ID, and a separate delivery status card marked as demo.
+- **Payment confirmation:** the confirmation screen pattern with the amount, "Paid with PayPal (Sandbox)", date, and transaction ID, and a separate delivery status card. The shared manager test-environment disclosure follows [payments.md § 8](payments.md#8-user-facing-states).
 - **Profiles and Devices:** card grids (1, 2, then 3 columns), each with a clear primary action (Add a family member, Connect a device, Revoke).
 - **History:** a simple list filterable by status, paginated.
 - **Width:** content capped at `--content-max`; forms at `--reading-max`.
