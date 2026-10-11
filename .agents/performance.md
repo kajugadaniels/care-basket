@@ -3,7 +3,7 @@
 **Purpose:** Keep CareBasket fast on older phones and slow mobile connections, with responsive server operations that let every user continue without avoidable waiting.
 **Applies to:** UI, Server Actions, Route Handlers, data loading, database queries, integrations, images, caching, and third-party scripts.
 **Related:** [architecture.md § 2](architecture.md#2-nextjs-16-rules-for-this-project), [api.md](api.md), [design.md](design.md), [database.md § 6](database.md#6-access-boundaries-queries-and-performance)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -19,7 +19,7 @@ Measured by the developer with Lighthouse mobile (throttled 4G, mid-range device
 | Internal authenticated reads | Warm p75 ≤ 300 ms and p95 ≤ 800 ms server duration |
 | Database-only mutations | Warm p75 ≤ 500 ms and p95 ≤ 1 s server duration |
 | Ordinary JSON response | ≤ 100 KB unless a documented use case requires more |
-| AI interpretation feedback | A visible "Understanding your list…" state within 100 ms of submit; result typically under 5 s |
+| AI interpretation feedback | A busy submit button and spinner within 100 ms, with screen-reader progress feedback; result typically under 5 s |
 | Status refresh (pairing, payment) | Visible update within one polling interval (≤ 30 s), immediately on focus |
 
 The endpoint targets exclude browser latency and external providers such as Clerk, Gemini, and PayPal. Track provider time separately. Cold starts are measured separately from warm requests and must not be hidden by averaging.
