@@ -3,7 +3,7 @@
 **Purpose:** Give CareBasket a clean, confident, premium interface inspired by the clarity of PayPal's modern design, while keeping its own identity, meeting WCAG 2.2 AA, and working on every screen size.
 **Applies to:** Any UI work.
 **Related:** [accessibility.md](accessibility.md) (which wins on any conflict), [performance.md](performance.md), [folder-structure.md](folder-structure.md), [payments.md § 9](payments.md#9-claims-we-must-never-make)
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-11
 
 ---
 
@@ -191,7 +191,7 @@ What they see:
 - **Welcome:** "Hi, Rose" in `--text-display`, and one prominent **Start my list** button (`lg`, full width on phones).
 - **Ways to ask:** **Speak** (a large 96px circular microphone button with a visible label, shown only where AI voice is permitted, see [ai.md § 8](ai.md#8-profiles-children-and-tone)), **Type**, and **Pictures**. Pictures is always available.
 - **Pictures:** large category tiles, then large product cards.
-- **Clarification:** one short question with 2–4 large picture options.
+- **Clarification:** requested product matches are visible together on the review page, in 12-product batches; suggestions remain a separate labelled group. See [ai.md § 10.2](ai.md#102-clarification).
 - **Review:** basket cards, "Suggested for you" shown separately, simple − and + controls.
 - **Confirm:** a single list and **Send to Anna**.
 - **Status:** plain-language cards ("Sent to Anna", "Anna paid for your shopping", "Delivery: not arranged yet (demo)").
@@ -230,7 +230,7 @@ The manager can create profiles, authorize devices, review requests, inspect pro
 - "AI" sparkle motifs or presenting features as magic; chat-style bubbles with long paragraphs
 - Generic dashboard look: KPI tiles, decorative charts, or data tables on requester screens
 - Cramped layouts, paragraphs under 16px, any text under 14px, low-contrast gray text, `--color-accent` used for text or button fills
-- Carousels, auto-advancing content, infinite scroll, parallax, unnecessary animation
+- Carousels, auto-advancing content, infinite scroll outside the two developer-approved product screens ([api.md § 7](api.md#7-pagination)), parallax, unnecessary animation
 - Toast-only feedback for errors or payment results
 - PayPal logos, fonts, screenshots, or copied screens; anything implying PayPal endorsement
 - Emoji as interface elements; inline styles or colors outside tokens
