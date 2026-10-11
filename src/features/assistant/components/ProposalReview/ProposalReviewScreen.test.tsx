@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DraftProvider, useDraft } from "@/features/requests/components/DraftProvider/DraftProvider";
@@ -86,7 +87,10 @@ describe("separate proposal review screen", () => {
 	});
 
 	it("keeps empty-state actions responsive and icon motion opt-in", () => {
-		const css = readFileSync(new URL("./ProposalReview.module.css", import.meta.url), "utf8");
+		const css = readFileSync(
+			resolve("src/features/assistant/components/ProposalReview/ProposalReview.module.css"),
+			"utf8",
+		);
 		expect(css).toMatch(/\.emptyActions > a\s*\{[^}]*inline-size: 100%;[^}]*white-space: normal;/);
 		expect(css).toMatch(/@media \(min-width: 40rem\)[\s\S]*\.emptyActions > a\s*\{[^}]*inline-size: auto;/);
 		expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\)\s*\{[\s\S]*transition: transform var\(--duration-base\)/);
