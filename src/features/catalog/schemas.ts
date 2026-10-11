@@ -18,3 +18,9 @@ export function parseCatalogSearchParams(params: Record<string, string | string[
 		before: params.before || undefined,
 	});
 }
+
+export const requesterPageSchema = z.strictObject({
+	category: z.enum(PRODUCT_CATEGORIES).optional(),
+	q: z.string().trim().max(80).regex(/^[^\p{Cc}\p{Cf}<>]*$/u).default(""),
+	cursor: z.uuid(),
+});
