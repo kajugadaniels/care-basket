@@ -78,8 +78,7 @@
 	overflow-wrap: anywhere;
 }
 
-.grid,
-.choiceGrid {
+.grid {
 	display: grid;
 	gap: var(--space-4);
 	padding: 0;
@@ -193,16 +192,12 @@
 	.panel {
 		padding: var(--space-5);
 	}
-	.grid,
-	.choiceGrid {
+	.grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
 
 @media (min-width: 64rem) {
-	.choiceGrid {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-	}
 	.grid {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
