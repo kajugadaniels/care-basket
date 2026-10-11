@@ -57,6 +57,7 @@ model Family {
   devices     AuthorizedDevice[]
 	requests ShoppingRequest[]
 	baskets ShoppingBasket[]
+	assistantReviews AssistantReview[]
 }
 
 /// Links an adult to the family they manage. MVP: one family per adult (unique userId).
@@ -98,6 +99,7 @@ model ManagedProfile {
   devices AuthorizedDevice[]
   pairings DevicePairing[]
 	requests ShoppingRequest[]
+	assistantReviews AssistantReview[]
 
   @@index([familyId, id])
   @@unique([id, familyId])
@@ -169,7 +171,9 @@ model AuthorizedDevice {
   approvedBy User @relation("DeviceApprover", fields: [approvedByUserId], references: [id], onDelete: Restrict)
   revokedBy User? @relation("DeviceRevoker", fields: [revokedByUserId], references: [id], onDelete: SetNull)
 	requests ShoppingRequest[]
+	assistantReview AssistantReview?
 
+	@@unique([id, profileId, familyId])
   @@index([familyId, id])
   @@index([familyId, profileId, revokedAt, expiresAt])
   @@index([profileId, familyId])
@@ -177,6 +181,26 @@ model AuthorizedDevice {
   @@index([revokedByUserId])
   @@index([expiresAt])
   @@index([revokedAt])
+}
+
+/// One encrypted, expiring interpretation per device; not a submitted shopping request.
+model AssistantReview {
+	id String @id @default(uuid(7)) @db.Uuid
+	reviewId String @unique @db.Uuid
+	familyId String @db.Uuid
+	profileId String @db.Uuid
+	deviceId String @unique @db.Uuid
+	payload String @db.Text
+	expiresAt DateTime @db.Timestamptz(3)
+	createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+	family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+	profile ManagedProfile @relation(fields: [profileId, familyId], references: [id, familyId], onDelete: Cascade)
+	device AuthorizedDevice @relation(fields: [deviceId, profileId, familyId], references: [id, profileId, familyId], onDelete: Cascade)
+
+	@@unique([deviceId, profileId, familyId])
+	@@index([familyId, expiresAt, id])
+	@@index([profileId, familyId])
 }
 
 model RateLimitCounter {
