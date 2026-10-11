@@ -13,8 +13,9 @@ import type { Proposal } from "../../types";
 import { ProposalReview } from "./ProposalReview";
 import cardStyles from "@/features/requests/components/RequestUi/RequestUi.module.css";
 
-const fake = vi.hoisted(() => ({ push: vi.fn() }));
+const fake = vi.hoisted(() => ({ push: vi.fn(), page: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: fake.push }) }));
+vi.mock("../../actions", () => ({ loadReviewProductsAction: fake.page }));
 const proposal: Proposal = { inputMode: "TEXT", inputText: "milk", local: true, sourceProof: requestIds.key,
 	budgetMinor: null, items: [displayItem(assistantCatalog[0], 1, "REQUESTED"), displayItem(assistantCatalog[1], 1, "SUGGESTED")],
 	questions: [], unrecognized: [] };
@@ -101,32 +102,33 @@ describe("explicit proposal review", () => {
 		expect(draft().budgetConfirmed).toBeUndefined();
 	});
 
-	it("adds a clarification with its quantity and focuses the next question", () => {
+	it("shows all requested choices together without automatically choosing any", () => {
 		review({ ...proposal, questions: [
 			{ question: "Choose milk", options: proposal.items },
 			{ question: "Choose bread", options: [proposal.items[1], displayItem(assistantCatalog[2], 1, "REQUESTED")] },
 		] });
-		expect(screen.getByRole("heading", { name: "Choose milk" })).toBeInTheDocument();
-		expect(screen.queryByRole("heading", { name: "Choose bread" })).not.toBeInTheDocument();
+		expect(screen.getByRole("article", { name: "Milk" })).toBeInTheDocument();
+		expect(screen.getByRole("article", { name: "Bread" })).toBeInTheDocument();
+		expect(screen.getByRole("article", { name: "Rice" })).toBeInTheDocument();
+		expect(draft().items).toEqual([]);
 		expect(screen.getAllByRole("article", { name: "Milk" })).toHaveLength(1);
 		const ids = [...document.querySelectorAll("[id]")].map((element) => element.id);
 		expect(new Set(ids).size).toBe(ids.length);
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.increase("Milk") }));
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
 		expect(draft().items[0]).toMatchObject({ sku: "demo-milk", quantity: 2 });
-		expect(screen.getByRole("heading", { name: "Choose bread" })).toHaveFocus();
+		expect(screen.getByRole("article", { name: "Bread" })).toBeInTheDocument();
 		expect(fake.push).not.toHaveBeenCalled();
 	});
 
-	it("can choose an already-added clarification without increasing its quantity", () => {
+	it("deduplicates overlapping choices without increasing already-added quantities", () => {
 		review({ ...proposal, items: [], questions: [
 			{ question: "First choice", options: proposal.items },
 			{ question: "Second choice", options: proposal.items },
 		] });
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
-		expect(screen.getByRole("heading", { name: "Second choice" })).toHaveFocus();
-		fireEvent.click(card("Milk").getByRole("button", { name: copy.chooseLabel({ name: "Milk", size: "1 litre" }) }));
-		expect(screen.queryByRole("heading", { name: "Second choice" })).not.toBeInTheDocument();
+		expect(screen.getAllByRole("article", { name: "Milk" })).toHaveLength(1);
+		expect(card("Milk").queryByRole("button", { name: requestsCopy.add })).not.toBeInTheDocument();
 		expect(draft().items).toHaveLength(1);
 		expect(draft().items[0].quantity).toBe(1);
 		expect(card("Milk").getByRole("button", { name: `${requestsCopy.remove}: Milk` })).toBeEnabled();
@@ -134,7 +136,7 @@ describe("explicit proposal review", () => {
 		expect(draft().items[0].quantity).toBe(2);
 	});
 
-	it("keeps a rejected suggestion visible and focuses a readable limit error", () => {
+	it("keeps a rejected suggestion visible and focuses a readable limit error", async () => {
 		const suggestions = Array.from({ length: 13 }, (_, index) => ({
 			...proposal.items[1], sku: `suggested-${index}`, displayName: `Idea ${index}`,
 		}));
@@ -142,6 +144,8 @@ describe("explicit proposal review", () => {
 		for (let index = 0; index < 12; index++) {
 			fireEvent.click(card(`Idea ${index}`).getByRole("button", { name: requestsCopy.add }));
 		}
+		fireEvent.click(screen.getByRole("button", { name: "Load more groceries" }));
+		await screen.findByRole("article", { name: "Idea 12" });
 		fireEvent.click(card("Idea 12").getByRole("button", { name: requestsCopy.add }));
 		expect(screen.getByRole("alert")).toHaveTextContent(copy.addError);
 		expect(screen.getByRole("alert")).toHaveFocus();
@@ -179,5 +183,21 @@ describe("explicit proposal review", () => {
 		expect(sharedStyles).toMatch(/\.selection\s*\{[^}]*display: flex;[^}]*flex-direction: column;/);
 		expect(sharedStyles).toMatch(/\.selection > article\s*\{[^}]*block-size: auto;/);
 		expect(sharedStyles).toMatch(/\.selection \.controls\s*\{[^}]*margin-block-start: auto;/);
+	});
+
+	it("loads the next private batch without losing quantities, selection or provenance", async () => {
+		fake.page.mockResolvedValue({ ok: true, data: {
+			items: [{ ...displayItem(assistantCatalog[2], 1, "SUGGESTED"), proof: "next-page-proof" }], nextCursor: null,
+		} });
+		review({ ...proposal, reviewId: requestIds.key, nextOffset: 12 });
+		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.increase("Milk") }));
+		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
+		fireEvent.click(screen.getByRole("button", { name: "Load more groceries" }));
+		await screen.findByRole("article", { name: "Rice" });
+		expect(fake.page).toHaveBeenCalledWith({ reviewId: requestIds.key, offset: 12 });
+		expect(card("Milk").getByText("Quantity: 2")).toBeInTheDocument();
+		expect(draft().items).toHaveLength(1);
+		fireEvent.click(card("Rice").getByRole("button", { name: requestsCopy.add }));
+		expect(draft().items[1]).toMatchObject({ sku: "demo-rice", origin: "SUGGESTED", proof: "next-page-proof" });
 	});
 });
