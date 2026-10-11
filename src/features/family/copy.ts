@@ -1,6 +1,7 @@
 // User-facing text for the family manager area (accessibility.md § 9).
 
 export const familyLayoutCopy = {
+	testEnvironment: "Test environment — no real purchases",
   areaLabel: "Family manager",
   navLabel: "Family manager",
   nav: {
@@ -53,7 +54,7 @@ export const setupPreviewCopy = {
       id: "payments",
       title: "Pay through PayPal",
       description:
-        "Pay only when you choose to. This demo will use PayPal Sandbox, so no real money moves.",
+				"Review each request and pay only when you choose to.",
     },
   ],
 } as const;
