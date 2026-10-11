@@ -3,7 +3,7 @@
 **Purpose:** Give CareBasket a clean, confident, premium interface inspired by the clarity of PayPal's modern design, while keeping its own identity, meeting WCAG 2.2 AA, and working on every screen size.
 **Applies to:** Any UI work.
 **Related:** [accessibility.md](accessibility.md) (which wins on any conflict), [performance.md](performance.md), [folder-structure.md](folder-structure.md), [payments.md § 9](payments.md#9-claims-we-must-never-make)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -162,7 +162,7 @@ Build these once in `src/components/ui/` and reuse them.
 | **Confirmation screen** | One large status icon, one headline, the key fact (for example the amount), secondary details below, one primary next action. Used for payment results and sent requests. |
 | **Navigation (manager)** | Bottom bar with up to four items (icon + label) on small screens; left side navigation from `lg`. No hamburger menus. |
 | **Navigation (requester)** | No menu. A persistent **Home** action, **Back** where needed, and help ("Ask {manager name}") always in the same place. |
-| **Inline message** | Errors, warnings, and confirmations that must stay visible. Toasts may supplement, never replace, them. |
+| **Inline message** | Errors, warnings, and critical confirmations stay visible inline. Routine manager edit successes may use a dismissible, politely announced toast when the saved data remains visible; errors and payment outcomes never rely on a toast alone. |
 
 ## 6. Interaction states
 
@@ -174,6 +174,17 @@ Every interactive component defines: default, hover (pointer devices only), acti
 - **Selected** (for example, a chosen clarification option): 2px `--color-primary` border, checkmark icon, and changed text ("Chosen"), never color alone.
 - Transitions use `--duration-fast` or `--duration-base` on `opacity`, `transform`, `background-color`, and `border-color` only, and are removed under `prefers-reduced-motion: reduce`.
 
+### 6.1 UX craftsmanship and feedback (developer requirement, 2026-10-12)
+
+- Think with the care of a senior Apple-caliber UI/UX designer and UX engineer: clarity, restraint, predictable behavior, careful detail, and respect for the person's work. Keep CareBasket's own identity; do not copy Apple assets or layouts.
+- Review the complete interaction, not just the ideal screenshot: what was clicked, what changes immediately, what remains usable, what is actually saved, and how failure is recovered.
+- Scope a spinner, busy label, and `aria-busy` to the exact action and item being processed. Never show unrelated rows as saving. Disable other writes only when a shared revision or another correctness constraint requires serialization; keep browsing and unrelated draft inputs available.
+- Preserve unsaved edits and focus when another row updates. Do not remount every form or reset every field because one item was saved.
+- Provide immediate pending feedback, with truthful success only after server confirmation. Optimistic edits require a clear provisional state and recovery; never optimistically confirm prices, payments, or workflow status.
+- Routine success toasts identify what changed, announce politely, are keyboard-dismissable, do not steal focus, and do not cover focused controls. Keep errors beside the affected area with preserved input and a retry path.
+- Avoid duplicate refreshes and artificial waits. Follow [performance.md §10](performance.md#10-perceived-performance-and-stable-layout); require measured evidence before claiming a latency improvement.
+- Before handoff, write regression tests for slow requests, repeated clicks, concurrent edits, success, failure, and refreshed server data; the developer performs the tests and keyboard/mobile checks.
+
 ## 7. Screen states
 
 | State | Requirement |
@@ -181,7 +192,7 @@ Every interactive component defines: default, hover (pointer devices only), acti
 | Loading | Skeleton with the final layout, so nothing shifts. No full-page spinners after first load. |
 | Empty | One sentence explaining why, and the next action as a button ("Add a family member"). |
 | Error | What happened in plain words, plus retry or a way out. Input is kept. |
-| Success | A confirmation screen or inline message saying what happens next. |
+| Success | A confirmation screen or inline message saying what happens next; routine manager edit successes may use the toast pattern in §6.1. |
 | Partial | Show what loaded; degrade only the failing part. |
 
 ## 8. Requester interface (assisted adults and children)
