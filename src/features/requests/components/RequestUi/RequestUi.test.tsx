@@ -98,7 +98,7 @@ describe("shopping request screens", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
 		const error = await screen.findByRole("alert"); await waitFor(() => expect(error).toHaveFocus());
 		expect(fake.refresh).not.toHaveBeenCalled();
-		expect(screen.getByRole("status")).toBeEmptyDOMElement();
+		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.toastError);
 		expect(within(screen.getByRole("region", { name: "Request summary" })).getByText("$5.00")).toBeInTheDocument();
 	});
 	it("groups member status, UTC time, products and summary in the manager detail layout", () => {
@@ -135,12 +135,13 @@ describe("shopping request screens", () => {
 		expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
 		expect(screen.queryByRole("region", { name: "Original request" })).not.toBeInTheDocument();
 	});
-	it("shows saving on only the active product while serializing writes and allowing other drafts", async () => {
+	it("previews totals instantly without a Save spinner while serializing writes and allowing other drafts", async () => {
 		fake.update.mockImplementation(() => new Promise(() => {}));
 		const request = makeManagerRequest();
 		request.items.push({ ...request.items[0], id: requestIds.other, sku: "demo-bread", displayName: "Demo bread" });
 		render(<RequestDetail request={request} />);
 
+		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" }), { target: { value: "3" } });
 		fireEvent.click(screen.getAllByRole("button", { name: "Save quantity" })[0]);
 		await waitFor(() => expect(fake.update).toHaveBeenCalledOnce());
 		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toBeDisabled();
@@ -148,11 +149,16 @@ describe("shopping request screens", () => {
 		expect(otherInput).toBeEnabled();
 		fireEvent.change(otherInput, { target: { value: "4" } });
 		expect(otherInput).toHaveValue(4);
-		expect(screen.getAllByRole("button", { name: requestsCopy.managerSaving })).toHaveLength(1);
-		expect(screen.getByRole("button", { name: requestsCopy.managerSaving })).toHaveAttribute("aria-busy", "true");
-		const otherSave = screen.getByRole("button", { name: "Save quantity" });
-		expect(otherSave).toBeDisabled();
-		expect(otherSave).not.toHaveAttribute("aria-busy");
+		expect(screen.getAllByText(requestsCopy.managerSyncing)).toHaveLength(1);
+		for (const save of screen.getAllByRole("button", { name: "Save quantity" })) {
+			expect(save).toBeDisabled();
+			expect(save).not.toHaveAttribute("aria-busy");
+		}
+		const summary = screen.getByRole("region", { name: requestsCopy.managerSummary });
+		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
+		expect(within(summary).getByText(requestsCopy.managerPreview)).toBeInTheDocument();
+		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$7.50")).toBeInTheDocument();
+		expect(within(summary).getByRole("button", { name: requestsCopy.decline })).toBeDisabled();
 		for (const button of screen.getAllByRole("button", { name: /^Remove item:/ })) expect(button).toBeDisabled();
 		expect(screen.getByRole("status")).toBeEmptyDOMElement();
 	});
@@ -204,10 +210,48 @@ describe("shopping request screens", () => {
 		const error = await screen.findByRole("alert");
 		await waitFor(() => expect(error).toHaveFocus());
 		expect(input).toHaveValue(5);
-		expect(screen.getByRole("status")).toBeEmptyDOMElement();
+		expect(error).toHaveTextContent(requestsCopy.managerConfirmFailed);
+		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.toastError);
+		expect(within(screen.getByRole("region", { name: requestsCopy.managerSummary })).getByText("$5.00")).toBeInTheDocument();
 		fake.update.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
 		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 5."));
+	});
+	it("rolls preview amounts back on rejection while retaining the exact input node and draft", async () => {
+		let finish: (result: RequestMutationResult) => void = () => {};
+		fake.update.mockImplementation(() => new Promise<RequestMutationResult>((resolve) => { finish = resolve; }));
+		render(<RequestDetail request={makeManagerRequest()} />);
+		const input = screen.getByRole("spinbutton", { name: "Quantity: Demo milk" });
+		fireEvent.change(input, { target: { value: "5" } });
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.save }));
+		const summary = screen.getByRole("region", { name: requestsCopy.managerSummary });
+		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
+		await act(async () => finish({ ok: false, error: { code: "CONFLICT", message: "Refresh before retrying." } }));
+		expect(within(summary).getByText("$5.00")).toBeInTheDocument();
+		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
+		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toBe(input);
+		expect(input).toHaveValue(5);
+		expect(screen.getByRole("alert")).toHaveTextContent("Refresh before retrying.");
+	});
+	it("reconciles preview with server totals and keeps sound control available during a save", async () => {
+		let finish: (result: RequestMutationResult) => void = () => {};
+		fake.update.mockImplementation(() => new Promise<RequestMutationResult>((resolve) => { finish = resolve; }));
+		const request = makeManagerRequest();
+		const { rerender } = render(<RequestDetail request={request} />);
+		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" }), { target: { value: "3" } });
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.save }));
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.soundOn }));
+		expect(screen.getByRole("button", { name: requestsCopy.soundOff })).toHaveAttribute("aria-pressed", "false");
+		await act(async () => {
+			rerender(<RequestDetail request={{ ...request, revision: 1, subtotalMinor: 750, subtotal: "$7.50",
+				items: [{ ...request.items[0], quantity: 3, lineTotal: "$7.50" }] }} />);
+			finish({ ok: true, data: { requestId: request.id } });
+		});
+		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
+		expect(within(screen.getByRole("region", { name: requestsCopy.managerSummary })).getByText("$7.50")).toBeInTheDocument();
+		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toHaveValue(3);
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.save }));
+		expect(fake.update).toHaveBeenLastCalledWith({ requestId: request.id, revision: 1, itemId: requestIds.item, quantity: 3 });
 	});
 	it("reserves the manager detail loading layout without exposing placeholder controls", () => {
 		render(<RequestSkeleton manager />);
