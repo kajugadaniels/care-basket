@@ -1,6 +1,8 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { makeManagerRequest, makeOwnRequest, requestIds } from "@/test/factories/requests";
+import { requestsCopy } from "../../copy";
+import type { RequestMutationResult } from "../../types";
 const fake = vi.hoisted(() => ({ cancel: vi.fn(), decline: vi.fn(), update: vi.fn(), remove: vi.fn(), refresh: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: fake.refresh }) }));
 vi.mock("@/features/requests/actions", () => ({ cancelRequestAction: fake.cancel, declineRequestAction: fake.decline,
@@ -26,7 +28,8 @@ describe("shopping request screens", () => {
 		expect(fake.cancel).not.toHaveBeenCalled();
 		fireEvent.click(within(dialog).getByRole("button", { name: "Yes, continue" }));
 		await waitFor(() => expect(fake.cancel).toHaveBeenCalledWith({ requestId: requestIds.request, revision: 0, confirmed: true }));
-		await waitFor(() => expect(fake.refresh).toHaveBeenCalled());
+		await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+		expect(fake.refresh).not.toHaveBeenCalled();
 	});
 	it("keeps the list when the cancellation dialog is dismissed", () => {
 		render(<RequestDetail request={makeOwnRequest()} />);
@@ -73,7 +76,10 @@ describe("shopping request screens", () => {
 		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" }), { target: { value: "3" } });
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
 		await waitFor(() => expect(fake.update).toHaveBeenCalledWith({ requestId: requestIds.request, itemId: requestIds.item, revision: 0, quantity: 3 }));
-		expect(await screen.findByText("Shopping list updated.")).toBeInTheDocument();
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 3."));
+		expect(fake.refresh).not.toHaveBeenCalled();
+		fireEvent.click(screen.getByRole("button", { name: requestsCopy.dismissSuccess }));
+		expect(screen.getByRole("status")).toBeEmptyDOMElement();
 	});
 	it("does not allow removing the last item", () => {
 		render(<RequestDetail request={makeManagerRequest()} />);
@@ -84,6 +90,7 @@ describe("shopping request screens", () => {
 		render(<RequestDetail request={request} />);
 		fireEvent.click(screen.getByRole("button", { name: "Remove item: Demo bread" }));
 		await waitFor(() => expect(fake.remove).toHaveBeenCalledWith({ requestId: requestIds.request, itemId: requestIds.other, revision: 0 }));
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Demo bread removed from this request."));
 	});
 	it("focuses stale-edit conflicts and leaves data on screen", async () => {
 		fake.update.mockResolvedValue({ ok: false, error: { code: "CONFLICT", message: "Refresh this list before trying again." } });
@@ -91,6 +98,7 @@ describe("shopping request screens", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
 		const error = await screen.findByRole("alert"); await waitFor(() => expect(error).toHaveFocus());
 		expect(fake.refresh).not.toHaveBeenCalled();
+		expect(screen.getByRole("status")).toBeEmptyDOMElement();
 		expect(within(screen.getByRole("region", { name: "Request summary" })).getByText("$5.00")).toBeInTheDocument();
 	});
 	it("groups member status, UTC time, products and summary in the manager detail layout", () => {
@@ -100,7 +108,7 @@ describe("shopping request screens", () => {
 
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
 		expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Demo Grandma's shopping list");
-		const overview = screen.getByRole("region", { name: "Waiting for review" });
+		const overview = screen.getByRole("region", { name: requestsCopy.statuses.PENDING_REVIEW });
 		expect(within(overview).getByText("Demo Grandma")).toBeInTheDocument();
 		expect(within(overview).getByText("October 9, 2026")).toHaveAttribute("dateTime", request.submittedAt);
 		expect(within(overview).getByText("12:00 PM UTC")).toBeInTheDocument();
@@ -127,7 +135,7 @@ describe("shopping request screens", () => {
 		expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
 		expect(screen.queryByRole("region", { name: "Original request" })).not.toBeInTheDocument();
 	});
-	it("disables all manager row controls while a quantity update is pending", async () => {
+	it("shows saving on only the active product while serializing writes and allowing other drafts", async () => {
 		fake.update.mockImplementation(() => new Promise(() => {}));
 		const request = makeManagerRequest();
 		request.items.push({ ...request.items[0], id: requestIds.other, sku: "demo-bread", displayName: "Demo bread" });
@@ -135,9 +143,71 @@ describe("shopping request screens", () => {
 
 		fireEvent.click(screen.getAllByRole("button", { name: "Save quantity" })[0]);
 		await waitFor(() => expect(fake.update).toHaveBeenCalledOnce());
-		for (const input of screen.getAllByRole("spinbutton")) expect(input).toBeDisabled();
-		for (const button of screen.getAllByRole("button", { name: "Saving quantity…" })) expect(button).toBeDisabled();
+		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toBeDisabled();
+		const otherInput = screen.getByRole("spinbutton", { name: "Quantity: Demo bread" });
+		expect(otherInput).toBeEnabled();
+		fireEvent.change(otherInput, { target: { value: "4" } });
+		expect(otherInput).toHaveValue(4);
+		expect(screen.getAllByRole("button", { name: requestsCopy.managerSaving })).toHaveLength(1);
+		expect(screen.getByRole("button", { name: requestsCopy.managerSaving })).toHaveAttribute("aria-busy", "true");
+		const otherSave = screen.getByRole("button", { name: "Save quantity" });
+		expect(otherSave).toBeDisabled();
+		expect(otherSave).not.toHaveAttribute("aria-busy");
 		for (const button of screen.getAllByRole("button", { name: /^Remove item:/ })) expect(button).toBeDisabled();
+		expect(screen.getByRole("status")).toBeEmptyDOMElement();
+	});
+	it("preserves another row's draft across a confirmed save and server revision update", async () => {
+		const request = makeManagerRequest();
+		request.items.push({ ...request.items[0], id: requestIds.other, sku: "demo-bread", displayName: "Demo bread" });
+		const { rerender } = render(<RequestDetail request={request} />);
+		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo bread" }), { target: { value: "4" } });
+		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" }), { target: { value: "3" } });
+		fireEvent.click(screen.getAllByRole("button", { name: "Save quantity" })[0]);
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 3."));
+
+		rerender(<RequestDetail request={{ ...request, revision: 1, items: [{ ...request.items[0], quantity: 3 }, request.items[1]] }} />);
+		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo bread" })).toHaveValue(4);
+		fireEvent.click(screen.getAllByRole("button", { name: "Save quantity" })[1]);
+		await waitFor(() => expect(fake.update).toHaveBeenLastCalledWith({ requestId: requestIds.request, itemId: requestIds.other, revision: 1, quantity: 4 }));
+	});
+	it("guards repeated submissions and only announces a save after server confirmation", async () => {
+		let finish: (result: RequestMutationResult) => void = () => {};
+		fake.update.mockImplementation(() => new Promise<RequestMutationResult>((resolve) => { finish = resolve; }));
+		render(<RequestDetail request={makeManagerRequest()} />);
+		const form = screen.getByRole("button", { name: "Save quantity" }).closest("form")!;
+		fireEvent.submit(form);
+		fireEvent.submit(form);
+		expect(fake.update).toHaveBeenCalledOnce();
+		expect(screen.getByRole("status")).toBeEmptyDOMElement();
+		await act(async () => finish({ ok: true, data: { requestId: requestIds.request } }));
+		expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 2.");
+		expect(fake.refresh).not.toHaveBeenCalled();
+	});
+	it("does not turn quantity saves into loading indicators during item removal", async () => {
+		fake.remove.mockImplementation(() => new Promise(() => {}));
+		const request = makeManagerRequest();
+		request.items.push({ ...request.items[0], id: requestIds.other, sku: "demo-bread", displayName: "Demo bread" });
+		render(<RequestDetail request={request} />);
+		const remove = screen.getByRole("button", { name: "Remove item: Demo bread" });
+		fireEvent.click(remove);
+		await waitFor(() => expect(fake.remove).toHaveBeenCalledOnce());
+		expect(remove).toHaveAttribute("aria-busy", "true");
+		expect(remove).toHaveTextContent(requestsCopy.managerRemoving);
+		for (const save of screen.getAllByRole("button", { name: "Save quantity" })) expect(save).not.toHaveAttribute("aria-busy");
+	});
+	it("preserves a failed quantity edit and offers retry without a success toast", async () => {
+		fake.update.mockRejectedValue(new Error("Connection interrupted"));
+		render(<RequestDetail request={makeManagerRequest()} />);
+		const input = screen.getByRole("spinbutton", { name: "Quantity: Demo milk" });
+		fireEvent.change(input, { target: { value: "5" } });
+		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
+		const error = await screen.findByRole("alert");
+		await waitFor(() => expect(error).toHaveFocus());
+		expect(input).toHaveValue(5);
+		expect(screen.getByRole("status")).toBeEmptyDOMElement();
+		fake.update.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
+		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 5."));
 	});
 	it("reserves the manager detail loading layout without exposing placeholder controls", () => {
 		render(<RequestSkeleton manager />);
@@ -156,7 +226,7 @@ describe("shopping request screens", () => {
 	});
 	it("renders history with statuses and bounded pagination without prices", () => {
 		render(<RequestList result={{ requests: [makeOwnRequest()], nextCursor: requestIds.other }} />);
-		expect(screen.getByText("Waiting for review")).toBeInTheDocument();
+		expect(screen.getByText(requestsCopy.statuses.PENDING_REVIEW)).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "View Details" })).toHaveAttribute("href", `/shop/requests/${requestIds.request}`);
 		expect(screen.getByRole("link", { name: "More requests" })).toHaveAttribute("href", `/shop/requests?after=${requestIds.other}`);
 		expect(screen.queryByText(/\$/)).not.toBeInTheDocument();
