@@ -47,8 +47,8 @@ describe("authenticated request actions", () => {
 		expect(await action({})).toMatchObject({ ok: false, error: { code: "UNAUTHENTICATED" } });
 		expect(fake.update).not.toHaveBeenCalled(); expect(fake.remove).not.toHaveBeenCalled(); expect(fake.decline).not.toHaveBeenCalled();
 	});
-	it("invalidates dashboard, inbox, history and both details after success", async () => {
-		await submitRequestAction({});
+	it.each([submitRequestAction, cancelRequestAction, updateRequestItemAction, removeRequestItemAction, declineRequestAction])("refreshes both detail paths in the successful action response", async (action) => {
+		await action({});
 		expect(fake.revalidate.mock.calls.map(([path]) => path)).toEqual([
 			"/family", "/family/requests", `/family/requests/${requestIds.request}`, "/shop/requests", `/shop/requests/${requestIds.request}`,
 		]);
