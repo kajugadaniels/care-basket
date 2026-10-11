@@ -8,6 +8,7 @@ export type ProposalItem = CatalogProductDto & {
 	isSubstitute: boolean; substitutionNote: string | null; proof?: string;
 };
 export type Proposal = {
+	reviewId?: string;
 	items: ProposalItem[]; questions: { question: string; options: ProposalItem[] }[];
 	unrecognized: string[]; inputMode: "TEXT" | "VOICE"; inputText: string;
 	budgetMinor: number | null; local: boolean; sourceProof?: string;
