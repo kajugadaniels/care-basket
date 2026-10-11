@@ -54,7 +54,6 @@ export function ManagerInbox({ result, status }: ManagerInboxProps) {
 					<span className={styles.caption}>{status ? copy.inboxFilteredOrder : copy.inboxOrder}</span>
 				</header>
 				<RequestList result={result} manager status={status} />
-				<p className={styles.disclosure}>{copy.demo}</p>
 			</section>
 		</div>
 	);
