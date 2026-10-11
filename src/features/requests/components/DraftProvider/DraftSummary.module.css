@@ -91,6 +91,17 @@
 	font-weight: var(--weight-semibold);
 }
 
+.item .remove {
+	grid-column: 2;
+	justify-self: start;
+	padding-inline: var(--space-3);
+	font-size: var(--text-md);
+}
+
+.undo {
+	font-size: var(--text-md);
+}
+
 .quantity {
 	display: flex;
 	flex-wrap: wrap;
@@ -146,5 +157,30 @@
 	.icon,
 	.picture {
 		outline: 1px solid CanvasText;
+	}
+}
+
+/* Only the rows scroll, keeping the heading and full-list action in view. */
+@media (min-width: 64rem) and (min-height: 32rem) {
+	.preview {
+		display: flex;
+		flex-direction: column;
+		max-block-size: calc(100vh - var(--space-5) - var(--space-5));
+		max-block-size: calc(100dvh - var(--space-5) - var(--space-5));
+		/* Oversized feedback must also stay reachable at larger text sizes. */
+		overflow-y: auto;
+	}
+
+	.preview > :not(.items) {
+		flex-shrink: 0;
+	}
+
+	.items {
+		min-block-size: 0;
+		overflow-y: auto;
+		scrollbar-gutter: stable;
+		scroll-padding-block: var(--space-2);
+		padding: var(--space-2);
+		margin-inline: calc(-1 * var(--space-2));
 	}
 }
