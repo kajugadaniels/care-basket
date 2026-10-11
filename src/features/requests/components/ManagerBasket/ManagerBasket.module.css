@@ -29,9 +29,14 @@
 }
 
 .caption,
-.origin {
+.origin,
+.syncing {
 	color: var(--color-text-muted);
 	font-size: var(--text-xs);
+}
+
+.syncing {
+	color: var(--color-info);
 }
 
 .list {
@@ -151,6 +156,9 @@
 .summaryActions {
 	display: grid;
 	gap: var(--space-3);
+	min-inline-size: 0;
+	padding: 0;
+	border: 0;
 }
 
 .error,
