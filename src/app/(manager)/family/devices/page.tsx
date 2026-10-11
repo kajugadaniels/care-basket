@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { DeviceList } from "@/features/devices/components/DeviceList/DeviceList";
-import { DeviceListSkeleton } from "@/features/devices/components/DeviceList/DeviceListSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { devicesCopy } from "@/features/devices/copy";
 import { deviceListSchema } from "@/features/devices/schemas";
 import { listDevices } from "@/features/devices/server/service";
@@ -25,7 +25,7 @@ export default function DevicesPage({ searchParams }: DevicesPageProps) {
 				description={devicesCopy.description}
 				actions={<ActionLink href="/family/devices/connect">{devicesCopy.connect}</ActionLink>}
 			/>
-			<Suspense fallback={<DeviceListSkeleton />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<DeviceDirectory searchParams={searchParams} />
 			</Suspense>
 		</div>
