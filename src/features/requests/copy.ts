@@ -45,7 +45,7 @@ export const requestsCopy = {
 	managerItems: "Requested groceries", managerSummary: "Request summary",
 	managerEmptyItems: "This request has no groceries to review.",
 	managerReviewHelp: "Save quantity changes before leaving this request.",
-	managerSaving: "Saving quantity…",
+	managerSaving: "Saving…",
 	managerExplanations: {
 		PENDING_REVIEW: "Review the items below. You can adjust quantities or decline this request.",
 		AWAITING_PAYMENT: "This request is waiting for payment. Payment is not available here yet.",
