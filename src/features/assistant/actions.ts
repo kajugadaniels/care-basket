@@ -7,13 +7,14 @@ import type { ActionResult } from "@/types/action-result";
 import { assistantFailure } from "./server/failure";
 import { textRequestSchema } from "./schemas";
 import type { Proposal } from "./types";
-import { estimateShoppingBudget, interpretShopping, updateAiPreference } from "./server/service";
+import { estimateShoppingBudget, updateAiPreference } from "./server/service";
+import { interpretShoppingForReview } from "./server/saved-review";
 
 export async function interpretTextAction(input: unknown): Promise<ActionResult<Proposal>> {
 	try {
 		const actor = await requireDevice();
 		const parsed = textRequestSchema.parse(input);
-		return { ok: true, data: await interpretShopping(actor, { kind: "text", text: parsed.text }) };
+		return { ok: true, data: await interpretShoppingForReview(actor, { kind: "text", text: parsed.text }) };
 	} catch (error) { return assistantFailure(error); }
 }
 export async function updateAiPreferenceAction(input: unknown): Promise<ActionResult<{ profileId: string }>> {
