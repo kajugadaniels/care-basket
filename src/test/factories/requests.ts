@@ -21,7 +21,7 @@ export function makeOwnRequest(overrides: Partial<RequestDetailDto> = {}): Reque
 		itemCount: 1, editable: true, items: [{ ...requestProduct, id: requestIds.item, quantity: 2 }], ...overrides };
 }
 export function makeManagerRequest(overrides: Partial<ManagerDetailDto> = {}): ManagerDetailDto {
-	return { ...makeOwnRequest(), displayName: "Demo Grandma", subtotal: "$5.00", inputText: null,
-		items: [{ ...requestProduct, id: requestIds.item, quantity: 2, unitPrice: "$2.50", lineTotal: "$5.00",
+	return { ...makeOwnRequest(), displayName: "Demo Grandma", subtotal: "$5.00", subtotalMinor: 500, currency: "USD", inputText: null,
+		items: [{ ...requestProduct, id: requestIds.item, quantity: 2, unitPriceMinor: 250, unitPrice: "$2.50", lineTotal: "$5.00",
 			origin: "REQUESTED", isSubstitute: false, substitutionNote: null }], ...overrides };
 }
