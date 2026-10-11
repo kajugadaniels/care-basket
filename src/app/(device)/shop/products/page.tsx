@@ -3,7 +3,7 @@ import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
 import { CatalogBrowser } from "@/features/catalog/components/CatalogBrowser/CatalogBrowser";
-import { CatalogSkeleton } from "@/features/catalog/components/CatalogBrowser/CatalogSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 import { catalogCopy } from "@/features/catalog/copy";
 import { parseCatalogSearchParams } from "@/features/catalog/schemas";
 import { listRequesterProducts } from "@/features/catalog/server/service";
@@ -26,5 +26,5 @@ async function ProductsContent({ searchParams }: { searchParams: CatalogSearchPa
 }
 
 export default function ProductsPage({ searchParams }: { searchParams: CatalogSearchParams }) {
-	return <Suspense fallback={<CatalogSkeleton />}><ProductsContent searchParams={searchParams} /></Suspense>;
+	return <Suspense fallback={<ShopLoading label={catalogCopy.loading} />}><ProductsContent searchParams={searchParams} /></Suspense>;
 }
