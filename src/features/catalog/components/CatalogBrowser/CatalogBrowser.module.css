@@ -228,6 +228,15 @@
 	}
 }
 
+/* Pin the preview without overlapping products or clipping short viewports. */
+@media (min-width: 64rem) and (min-height: 32rem) {
+	.withList .listPanel {
+		position: sticky;
+		inset-block-start: var(--space-5);
+		align-self: start;
+	}
+}
+
 @media (forced-colors: active) {
 	.filterChip {
 		border: 1px solid CanvasText;
