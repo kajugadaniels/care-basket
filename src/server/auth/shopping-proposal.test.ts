@@ -25,4 +25,19 @@ describe("shopping proposal provenance", () => {
 		vi.advanceTimersByTime(30 * 60_000);
 		expect(() => verifyShoppingProposal(requester, proof)).toThrow("VALIDATION_FAILED");
 	});
+	it("derives bounded page proofs without extending the original expiry", () => {
+		vi.useFakeTimers();
+		const original = verifyShoppingProposal(requester, signShoppingProposal(requester, {
+			...proposal, reviewDigest: "a".repeat(64),
+		}));
+		vi.advanceTimersByTime(10 * 60_000);
+		const page = verifyShoppingProposal(requester, signShoppingProposal(requester, proposal, original.expiresAt));
+		expect(page.expiresAt).toBe(original.expiresAt);
+		vi.advanceTimersByTime(20 * 60_000);
+		expect(() => signShoppingProposal(requester, proposal, original.expiresAt)).toThrow("VALIDATION_FAILED");
+	});
+	it("rejects expiry extensions and preserves the 42-item proof cap", () => {
+		expect(() => signShoppingProposal(requester, proposal, Date.now() + 31 * 60_000)).toThrow("VALIDATION_FAILED");
+		expect(() => signShoppingProposal(requester, { ...proposal, items: Array.from({ length: 43 }, () => proposal.items[0]) })).toThrow();
+	});
 });
