@@ -5,6 +5,7 @@ import { requestsCopy as copy } from "../../copy";
 import { REQUEST_STATUSES } from "../../limits";
 import { ManagerInbox } from "./ManagerInbox";
 import { ManagerInboxSkeleton } from "./ManagerInboxSkeleton";
+import styles from "./ManagerInbox.module.css";
 
 describe("manager request inbox", () => {
 	it("labels the status filter and offers every supported status", () => {
@@ -17,6 +18,20 @@ describe("manager request inbox", () => {
 		expect(select).toHaveValue("PENDING_REVIEW");
 		expect(select.closest("form")).toHaveAttribute("action", "/family/requests");
 		expect(screen.getByRole("button", { name: copy.applyFilter })).toHaveAttribute("type", "submit");
+	});
+
+	it("uses the catalog-style select wrapper with a decorative dropdown icon", () => {
+		render(<ManagerInbox result={{ requests: [], nextCursor: null }} />);
+
+		const select = screen.getByRole("combobox", { name: copy.statusFilter });
+		expect(select).toHaveClass(styles.select);
+		expect(select).toHaveAttribute("name", "status");
+		expect(select.parentElement).toHaveClass(styles.control);
+		const chevron = select.parentElement?.querySelector("svg");
+		expect(chevron).toHaveAttribute("aria-hidden", "true");
+		expect(chevron).toHaveAttribute("focusable", "false");
+		select.focus();
+		expect(select).toHaveFocus();
 	});
 
 	it("restores the active filter and clears both filter and cursor", () => {
