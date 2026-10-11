@@ -107,6 +107,26 @@ describe("shopping request screens", () => {
 		expect(screen.getByText("No shopping requests yet.")).toBeInTheDocument();
 		expect(screen.queryByRole("link", { name: "Review request" })).not.toBeInTheDocument();
 	});
+	it("shows member metadata, UTC submission time and labelled demo totals", () => {
+		render(<RequestList result={{ requests: [makeManagerRequest()], nextCursor: null }} manager />);
+		expect(screen.getByRole("heading", { name: "Demo Grandma" })).toBeInTheDocument();
+		expect(screen.getByText("October 9, 2026")).toHaveAttribute("dateTime", "2026-10-09T12:00:00.000Z");
+		expect(screen.getByText("12:00 PM UTC")).toBeInTheDocument();
+		expect(screen.getByText("1 product")).toBeInTheDocument();
+		expect(screen.getByText("Demo basket total")).toBeInTheDocument();
+		expect(screen.getByText("$5.00")).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Review request from Demo Grandma" })).toHaveAttribute("href", `/family/requests/${requestIds.request}`);
+	});
+	it.each(["DECLINED", "CANCELLED", "PAID", "AWAITING_PAYMENT"] as const)("offers viewing rather than a review action for %s", (status) => {
+		render(<RequestList result={{ requests: [makeManagerRequest({ status })], nextCursor: null }} manager />);
+		expect(screen.getByRole("link", { name: "View request from Demo Grandma" })).toHaveAttribute("href", `/family/requests/${requestIds.request}`);
+		expect(screen.queryByRole("link", { name: /Review request/ })).not.toBeInTheDocument();
+		expect(screen.queryByText(/Delivered/)).not.toBeInTheDocument();
+	});
+	it("preserves the manager status filter across cursor pagination", () => {
+		render(<RequestList result={{ requests: [makeManagerRequest()], nextCursor: requestIds.other }} manager status="PENDING_REVIEW" />);
+		expect(screen.getByRole("link", { name: "More requests" })).toHaveAttribute("href", `/family/requests?after=${requestIds.other}&status=PENDING_REVIEW`);
+	});
 	it("announces loading and has a working retry action", () => {
 		const retry = vi.fn();
 		render(<><RequestSkeleton /><RequestError retry={retry} /></>);
