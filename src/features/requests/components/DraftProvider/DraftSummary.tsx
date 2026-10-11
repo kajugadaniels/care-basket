@@ -1,16 +1,58 @@
 "use client";
 
+import Image from "next/image";
+import { CheckListIcon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import { Icon } from "@/components/ui/Icon/Icon";
+import { CATEGORY_ICONS } from "@/features/catalog/category-icons";
 import { requestsCopy } from "../../copy";
 import { useDraft } from "./DraftProvider";
-import styles from "../RequestUi/RequestUi.module.css";
+import styles from "./DraftSummary.module.css";
+
+const PREVIEW_LIMIT = 4;
 
 export function DraftSummary() {
 	const { draft, message } = useDraft();
-	return <div className={`${styles.panel} ${styles.requester} ${styles.draftSummary}`}>
-		<h2>{requestsCopy.detailTitle}</h2>
-		<p>{requestsCopy.draftCount(draft.items.length)}</p>
-		<ActionLink href="/shop/basket" size="lg">{requestsCopy.basket}</ActionLink>
-		<p role="status" className={styles.announcement}>{message}</p>
-	</div>;
+	const items = draft.items.slice(0, PREVIEW_LIMIT);
+	const remaining = draft.items.length - items.length;
+
+	return (
+		<div className={styles.preview}>
+			<header className={styles.header}>
+				<span className={styles.icon}><Icon icon={CheckListIcon} size={24} /></span>
+				<div className={styles.heading}>
+					<h2>{requestsCopy.detailTitle}</h2>
+					<p>{requestsCopy.draftCount(draft.items.length)}</p>
+				</div>
+			</header>
+
+			{items.length > 0 ? (
+				<ul className={styles.items} aria-label={requestsCopy.listItems}>
+					{items.map((item) => (
+						<li key={item.sku} className={styles.item}>
+							<div className={styles.picture}>
+								{item.imagePath ? (
+									<Image src={item.imagePath} alt={`${item.displayName}, ${item.sizeLabel}`}
+										width={64} height={64} className={styles.image} />
+								) : <Icon icon={CATEGORY_ICONS[item.category]} size={32} />}
+							</div>
+							<div className={styles.details}>
+								<p className={styles.name}>{item.displayName}</p>
+								<p className={styles.size}>{item.sizeLabel}</p>
+								<dl className={styles.quantity}>
+									<dt>{requestsCopy.quantity}</dt><dd>{item.quantity}</dd>
+								</dl>
+								{item.origin === "SUGGESTED" ? <p className={styles.badge}>{requestsCopy.origins.SUGGESTED}</p> : null}
+								{item.isSubstitute ? <p className={styles.badge}>{requestsCopy.substitute}</p> : null}
+							</div>
+						</li>
+					))}
+				</ul>
+			) : <p className={styles.empty}>{requestsCopy.draftEmptyHelp}</p>}
+
+			{remaining > 0 ? <p className={styles.more}>{requestsCopy.draftMore({ count: remaining })}</p> : null}
+			{items.length > 0 ? <ActionLink href="/shop/basket" size="lg" className={styles.review}>{requestsCopy.basket}</ActionLink> : null}
+			<p role="status" aria-live="polite" aria-atomic="true" className={styles.announcement}>{message}</p>
+		</div>
+	);
 }
