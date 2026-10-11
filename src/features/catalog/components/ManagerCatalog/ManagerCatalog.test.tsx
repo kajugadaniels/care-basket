@@ -40,11 +40,12 @@ describe("manager catalog", () => {
 		expect(screen.getByRole("link", { name: "Show All" })).toHaveAttribute("href", "/family/catalog");
 	});
 
-	it("shows demo-priced product cards in a labelled list", () => {
+	it("shows approved prices with neutral labels in a product list", () => {
 		render(<ManagerCatalog filters={{ q: "", limit: 24 }} result={{ products: [product], nextCursor: null }} />);
 		const card = within(screen.getByRole("list", { name: "Product catalog" })).getByRole("article", { name: "Example Rice" });
 		expect(within(card).getByText("$3.49")).toBeInTheDocument();
-		expect(within(card).getByText("Demo price")).toBeInTheDocument();
+		expect(within(card).getByText("Price")).toBeInTheDocument();
+		expect(within(card).queryByText("Demo price")).not.toBeInTheDocument();
 		expect(screen.queryByRole("link", { name: "Show All" })).not.toBeInTheDocument();
 		expect(screen.queryByRole("navigation", { name: "Catalog pages" })).not.toBeInTheDocument();
 	});
@@ -63,9 +64,9 @@ describe("manager catalog", () => {
 		expect(screen.getByRole("heading", { name: "We couldn't find any groceries like that." })).toBeInTheDocument();
 	});
 
-	it("keeps the simulation notice and the data sources link", () => {
+	it("keeps the data sources link without repeating the layout disclosure", () => {
 		render(<ManagerCatalog filters={{ q: "", limit: 24 }} result={{ products: [], nextCursor: null }} />);
-		expect(screen.getByText("This store is simulated. No real orders or deliveries are placed.")).toBeInTheDocument();
+		expect(screen.queryByText(/This store is simulated|No real orders/i)).not.toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Data Sources" })).toHaveAttribute("href", "/data-sources");
 	});
 
