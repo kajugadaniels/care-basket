@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fireEvent, render, screen, within } from "@testing-library/react";
@@ -12,6 +12,7 @@ import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
 import { ProposalReview } from "./ProposalReview";
 import cardStyles from "@/features/requests/components/RequestUi/RequestUi.module.css";
+import styles from "./ProposalReview.module.css";
 
 const fake = vi.hoisted(() => ({ push: vi.fn(), page: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: fake.push }) }));
@@ -41,7 +42,14 @@ function card(name: string) {
 }
 
 describe("explicit proposal review", () => {
-	beforeEach(() => { vi.resetAllMocks(); });
+	beforeEach(() => {
+		vi.resetAllMocks();
+		vi.stubGlobal("IntersectionObserver", class {
+			observe = vi.fn();
+			disconnect = vi.fn();
+		});
+	});
+	afterEach(() => vi.unstubAllGlobals());
 
 	it("adds only the clicked product without a duplicate add or basket button", () => {
 		review();
@@ -144,7 +152,7 @@ describe("explicit proposal review", () => {
 		for (let index = 0; index < 12; index++) {
 			fireEvent.click(card(`Idea ${index}`).getByRole("button", { name: requestsCopy.add }));
 		}
-		fireEvent.click(screen.getByRole("button", { name: "Load more groceries" }));
+		fireEvent.focus(screen.getByRole("region", { name: "More groceries load automatically" }));
 		await screen.findByRole("article", { name: "Idea 12" });
 		fireEvent.click(card("Idea 12").getByRole("button", { name: requestsCopy.add }));
 		expect(screen.getByRole("alert")).toHaveTextContent(copy.addError);
@@ -192,12 +200,36 @@ describe("explicit proposal review", () => {
 		review({ ...proposal, reviewId: requestIds.key, nextOffset: 12 });
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.increase("Milk") }));
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
-		fireEvent.click(screen.getByRole("button", { name: "Load more groceries" }));
+		expect(screen.queryByRole("button", { name: "Load more groceries" })).not.toBeInTheDocument();
+		fireEvent.focus(screen.getByRole("region", { name: "More groceries load automatically" }));
 		await screen.findByRole("article", { name: "Rice" });
 		expect(fake.page).toHaveBeenCalledWith({ reviewId: requestIds.key, offset: 12 });
 		expect(card("Milk").getByText("Quantity: 2")).toBeInTheDocument();
 		expect(draft().items).toHaveLength(1);
 		fireEvent.click(card("Rice").getByRole("button", { name: requestsCopy.add }));
 		expect(draft().items[1]).toMatchObject({ sku: "demo-rice", origin: "SUGGESTED", proof: "next-page-proof" });
+	});
+
+	it("puts unmatched words directly beneath the grocery count without a separate section", () => {
+		const phrases = ["paper towels", "soap"];
+		review({ ...proposal, unrecognized: phrases });
+		const count = screen.getByText("2 groceries on this page.");
+		const message = screen.getByText(copy.unrecognized({ phrases }));
+		expect(count.nextElementSibling).toBe(message);
+		expect(message).toHaveClass(styles.unrecognized);
+		expect(message.tagName).toBe("P");
+		expect(screen.queryByRole("heading", { name: "I didn't catch these things." })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: copy.pictures })).not.toBeInTheDocument();
+		const css = readFileSync(resolve("src/features/assistant/components/ProposalReview/ProposalReview.module.css"), "utf8");
+		expect(css).toMatch(/\.unrecognized\s*\{[^}]*color: var\(--color-danger\);[^}]*font-size: var\(--text-md\);/);
+	});
+
+	it("keeps unmatched words visible beneath a zero count and renders them only as text", () => {
+		const phrases = ["<img src=x onerror=alert(1)>"];
+		review({ ...proposal, items: [], unrecognized: phrases });
+		const count = screen.getByText("0 groceries on this page.");
+		expect(count.nextElementSibling).toHaveTextContent(copy.unrecognized({ phrases }));
+		expect(screen.queryByRole("img")).not.toBeInTheDocument();
+		expect(draft().items).toEqual([]);
 	});
 });
