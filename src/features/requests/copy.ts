@@ -50,6 +50,8 @@ export const requestsCopy = {
 	managerConfirmFailed: "We couldn't confirm this change. Your input is still here. Refresh to check the saved quantity before retrying.",
 	toastSuccess: "Change saved",
 	toastError: "Change not confirmed",
+	actionBusyTitle: "Please wait",
+	actionBusy: "Another action is in progress.",
 	toastErrorMessage: "Your input is preserved.",
 	soundOn: "Sound on",
 	soundOff: "Sound off",
