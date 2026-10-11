@@ -192,11 +192,13 @@ Every interactive component defines: default, hover (pointer devices only), acti
 
 | State | Requirement |
 | --- | --- |
-| Loading | Skeleton with the final layout, so nothing shifts. No full-page spinners after first load. |
+| Loading | Skeleton with the final layout, so nothing shifts, except the developer-approved manager loading pattern below. No full-page spinners after first load. |
 | Empty | One sentence explaining why, and the next action as a button ("Add a family member"). |
 | Error | What happened in plain words, plus retry or a way out. Input is kept. |
 | Success | A confirmation screen or inline message saying what happens next; routine manager edit successes may use the toast pattern in §6.1. |
 | Partial | Show what loaded; degrade only the failing part. |
+
+**Manager loading exception (developer-approved, 2026-10-12):** all routes under `src/app/(manager)` use the shared `ManagerLoading` progress ring and visible status text, not skeleton placeholders. Provide a route-group `loading.tsx` and a family content boundary using the same component; explicit data-region Suspense fallbacks also reuse it. Reserve space within the content area, preserve resolved headers/navigation, respect reduced motion, and never use a blocking overlay or hide progress from screen readers. This does not change mutation-button feedback or the loading patterns of other route groups.
 
 ## 8. Requester interface (assisted adults and children)
 
