@@ -41,20 +41,21 @@ function card(name: string) {
 describe("explicit proposal review", () => {
 	beforeEach(() => { vi.resetAllMocks(); });
 
-	it("adds only the clicked product and opens the basket without adding it twice", () => {
+	it("adds only the clicked product without a duplicate add or basket button", () => {
 		review();
 		expect(screen.getByRole("heading", { name: copy.suggested })).toBeInTheDocument();
 		expect(draft().items).toEqual([]);
 		expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
-		expect(screen.getByRole("button", { name: copy.basket })).toBeDisabled();
+		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.increase("Milk") }));
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
 		expect(draft().items).toEqual([expect.objectContaining({ sku: "demo-milk", quantity: 2, origin: "REQUESTED" })]);
 		expect(screen.getByText(requestsCopy.added("Milk"))).toBeInTheDocument();
 		expect(card("Bread").getByRole("button", { name: requestsCopy.add })).toBeEnabled();
 		expect(fake.push).not.toHaveBeenCalled();
-		fireEvent.click(screen.getByRole("button", { name: copy.basket }));
-		expect(fake.push).toHaveBeenCalledWith("/shop/basket");
+		expect(card("Milk").queryByRole("button", { name: requestsCopy.add })).not.toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
+		expect(draft().items).toHaveLength(1);
 		expect(draft().items[0].quantity).toBe(2);
 	});
 
@@ -87,7 +88,6 @@ describe("explicit proposal review", () => {
 			expect(controls.getByRole("button", { name: requestsCopy.add })).toBeEnabled();
 		}
 		expect(draft().items).toEqual([]);
-		expect(screen.getByRole("button", { name: copy.basket })).toBeDisabled();
 	});
 
 	it.each([null, 2000])("does not show or apply proposed budget %s", (budgetMinor) => {
@@ -98,7 +98,6 @@ describe("explicit proposal review", () => {
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
 		expect(draft().budgetMinor).toBeUndefined();
 		expect(draft().budgetConfirmed).toBeUndefined();
-		expect(screen.getByRole("button", { name: copy.basket })).toBeEnabled();
 	});
 
 	it("adds a clarification with its quantity and focuses the next question", () => {
@@ -149,7 +148,7 @@ describe("explicit proposal review", () => {
 		expect(card("Idea 12").getByRole("button", { name: requestsCopy.add })).toBeEnabled();
 	});
 
-	it("locks quantity, add, remove and navigation while the draft is submitting", () => {
+	it("locks quantity, add and remove while the draft is submitting", () => {
 		review();
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
 		fireEvent.click(screen.getByRole("button", { name: "Lock draft" }));
@@ -159,7 +158,7 @@ describe("explicit proposal review", () => {
 		}
 		expect(card("Milk").getByRole("button", { name: `${requestsCopy.remove}: Milk` })).toBeDisabled();
 		expect(card("Bread").getByRole("button", { name: requestsCopy.add })).toBeDisabled();
-		expect(screen.getByRole("button", { name: copy.basket })).toBeDisabled();
+		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
 	});
 
 	it("keeps the catalog card layout without the removed notices or checkbox controls", () => {
