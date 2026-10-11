@@ -5,10 +5,17 @@ import { requireDevice } from "@/server/auth/require-device";
 import { requireAdult } from "@/server/auth/require-adult";
 import type { ActionResult } from "@/types/action-result";
 import { assistantFailure } from "./server/failure";
-import { textRequestSchema } from "./schemas";
-import type { Proposal } from "./types";
+import { textRequestSchema, reviewPageSchema } from "./schemas";
+import type { Proposal, ProposalItem } from "./types";
 import { estimateShoppingBudget, updateAiPreference } from "./server/service";
-import { interpretShoppingForReview } from "./server/saved-review";
+import { interpretShoppingForReview, loadShoppingReviewPage } from "./server/saved-review";
+
+export async function loadReviewProductsAction(input: unknown): Promise<ActionResult<{ items: ProposalItem[]; nextCursor: number | null }>> {
+	try {
+		const actor = await requireDevice();
+		return { ok: true, data: await loadShoppingReviewPage(actor, reviewPageSchema.parse(input)) };
+	} catch (error) { return assistantFailure(error); }
+}
 
 export async function interpretTextAction(input: unknown): Promise<ActionResult<Proposal>> {
 	try {
