@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 // For signed-in adults without a family. Reads the session at request time; the setup
-// loading.tsx provides the Suspense boundary.
+// inherited family/loading.tsx provides the shared Suspense boundary.
 export default async function FamilySetupPage() {
   const user = await ensureUser();
   if (await findFamilyMembership(user.id)) {
