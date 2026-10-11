@@ -9,6 +9,27 @@ import type { AssistantProduct } from "../types";
 import { contextCategories } from "./context-categories";
 
 export const AI_CONSENT_VERSION = "ai-shopping-v1";
+
+export function writeAssistantReview(actor: DeviceActor, reviewId: string, payload: string, expiresAt: Date) {
+	const ownership = { familyId: actor.familyId, profileId: actor.profileId, deviceId: actor.deviceId };
+	// Rotate only the lookup ID; the UUIDv7 row ID remains stable during atomic replacement.
+	const snapshot = { reviewId, payload, expiresAt };
+	return getDb().assistantReview.upsert({
+		where: { deviceId: actor.deviceId, familyId: actor.familyId, profileId: actor.profileId },
+		create: { ...ownership, ...snapshot },
+		update: snapshot,
+		select: { reviewId: true },
+	});
+}
+
+export function readAssistantReview(actor: DeviceActor, id: string) {
+	return getDb().assistantReview.findFirst({
+		where: { reviewId: id, familyId: actor.familyId, profileId: actor.profileId, deviceId: actor.deviceId,
+			expiresAt: { gt: new Date() } },
+		select: { payload: true },
+	});
+}
+
 export function readAssistantProfile(actor: DeviceActor) {
 	return getDb().managedProfile.findFirst({ where: { id: actor.profileId, familyId: actor.familyId, kind: actor.profileKind },
 		select: { kind: true, aiAssistEnabled: true, aiConsentConfirmedAt: true, aiConsentVersion: true } });
