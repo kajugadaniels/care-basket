@@ -1,6 +1,8 @@
 // User-facing text for the family manager area (accessibility.md § 9).
 
 export const familyLayoutCopy = {
+	loading: "Loading your family workspace…",
+	loadingHelp: "Getting this page ready for you.",
 	testEnvironment: "Test environment — no real purchases",
   areaLabel: "Family manager",
   navLabel: "Family manager",
