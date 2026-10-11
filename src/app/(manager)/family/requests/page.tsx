@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { requireAdult } from "@/server/auth/require-adult";
 import { ManagerInbox } from "@/features/requests/components/ManagerInbox/ManagerInbox";
-import { ManagerInboxSkeleton } from "@/features/requests/components/ManagerInbox/ManagerInboxSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { requestsCopy } from "@/features/requests/copy";
 import { listFamilyRequests } from "@/features/requests/server/service";
 import { parseRequestSearchParams, requestPageData } from "@/features/requests/server/page-data";
@@ -22,7 +22,7 @@ export default function InboxPage(props: Props) {
 	return (
 		<div className={styles.page}>
 			<PageHeader title={requestsCopy.inbox} description={requestsCopy.inboxIntro} />
-			<Suspense fallback={<ManagerInboxSkeleton />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<InboxContent {...props} />
 			</Suspense>
 		</div>
