@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { FamilyWelcome } from "@/features/family/components/FamilyWelcome/FamilyWelcome";
-import { FamilyWelcomeSkeleton } from "@/features/family/components/FamilyWelcome/FamilyWelcomeSkeleton";
+import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
 import { SetupPreview } from "@/features/family/components/SetupPreview/SetupPreview";
 import { familyDashboardCopy } from "@/features/family/copy";
 import { getFamilyOverview } from "@/features/family/server/service";
@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 };
 
 // The planned-features preview is static, so it renders at once; the personal overview
-// streams in behind a skeleton with the same layout.
+// streams in behind the shared manager loading state.
 export default function FamilyPage() {
 	return (
 		<div className={styles.page}>
-			<Suspense fallback={<FamilyWelcomeSkeleton />}>
+			<Suspense fallback={<ManagerLoading />}>
 				<FamilyOverviewSection />
 			</Suspense>
 			<SetupPreview />
