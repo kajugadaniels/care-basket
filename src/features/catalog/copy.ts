@@ -12,6 +12,13 @@ export const catalogCopy = {
 	search: "Search",
 	clear: "Show All",
 	more: "More Groceries",
+	feed: {
+		more: "Load more groceries",
+		loading: "Loading more groceries…",
+		retry: "Try loading again",
+		error: "We couldn't load more groceries. Try again.",
+		end: "You've seen all the matching groceries.",
+	},
 	first: "Back to First Groceries",
 	previous: "Previous Groceries",
 	loading: "Loading groceries…",
