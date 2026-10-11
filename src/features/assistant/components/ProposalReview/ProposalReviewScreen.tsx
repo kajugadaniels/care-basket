@@ -5,15 +5,18 @@ import { ShoppingBasket01Icon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { assistantCopy as copy } from "../../copy";
+import type { Proposal } from "../../types";
 import { useAssistant } from "../AssistantProvider/AssistantProvider";
 import { ProposalReview } from "./ProposalReview";
 import styles from "./ProposalReview.module.css";
 
-export function ProposalReviewScreen() {
-	const { proposal, revision } = useAssistant();
+export function ProposalReviewScreen({ savedProposal }: { savedProposal?: Proposal | null }) {
+	const { proposal: inMemoryProposal, revision } = useAssistant();
+	const proposal = savedProposal === undefined ? inMemoryProposal : savedProposal;
+	const reviewKey = proposal?.reviewId ?? revision;
 	const headingRef = useRef<HTMLHeadingElement>(null);
 
-	useEffect(() => { headingRef.current?.focus(); }, [revision]);
+	useEffect(() => { headingRef.current?.focus(); }, [reviewKey]);
 
 	if (!proposal) {
 		return (
@@ -47,7 +50,7 @@ export function ProposalReviewScreen() {
 				</div>
 				<p>{copy.reviewIntro}</p>
 			</header>
-			<ProposalReview key={revision} proposal={proposal} />
+			<ProposalReview key={reviewKey} proposal={proposal} />
 		</div>
 	);
 }
