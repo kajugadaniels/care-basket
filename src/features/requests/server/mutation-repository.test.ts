@@ -30,11 +30,12 @@ describe("request revisions and atomic edits", () => {
 			});
 			tail = result.then(() => undefined, () => undefined); return result;
 		});
-		fake.find.mockImplementation(({ where }: { where: { familyId: string; profileId?: string } }) =>
-			where.familyId !== requestIds.family || (where.profileId && where.profileId !== requestIds.profile)
+		fake.find.mockImplementation(({ where }: { where: { id: string; familyId: string; profileId?: string } }) =>
+			where.id !== requestIds.request || where.familyId !== requestIds.family || (where.profileId && where.profileId !== requestIds.profile)
 				? null : { id: requestIds.request, status: staged.status });
-		fake.cas.mockImplementation(({ where, data }: { where: { revision: number; status: string }; data: { status?: string } }) => {
-			if (staged.revision !== where.revision || staged.status !== where.status || staged.lockedAt) return { count: 0 };
+		fake.cas.mockImplementation(({ where, data }: { where: { id: string; familyId: string; profileId?: string; revision: number; status: string }; data: { status?: string } }) => {
+			if (where.id !== requestIds.request || where.familyId !== requestIds.family || (where.profileId && where.profileId !== requestIds.profile)
+				|| staged.revision !== where.revision || staged.status !== where.status || staged.lockedAt) return { count: 0 };
 			staged.revision++; if (data.status) staged.status = data.status; return { count: 1 };
 		});
 		fake.basket.mockImplementation(() => ({ id: requestIds.basket, items: staged.items }));
@@ -55,6 +56,8 @@ describe("request revisions and atomic edits", () => {
 		expect(fake.itemUpdate).toHaveBeenCalledWith(expect.objectContaining({ data: { quantity: 3 },
 			where: expect.objectContaining({ basket: { familyId: requestIds.family, requestId: requestIds.request } }) }));
 		expect(fake.audit).toHaveBeenCalledWith(expect.objectContaining({ data: expect.objectContaining({ action: "basket.item_updated" }) }));
+		expect(fake.find).not.toHaveBeenCalled();
+		expect(fake.cas.mock.invocationCallOrder[0]).toBeLessThan(fake.basket.mock.invocationCallOrder[0]);
 	});
 	it("removes an item and recalculates in the same transaction", async () => {
 		await editRequestItem(requestManager, { requestId: requestIds.request, itemId: requestIds.other, revision: 0 });
@@ -89,7 +92,20 @@ describe("request revisions and atomic edits", () => {
 		await expect(editRequestItem({ ...requestManager, familyId: requestIds.other }, edit)).rejects.toMatchObject({ code: "NOT_FOUND" });
 		await expect(closeRequest({ ...requester, profileId: requestIds.other }, closing)).rejects.toMatchObject({ code: "NOT_FOUND" });
 		await expect(closeRequest({ ...requester, familyId: requestIds.other }, closing)).rejects.toMatchObject({ code: "NOT_FOUND" });
-		expect(fake.cas).not.toHaveBeenCalled();
+		expect(fake.cas).toHaveBeenCalledOnce();
+		expect(fake.cas).toHaveBeenCalledWith(expect.objectContaining({ where: expect.objectContaining({ familyId: requestIds.other }) }));
+		expect(fake.itemUpdate).not.toHaveBeenCalled();
+		expect(fake.basket).not.toHaveBeenCalled();
+		expect(fake.audit).not.toHaveBeenCalled();
+		expect(committed.revision).toBe(0);
+	});
+	it("distinguishes a missing request only after the scoped revision update fails", async () => {
+		await expect(editRequestItem(requestManager, { ...edit, requestId: requestIds.other })).rejects.toMatchObject({ code: "NOT_FOUND" });
+		expect(fake.cas.mock.invocationCallOrder[0]).toBeLessThan(fake.find.mock.invocationCallOrder[0]);
+		expect(fake.find).toHaveBeenCalledWith({ where: { id: requestIds.other, familyId: requestIds.family }, select: { id: true } });
+		expect(fake.basket).not.toHaveBeenCalled();
+		expect(fake.total).not.toHaveBeenCalled();
+		expect(committed.revision).toBe(0);
 	});
 	it("declines with reviewer metadata and makes repeats a no-op", async () => {
 		await closeRequest(requestManager, closing); await closeRequest(requestManager, closing);
