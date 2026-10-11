@@ -26,6 +26,9 @@ export default function FamilyLayout({ children }: Readonly<{ children: ReactNod
           </div>
         </Container>
       </header>
+			<Container>
+				<p className={styles.environmentNotice}>{familyLayoutCopy.testEnvironment}</p>
+			</Container>
       <Container className={styles.body}>
         {/* Dynamic profile IDs make usePathname suspend during prerendering. The fallback is
             the same menu without a current item, so the links are usable from the first paint. */}
