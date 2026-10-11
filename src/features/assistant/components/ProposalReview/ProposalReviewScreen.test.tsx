@@ -16,7 +16,7 @@ import styles from "./ProposalReview.module.css";
 
 const fake = vi.hoisted(() => ({ push: vi.fn(), text: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: fake.push }) }));
-vi.mock("../../actions", () => ({ interpretTextAction: fake.text }));
+vi.mock("../../actions", () => ({ interpretTextAction: fake.text, loadReviewProductsAction: vi.fn() }));
 
 const proposal: Proposal = {
 	inputMode: "TEXT", inputText: "milk", budgetMinor: null, local: true,
