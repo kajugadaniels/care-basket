@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { InformationCircleIcon, Search01Icon, ShoppingBasket01Icon } from "@hugeicons/core-free-icons";
+import { Search01Icon, ShoppingBasket01Icon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { CATEGORY_ICONS } from "../../category-icons";
@@ -73,13 +73,9 @@ export function ManagerCatalog({ filters, result }: ManagerCatalogProps) {
 				</nav>
 			) : null}
 
-			<div className={styles.notice}>
-				<Icon icon={InformationCircleIcon} size={24} />
-				<p>{catalogCopy.simulation}</p>
-				<Link href="/data-sources" className={styles.noticeLink}>
-					{catalogCopy.dataSources}
-				</Link>
-			</div>
+			<Link href="/data-sources" className={styles.noticeLink}>
+				{catalogCopy.dataSources}
+			</Link>
 		</div>
 	);
 }
