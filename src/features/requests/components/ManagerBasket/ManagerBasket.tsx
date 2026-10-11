@@ -1,7 +1,8 @@
 "use client";
 
-import { useId, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button/Button";
+import { Toast, type ToastNotice } from "@/components/ui/Toast/Toast";
 import { updateRequestItemAction, removeRequestItemAction } from "../../actions";
 import { requestsCopy } from "../../copy";
 import { MAX_ITEM_QUANTITY } from "../../limits";
@@ -12,7 +13,12 @@ import styles from "./ManagerBasket.module.css";
 
 export function ManagerBasket({ request, children }: { request: ManagerDetailDto; children?: ReactNode }) {
 	const id = useId();
-	const { pending, error, saved, errorRef, run } = useRequestMutation();
+	const { pending, pendingKey, error, errorRef, run } = useRequestMutation();
+	const [notice, setNotice] = useState<ToastNotice | null>(null);
+
+	function confirm(message: string) {
+		setNotice((previous) => ({ id: (previous?.id ?? 0) + 1, message }));
+	}
 
 	return (
 		<div className={styles.layout}>
@@ -22,9 +28,6 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 					<span className={styles.caption}>{requestsCopy.count(request.items.length)}</span>
 				</header>
 				{error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
-				<p role="status" className={saved ? styles.success : styles.visuallyHidden}>
-					{saved ? requestsCopy.saved : ""}
-				</p>
 				{request.items.length ? (
 					<ul className={styles.list} aria-label={requestsCopy.managerItems}>
 						{request.items.map((item) => (
@@ -47,17 +50,21 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 									</dl>
 								</RequestItem>
 								{request.editable ? (
-									<form key={`${item.id}:${request.revision}`} className={styles.actions} onSubmit={(event) => {
+									<form className={styles.actions} onSubmit={(event) => {
 										event.preventDefault();
+										if (pending) return;
 										const data = new FormData(event.currentTarget);
+										const quantity = Number(data.get("quantity"));
+										setNotice(null);
 										run(() => updateRequestItemAction({
 											requestId: request.id, revision: request.revision,
-											itemId: item.id, quantity: Number(data.get("quantity")),
-										}));
+											itemId: item.id, quantity,
+										}), () => confirm(requestsCopy.managerQuantitySaved({ name: item.displayName, quantity })), `save:${item.id}`);
 									}}>
 										<div className={styles.quantity}>
 											<label htmlFor={`${id}-${item.id}`}>{requestsCopy.quantity}</label>
 											<input
+												key={`${item.id}:${item.quantity}`}
 												id={`${id}-${item.id}`}
 												name="quantity"
 												type="number"
@@ -67,21 +74,25 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 												step={1}
 												defaultValue={item.quantity}
 												required
-												disabled={pending}
+												disabled={pendingKey === `save:${item.id}` || pendingKey === `remove:${item.id}`}
 											/>
 										</div>
-										<Button type="submit" variant="secondary" loading={pending}>
-											{pending ? requestsCopy.managerSaving : requestsCopy.save}
+										<Button type="submit" variant="secondary" disabled={pending} loading={pendingKey === `save:${item.id}`}>
+											{pendingKey === `save:${item.id}` ? requestsCopy.managerSaving : requestsCopy.save}
 										</Button>
 										<Button
 											variant="destructive"
+											loading={pendingKey === `remove:${item.id}`}
 											disabled={pending || request.items.length === 1}
 											aria-label={`${requestsCopy.remove}: ${item.displayName}`}
-											onClick={() => run(() => removeRequestItemAction({
-												requestId: request.id, revision: request.revision, itemId: item.id,
-											}))}
+											onClick={() => {
+												setNotice(null);
+												run(() => removeRequestItemAction({
+													requestId: request.id, revision: request.revision, itemId: item.id,
+												}), () => confirm(requestsCopy.managerItemRemoved({ name: item.displayName })), `remove:${item.id}`);
+											}}
 										>
-											{requestsCopy.remove}
+											{pendingKey === `remove:${item.id}` ? requestsCopy.managerRemoving : requestsCopy.remove}
 										</Button>
 									</form>
 								) : <p className={styles.readOnlyQuantity}>{requestsCopy.quantity}: {item.quantity}</p>}
@@ -107,6 +118,7 @@ export function ManagerBasket({ request, children }: { request: ManagerDetailDto
 				{request.editable ? <p className={styles.note}>{requestsCopy.managerReviewHelp}</p> : null}
 				<div className={styles.summaryActions}>{children}</div>
 			</section>
+			<Toast notice={notice} dismissLabel={requestsCopy.dismissSuccess} onDismiss={() => setNotice(null)} />
 		</div>
 	);
 }
