@@ -1,13 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { makeDeviceAdult } from "@/test/factories/devices";
-import { resolveServerTree } from "@/test/resolve-server-tree";
+import { resolveServerTree, serverFallbackTree } from "@/test/resolve-server-tree";
 const fake = vi.hoisted(() => ({ adult: vi.fn(), list: vi.fn() }));
 vi.mock("@/server/auth/require-adult", () => ({ requireAdult: fake.adult }));
 vi.mock("@/features/devices/server/service", () => ({ listDevices: fake.list }));
 vi.mock("@/features/devices/actions", () => ({ revokeDeviceAction: vi.fn() }));
 import DevicesPage from "./page";
-import DevicesLoading from "./loading";
 
 function renderDevicesPage() {
 	return resolveServerTree(DevicesPage({ searchParams: Promise.resolve({}) }));
@@ -34,9 +33,11 @@ describe("manager device list route", () => {
 		expect(fake.list).not.toHaveBeenCalled();
 	});
 	it("shows the real header and connect action while the device cards load", () => {
-		render(<DevicesLoading />);
+		render(serverFallbackTree(DevicesPage({ searchParams: Promise.resolve({}) })));
 		expect(screen.getByRole("heading", { level: 1, name: "Devices" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Connect a Device" })).toHaveAttribute("href", "/family/devices/connect");
-		expect(screen.getByRole("status")).toHaveTextContent("Loading devices…");
+		expect(screen.getByRole("status")).toHaveTextContent("Loading your family workspace…");
+		expect(fake.adult).not.toHaveBeenCalled();
+		expect(fake.list).not.toHaveBeenCalled();
 	});
 });
