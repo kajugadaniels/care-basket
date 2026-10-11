@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { assistantCatalog } from "@/test/factories/assistant";
 import { requestIds } from "@/test/factories/requests";
@@ -170,7 +171,11 @@ describe("explicit proposal review", () => {
 			expect(screen.getByRole("article", { name }).parentElement).toHaveClass(cardStyles.selection);
 			expect(card(name).getByRole("button", { name: requestsCopy.add }).parentElement).toHaveClass(cardStyles.controls);
 		}
-		const sharedStyles = readFileSync(new URL("../../../requests/components/RequestUi/RequestUi.module.css", import.meta.url), "utf8");
+		// Filesystem paths avoid Vite rewriting asset URLs to browser URLs.
+		const sharedStyles = readFileSync(
+			resolve("src/features/requests/components/RequestUi/RequestUi.module.css"),
+			"utf8",
+		);
 		expect(sharedStyles).toMatch(/\.selection\s*\{[^}]*display: flex;[^}]*flex-direction: column;/);
 		expect(sharedStyles).toMatch(/\.selection > article\s*\{[^}]*block-size: auto;/);
 		expect(sharedStyles).toMatch(/\.selection \.controls\s*\{[^}]*margin-block-start: auto;/);
