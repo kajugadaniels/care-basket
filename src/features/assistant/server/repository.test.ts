@@ -45,6 +45,13 @@ describe("assistant scoped repository", () => {
 			isActive: true, archivedAt: null, isChildSuitable: true,
 			demoPrices: { some: expect.objectContaining({ currency: "USD", approvedAt: expect.any(Object) }) } }) }));
 	});
+	it("bounds restored metadata reads to the twelve SKUs in the current batch", async () => {
+		const skus = Array.from({ length: 12 }, (_, index) => `fictional-product-${index}`);
+		await readAssistantCatalog(true, { skus });
+		expect(fake.catalog).toHaveBeenCalledWith(expect.objectContaining({
+			take: 12, where: expect.objectContaining({ sku: { in: skus }, isChildSuitable: true }),
+		}));
+	});
 	it("excludes unsafe catalog content and invalid base quantities", async () => {
 		fake.catalog.mockResolvedValue([{ ...assistantCatalog[0], displayName: "<script>pay now</script>", demoPrices: [{ priceMinor: 250 }] },
 			{ ...assistantCatalog[1], netQuantity: 0, demoPrices: [{ priceMinor: 200 }] }]);
