@@ -40,9 +40,22 @@ export const requestsCopy = {
 	undoRemove: "Undo removal",
 	draftMore: ({ count }: { count: number }) => `${count} more ${count === 1 ? "product" : "products"} in your list`,
 	managerTitle: (name: string) => `${name}'s shopping list`, substitute: "Substitute",
+	managerDetailIntro: "Review the groceries and quantities in this request.",
+	managerDetailTitle: "Shopping request details",
+	managerItems: "Requested groceries", managerSummary: "Request summary",
+	managerEmptyItems: "This request has no groceries to review.",
+	managerReviewHelp: "Save quantity changes before leaving this request.",
+	managerSaving: "Saving quantity…",
+	managerExplanations: {
+		PENDING_REVIEW: "Review the items below. You can adjust quantities or decline this request.",
+		AWAITING_PAYMENT: "This request is waiting for payment. Payment is not available here yet.",
+		PAID: "Payment has been confirmed. Delivery has not been confirmed.",
+		DECLINED: "You declined this request. It remains in your family's history.",
+		CANCELLED: "The requester cancelled this list. It remains in your family's history.",
+	},
 	pendingCount: (count: number) => `${count} ${count === 1 ? "request" : "requests"} waiting for review`,
 	statuses: {
-		PENDING_REVIEW: "Waiting for review", AWAITING_PAYMENT: "Payment not yet available",
+		PENDING_REVIEW: "For review", AWAITING_PAYMENT: "Payment not yet available",
 		PAID: "Payment confirmed", DECLINED: "Declined", CANCELLED: "Cancelled",
 	},
 	explanations: {
