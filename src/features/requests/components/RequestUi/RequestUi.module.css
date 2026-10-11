@@ -100,9 +100,6 @@
 .quantity output {
 	font-variant-numeric: tabular-nums;
 }
-.draftSummary a {
-	inline-size: 100%;
-}
 .announcement {
 	min-block-size: calc(var(--text-lg) * var(--leading-body));
 }
