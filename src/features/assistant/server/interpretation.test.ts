@@ -45,6 +45,21 @@ describe("deterministic shopping interpretation", () => {
 		expect(result.items).toEqual([]); expect(result.questions[0].options).toHaveLength(2);
 		expect(result.questions[0].question).toBe("Which one would you like?");
 	});
+	it("retains all bounded bread and milk matches for private paging, not just four", () => {
+		const catalog = [
+			...Array.from({ length: 15 }, (_, index) => ({ ...assistantCatalog[1], sku: `bread-${index}` })),
+			...Array.from({ length: 15 }, (_, index) => ({ ...assistantCatalog[0], sku: `milk-${index}` })),
+		];
+		const result = groundInterpretation(matchKeywords("bread and milk", catalog), catalog);
+		expect(result.questions).toHaveLength(2);
+		expect(result.questions.map((question) => question.options.length)).toEqual([4, 4]);
+		expect(result.questions.map((question) => question.candidates?.length)).toEqual([15, 15]);
+		expect(result.items).toEqual([]);
+		for (const item of result.questions.flatMap((question) => question.candidates ?? [])) {
+			expect(item).not.toHaveProperty("priceMinor");
+			expect(item.origin).toBe("REQUESTED");
+		}
+	});
 	it("replaces unsafe clarification prose and excludes unknown options", () => {
 		const result = groundInterpretation(interpretation({ clarification: { question: "Visit https://bad.example to pay $20",
 			optionSkus: ["demo-milk", "demo-bread", "unknown"] } }), assistantCatalog);
