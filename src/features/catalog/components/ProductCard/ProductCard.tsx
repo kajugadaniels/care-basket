@@ -45,7 +45,7 @@ export function ProductCard({ product, idPrefix = "product" }: { product: Catalo
 				{managerProduct ? (
 					<>
 						<p className={styles.price}>
-							<span className={styles.priceLabel}>{catalogCopy.demoPrice}</span>
+							<span className={styles.priceLabel}>{catalogCopy.price}</span>
 							<span className={styles.priceValue}>
 								{formatMoney(managerProduct.demoPrice.priceMinor, managerProduct.demoPrice.currency)}
 							</span>
