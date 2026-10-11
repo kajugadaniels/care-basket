@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Toast } from "./Toast";
 
-describe("success toast", () => {
+describe("edit notifications", () => {
 	afterEach(() => vi.restoreAllMocks());
 	it("keeps a polite empty live region ready without exposing a dismiss control", () => {
 		render(<Toast notice={null} dismissLabel="Dismiss success message" onDismiss={vi.fn()} />);
@@ -33,11 +33,20 @@ describe("success toast", () => {
 		save.focus();
 		vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(function (this: HTMLElement) {
 			if (this === save) return new DOMRect(100, 400, 150, 48);
-			return this.dataset.position === "top" ? new DOMRect(100, 20, 300, 80) : new DOMRect(100, 390, 300, 80);
+			return this.dataset.position === "bottom" ? new DOMRect(100, 20, 300, 80) : new DOMRect(100, 390, 300, 80);
 		});
 		rerender(<><button>Save quantity</button><Toast notice={{ id: 1, message: "Milk quantity saved." }} dismissLabel="Dismiss success message" onDismiss={vi.fn()} /></>);
-		expect(screen.getByRole("status").parentElement).toHaveAttribute("data-position", "top");
+		expect(screen.getByRole("status").parentElement).toHaveAttribute("data-position", "bottom");
 		expect(save).toHaveFocus();
+	});
+	it("uses the top position by default and conveys error with words as well as color", () => {
+		render(<Toast notice={{ id: 1, kind: "error", title: "Change not confirmed", message: "Your input is kept." }} dismissLabel="Dismiss error notification" onDismiss={vi.fn()} />);
+		const status = screen.getByRole("status");
+		expect(status.parentElement).toHaveAttribute("data-position", "top");
+		expect(status.parentElement).toHaveAttribute("data-kind", "error");
+		expect(status).toHaveTextContent("Change not confirmed");
+		expect(status).toHaveTextContent("Your input is kept.");
+		expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 	});
 
 	it("updates the message for successive confirmations in the same live region", () => {
