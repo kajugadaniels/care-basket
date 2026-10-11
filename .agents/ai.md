@@ -75,7 +75,7 @@ type InterpretInput = {
 4. The server loads the active catalog summary (cached; contains no personal data and no prices).
 5. One provider call returns raw JSON, which is validated with Zod (§6).
 6. The assistant service grounds SKUs, resolves sizes and pack counts, merges duplicates, applies confidence rules, builds clarifications, and fits any budget with demo prices (§6, §10).
-7. The requester sees what was understood: "I heard: …", requested items as large picture cards, suggested items in a separate **Suggested for you** group, one clarification at a time, and anything not understood.
+7. The requester sees what was understood: "I heard: …", requested matches visible together as picture cards, suggested items in a separate **Suggested for you** group, and anything not understood. Review batches contain 12 products and fairly interleave matches for different requested phrases.
 8. The requester adjusts: answers clarifications by tapping, removes items, changes quantities with − and +, adds from pictures, or taps **Say more** (a new interpretation merged into the draft).
 9. **Confirmation:** "Send these 7 things to Anna?" lists everything, with suggestions still marked. Only **Send** submits.
 10. `submitRequestAction` re-validates every SKU and quantity, snapshots demo prices, stores each item's origin (`REQUESTED` or `SUGGESTED`), any budget, and the input text, then hands off to manager review ([payments.md § 3](payments.md#3-payment-workflow)). AI plays no further part.
@@ -88,7 +88,7 @@ type InterpretInput = {
 | `listening` | Listening indicator, timer, Stop | `interpreting`, `idle` (cancel) |
 | `typing` | Large text field, Continue | `interpreting` |
 | `interpreting` | Busy submit button with its original label and spinner; screen-reader progress announcement; after 6 seconds "Still working…" | `reviewing`, `clarifying`, `fallback` |
-| `clarifying` | One short question with 2–4 picture options and "None of these" | next clarification, `reviewing` |
+| `clarifying` | Catalog-grounded picture choices, 12 per batch, with "None of these" | `reviewing`, picture browsing |
 | `reviewing` | Basket cards, suggestions, edit controls, Say more, Continue | `confirming`, `listening`, `typing` |
 | `confirming` | Final list and **Send to {manager}** | `submitted`, `reviewing` |
 | `submitted` | "Sent to Anna. She'll look at it soon." | — |
@@ -101,7 +101,8 @@ The shopping-list draft lives in client state until **Send**. A developer-approv
 - Text/voice submission may save a minimal, server-generated proposal snapshot in `AssistantReview`. Saving is limited to 30 reviews per device per hour, including deterministic matches. New interpretations replace the previous review for that device.
 - The URL contains only an opaque review ID, never input text, transcripts, signed proofs, session tokens, quantities, or serialized proposals. IDs are lookup keys, not access credentials.
 - Every read authenticates the device and scopes to its family, profile, and device. No shared caching, public sharing, or provider calls on reload.
-- Reviews expire no later than the original 30-minute signed proof. Reads never extend expiry, re-sign proofs, approve choices, add to the shopping list, or submit requests.
+- Reviews expire no later than the original 30-minute signed proof. A signed digest binds the bounded saved candidate list (at most 200 unique catalog SKUs) to its original input and provenance. Reads may derive a choice proof for each 12-product batch, but must keep the original expiry exactly: never renew the source proof, extend expiry, approve choices, add to the shopping list, or submit requests. Legacy snapshots remain readable until their original expiry.
+- Later batches use an authenticated Server Action with only the opaque review ID and a validated bounded offset, limited to 60 batch reads per device per minute through the PostgreSQL limiter. Restore current eligible catalog metadata for that batch only; never call Gemini or repeat text matching on scroll. Automatic loading and its manual fallback follow [api.md § 7](api.md#7-pagination).
 - Restore labels and images from the current active catalog, preserving child-suitability checks and suggestion/substitution provenance. Invalid, expired, or inaccessible IDs show the same recovery state.
 - Review data is encrypted at rest; retention and deletion follow [privacy.md § 7](privacy.md#7-deletion-and-retention). Nothing is persisted in browser storage. Voice audio is never stored.
 
@@ -218,8 +219,8 @@ Warm, short, and plain. Questions are at most 100 characters. No emoji, no excla
 
 ### 10.2 Clarification
 
-- **One question at a time.** Queue at most three (the AI's one plus server-generated size questions); beyond that, use the best default with an "Is this right?" marker.
-- Each question shows 2–4 large picture options with server-built labels (name and size) and a **None of these** choice that opens picture browsing.
+- Show matches for the requested phrases together, fairly interleaved in 12-product batches so one phrase does not hide another. Keep at most three server-generated match groups; beyond that, use the best default with an "Is this right?" marker. The provider's own clarification contract remains 2–4 options; only deterministic catalog matching expands the saved choices.
+- Choices use server-built labels (name and size) and the same quantity/add controls as catalog browsing. **None of these** opens picture browsing. Loading or viewing a card never chooses it or adds it to the list; suggestions and substitutions retain their provenance and limits.
 - Answering is a tap, never typing, and needs no new AI call: the chosen option is already a catalog SKU and quantity.
 - Example: "I need milk." → "Which size would you like?" with options "Whole milk, 1 quart (946 mL)" and "Whole milk, half gallon (1.89 L)".
 
