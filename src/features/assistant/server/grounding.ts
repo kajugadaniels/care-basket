@@ -8,9 +8,13 @@ export function displayItem(product: AssistantProduct, quantity: number, origin:
 	return { sku: product.sku, displayName: product.displayName, category: product.category, sizeLabel: product.sizeLabel,
 		imagePath: product.imagePath, quantity, origin, uncertain, isSubstitute: false, substitutionNote: null };
 }
-export function groundInterpretation(raw: Interpretation, catalog: AssistantProduct[]): Pick<Proposal, "items" | "questions" | "unrecognized"> {
+export type GroundedProposal = Pick<Proposal, "items" | "unrecognized"> & {
+	questions: { question: string; options: ProposalItem[]; candidates?: ProposalItem[] }[];
+};
+
+export function groundInterpretation(raw: Interpretation, catalog: AssistantProduct[]): GroundedProposal {
 	const items: ProposalItem[] = [];
-	const questions: Proposal["questions"] = [];
+	const questions: GroundedProposal["questions"] = [];
 	const unrecognized = [...raw.unrecognized];
 	let suggestions = 0;
 	for (const entry of raw.items) {
@@ -29,12 +33,12 @@ export function groundInterpretation(raw: Interpretation, catalog: AssistantProd
 			item.uncertain = true;
 		}
 		if (entry.confidence === "low" || resolved.uncertain) {
-			const options = (entry.confidence === "low" ? rankMatches(entry.requestedText, catalog).map((m) => m.product) : variants)
-				.slice(0, 4).map((p) => ({ ...displayItem(p, Math.min(origin === "SUGGESTED" ? 6 : 20,
+			const candidates = (entry.confidence === "low" ? rankMatches(entry.requestedText, catalog).map((m) => m.product) : variants)
+				.slice(0, 200).map((p) => ({ ...displayItem(p, Math.min(origin === "SUGGESTED" ? 6 : 20,
 					resolvePacks(p, [p], entry.amount, entry.unit, entry.packCount).quantity), origin, true),
 					isSubstitute: item.isSubstitute, substitutionNote: item.substitutionNote }));
-			if (questions.length < 3 && options.length >= 2) {
-				questions.push({ question: assistantCopy.question, options }); continue;
+			if (questions.length < 3 && candidates.length >= 2) {
+				questions.push({ question: assistantCopy.question, options: candidates.slice(0, 4), candidates }); continue;
 			}
 			if (entry.confidence === "low") { unrecognized.push(entry.requestedText); continue; }
 		}
