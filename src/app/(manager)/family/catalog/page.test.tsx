@@ -1,12 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolveServerTree } from "@/test/resolve-server-tree";
+import { resolveServerTree, serverFallbackTree } from "@/test/resolve-server-tree";
 const mocks = vi.hoisted(() => ({ adult: vi.fn(), list: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/auth/require-adult", () => ({ requireAdult: mocks.adult }));
 vi.mock("@/features/catalog/server/service", () => ({ listManagerProducts: mocks.list }));
 import CatalogPage from "./page";
-import CatalogLoading from "./loading";
 
 const actor = { type: "adult", userId: "adult", familyId: "family", role: "OWNER" };
 
@@ -41,9 +40,11 @@ describe("protected manager catalog entry", () => {
 		expect(mocks.list).not.toHaveBeenCalled();
 	});
 	it("shows the real header while the catalog loads", () => {
-		render(<CatalogLoading />);
+		render(serverFallbackTree(CatalogPage({ searchParams: Promise.resolve({}) })));
 		expect(screen.getByRole("heading", { level: 1, name: "Product catalog" })).toBeInTheDocument();
-		expect(screen.getByRole("status")).toHaveTextContent("Loading products…");
+		expect(screen.getByRole("status")).toHaveTextContent("Loading your family workspace…");
 		expect(screen.queryByRole("search")).not.toBeInTheDocument();
+		expect(mocks.adult).not.toHaveBeenCalled();
+		expect(mocks.list).not.toHaveBeenCalled();
 	});
 });
