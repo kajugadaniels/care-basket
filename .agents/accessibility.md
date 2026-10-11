@@ -3,7 +3,7 @@
 **Purpose:** Make CareBasket usable by older adults, children, and people with limited technical experience, meeting WCAG 2.2 Level AA as a minimum.
 **Applies to:** Any UI, copy, media, or interaction work. This document wins over [design.md](design.md) on any conflict.
 **Related:** [design.md](design.md), [ai.md § 7](ai.md#7-voice-input), [testing.md § 6](testing.md#6-accessibility-checks)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -76,6 +76,7 @@ All screens:
 - Voice is optional. Text input and picture selection are always visible alternatives, and are the default when the microphone is unavailable or permission is denied ([ai.md § 7](ai.md#7-voice-input)).
 - Recording never starts automatically. A large, labelled button starts and stops it; a visible timer and a visual "listening" indicator show progress.
 - Any sound (for example, a start or stop tone) has a visual equivalent and respects the device's mute state. No audio plays automatically for more than three seconds (WCAG 1.4.2).
+- Manager edit toasts may use 14px (`--text-xs`) for a short title and secondary status message, not instructions or paragraphs. Full error recovery remains inline at body size. Success/error tones are optional, brief, distinct, gesture-enabled, and have a visible sound toggle; visual feedback always works without audio.
 - Show the transcript or understood text so users who cannot hear or who misspoke can check it.
 
 ## 8. Errors and recovery
