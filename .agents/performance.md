@@ -94,7 +94,7 @@ The endpoint targets exclude browser latency and external providers such as Cler
 
 - Status polling runs only while the relevant page is visible, every 15–30 seconds, stops on final states, and refreshes immediately on window focus ([architecture.md § 10](architecture.md#10-status-updates-without-background-infrastructure)).
 - No polling on pages that do not show changing status.
-- Debounce nothing that the user explicitly submits; instead, disable repeat submission while pending.
+- Debounce nothing that the user explicitly submits; instead, prevent repeat submission while pending. Manager basket controls use the guarded-click pattern in [design.md §6.1](design.md#61-ux-craftsmanship-and-feedback-developer-requirement-2026-10-12) without changing their enabled styling.
 - Audio uploads are capped at 2 MB ([ai.md § 7](ai.md#7-voice-input)).
 - Cancel obsolete client requests with `AbortController` when a newer request makes their result irrelevant.
 - Do not add prefetching blindly. Prefetch only likely next navigation and never personal data into a shared cache.
