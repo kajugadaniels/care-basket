@@ -1,0 +1,42 @@
+.loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-4);
+	min-inline-size: 0;
+	min-block-size: calc(var(--control-height-lg) * 4);
+	padding: var(--space-6) var(--gutter);
+	font-family: var(--font-sans);
+	text-align: center;
+}
+
+.spinner {
+	inline-size: var(--space-6);
+	block-size: var(--space-6);
+	color: var(--color-primary);
+}
+
+.message {
+	display: grid;
+	gap: var(--space-2);
+	min-inline-size: 0;
+	max-inline-size: var(--reading-max);
+	overflow-wrap: anywhere;
+}
+
+.title {
+	font-size: var(--text-md);
+	font-weight: var(--weight-semibold);
+}
+
+.help {
+	font-size: var(--text-base);
+	color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.spinner {
+		animation: none;
+	}
+}
