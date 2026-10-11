@@ -3,7 +3,7 @@ import { requireDevice } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { ReconnectDevice } from "@/features/devices/components/ReconnectDevice/ReconnectDevice";
 import { RequestDetail } from "@/features/requests/components/RequestUi/RequestDetail";
-import { ShopSkeleton } from "@/features/devices/components/ShopSkeleton/ShopSkeleton";
+import { ShopLoading } from "@/features/devices/components/ShopLoading/ShopLoading";
 import { getOwnRequest } from "@/features/requests/server/service";
 import { requestPageData } from "@/features/requests/server/page-data";
 import { requestsCopy } from "@/features/requests/copy";
@@ -22,5 +22,5 @@ async function DetailContent({ params }: Props) {
 	return <RequestDetail request={request} />;
 }
 export default function DetailPage(props: Props) {
-	return <Suspense fallback={<ShopSkeleton variant="detail" />}><DetailContent {...props} /></Suspense>;
+	return <Suspense fallback={<ShopLoading />}><DetailContent {...props} /></Suspense>;
 }
