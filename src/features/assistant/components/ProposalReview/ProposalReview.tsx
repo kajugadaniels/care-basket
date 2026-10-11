@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button/Button";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { ProductCard } from "@/features/catalog/components/ProductCard/ProductCard";
@@ -13,10 +12,9 @@ import { assistantCopy as copy } from "../../copy";
 import type { Proposal, ProposalItem } from "../../types";
 import styles from "./ProposalReview.module.css";
 
-type Props = { proposal: Proposal; onAccepted?(): void };
+type Props = { proposal: Proposal };
 
-export function ProposalReview({ proposal, onAccepted }: Props) {
-	const router = useRouter();
+export function ProposalReview({ proposal }: Props) {
 	const { draft, locked, change } = useDraft();
 	const [question, setQuestion] = useState(0);
 	const [resolvedItems, setResolvedItems] = useState<ProposalItem[]>([]);
@@ -68,12 +66,6 @@ export function ProposalReview({ proposal, onAccepted }: Props) {
 		</ProductSelection>;
 	}
 
-	function checkList() {
-		if (locked || !draft.items.length) return;
-		onAccepted?.();
-		router.push("/shop/basket");
-	}
-
 	return <div className={styles.page}>
 		{proposal.inputMode === "VOICE" ? <p className={styles.transcript}>{copy.transcript} {proposal.inputText}</p> : null}
 		{current ? <section className={styles.panel} aria-labelledby="clarification-title">
@@ -95,8 +87,5 @@ export function ProposalReview({ proposal, onAccepted }: Props) {
 			<ActionLink href="/shop/products" size="lg" variant="secondary">{copy.pictures}</ActionLink></section> : null}
 		<p role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
 		{error ? <p role="alert" ref={errorRef} tabIndex={-1} className={styles.error}>{error}</p> : null}
-		<div className={styles.actions}>
-			<Button size="lg" disabled={!draft.items.length || locked} onClick={checkList}>{copy.basket}</Button>
-		</div>
 	</div>;
 }
