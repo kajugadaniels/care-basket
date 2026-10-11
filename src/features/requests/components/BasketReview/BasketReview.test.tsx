@@ -1,7 +1,8 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requestIds, requestProduct } from "@/test/factories/requests";
 import type { RequestMutationResult } from "../../types";
+import { requestsCopy } from "../../copy";
 const fake = vi.hoisted(() => ({ submit: vi.fn() }));
 vi.mock("@/features/requests/actions", () => ({ submitRequestAction: fake.submit }));
 import { DraftProvider } from "../DraftProvider/DraftProvider";
@@ -22,10 +23,27 @@ describe("shopping basket review", () => {
 		fake.submit.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
 	});
 	it("shows an empty state and working catalog link without a submit button", () => {
-		render(<BasketFixture />);
-		expect(screen.getByText("Your shopping list is empty.")).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Back to groceries" })).toHaveAttribute("href", "/shop/products");
+		render(<BasketFixture selecting={false} />);
+		const empty = screen.getByRole("region", { name: requestsCopy.emptyBasket });
+		expect(within(empty).getByRole("heading", { level: 2, name: requestsCopy.emptyBasket })).toBeInTheDocument();
+		expect(within(empty).getByText(requestsCopy.emptyBasketHelp)).toBeInTheDocument();
+		expect(within(empty).getByRole("link", { name: requestsCopy.emptyBasketBrowse })).toHaveAttribute("href", "/shop/products");
+		expect(screen.getAllByRole("link")).toHaveLength(1);
+		expect(empty.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+		expect(screen.queryByRole("img")).not.toBeInTheDocument();
+		expect(screen.queryByText(requestsCopy.basketIntro)).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: "Send My Shopping List" })).not.toBeInTheDocument();
+		expect(fake.submit).not.toHaveBeenCalled();
+	});
+	it("omits the unsent-list notice for both empty and populated baskets", () => {
+		render(<BasketFixture />);
+		const notice = "Your unsent list stays here while you browse. Reloading or closing this page clears it.";
+		expect(screen.queryByText(notice)).not.toBeInTheDocument();
+		add();
+		expect(screen.queryByText(notice)).not.toBeInTheDocument();
+		expect(screen.queryByRole("region", { name: requestsCopy.emptyBasket })).not.toBeInTheDocument();
+		expect(screen.getByText(requestsCopy.basketIntro)).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: requestsCopy.browse })).toHaveAttribute("href", "/shop/products");
 	});
 	it("does not submit on add, and preserves the draft when catalog controls unmount", () => {
 		const { rerender } = render(<BasketFixture />); add();
@@ -92,6 +110,8 @@ describe("shopping basket review", () => {
 		render(<BasketFixture selecting={true} />); add();
 		fireEvent.click(screen.getByRole("button", { name: "Clear my list" }));
 		expect(screen.getByText("Your shopping list is empty.")).toBeInTheDocument();
+		expect(screen.getByRole("region", { name: requestsCopy.emptyBasket })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: requestsCopy.emptyBasketBrowse })).toHaveAttribute("href", "/shop/products");
 		expect(fake.submit).not.toHaveBeenCalled();
 	});
 	it("groups the send action separately from the selected groceries", () => {
