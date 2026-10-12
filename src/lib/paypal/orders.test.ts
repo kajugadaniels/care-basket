@@ -23,7 +23,7 @@ describe("Sandbox Orders v2", () => {
 		expect(JSON.stringify(body)).not.toMatch(/email|address|inputText|budget/);
 	});
 	it("reuses the persisted UUID for every create and returns only verified safe order fields", async () => {
-		const client = { clientId: "fictional-sandbox-client", orderRequest: vi.fn().mockResolvedValue(response()) };
+		const client = { orderRequest: vi.fn().mockResolvedValue(response()) };
 		const first = await createSandboxOrder(client, input);
 		expect(await createSandboxOrder(client, input)).toEqual(first);
 		for (const args of client.orderRequest.mock.calls) expect(args).toEqual(["/v2/checkout/orders", orderBody(input), input.paymentId]);
@@ -43,7 +43,7 @@ describe("Sandbox Orders v2", () => {
 		expect(() => verifyOrder(body, input)).toThrow();
 	});
 	it("verifies GET identity and refuses approved or payment-bearing orders for cancellation", async () => {
-		const client = { clientId: "fictional-sandbox-client", orderRequest: vi.fn().mockResolvedValue({ ...response(), id: "ORDER2" }) };
+		const client = { orderRequest: vi.fn().mockResolvedValue({ ...response(), id: "ORDER2" }) };
 		await expect(readSandboxOrder(client, input, "ORDER1")).rejects.toMatchObject({ kind: "INVALID_RESPONSE" });
 		expect(client.orderRequest).toHaveBeenCalledWith("/v2/checkout/orders/ORDER1");
 		expect(isUnapprovedOrder({ id: "ORDER1", status: "PAYER_ACTION_REQUIRED", hasPayments: false })).toBe(true);
@@ -53,6 +53,11 @@ describe("Sandbox Orders v2", () => {
 		expect(isUnapprovedOrder({ id: "ORDER1", status: "CREATED", hasPayments: true })).toBe(false);
 		const captured = { ...response(), purchase_units: [{ ...response().purchase_units[0], payments: { captures: [{ secret: "discarded" }] } }] };
 		expect(verifyOrder(captured, input).hasPayments).toBe(true);
+	});
+	it("reads a verified order with only the order transport capability", async () => {
+		const client = { orderRequest: vi.fn().mockResolvedValue(response()) };
+		expect(await readSandboxOrder(client, input, "ORDER1")).toEqual({ id: "ORDER1", status: "CREATED", hasPayments: false });
+		expect(client.orderRequest).toHaveBeenCalledWith("/v2/checkout/orders/ORDER1");
 	});
 	it("enforces item/name/SKU/amount limits before making a provider call", () => {
 		expect(() => orderBody({ ...input, amountMinor: 1 })).toThrow();
