@@ -9,6 +9,7 @@ import { devicesCopy } from "@/features/devices/copy";
 import { getManagedProfile, listManagedProfiles } from "@/features/profiles/server/service";
 import { requireAdult } from "@/server/auth/require-adult";
 import { AppError } from "@/server/errors";
+import { isAdultProfile } from "@/lib/audience";
 import styles from "../page.module.css";
 
 export const metadata: Metadata = { title: devicesCopy.approvalTitle };
@@ -50,16 +51,18 @@ async function DeviceApproval({ searchParams }: DeviceConnectPageProps) {
 			: null,
 	]);
 
-	const profiles = page.profiles.map(({ id, displayName }) => ({ id, displayName }));
-	if (suggested && !profiles.some((profile) => profile.id === suggested.id)) {
-		profiles.unshift({ id: suggested.id, displayName: suggested.displayName });
+	const profiles = page.profiles.filter((profile) => isAdultProfile(profile.kind))
+		.map(({ id, displayName }) => ({ id, displayName }));
+	const eligibleSuggestion = suggested && isAdultProfile(suggested.kind) ? suggested : null;
+	if (eligibleSuggestion && !profiles.some((profile) => profile.id === eligibleSuggestion.id)) {
+		profiles.unshift({ id: eligibleSuggestion.id, displayName: eligibleSuggestion.displayName });
 	}
 	const hasPagination = Boolean(page.nextCursor || query.after);
 
 	return (
 		<>
 			{profiles.length ? (
-				<ApprovalForm profiles={profiles} preselected={suggested?.id} />
+				<ApprovalForm profiles={profiles} preselected={eligibleSuggestion?.id} />
 			) : (
 				<div className={styles.noProfiles}>
 					<p>{devicesCopy.noProfiles}</p>
