@@ -80,6 +80,12 @@ describe("member detail, add, and edit pages", () => {
 		expect(mocks.preference).not.toHaveBeenCalled();
 		expect(screen.queryByRole("heading", { name: assistantCopy.consentTitle })).not.toBeInTheDocument();
 	});
+	it("retains a historical child detail view without offering device connection", async () => {
+		mocks.get.mockResolvedValue({ ...profile, kind: "CHILD" });
+		render(await resolveServerTree(MemberPage({ params })));
+		expect(screen.getByText(profilesCopy.legacyNotice)).toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: profilesCopy.connectDevice })).not.toBeInTheDocument();
+	});
 	it.each([MemberPage, EditMemberPage])("authenticates each profile route independently", async (page) => {
 		mocks.requireAdult.mockRejectedValue(new Error("SIGN_IN"));
 		await expect(resolveServerTree(page({ params }))).rejects.toThrow("SIGN_IN");
