@@ -7,16 +7,21 @@ import FamilyLoading from "./family/loading";
 import Loading from "./loading";
 
 const streamedPages = [
-	"family/page.tsx", "family/catalog/page.tsx", "family/devices/page.tsx", "family/devices/connect/page.tsx",
+	"family/page.tsx", "family/devices/page.tsx", "family/devices/connect/page.tsx",
 	"family/members/page.tsx", "family/members/[profileId]/page.tsx", "family/members/[profileId]/edit/page.tsx",
 	"family/requests/page.tsx", "family/requests/[requestId]/page.tsx",
 ];
 const inheritedRoutes = [
-	"catalog", "devices", "devices/connect", "members", "members/add", "members/[profileId]",
+	"devices", "devices/connect", "members", "members/add", "members/[profileId]",
 	"members/[profileId]/edit", "requests", "setup",
 ];
 
 describe("shared manager loading", () => {
+	it("removes the manager catalog route without removing requester shopping", () => {
+		expect(existsSync(new URL("./family/catalog/page.tsx", import.meta.url))).toBe(false);
+		expect(existsSync(new URL("../(device)/shop/products/page.tsx", import.meta.url))).toBe(true);
+	});
+
 	it.each([
 		["route group", Loading], ["family content", FamilyLoading], ["data region", ManagerLoading],
 	] as const)("shows visible progress without skeletons in the %s", (_name, Component) => {
