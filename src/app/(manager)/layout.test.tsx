@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import ManagerLayout from "./layout";
@@ -17,7 +18,7 @@ describe("manager route-group layout", () => {
 		expect(within(footer).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
 	});
 	it("reserves mobile navigation clearance without an extra desktop gap", () => {
-		const css = readFileSync(new URL("./layout.module.css", import.meta.url), "utf8");
+		const css = readFileSync(resolve(process.cwd(), "src/app/(manager)/layout.module.css"), "utf8");
 		expect(css).toContain("env(safe-area-inset-bottom, 0px)");
 		expect(css).toContain("var(--control-height-lg) + var(--space-5)");
 		expect(css).toMatch(/@media\s*\(min-width:\s*64rem\)\s*\{\s*\.footer\s*\{\s*padding-block-end:\s*0/);
