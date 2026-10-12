@@ -6,11 +6,14 @@ type Line = { id: string; quantity: number; unitPriceMinor: number; product: {
 	sku: string; displayName: string; sizeLabel: string; isActive: boolean; archivedAt: Date | null;
 	demoPrices: { currency: string; priceMinor: number; approvedAt: Date }[];
 } };
+type Event = { id: string; paypalEventId?: string; paymentId?: string | null; source: string;
+	eventType: string; processedAt: Date | null; summary: string };
 type State = { revision: number; status: string; lockedAt: Date | null; subtotalMinor: number;
-	items: Line[]; payments: PaymentAttempt[]; audits: string[] };
+	items: Line[]; payments: PaymentAttempt[]; events: Event[]; audits: string[] };
 type Where = { id?: string; requestId?: string; familyId?: string; basketId?: string; revision?: number;
-	status?: string | { in: string[] }; operationToken?: string; operationExpiresAt?: null | { gt?: Date; lte?: Date };
+	status?: string | { in?: string[]; not?: string }; operationToken?: string; operationExpiresAt?: null | { gt?: Date; lte?: Date };
 	lockedAt?: null | { not: null }; OR?: Where[]; paypalOrderId?: string | null;
+	paypalCaptureId?: string | null; captureStartedAt?: null;
 	basket?: { lockedAt?: null | { not: null }; familyId?: string; requestId?: string };
 	request?: { status: string; basket?: { lockedAt: { not: null } } } };
 type RequestData = { revision?: { increment: number }; status?: string };
@@ -21,7 +24,7 @@ export function checkoutDatabase() {
 	let committed: State = { revision: 0, status: "PENDING_REVIEW", lockedAt: null, subtotalMinor: 500,
 		items: [{ id: requestIds.item, quantity: 2, unitPriceMinor: 250, product: { sku: "demo-milk",
 			displayName: "Milk", sizeLabel: "1 litre", isActive: true, archivedAt: null,
-			demoPrices: [{ currency: "USD", priceMinor: 250, approvedAt: requestNow }] } }], payments: [], audits: [] };
+				demoPrices: [{ currency: "USD", priceMinor: 250, approvedAt: requestNow }] } }], payments: [], events: [], audits: [] };
 	let staged: State | undefined;
 	let tail: Promise<unknown> = Promise.resolve();
 	const state = () => staged ?? committed;
@@ -29,7 +32,7 @@ export function checkoutDatabase() {
 	function requestMatches(where: Where) {
 		return owned(where) && (!where.id || where.id === requestIds.request)
 			&& (where.revision === undefined || where.revision === state().revision)
-			&& (!where.status || (typeof where.status === "string" ? where.status === state().status : where.status.in.includes(state().status)))
+			&& (!where.status || (typeof where.status === "string" ? where.status === state().status : where.status.in?.includes(state().status)))
 			&& (where.basket?.lockedAt !== null || state().lockedAt === null);
 	}
 	function basketMatches(where: Where) {
@@ -40,9 +43,12 @@ export function checkoutDatabase() {
 	function paymentMatches(payment: PaymentAttempt, where: Where): boolean {
 		return (!where.familyId || where.familyId === payment.familyId) && (!where.id || where.id === payment.id)
 			&& (!where.requestId || where.requestId === payment.requestId)
-			&& (!where.status || (typeof where.status === "string" ? where.status === payment.status : where.status.in.includes(payment.status)))
+			&& (!where.status || (typeof where.status === "string" ? where.status === payment.status
+				: where.status.in ? where.status.in.includes(payment.status) : where.status.not !== payment.status))
 			&& (where.operationToken === undefined || where.operationToken === payment.operationToken)
 			&& (where.paypalOrderId === undefined || where.paypalOrderId === payment.paypalOrderId)
+			&& (where.paypalCaptureId === undefined || where.paypalCaptureId === payment.paypalCaptureId)
+			&& (where.captureStartedAt === undefined || payment.captureStartedAt === null)
 			&& (!where.request || where.request.status === state().status && (!where.request.basket || state().lockedAt !== null))
 			&& (where.operationExpiresAt === undefined || where.operationExpiresAt === null && payment.operationExpiresAt === null
 				|| typeof where.operationExpiresAt === "object" && where.operationExpiresAt !== null && payment.operationExpiresAt !== null
@@ -95,6 +101,10 @@ export function checkoutDatabase() {
 			deleteMany: vi.fn().mockImplementation(() => { throw new Error("Unexpected removal after lock"); }),
 		},
 		payment: {
+			findUnique: vi.fn().mockImplementation(({ where }: { where: Where }) => {
+				const payment = state().payments.find((row) => paymentMatches(row, where));
+				return payment ? structuredClone(payment) : null;
+			}),
 			findFirst: vi.fn().mockImplementation(({ where }: { where: Where }) => {
 				if (!where.familyId) throw new Error("Unscoped payment read");
 				const payment = state().payments.find((row) => paymentMatches(row, where));
@@ -105,7 +115,8 @@ export function checkoutDatabase() {
 					throw Object.assign(new Error("Open attempt exists"), { code: "P2002" });
 				}
 				const payment: PaymentAttempt = { ...data, id: `0199a100-0000-7000-8000-${String(100 + state().payments.length).padStart(12, "0")}`,
-					status: "CREATED", paypalOrderId: null, creationStartedAt: null, operationToken: null, operationExpiresAt: null };
+					status: "CREATED", paypalOrderId: null, paypalCaptureId: null, capturedAt: null, captureStartedAt: null,
+					creationStartedAt: null, operationToken: null, operationExpiresAt: null };
 				state().payments.push(payment);
 				return structuredClone(payment);
 			}),
@@ -115,6 +126,24 @@ export function checkoutDatabase() {
 				if (!payment) return { count: 0 };
 				Object.assign(payment, data);
 				return { count: 1 };
+			}),
+		},
+		paymentEvent: {
+			findUnique: vi.fn().mockImplementation(({ where }: { where: { paypalEventId: string } }) =>
+				state().events.find((event) => event.paypalEventId === where.paypalEventId) ?? null),
+			upsert: vi.fn().mockImplementation(({ where, create }: { where: { paypalEventId: string }; create: Omit<Event, "id" | "processedAt"> }) => {
+				const found = state().events.find((event) => event.paypalEventId === where.paypalEventId);
+				if (found) return structuredClone(found);
+				const event = { ...create, id: requestIds.other, processedAt: null };
+				state().events.push(event); return structuredClone(event);
+			}),
+			create: vi.fn().mockImplementation(({ data }: { data: Omit<Event, "id"> }) => {
+				state().events.push({ ...data, id: requestIds.other }); return { id: requestIds.other };
+			}),
+			updateMany: vi.fn().mockImplementation(({ where, data }: { where: { paypalEventId: string; processedAt: null }; data: Partial<Event> }) => {
+				const event = state().events.find((row) => row.paypalEventId === where.paypalEventId && row.processedAt === null);
+				if (!event) return { count: 0 };
+				Object.assign(event, data); return { count: 1 };
 			}),
 		},
 		auditLog: { create: vi.fn().mockImplementation(({ data }: { data: { action: string } }) => {
