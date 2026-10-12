@@ -55,5 +55,9 @@ export function useManagerBasket(request: ManagerDetailDto) {
 			copy.managerItemRemoved({ name: item.displayName }), `remove:${item.id}`);
 	}
 
-	return { ...mutation, preview, notice, dismiss: () => setNotice(null), sound, save, remove, blockIfBusy };
+	// An error can render before the optimistic transition settles. Show confirmed
+	// prices immediately without resetting the quantity field's unsaved draft.
+	const displayedRequest = mutation.error ? request : preview;
+
+	return { ...mutation, preview: displayedRequest, notice, dismiss: () => setNotice(null), sound, save, remove, blockIfBusy };
 }
