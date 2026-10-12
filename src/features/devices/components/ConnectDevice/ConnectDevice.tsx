@@ -30,7 +30,6 @@ export function ConnectDevice() {
       : <><p>{devicesCopy.connectDescription}</p>
         {error ? <p role="alert" className={styles.error}>{error}</p> : null}
         <Button className={styles.action} loading={isPending} onClick={() => void start()}>
-          {isPending ? devicesCopy.starting : devicesCopy.start}</Button>
-        <p role="status">{isPending ? devicesCopy.starting : ""}</p></>}
+          {isPending ? devicesCopy.starting : devicesCopy.start}</Button></>}
   </div>;
 }
