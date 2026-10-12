@@ -99,4 +99,26 @@ describe("server-only Sandbox OAuth and bounded transport", () => {
 		}
 		expect(send).not.toHaveBeenCalled();
 	});
+	it("uses one stable capture request ID and never exposes generic POST paths", async () => {
+		const send = vi.fn<typeof fetch>().mockResolvedValueOnce(token())
+			.mockResolvedValueOnce(Response.json({ id: "ORDER1" })).mockResolvedValueOnce(Response.json({ id: "ORDER1" }));
+		const client = createPayPalClient(config, { fetch: send });
+		const paymentId = "0199a100-0000-7000-8000-000000000001";
+		await client.captureOrder("ORDER1", paymentId); await client.captureOrder("ORDER1", paymentId);
+		for (const [url, init] of send.mock.calls.slice(1)) {
+			expect(url).toBe("https://api-m.sandbox.paypal.com/v2/checkout/orders/ORDER1/capture");
+			expect(init).toMatchObject({ method: "POST", cache: "no-store", body: "{}" });
+			expect(new Headers(init?.headers).get("PayPal-Request-Id")).toBe(`capture-${paymentId}`);
+		}
+		await expect(client.paymentRequest("https://evil.invalid")).rejects.toMatchObject({ kind: "CONFIGURATION" });
+	});
+	it.each(["INSTRUMENT_DECLINED", "ORDER_ALREADY_CAPTURED"] as const)("retains only the safe %s recovery code", async (issue) => {
+		const send = vi.fn<typeof fetch>().mockResolvedValueOnce(token()).mockResolvedValueOnce(Response.json({
+			details: [{ issue, description: "private payer details" }], debug_id: "private debug information",
+		}, { status: 422 }));
+		const result = createPayPalClient(config, { fetch: send }).captureOrder("ORDER1", "0199a100-0000-7000-8000-000000000001");
+		await expect(result).rejects.toMatchObject({ issue });
+		await expect(result).rejects.not.toThrow(/private payer|private debug/);
+		expect(send).toHaveBeenCalledTimes(2);
+	});
 });
