@@ -5,6 +5,8 @@ import type { PayPalClient } from "@/lib/paypal/client";
 import { PayPalError } from "@/lib/paypal/errors";
 import { orderIdSchema, orderItemsSchema, orderResponseSchema, type OrderInput, type PayPalOrder } from "@/lib/paypal/schemas";
 
+type OrderClient = Pick<PayPalClient, "orderRequest">;
+
 export function orderBody(input: OrderInput) {
 	z.uuid().parse(input.paymentId);
 	z.uuid().parse(input.basketId);
@@ -40,12 +42,12 @@ export function verifyOrder(value: unknown, input: OrderInput, expectedId?: stri
 		hasPayments: Boolean(unit.payments?.captures?.length || unit.payments?.authorizations?.length || unit.payments?.refunds?.length) };
 }
 
-export async function createSandboxOrder(client: PayPalClient, input: OrderInput): Promise<PayPalOrder> {
+export async function createSandboxOrder(client: OrderClient, input: OrderInput): Promise<PayPalOrder> {
 	// UUID is 36 bytes, within PayPal's request-ID limit. Do not mint a new key on retry.
 	return verifyOrder(await client.orderRequest("/v2/checkout/orders", orderBody(input), input.paymentId), input);
 }
 
-export async function readSandboxOrder(client: PayPalClient, input: OrderInput, id: string): Promise<PayPalOrder> {
+export async function readSandboxOrder(client: OrderClient, input: OrderInput, id: string): Promise<PayPalOrder> {
 	orderIdSchema.parse(id);
 	return verifyOrder(await client.orderRequest(`/v2/checkout/orders/${id}`), input, id);
 }
