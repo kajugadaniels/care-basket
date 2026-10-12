@@ -27,9 +27,12 @@ describe("verified payment presentation and requester privacy", () => {
 		render(<RequestDetail request={makeManagerRequest({ status: "PAID", editable: false })}
 			checkout={{ paymentId: requestIds.key, orderId: "ORDER1", state: "REFUNDED", amount: "$5.00", captureId: "CAPTURE1",
 				capturedAt: "2026-10-12T00:00:00Z", buyerApprovalEnabled: false }} />);
-		expect(screen.getByText("PayPal has recorded a refund")).toBeInTheDocument();
-		expect(screen.getByText("Original captured amount")).toBeInTheDocument();
-		expect(screen.getByText("Delivery: Not arranged (demo)")).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "View payment" })).toHaveAttribute(
+			"href",
+			`/family/requests/${requestIds.request}/checkout`,
+		);
+		expect(screen.queryByText("Original captured amount")).not.toBeInTheDocument();
+		expect(screen.queryByText("Delivery: Not arranged (demo)")).not.toBeInTheDocument();
 		expect(screen.queryByText("Payment confirmed")).not.toBeInTheDocument();
 	});
 });
