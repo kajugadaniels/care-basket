@@ -1,16 +1,25 @@
 import { Suspense, type ReactNode } from "react";
 import { UserButton } from "@clerk/nextjs";
+import { Notification01Icon } from "@hugeicons/core-free-icons";
 import { Brand } from "@/components/layout/Brand/Brand";
 import { Container } from "@/components/layout/Container/Container";
 import { SkipLink } from "@/components/ui/SkipLink/SkipLink";
+import { Button } from "@/components/ui/Button/Button";
 import { FamilyNav } from "@/features/family/components/FamilyNav/FamilyNav";
 import { FamilyNavMenu } from "@/features/family/components/FamilyNavMenu/FamilyNavMenu";
 import { familyLayoutCopy } from "@/features/family/copy";
+import { RequestNotifications } from "@/features/requests/components/RequestNotifications/RequestNotifications";
+import { requestNotificationsCopy } from "@/features/requests/copy";
+import { requestFailure } from "@/features/requests/server/action-failure";
+import { getRequestNotifications } from "@/features/requests/server/service";
+import type { RequestNotificationsDto } from "@/features/requests/types";
 import { userButtonAppearance } from "@/lib/clerk/appearance";
+import { ensureUser } from "@/server/auth/ensure-user";
+import { findFamilyMembership } from "@/server/auth/family-membership";
 import styles from "./layout.module.css";
 
-// Layouts do not re-run on every navigation, so this layout shows no private data and
-// every page under /family verifies the session itself (authentication.md § 3).
+// Pages still authorize independently. Only the notification region reads private data,
+// behind Suspense; its subsequent updates authenticate again through a read-only GET.
 export default function FamilyLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <div className={styles.shell}>
@@ -22,6 +31,13 @@ export default function FamilyLayout({ children }: Readonly<{ children: ReactNod
             <span className={styles.area}>{familyLayoutCopy.areaLabel}</span>
           </div>
           <div className={styles.account}>
+						<Suspense fallback={
+							<Button size="xs" variant="secondary" icon={Notification01Icon} loading>
+								{requestNotificationsCopy.refreshing}
+							</Button>
+						}>
+							<FamilyRequestNotifications />
+						</Suspense>
             <UserButton appearance={userButtonAppearance} />
           </div>
         </Container>
@@ -41,4 +57,20 @@ export default function FamilyLayout({ children }: Readonly<{ children: ReactNod
       </Container>
     </div>
   );
+}
+
+async function FamilyRequestNotifications() {
+	const user = await ensureUser();
+	const membership = await findFamilyMembership(user.id);
+	// /family/setup uses this layout too, before the adult belongs to a family.
+	if (!membership) return null;
+	let data: RequestNotificationsDto | null = null;
+	try {
+		data = await getRequestNotifications({
+			type: "adult", userId: user.id, familyId: membership.familyId, role: membership.role,
+		});
+	} catch (error) {
+		requestFailure(error, "requests.notifications_failed");
+	}
+	return <RequestNotifications key={`${user.id}:${membership.familyId}`} initialData={data} />;
 }
