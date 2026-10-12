@@ -9,8 +9,6 @@ import { profilesCopy } from "@/features/profiles/copy";
 import { getManagedProfile } from "@/features/profiles/server/service";
 import { requireAdult } from "@/server/auth/require-adult";
 import { AppError } from "@/server/errors";
-import { getAiPreference } from "@/features/assistant/server/service";
-import { AiPreference } from "@/features/assistant/components/AiPreference/AiPreference";
 import styles from "../page.module.css";
 
 export const metadata: Metadata = { title: profilesCopy.detailTitle };
@@ -42,9 +40,5 @@ async function MemberDetails({ params }: MemberPageProps) {
 		getFamilyOverview(actor),
 	]);
 
-	const preference = await getAiPreference(actor, profileId);
-	return <>
-		<ProfileDetails profile={profile} familyName={family.familyName} />
-		{profile.kind === "ASSISTED_ADULT" ? <AiPreference profileId={profile.id} {...preference} /> : null}
-	</>;
+	return <ProfileDetails profile={profile} familyName={family.familyName} />;
 }
