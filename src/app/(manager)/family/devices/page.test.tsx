@@ -22,6 +22,20 @@ describe("manager device list route", () => {
 		render(await renderDevicesPage());
 		expect(fake.list).toHaveBeenCalledWith(makeDeviceAdult(), {});
 		expect(screen.getByRole("link", { name: "Connect a Device" })).toHaveAttribute("href", "/family/devices/connect");
+		expect(screen.getAllByRole("link", { name: "Connect a Device" })).toHaveLength(1);
+		expect(screen.queryByText("Manage the browsers connected to your family members.")).not.toBeInTheDocument();
+	});
+	it("retains cursor navigation without changing the authenticated family scope", async () => {
+		const after = "0199ca00-0000-7000-8000-000000000001";
+		const nextCursor = "0199ca00-0000-7000-8000-000000000002";
+		fake.list.mockResolvedValue({ devices: [], nextCursor });
+
+		render(await resolveServerTree(DevicesPage({ searchParams: Promise.resolve({ after }) })));
+
+		expect(fake.adult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
+		expect(fake.list).toHaveBeenCalledWith(makeDeviceAdult(), { after });
+		expect(screen.getByRole("link", { name: "More Devices" })).toHaveAttribute("href", `/family/devices?after=${nextCursor}`);
+		expect(screen.getByRole("link", { name: "Back to First Devices" })).toHaveAttribute("href", "/family/devices");
 	});
 	it("reads the session only inside the streamed device list", () => {
 		DevicesPage({ searchParams: Promise.resolve({}) });
