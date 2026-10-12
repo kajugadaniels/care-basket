@@ -1,19 +1,22 @@
 // @vitest-environment node
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { requester, requestIds } from "@/test/factories/requests";
+import { requester, requestIds, requestManager } from "@/test/factories/requests";
 import { AppError } from "@/server/errors";
 
-const fake = vi.hoisted(() => ({ device: vi.fn(), interpret: vi.fn(), page: vi.fn() }));
+const fake = vi.hoisted(() => ({
+	device: vi.fn(), interpret: vi.fn(), page: vi.fn(),
+	adult: vi.fn(), preference: vi.fn(), revalidate: vi.fn(),
+}));
 vi.mock("server-only", () => ({}));
-vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+vi.mock("next/cache", () => ({ revalidatePath: fake.revalidate }));
 vi.mock("next/navigation", () => ({ unstable_rethrow: vi.fn() }));
 vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
-vi.mock("@/server/auth/require-adult", () => ({ requireAdult: vi.fn() }));
+vi.mock("@/server/auth/require-adult", () => ({ requireAdult: fake.adult }));
 vi.mock("@/server/logger", () => ({ logSecurityFailure: vi.fn() }));
-vi.mock("./server/service", () => ({ estimateShoppingBudget: vi.fn(), updateAiPreference: vi.fn() }));
+vi.mock("./server/service", () => ({ estimateShoppingBudget: vi.fn(), updateAiPreference: fake.preference }));
 vi.mock("./server/saved-review", () => ({ interpretShoppingForReview: fake.interpret, loadShoppingReviewPage: fake.page }));
 
-import { interpretTextAction, loadReviewProductsAction } from "./actions";
+import { interpretTextAction, loadReviewProductsAction, updateAiPreferenceAction } from "./actions";
 
 describe("saved text review action", () => {
 	beforeEach(() => {
@@ -39,6 +42,39 @@ describe("saved text review action", () => {
 		const result = await interpretTextAction({ text: "milk" });
 		expect(result).toMatchObject({ ok: false, error: { code: "INTERNAL" } });
 		expect(JSON.stringify(result)).not.toContain("private database detail");
+	});
+});
+
+describe("AI preference edit-page invalidation", () => {
+	beforeEach(() => {
+		vi.resetAllMocks();
+		fake.adult.mockResolvedValue(requestManager);
+		fake.preference.mockResolvedValue({ profileId: requestIds.profile });
+	});
+
+	it("refreshes the edit page only after the authorized change succeeds", async () => {
+		const input = { profileId: requestIds.profile, enabled: false, consent: false };
+		expect(await updateAiPreferenceAction(input)).toEqual({ ok: true, data: { profileId: requestIds.profile } });
+		expect(fake.adult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
+		expect(fake.preference).toHaveBeenCalledWith(requestManager, input);
+		expect(fake.revalidate).toHaveBeenCalledTimes(1);
+		expect(fake.revalidate).toHaveBeenCalledWith(`/family/members/${requestIds.profile}/edit`);
+		expect(fake.preference.mock.invocationCallOrder[0]).toBeLessThan(fake.revalidate.mock.invocationCallOrder[0]);
+	});
+
+	it("does not read preferences or invalidate pages without authentication", async () => {
+		fake.adult.mockRejectedValue(new AppError("UNAUTHENTICATED"));
+		expect(await updateAiPreferenceAction({ profileId: requestIds.profile, enabled: false, consent: false }))
+			.toMatchObject({ ok: false, error: { code: "UNAUTHENTICATED" } });
+		expect(fake.preference).not.toHaveBeenCalled();
+		expect(fake.revalidate).not.toHaveBeenCalled();
+	});
+
+	it("does not invalidate the edit page after a failed or out-of-family change", async () => {
+		fake.preference.mockRejectedValue(new AppError("NOT_FOUND"));
+		expect(await updateAiPreferenceAction({ profileId: requestIds.other, enabled: false, consent: false }))
+			.toMatchObject({ ok: false, error: { code: "NOT_FOUND" } });
+		expect(fake.revalidate).not.toHaveBeenCalled();
 	});
 });
 
