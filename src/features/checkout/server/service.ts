@@ -1,6 +1,5 @@
 import "server-only";
 import { z } from "zod";
-import { formatMoney } from "@/lib/format";
 import { getPayPalClient } from "@/lib/paypal/client";
 import { PayPalError } from "@/lib/paypal/errors";
 import { createSandboxOrder, isUnapprovedOrder, readSandboxOrder } from "@/lib/paypal/orders";
@@ -12,16 +11,11 @@ import type { CheckoutDto } from "../types";
 import { claimAttempt, releaseOperation, savePreparedOrder, voidAttempt } from "./attempt-repository";
 import { CheckoutFailure } from "./failure";
 import type { PaymentAttempt } from "./persistence";
-import { readOpenPayment, reserveCheckout } from "./repository";
+import { readLatestPayment, reserveCheckout } from "./repository";
+import { checkoutDto } from "./checkout-dto";
 
 function assertManager(actor: AdultActor) {
 	if (!actor || actor.type !== "adult" || !["OWNER", "MANAGER"].includes(actor.role)) throw new AppError("FORBIDDEN");
-}
-
-function checkoutDto(payment: PaymentAttempt): CheckoutDto {
-	return { paymentId: payment.id, orderId: payment.paypalOrderId,
-		state: payment.status !== "CREATED" ? "REVIEW_REQUIRED" : payment.paypalOrderId ? "PREPARED" : "PREPARING",
-		amount: formatMoney(payment.amountMinor, payment.currency), buyerApprovalEnabled: false };
 }
 
 function orderInput(payment: PaymentAttempt): OrderInput {
@@ -34,7 +28,7 @@ function orderInput(payment: PaymentAttempt): OrderInput {
 export async function getCheckout(actor: AdultActor, requestId: string): Promise<CheckoutDto | null> {
 	assertManager(actor);
 	if (!z.uuid().safeParse(requestId).success) throw new AppError("NOT_FOUND");
-	const payment = await readOpenPayment(actor, requestId);
+	const payment = await readLatestPayment(actor, requestId);
 	return payment ? checkoutDto(payment) : null;
 }
 
