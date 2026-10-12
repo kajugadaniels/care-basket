@@ -19,13 +19,13 @@ export function RequestDetail({ request, checkout }: { request: RequestDetailDto
 			<h1>{requestsCopy.detailTitle}</h1>
 			<ActionLink href="/shop/requests" variant="secondary">{requestsCopy.back}</ActionLink>
 		</header>
-		<section className={cx(styles.statusPanel, styles.panel)} aria-label={requestsCopy.statuses[request.status]}>
+		<section className={cx(styles.statusPanel, styles.panel)} aria-label={request.paymentState ? requestsCopy.paymentUpdated : requestsCopy.statuses[request.status]}>
 			<p className={styles.muted}>{formatDate(request.submittedAt)}</p>
-			<p className={cx(styles.status, request.status === "PAID" && styles.paidStatus)}>
-				<Icon icon={request.status === "PAID" ? CheckmarkCircle02Icon : Task01Icon} size={24} />
-				{requestsCopy.statuses[request.status]}
+			<p className={cx(styles.status, request.status === "PAID" && !request.paymentState && styles.paidStatus)}>
+				<Icon icon={request.status === "PAID" && !request.paymentState ? CheckmarkCircle02Icon : Task01Icon} size={24} />
+				{request.paymentState ? requestsCopy.paymentUpdated : requestsCopy.statuses[request.status]}
 			</p>
-			<p>{requestsCopy.explanations[request.status]}</p>
+			<p>{request.paymentState ? requestsCopy.requesterPaymentAdjusted : requestsCopy.explanations[request.status]}</p>
 			<p className={styles.muted}>{requestsCopy.deliveryNotice}</p>
 		</section>
 		<ul className={styles.list} aria-label={requestsCopy.listItems}>{request.items.map((item) => <li key={item.id} className={styles.panel}>
