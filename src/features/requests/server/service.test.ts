@@ -26,6 +26,14 @@ describe("shopping request service authorization and DTOs", () => {
 		await expect(listOwnRequests(forged)).rejects.toMatchObject({ code: "FORBIDDEN" });
 		expect(fake.insert).not.toHaveBeenCalled(); expect(fake.own).not.toHaveBeenCalled();
 	});
+	it("denies legacy child submission, cancellation and history before repository calls", async () => {
+		const child = { ...requester, profileKind: "CHILD" as const };
+		expect(() => submitRequest(child, submit)).toThrow("FORBIDDEN");
+		expect(() => cancelRequest(child, closing)).toThrow("FORBIDDEN");
+		await expect(getOwnRequest(child, requestIds.request)).rejects.toMatchObject({ code: "FORBIDDEN" });
+		await expect(listOwnRequests(child)).rejects.toMatchObject({ code: "FORBIDDEN" });
+		for (const mock of [fake.insert, fake.close, fake.own, fake.ownList]) expect(mock).not.toHaveBeenCalled();
+	});
 	it("rejects device actors and unauthorized adult roles in every manager operation", async () => {
 		const forged = { ...requestManager, role: "VIEWER" } as unknown as typeof requestManager;
 		for (const actor of [forged, requester as unknown as typeof requestManager]) {
