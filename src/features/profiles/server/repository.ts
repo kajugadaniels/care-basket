@@ -1,4 +1,5 @@
 import "server-only";
+import { isAdultProfile } from "@/lib/audience";
 import type { Prisma } from "@/generated/prisma/client";
 import { writeProfileEvent } from "@/server/audit/write-profile-event";
 import { writeDeviceEvent } from "@/server/audit/write-device-event";
@@ -20,6 +21,7 @@ type CreateProfileData = Omit<CreateManagedProfileInput, "consent"> & {
 };
 
 export async function insertProfile(context: ProfileWriteContext, input: CreateProfileData) {
+	if (!isAdultProfile(input.kind)) throw new AppError("VALIDATION_FAILED");
   return getDb().$transaction(async (tx) => {
     const profile = await tx.managedProfile.create({
       data: {
