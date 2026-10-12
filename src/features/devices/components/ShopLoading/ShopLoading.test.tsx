@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import ShopRouteLoading from "@/app/(device)/shop/loading";
@@ -53,13 +54,13 @@ describe("simple shopping loading states", () => {
 		"layout.tsx", "assistant/page.tsx", "assistant/review/page.tsx", "products/page.tsx",
 		"basket/page.tsx", "requests/page.tsx", "requests/[requestId]/page.tsx",
 	])("keeps the %s streaming boundary on the same non-skeleton loader", (path) => {
-		const source = readFileSync(new URL(`../../../../app/(device)/shop/${path}`, import.meta.url), "utf8");
+		const source = readFileSync(resolve(process.cwd(), "src/app/(device)/shop", path), "utf8");
 		expect(source).toContain("<Suspense fallback={<ShopLoading");
 		expect(source).not.toContain("Skeleton");
 	});
 
 	it("reserves loading space and stops the indicator when reduced motion is requested", () => {
-		const source = readFileSync(new URL("./ShopLoading.module.css", import.meta.url), "utf8");
+		const source = readFileSync(resolve(process.cwd(), "src/features/devices/components/ShopLoading/ShopLoading.module.css"), "utf8");
 		expect(source).toContain("min-block-size: calc(var(--control-height-lg) * 4)");
 		expect(source).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.spinner\s*\{\s*animation: none;/);
 	});
