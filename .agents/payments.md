@@ -122,7 +122,7 @@ Recoverable PayPal errors (for example `INSTRUMENT_DECLINED`) keep the payment o
 | Request waiting | "New request from Grandma — 6 items, $23.45" | "Sent to Anna. She'll look at it soon." |
 | Checkout in progress | PayPal button, pending indicator | "Anna is looking at your list." |
 | Payment pending at PayPal | "PayPal is processing this payment." | "Anna is paying. We'll tell you when it's done." |
-| Payment confirmed | "Paid with PayPal on 14 Oct, 10:42. Transaction ID …" | "Your shopping is paid for. Anna paid on Tuesday." |
+| Payment confirmed | "Payment confirmed — $23.45, paid on 14 Oct at 10:42"; provider identifiers stay in the server audit trail, not the routine UI | "Your shopping is paid for. Anna paid on Tuesday." |
 | Fulfillment (simulated) | Separate badge: "Delivery: Not started / Preparing / Delivered", within the disclosed test environment | Separate line: "Delivery: not arranged yet (demo)" |
 | Declined | "You declined this request." | "Anna can't get this right now." |
 | Payment failed | "Payment didn't go through. You were not charged." (only when verified) | No change; still "Anna is looking at your list." |
