@@ -24,7 +24,7 @@
 - **Client:** `@paypal/react-paypal-js` v10, using the **v6 SDK entry** `@paypal/react-paypal-js/sdk-v6` (`PayPalProvider`, `PayPalOneTimePaymentButton`). Do not use the legacy v5 components (`PayPalScriptProvider`, `PayPalButtons`). Read the installed README before implementing. Use the official buttons only within the styling options PayPal supports; never build look-alike PayPal buttons.
 - The client receives only `NEXT_PUBLIC_PAYPAL_CLIENT_ID` and the environment value (passed from validated server config). `PAYPAL_CLIENT_SECRET` and `PAYPAL_WEBHOOK_ID` never leave the server.
 - The access token is cached in memory per server instance until shortly before it expires. It is never logged or sent to the client.
-- **Step 9 rollout:** preparation and safe local cancellation only. Keep `PAYPAL_BUYER_APPROVAL_ENABLED=false`; the server rejects `true` until verified capture is implemented in Step 10. The SDK v6 component is source-only and is not mounted by any route. No approval link is exposed, no capture endpoint exists, and nothing can mark a request paid. The workflow below describes the eventual complete integration, not capabilities available in Step 9.
+- **Step 10 rollout:** verified capture and signed webhook reconciliation are implemented, but `PAYPAL_BUYER_APPROVAL_ENABLED` defaults to `false`. Only the developer enables it after applying migrations, registering the Sandbox webhook, and validating capture/recovery. A valid private `PAYPAL_WEBHOOK_ID` and matching Sandbox app IDs are required before the server can enable the SDK. Never enable approval automatically or expose approval links as a workaround.
 - The public and server client IDs must identify the same Sandbox app. Missing payment configuration fails only when checkout is used, not when unrelated routes are rendered.
 
 ## 3. Payment workflow
@@ -50,9 +50,9 @@ Order creation body rules (Orders v2):
 - `payment_source.paypal.experience_context`: `shipping_preference: "NO_SHIPPING"` (fulfillment is simulated and no address is collected), `user_action: "PAY_NOW"`, `brand_name` identifying the demo merchant.
 - Every create and capture request sends a `PayPal-Request-Id` header.
 
-**Cancelling a checkout:** before capture, the manager may cancel. `cancelCheckoutAction` marks the open payment `VOIDED`, unlocks the basket, and returns the request to `PENDING_REVIEW`, all in one transaction and only if the payment is `CREATED` or `APPROVED`. The unused PayPal order is never captured.
+**Cancelling a checkout:** before approval or capture, the manager may cancel an untouched `CREATED` payment. `cancelCheckoutAction` marks it `VOIDED`, unlocks the basket, and returns the request to `PENDING_REVIEW` in one transaction. An approved, pending, captured, or capture-uncertain attempt is never cancelled or unlocked. The unused PayPal order is never captured.
 
-In Step 9, cancellation accepts only local `CREATED` attempts. It first reconciles any known or uncertain PayPal create outside the transaction and refuses advanced, payment-bearing, or unknown outcomes. Local `VOIDED` means abandoned by CareBasket, not that PayPal voided an order or payment; Orders v2 has no generic order-void operation. Creation and cancellation use a persisted fenced lease; missing order IDs resume the original immutable payload and idempotency key within the safe replay window. An older ambiguous attempt stays locked for operator reconciliation, never an automatic new create or unlock.
+Cancellation accepts only local `CREATED` attempts whose capture has never started. It first reconciles any known or uncertain PayPal create outside the transaction and refuses advanced, payment-bearing, or unknown outcomes. Local `VOIDED` means abandoned by CareBasket, not that PayPal voided an order or payment; Orders v2 has no generic order-void operation. Creation, cancellation, capture, and manual reconciliation share a persisted fenced lease. Once `captureStartedAt` is set, cancellation remains prohibited even after lease expiry. Unknown captures look up the original order before replaying the same capture key, and replay stops after five hours. Older ambiguous attempts remain locked for reconciliation, never an automatic new key or unlock.
 
 ## 4. Money handling
 
@@ -75,7 +75,7 @@ In Step 9, cancellation accepts only local `CREATED` attempts. It first reconcil
 | Model | Transitions |
 | --- | --- |
 | `ShoppingRequest` | `PENDING_REVIEW → AWAITING_PAYMENT → PAID`; `AWAITING_PAYMENT → PENDING_REVIEW` (cancelled checkout or denied payment only; the basket is unlocked in the same transaction); `PENDING_REVIEW → DECLINED` (manager); `PENDING_REVIEW → CANCELLED` (requester) |
-| `Payment` | `CREATED → APPROVED`; `CREATED/APPROVED → CAPTURED / PENDING / DENIED / VOIDED`; `PENDING → CAPTURED / DENIED`; `CAPTURED → REFUNDED` (recorded from webhooks only) |
+| `Payment` | `CREATED → APPROVED`; `CREATED/APPROVED → CAPTURED / PENDING / DENIED`; untouched `CREATED → VOIDED`; `PENDING → CAPTURED / DENIED`; verified refunds/reversals may reconcile open or captured attempts to `REFUNDED / REVERSED`; `REFUNDED → REVERSED` preserves the later reversal |
 
 Any other transition throws `CONFLICT`.
 
@@ -85,12 +85,12 @@ Endpoint: `POST /api/webhooks/paypal`. Subscribe the Sandbox app to: `CHECKOUT.O
 
 Processing order:
 
-1. Read the raw body with `request.text()`; reject bodies over 64 KB.
+1. Read the raw body incrementally with a 64 KB byte limit, enforced before full buffering; validate required signature headers. Do not require Clerk/device authentication or an Origin header.
 2. **Verify the signature** by calling `POST /v1/notifications/verify-webhook-signature` with the `paypal-auth-algo`, `paypal-cert-url`, `paypal-transmission-id`, `paypal-transmission-sig`, and `paypal-transmission-time` headers, `PAYPAL_WEBHOOK_ID`, and the event exactly as received. Anything other than `verification_status: "SUCCESS"` → respond 400, log `webhook.verification_failed`, and stop. If `PAYPAL_WEBHOOK_ID` is missing, reject all events.
 3. Parse the event with a Zod schema (only the fields we use).
-4. **Deduplicate:** insert a `PaymentEvent` keyed by the unique `paypalEventId`. On a duplicate, respond 200 and stop.
+4. **Deduplicate:** insert a minimal verified `PaymentEvent` keyed by unique `paypalEventId`. Only duplicates with `processedAt` set may stop with 200. A received but unfinished event must resume; processing failures return a retriable non-2xx response. Event completion and related payment/request/audit writes share one short transaction.
 5. **Do not trust the event body for state.** Find our `Payment` from the related order ID, cross-check `custom_id`, then **re-fetch the order from PayPal** (`GET /v2/checkout/orders/{id}`) and apply its current state using the allowed transitions in §5. This makes out-of-order delivery harmless: a late `PENDING` event can never override `CAPTURED`.
-6. Respond 200 quickly. Unknown event types are stored and acknowledged with 200.
+6. Respond 200 only after durable handling. Unknown types and unmatched verified events are minimally stored and acknowledged. Refund/reversal resource IDs are not assumed to be order IDs: correlate stored capture IDs or validated relationships and verify current capture/refund resources through fixed Sandbox API paths. Approval events alone never mark requests paid. All responses have `Cache-Control: no-store`.
 
 Notes:
 
@@ -102,10 +102,10 @@ Notes:
 
 A payment becomes `CAPTURED` only when **all** of these hold, using the capture response or the re-fetched order:
 
-- The order ID matches `Payment.paypalOrderId`, and `custom_id` equals `Payment.id`.
+- The order ID matches `Payment.paypalOrderId`, intent is `CAPTURE`, `custom_id` equals `Payment.id`, and `reference_id` equals `Payment.basketId`.
 - The order status is `COMPLETED` and the capture status is `COMPLETED`.
 - The captured amount (converted to minor units) equals `Payment.amountMinor`, and the currency equals `Payment.currency`.
-- The payment was in `CREATED`, `APPROVED`, or `PENDING`.
+- There is exactly one final capture with a valid unique capture ID, bound to that order, and the payment was in `CREATED`, `APPROVED`, or `PENDING`.
 
 A capture status of `PENDING` sets `Payment.status = PENDING` and leaves the request in `AWAITING_PAYMENT` until a verified `PAYMENT.CAPTURE.COMPLETED` arrives. Any mismatch leaves the payment unconfirmed, writes an audit entry `payment.verification_failed`, and shows the manager a calm message to contact support. It is never shown as paid.
 
