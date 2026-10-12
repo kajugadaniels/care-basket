@@ -2,7 +2,7 @@
 
 This directory's derivative catalog data is offered under [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/). Individual source contents are covered by [DbCL 1.0](https://opendatacommons.org/licenses/dbcl/1-0/). Attribute Open Food Facts and Open Prices contributors, and CareBasket for manually curated demo data. Application code has a separate licensing scope.
 
-The current dataset contains 150 reviewed demo products with approved demo prices and 110 photo records. The [final 32-product approval record](final-32-review.md) documents the developer-approved pantry additions now merged into the seed file. Their photo imports and the 150-product seed are still pending; the previous 118 products were seeded successfully according to the developer's supplied output. Thirty-two new photos and eight earlier photo gaps remain. The goal is 150 products each with a licensed local photo, not merely 150 product records. Child suitability remains unapproved (`isChildSuitable: false`); do not change these flags without a separate safety review. The seed still refuses an empty dataset.
+The current committed dataset contains 150 reviewed demo products with approved demo prices and 142 reviewed photo records mapped to Cloudinary. Eight products still use category icons rather than photos; do not count those icons as licensed product photographs. Cloudinary mappings retain the original source, license and attribution. Child suitability remains unapproved (`isChildSuitable: false`); do not change these flags without a separate safety review. The seed still refuses an empty dataset. Current database contents and deployment status require developer verification; the source inventory alone does not prove seeding.
 
 Reports are not approved seed input. All prices are fictional, explicitly approved prices for CareBasket Demo Market; historical observations never feed checkout directly.
 
@@ -37,7 +37,7 @@ Bounded discovery cannot guarantee a requested number of eligible new products. 
    node --conditions=react-server --import tsx scripts/catalog/import-images.ts --apply
    ```
 
-5. Validate and seed, then restart/redeploy to invalidate the catalog cache:
+5. For approved Cloudinary mappings, set the matching cloud name in the selected private environment; deployed apps do not need upload keys. Validate and seed, then restart/redeploy to invalidate the catalog cache:
 
    ```bash
    npm run lint
@@ -47,4 +47,4 @@ Bounded discovery cannot guarantee a requested number of eligible new products. 
    npx prisma db seed --config prisma7.config.ts
    ```
 
-Do not claim completion until 150 distinct approved catalog records have non-null photo metadata, every referenced local photo exists, and seeding succeeds. Candidate totals alone do not establish this.
+Do not claim the all-products-with-photos goal complete until 150 distinct approved products have reviewed photo metadata, local files or valid approved Cloudinary mappings, working rendered images, and a successful seed. Candidate totals alone do not establish this. See the [release audit](../../docs/release-readiness.md) and [deployment guide](../../docs/deployment/demo-deployment.md). Catalog data/photo licenses remain separate from the application [MIT license](../../LICENSE).
