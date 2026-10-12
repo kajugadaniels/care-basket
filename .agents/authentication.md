@@ -3,7 +3,7 @@
 **Purpose:** Define how adults sign in with Clerk, how managed profiles get restricted access through securely paired devices, and how every request is authorized on the server.
 **Applies to:** Sign-in, onboarding, families, profiles, devices, sessions, permissions.
 **Related:** [security.md](security.md), [privacy.md](privacy.md), [database.md § 5](database.md#5-planned-models), [api.md](api.md)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -26,6 +26,7 @@ There is no third kind. Anonymous visitors can only see public pages, sign in or
 
 MVP constraints:
 
+- The supported audience is adults aged 18 or older ([project.md § 2](project.md#2-target-users-and-their-difficulties)). New family setup also requires an unchecked-by-default adult-only confirmation, validated in the action and service. The transaction records self-attestation using the fixed, versioned action `family.created.adults-only-2026-10-12` in the existing audit schema; no birth date or verified-age claim is recorded.
 - An adult belongs to **at most one family** (unique `FamilyMembership.userId`). Supporting several families later requires a family switcher and a migration.
 - The creator is the `OWNER`. The `MANAGER` role exists in the schema for a later "invite another adult" feature; the MVP does not build invitations. Permission checks use role helpers so adding managers later changes no call sites.
 
@@ -53,21 +54,23 @@ MVP constraints:
 ## 5. Managed profiles, consent, and ownership
 
 - Only adults with `OWNER` or `MANAGER` roles create, edit, or delete managed profiles.
-- Required fields: display name (a first name or nickname, up to 40 characters), `kind` (`ASSISTED_ADULT` or `CHILD`), and an avatar chosen from presets (no photo uploads in the MVP).
-- **Consent:** creation requires the adult to confirm, in plain words, "I am this person's parent or guardian, or they have asked me to set this up for them." Store `consentConfirmedAt`, `consentVersion`, and `createdByUserId`. No profile exists without this confirmation.
+- Required fields: display name (a first name or nickname, up to 40 characters), `kind` (`ASSISTED_ADULT` only for creation), and an avatar chosen from presets (no photo uploads in the MVP). Keep `CHILD` in stored-record types for historical data only.
+- **Consent:** creation requires confirmation that the manager and person are at least 18 and that the person agrees or the manager has legal authority. Store `consentConfirmedAt`, the updated `consentVersion`, and `createdByUserId`. No profile exists without this confirmation. This is not age verification.
 - **AI assistance** (voice and smart suggestions) is a separate, off-by-default setting for `ASSISTED_ADULT` profiles, enabled only with the AI consent described in [ai.md § 8.1](ai.md#81-assisted-adults). It is unavailable for `CHILD` profiles.
 - The family owns the profile; the profile does not own its own account in the MVP ([§ 11](#11-future-independent-adults-claiming-their-profile)).
 - Deleting a profile revokes all its devices immediately and deletes its data as described in [privacy.md § 7](privacy.md#7-deletion-and-retention). The adult sees a confirmation dialog that explains this.
 
 ## 6. Child supervision
 
-- `CHILD` profiles can only create requests. Every request is reviewed by a manager; there is no auto-approval for anyone in the MVP.
-- Child devices see no prices or budgets, no payment status beyond "paid" or "not paid yet", and no family information beyond the manager's display name.
-- AI handling for children follows [ai.md § 8](ai.md#8-profiles-children-and-tone), and data handling follows [privacy.md § 6](privacy.md#6-children).
+- `CHILD` is historical only in the adults-only deployment. No child profile creation, pairing approval/completion, device access, or shopping service permission is allowed. Hiding a UI option alone is insufficient.
+- Managers may read, edit display names/avatars, or explicitly delete their own family's historical records. Ordinary editing cannot change the kind to `ASSISTED_ADULT`.
+- Preserve data handling under [privacy.md § 6](privacy.md#6-children). The deployment policy is owned by [project.md § 2](project.md#2-target-users-and-their-difficulties).
 
 ## 7. Secure device pairing
 
 Pairing binds one browser to one managed profile. It is **device-initiated and adult-approved**, so a code alone is worthless without both the device's own cookie and an authenticated adult's approval.
+
+The profile picker includes only assisted adults. Its confirmation includes both people's 18+ status. Approval and completion each validate `ASSISTED_ADULT` inside their transaction; a crafted profile ID or historically approved child pairing cannot bypass this.
 
 ### 7.1 Flow
 
@@ -105,7 +108,7 @@ Pairing binds one browser to one managed profile. It is **device-initiated and a
 | --- | --- |
 | Token | 32 random bytes from `crypto.randomBytes`, base64url; stored only as a SHA-256 hash (`tokenHash`, unique) |
 | Cookie | `cb_device` (development) / `__Host-cb_device` (production); `HttpOnly`, `Secure` (production), `SameSite=Lax`, `Path=/`, no `Domain` |
-| Validation | Every device request looks up the hash, then checks `revokedAt IS NULL`, `expiresAt > now`, idle limit, and that the profile still exists |
+| Validation | Every device request looks up the hash, then checks `revokedAt IS NULL`, `expiresAt > now`, idle limit, and that the family-scoped profile still exists with kind `ASSISTED_ADULT`; deny child access before activity writes |
 | Absolute lifetime | 180 days from pairing, then re-pairing is required |
 | Idle timeout | 30 days without use |
 | Activity tracking | `lastSeenAt` updated at most once per hour per device |
@@ -137,10 +140,10 @@ All authorization lives in `src/server/auth/`:
 | Create, edit, or delete managed profiles | ✓ | ✓ | — | — |
 | Approve or reject pairing; revoke devices | ✓ | ✓ | — | — |
 | View all family requests | ✓ | ✓ | — | — |
-| Create a request (own profile only) | — | — | ✓ | ✓ |
-| Save/restore an unsubmitted review (own device and profile only, [ai.md § 5.3](ai.md#53-reloadable-private-reviews)) | — | — | ✓ | ✓ |
-| View own requests and their status | — | — | ✓ | ✓ |
-| Cancel own request before review | — | — | ✓ | ✓ |
+| Create a request (own profile only) | — | — | ✓ | — |
+| Save/restore an unsubmitted review (own device and profile only, [ai.md § 5.3](ai.md#53-reloadable-private-reviews)) | — | — | ✓ | — |
+| View own requests and their status | — | — | ✓ | — |
+| Cancel own request before review | — | — | ✓ | — |
 | Edit a basket during review, decline a request | ✓ | ✓ | — | — |
 | Start checkout, capture payment | ✓ | ✓ | — | — |
 | See item prices and basket totals | ✓ | ✓ | — | — |
