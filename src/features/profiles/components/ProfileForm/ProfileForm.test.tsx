@@ -17,13 +17,14 @@ describe("ProfileForm", () => {
     expect(screen.getByRole("group", { name: "Profile type" })).toBeInTheDocument();
     expect(screen.getByRole("group", { name: "Choose an avatar" })).toBeInTheDocument();
     expect(screen.getByRole("checkbox", { name: profilesCopy.consent })).not.toBeChecked();
+		expect(screen.queryByRole("radio", { name: /^Child/ })).not.toBeInTheDocument();
     expect(screen.queryByRole("textbox", { name: /email|phone|birth|address/i })).not.toBeInTheDocument();
   });
   it("uses accessible native radios for profile type and avatars", () => {
     render(<ProfileForm />);
-    const child = screen.getByRole("radio", { name: /^Child/ });
-    fireEvent.click(child);
-    expect(child).toBeChecked();
+    const adult = screen.getByRole("radio", { name: /^Assisted Adult/ });
+    fireEvent.click(adult);
+    expect(adult).toBeChecked();
     const flower = screen.getByRole("radio", { name: /^Flower/ });
     fireEvent.click(flower);
     expect(flower).toBeChecked();
@@ -38,7 +39,7 @@ describe("ProfileForm", () => {
     fireEvent.click(screen.getByRole("button", { name: profilesCopy.add }));
     const group = screen.getByRole("group", { name: profilesCopy.kindLabel });
     await waitFor(() => expect(group).toHaveAccessibleDescription(profilesCopy.errors.kind));
-    expect(screen.getByRole("radio", { name: /^Child/ })).not.toHaveAttribute("aria-invalid");
+    expect(screen.getByRole("radio", { name: /^Assisted Adult/ })).not.toHaveAttribute("aria-invalid");
   });
   it("preserves input and choices, shows errors, and focuses the invalid field", async () => {
     mocks.create.mockResolvedValue({ ok: false, error: {
@@ -48,7 +49,7 @@ describe("ProfileForm", () => {
     render(<ProfileForm />);
     const name = screen.getByRole("textbox", { name: profilesCopy.nameLabel });
     fireEvent.change(name, { target: { value: "Rose" } });
-    fireEvent.click(screen.getByRole("radio", { name: /^Child/ }));
+    fireEvent.click(screen.getByRole("radio", { name: /^Assisted Adult/ }));
     fireEvent.click(screen.getByRole("radio", { name: /^Flower/ }));
     fireEvent.click(screen.getByRole("checkbox"));
     fireEvent.click(screen.getByRole("button", { name: profilesCopy.add }));
@@ -57,10 +58,10 @@ describe("ProfileForm", () => {
     await waitFor(() => expect(name).toHaveFocus());
     expect(name).toHaveAttribute("aria-invalid", "true");
     expect(name).toHaveAccessibleDescription(`${profilesCopy.nameHint} ${profilesCopy.errors.nameUnsafe}`);
-    expect(screen.getByRole("radio", { name: /^Child/ })).toBeChecked();
+    expect(screen.getByRole("radio", { name: /^Assisted Adult/ })).toBeChecked();
     expect(screen.getByRole("radio", { name: /^Flower/ })).toBeChecked();
     expect(screen.getByRole("checkbox")).toBeChecked();
-    expect(mocks.create).toHaveBeenCalledWith({ displayName: "Rose", kind: "CHILD", avatarKey: "flower", consent: true });
+    expect(mocks.create).toHaveBeenCalledWith({ displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", consent: true });
   });
   it("announces loading and prevents repeat submissions", async () => {
     let resolveRequest!: (value: { ok: true; data: { profileId: string } }) => void;
