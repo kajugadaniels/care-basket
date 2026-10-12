@@ -8,9 +8,11 @@ import type { RequestListInput } from "../schemas";
 
 const productSelect = { sku: true, displayName: true, category: true, sizeLabel: true, imagePath: true } as const;
 const summarySelect = { id: true, status: true, submittedAt: true,
+	payments: { orderBy: { createdAt: "desc" }, take: 1, select: { status: true } },
 	basket: { select: { _count: { select: { items: true } } } },
 } satisfies Prisma.ShoppingRequestSelect;
 const deviceDetailSelect = { id: true, status: true, submittedAt: true, revision: true,
+	payments: summarySelect.payments,
 	basket: { select: { lockedAt: true, items: {
 		orderBy: { id: "asc" }, select: { id: true, quantity: true, product: { select: productSelect } },
 	} } },
