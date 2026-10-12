@@ -3,7 +3,7 @@
 **Purpose:** Define what a deployable, demo-ready CareBasket needs: environments, variables, migrations, third-party configuration, HTTPS, webhooks, error reporting, and demo availability.
 **Applies to:** Configuration, release preparation, and the public demo.
 **Related:** [security.md § 10](security.md#10-secret-management), [database.md § 7](database.md#7-migrations), [payments.md § 6](payments.md#6-webhooks), [hackathon.md](hackathon.md), [submission.md](submission.md)
-**Last reviewed:** 2026-10-10
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -44,6 +44,7 @@ Validated with Zod by `src/lib/env/server.ts` on first use (it covers `DATABASE_
 | `PAYPAL_CLIENT_SECRET` | Server | PayPal REST OAuth | Both; Sandbox secret required when enabled |
 | `PAYPAL_WEBHOOK_ID` | Server | Webhook signature verification | Both; environment-specific value required when enabled |
 | `PAYPAL_ENVIRONMENT` | Server | Must be `sandbox` | Both; fixed to `sandbox` |
+| `PAYPAL_BUYER_APPROVAL_ENABLED` | Server | Buyer approval requires verified server capture; Step 9 rejects `true` | Both; fixed to `false` until Step 10 |
 | `GEMINI_API_KEY` | Server | Gemini API | Both; environment-specific secret required when enabled |
 | `GEMINI_MODEL` | Server | Gemini model ID ([ai.md § 4](ai.md#4-provider-abstraction)) | Both; approved model required when enabled |
 | `GEMINI_SHOPPING_ENABLED` | Server | Disabled-by-default gate; requires a documented deployment approval and reviewed model, not just an environment flag | Both; fixed to `false` until approved |
