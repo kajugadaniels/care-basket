@@ -59,11 +59,11 @@ describe("HomePage", () => {
     expect(within(section).getByText("Decide whether to pay")).toBeInTheDocument();
   });
 
-  it("labels the product preview as an illustration, not a working feature", () => {
+  it("labels the product preview as fictional, not a real grocery order", () => {
     render(<HomePage />);
 
     expect(screen.getByRole("figure")).toHaveTextContent(/illustrative preview/i);
-    expect(screen.getByRole("figure")).toHaveTextContent(/not a working feature/i);
+    expect(screen.getByRole("figure")).toHaveTextContent(/not a real grocery order/i);
   });
 
   it("points every in-page link at an element that exists", () => {
