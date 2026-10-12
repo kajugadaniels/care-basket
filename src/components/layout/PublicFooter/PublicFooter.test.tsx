@@ -10,6 +10,7 @@ describe("public footer", () => {
 		expect(within(footer).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
 		expect(within(footer).getByRole("link", { name: "Data sources" })).toHaveAttribute("href", "/data-sources");
 		expect(footer).toHaveTextContent("Sandbox-only payments");
+		expect(footer).toHaveTextContent("For adults aged 18 or older.");
 		expect(footer).toHaveTextContent("simulated merchant and prices");
 		expect(footer).toHaveTextContent("no real money, orders or deliveries");
 		expect(footer).toHaveTextContent("not affiliated with or endorsed by PayPal");
@@ -31,6 +32,7 @@ describe("public footer", () => {
 		render(<PublicFooter audience="requester" />);
 		const footer = screen.getByRole("contentinfo");
 		expect(footer).toHaveTextContent("Groceries made simple, with help from your family.");
+		expect(footer).toHaveTextContent("For adults aged 18 or older.");
 		expect(footer).toHaveTextContent("No real orders or deliveries.");
 		expect(footer).not.toHaveTextContent("PayPal");
 		expect(footer).not.toHaveTextContent("Sandbox");
