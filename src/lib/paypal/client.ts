@@ -46,11 +46,15 @@ export function createPayPalClient(config: Configuration, dependencies: Dependen
 			const response = await send(`${SANDBOX_URL}${path}`, { ...init,
 				cache: "no-store", redirect: "error", signal: controller.signal });
 			if (!response.ok || ![200, 201].includes(response.status)) {
-				await response.body?.cancel().catch(() => undefined);
+				// Retain only two documented recovery codes; discard every free-text detail.
+				const diagnostic = await boundedJson(response).catch(() => null);
+				const issues = z.object({ details: z.array(z.object({ issue: z.string() })).max(20) }).safeParse(diagnostic);
+				const code = issues.success ? issues.data.details[0]?.issue : undefined;
+				const issue = code === "INSTRUMENT_DECLINED" || code === "ORDER_ALREADY_CAPTURED" ? code : undefined;
 				const rejected = [400, 401, 403, 422].includes(response.status);
 				// Only an explicit rejection of this POST proves this call created no order.
 				throw new PayPalError([401, 403].includes(response.status) ? "AUTHENTICATION"
-					: rejected ? "REJECTED" : "UNAVAILABLE", isOAuth || rejected ? "NOT_CREATED" : "UNKNOWN");
+					: rejected ? "REJECTED" : "UNAVAILABLE", isOAuth || rejected ? "NOT_CREATED" : "UNKNOWN", issue);
 			}
 			return await boundedJson(response);
 		} catch (error) {
@@ -83,23 +87,37 @@ export function createPayPalClient(config: Configuration, dependencies: Dependen
 		finally { if (refreshing === pending) refreshing = undefined; }
 	}
 
+	async function authorized(path: string, body?: unknown, requestId?: string) {
+		const token = await accessToken();
+		try {
+			return await request(path, { method: body === undefined ? "GET" : "POST",
+				headers: { Authorization: `Bearer ${token}`, Accept: "application/json", "Content-Type": "application/json",
+					Prefer: "return=representation", ...(requestId ? { "PayPal-Request-Id": requestId } : {}) },
+				...(body === undefined ? {} : { body: JSON.stringify(body) }),
+			});
+		} catch (error) {
+			if (error instanceof PayPalError && error.kind === "AUTHENTICATION") cachedToken = undefined;
+			throw error; // No automatic POST retries; the durable service owns recovery.
+		}
+	}
+
 	return {
 		clientId: config.clientId,
 		async orderRequest(path: string, body?: unknown, requestId?: string): Promise<unknown> {
 			if (!/^\/v2\/checkout\/orders(?:\/[A-Z0-9]{1,36})?$/.test(path)) throw new PayPalError("CONFIGURATION", "NOT_CREATED");
 			if (body !== undefined && (path !== "/v2/checkout/orders" || !requestId)) throw new PayPalError("CONFIGURATION", "NOT_CREATED");
-			const token = await accessToken();
-			try {
-				return await request(path, { method: body === undefined ? "GET" : "POST",
-					headers: { Authorization: `Bearer ${token}`, Accept: "application/json", "Content-Type": "application/json",
-						Prefer: "return=representation", ...(requestId ? { "PayPal-Request-Id": requestId } : {}) },
-					...(body === undefined ? {} : { body: JSON.stringify(body) }),
-				});
-			} catch (error) {
-				if (error instanceof PayPalError && error.kind === "AUTHENTICATION") cachedToken = undefined;
-				// No automatic POST retries: the checkout service owns durable attempt recovery.
-				throw error;
-			}
+			return authorized(path, body, requestId);
+		},
+		async captureOrder(orderId: string, paymentId: string) {
+			if (!/^[A-Z0-9]{1,36}$/.test(orderId) || !z.uuid().safeParse(paymentId).success) throw new PayPalError("CONFIGURATION");
+			return authorized(`/v2/checkout/orders/${orderId}/capture`, {}, `capture-${paymentId}`);
+		},
+		async paymentRequest(path: string) {
+			if (!/^\/v2\/payments\/(captures|refunds)\/[A-Z0-9]{1,36}$/.test(path)) throw new PayPalError("CONFIGURATION");
+			return authorized(path);
+		},
+		async verifyWebhook(body: unknown) {
+			return authorized("/v1/notifications/verify-webhook-signature", body);
 		},
 	};
 }
