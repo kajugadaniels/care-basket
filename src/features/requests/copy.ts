@@ -99,3 +99,21 @@ export const requestsCopy = {
 		INTERNAL: "We couldn't save your shopping list. Your unsent list is still here; try again.",
 	},
 } as const;
+
+export const requestNotificationsCopy = {
+	sessionExpired: "Your access has changed. Sign in again to check your shopping lists.",
+	signIn: "Sign in again",
+	title: "Notifications",
+	bell: (count: number) => `Notifications, ${count} shopping ${count === 1 ? "list" : "lists"} waiting for review`,
+	message: (name: string) => `${name} has sent a shopping list.`,
+	count: (count: number) => `${count} waiting for review`,
+	badge: (count: number) => count > 99 ? "99+" : String(count),
+	empty: "You're all caught up",
+	emptyHelp: "New shopping lists from your family will appear here.",
+	viewAll: "View all shopping lists",
+	close: "Close notifications",
+	error: "We couldn't update notifications. Try again to check for new lists.",
+	retry: "Try again",
+	refreshing: "Checking notifications…",
+	newLists: (count: number) => `${count} new shopping ${count === 1 ? "list" : "lists"} received.`,
+} as const;
