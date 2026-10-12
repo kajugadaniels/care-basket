@@ -5,6 +5,16 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
+	poweredByHeader: false,
+	headers() {
+		// Defer CSP until Clerk/PayPal resource and nonce policies are browser-verified.
+		return [{ source: "/:path*", headers: [
+			{ key: "X-Content-Type-Options", value: "nosniff" },
+			{ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+			{ key: "Permissions-Policy", value: "camera=(), geolocation=(), microphone=(self)" },
+			{ key: "X-Frame-Options", value: "DENY" },
+		] }];
+	},
 	images: {
 		remotePatterns: cloudinaryRemotePatterns(process.env.CLOUDINARY_CLOUD_NAME),
 		maximumRedirects: 0,
