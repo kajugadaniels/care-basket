@@ -9,9 +9,10 @@ import { AppError } from "@/server/errors";
 import { logSecurityFailure } from "@/server/logger";
 import { enforceRateLimit } from "@/server/rate-limit/limiter";
 import { checkoutCopy } from "./copy";
-import { cancelCheckoutSchema, startCheckoutSchema } from "./schemas";
+import { cancelCheckoutSchema, captureCheckoutSchema, startCheckoutSchema } from "./schemas";
 import { CheckoutFailure } from "./server/failure";
 import { cancelCheckout, startCheckout } from "./server/service";
+import { reconcileCheckout } from "./server/capture-service";
 import type { CancelCheckoutResult, CheckoutResult } from "./types";
 
 function invalidate(requestId: string) {
@@ -56,4 +57,24 @@ export async function cancelCheckoutAction(value: unknown): Promise<CancelChecko
 		return { ok: true, data: await cancelCheckout(actor, input) };
 	} catch (error) { return failure(error); }
 	finally { if (requestId) invalidate(requestId); }
+}
+
+async function paymentAction(value: unknown, capture: boolean): Promise<CheckoutResult> {
+	let requestId: string | undefined;
+	try {
+		const actor = await requireAdult({ roles: ["OWNER", "MANAGER"] });
+		const input = captureCheckoutSchema.parse(value);
+		requestId = input.requestId;
+		await enforceRateLimit(`checkout:payment:${actor.familyId}:${input.requestId}`, 10, 60_000);
+		return { ok: true, data: await reconcileCheckout(actor, input, capture) };
+	} catch (error) { return failure(error); }
+	finally { if (requestId) invalidate(requestId); }
+}
+
+export async function captureCheckoutAction(value: unknown): Promise<CheckoutResult> {
+	return paymentAction(value, true);
+}
+
+export async function refreshCheckoutAction(value: unknown): Promise<CheckoutResult> {
+	return paymentAction(value, false);
 }
