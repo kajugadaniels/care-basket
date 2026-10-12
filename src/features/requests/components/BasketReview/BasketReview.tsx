@@ -88,7 +88,6 @@ export function BasketReview() {
 					<h2 id="send-list-title">{requestsCopy.readyToSend}</h2>
 				</div>
 				<p className={basketStyles.count}>{requestsCopy.draftCount(draft.items.length)}</p>
-				<p className={basketStyles.help}>{requestsCopy.sendHelp}</p>
 				<div className={basketStyles.sendActions}>
 					<Button size="lg" loading={pending || locked} onClick={send}>{pending || locked ? requestsCopy.sending : requestsCopy.send}</Button>
 					<Button size="lg" variant="secondary" disabled={locked} onClick={() => change({ type: "clear" })}>{requestsCopy.clear}</Button>
@@ -108,6 +107,5 @@ export function BasketReview() {
 				</ActionLink>
 			</section>
 		)}
-		<p role="status" className={basketStyles.announcement}>{pending || locked ? requestsCopy.sending : ""}</p>
 	</div>;
 }
