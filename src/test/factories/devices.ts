@@ -12,7 +12,7 @@ export function makeDeviceAdult(role: "OWNER" | "MANAGER" = "OWNER") {
 }
 export function makeDeviceActor() {
   return { type: "device" as const, deviceId: deviceIds.device, familyId: deviceIds.family,
-    profileId: deviceIds.profile, profileKind: "CHILD" as const };
+    profileId: deviceIds.profile, profileKind: "ASSISTED_ADULT" as const };
 }
 export function makePairingReview() {
   return { pairingId: deviceIds.pairing, reviewTicket: "a".repeat(64),
