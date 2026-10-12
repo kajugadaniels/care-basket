@@ -21,7 +21,7 @@ export const assistantCopy = {
 	local: "Type a simple list or choose pictures. Voice and smart suggestions are not available here yet.",
 	disclosure: "Google AI helps us understand your list. We don't keep recordings.",
 	prompt: "What groceries do you need?", placeholder: "Try: two bags of rice and one carton of milk",
-	continue: "Find my groceries", cancel: "Cancel", working: "Finding groceries…", slow: "Still working…",
+	continue: "Find my groceries", cancel: "Cancel", working: "Finding groceries…",
 	review: "Here is what I understood", requested: "Your groceries", suggested: "Suggested for you",
 	uncertain: "Is this right?", question: "Which one would you like?", none: "None of these",
 	substitution: "A different product or package was suggested. Please check this choice.",
