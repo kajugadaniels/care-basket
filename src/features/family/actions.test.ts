@@ -29,6 +29,7 @@ const user = { id: "user-1", clerkUserId: "user_clerk_1" };
 
 function formData(fields: Record<string, string>) {
   const data = new FormData();
+	data.set("adultConfirmed", "on");
   for (const [name, value] of Object.entries(fields)) {
     data.set(name, value);
   }
@@ -88,6 +89,7 @@ describe("createFamilyAction", () => {
     expect(mocks.createFamilyForUser).toHaveBeenCalledWith("user-1", {
       familyName: "Jane's Family",
       displayName: "Jane",
+			adultConfirmed: true,
     });
     expect(mocks.revalidatePath).toHaveBeenCalledWith("/family", "layout");
   });
@@ -112,6 +114,7 @@ describe("createFamilyAction", () => {
     expect(mocks.createFamilyForUser).toHaveBeenCalledWith("user-1", {
       familyName: "Jane's Family",
       displayName: "Jane",
+			adultConfirmed: true,
     });
   });
 
@@ -123,6 +126,17 @@ describe("createFamilyAction", () => {
       createFamilyAction(initialState, formData({ familyName: "Jane's Family", displayName: "Jane" })),
     ).rejects.toThrow("NEXT_REDIRECT:/family");
   });
+
+	it.each([null, "false", "true"])("rejects missing or forged adult confirmation: %s", async (value) => {
+		mocks.ensureUser.mockResolvedValue(user);
+		const data = formData({ familyName: "Jane's Family", displayName: "Jane" });
+		if (value === null) data.delete("adultConfirmed");
+		else data.set("adultConfirmed", value);
+		const state = await createFamilyAction(initialState, data);
+		expect(state.error?.fieldErrors?.adultConfirmed).toBeDefined();
+		expect(mocks.createFamilyForUser).not.toHaveBeenCalled();
+		expect(mocks.redirect).not.toHaveBeenCalled();
+	});
 
   it("shows a safe message without internal details when creation fails", async () => {
     mocks.ensureUser.mockResolvedValue(user);
