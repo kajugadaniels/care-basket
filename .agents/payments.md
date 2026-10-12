@@ -3,7 +3,7 @@
 **Purpose:** Define an accurate, tamper-resistant PayPal payment workflow in which only a family manager pays, the server decides every amount, and "paid" is never confused with "delivered".
 **Applies to:** Baskets, prices, checkout, capture, webhooks, payment status display.
 **Related:** [security.md § 11](security.md#11-payment-tamper-resistance), [database.md § 5](database.md#5-planned-models), [api.md § 6](api.md#6-idempotency-for-sensitive-mutations), [testing.md](testing.md), [hackathon.md](hackathon.md)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -24,6 +24,8 @@
 - **Client:** `@paypal/react-paypal-js` v10, using the **v6 SDK entry** `@paypal/react-paypal-js/sdk-v6` (`PayPalProvider`, `PayPalOneTimePaymentButton`). Do not use the legacy v5 components (`PayPalScriptProvider`, `PayPalButtons`). Read the installed README before implementing. Use the official buttons only within the styling options PayPal supports; never build look-alike PayPal buttons.
 - The client receives only `NEXT_PUBLIC_PAYPAL_CLIENT_ID` and the environment value (passed from validated server config). `PAYPAL_CLIENT_SECRET` and `PAYPAL_WEBHOOK_ID` never leave the server.
 - The access token is cached in memory per server instance until shortly before it expires. It is never logged or sent to the client.
+- **Step 9 rollout:** preparation and safe local cancellation only. Keep `PAYPAL_BUYER_APPROVAL_ENABLED=false`; the server rejects `true` until verified capture is implemented in Step 10. The SDK v6 component is source-only and is not mounted by any route. No approval link is exposed, no capture endpoint exists, and nothing can mark a request paid. The workflow below describes the eventual complete integration, not capabilities available in Step 9.
+- The public and server client IDs must identify the same Sandbox app. Missing payment configuration fails only when checkout is used, not when unrelated routes are rendered.
 
 ## 3. Payment workflow
 
@@ -49,6 +51,8 @@ Order creation body rules (Orders v2):
 - Every create and capture request sends a `PayPal-Request-Id` header.
 
 **Cancelling a checkout:** before capture, the manager may cancel. `cancelCheckoutAction` marks the open payment `VOIDED`, unlocks the basket, and returns the request to `PENDING_REVIEW`, all in one transaction and only if the payment is `CREATED` or `APPROVED`. The unused PayPal order is never captured.
+
+In Step 9, cancellation accepts only local `CREATED` attempts. It first reconciles any known or uncertain PayPal create outside the transaction and refuses advanced, payment-bearing, or unknown outcomes. Local `VOIDED` means abandoned by CareBasket, not that PayPal voided an order or payment; Orders v2 has no generic order-void operation. Creation and cancellation use a persisted fenced lease; missing order IDs resume the original immutable payload and idempotency key within the safe replay window. An older ambiguous attempt stays locked for operator reconciliation, never an automatic new create or unlock.
 
 ## 4. Money handling
 
