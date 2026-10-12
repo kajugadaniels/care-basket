@@ -39,15 +39,20 @@ export function BasketReview() {
 			}
 		});
 	}
-	if (requestId) return <section className={`${styles.panel} ${styles.requester} ${styles.reading}`}>
-		<Icon icon={CheckmarkCircle02Icon} size={48} className={styles.confirmationIcon} />
-		<h1 ref={successRef} tabIndex={-1}>{requestsCopy.sent}</h1>
-		<p>{requestsCopy.sentHelp}</p><p role="status">{requestsCopy.statuses.PENDING_REVIEW}</p>
-		<ActionLink href={`/shop/requests/${requestId}`} size="lg">{requestsCopy.view}</ActionLink>
-		<ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink>
+	if (requestId) return <section className={`${styles.requester} ${basketStyles.confirmation}`}>
+		<span className={basketStyles.confirmationIcon}><Icon icon={CheckmarkCircle02Icon} size={48} /></span>
+		<div className={basketStyles.confirmationCopy}>
+			<h1 ref={successRef} tabIndex={-1}>{requestsCopy.sent}</h1>
+			<p>{requestsCopy.sentHelp}</p>
+		</div>
+		<p role="status" className={basketStyles.status}>{requestsCopy.statuses.PENDING_REVIEW}</p>
+		<div className={basketStyles.confirmationActions}>
+			<ActionLink href={`/shop/requests/${requestId}`} size="lg">{requestsCopy.view}</ActionLink>
+			<ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink>
+		</div>
 	</section>;
-	return <div className={`${styles.page} ${styles.requester}`}>
-		<header className={styles.header}>
+	return <div className={`${styles.page} ${styles.requester} ${basketStyles.page}`}>
+		<header className={basketStyles.header}>
 			<div className={styles.pageHeading}>
 				<h1>{requestsCopy.basketTitle}</h1>
 				{draft.items.length > 0 ? <p className={styles.muted}>{requestsCopy.basketIntro}</p> : null}
@@ -55,24 +60,39 @@ export function BasketReview() {
 			{draft.items.length > 0 ? <ActionLink href="/shop/products" variant="secondary" size="lg">{requestsCopy.browse}</ActionLink> : null}
 		</header>
 		{error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
-		{draft.items.length > 0 ? <div className={styles.basketLayout}>
-			<ul className={styles.list} aria-label={requestsCopy.listItems}>{draft.items.map((item) => <li key={item.sku} className={styles.panel}>
-				<RequestItem product={item}>
-					{item.origin === "SUGGESTED" ? <p>{requestsCopy.origins.SUGGESTED}</p> : null}
-					{item.isSubstitute ? <p>{requestsCopy.substitute}</p> : null}
-					<QuantityControl name={item.displayName} quantity={item.quantity} disabled={locked}
-						maxQuantity={item.origin === "SUGGESTED" ? 6 : 20}
-						onChange={(quantity) => change({ type: "quantity", sku: item.sku, quantity })} />
-					<Button variant="secondary" disabled={locked} aria-label={`${requestsCopy.remove}: ${item.displayName}`}
-						onClick={() => change({ type: "remove", sku: item.sku })}>{requestsCopy.remove}</Button>
-				</RequestItem>
-			</li>)}</ul>
-			<aside className={styles.sendPanel} aria-labelledby="send-list-title">
-				<h2 id="send-list-title">{requestsCopy.readyToSend}</h2>
-				<p>{requestsCopy.draftCount(draft.items.length)}</p>
-				<p className={styles.muted}>{requestsCopy.sendHelp}</p>
-				<Button size="lg" loading={pending || locked} onClick={send}>{pending || locked ? requestsCopy.sending : requestsCopy.send}</Button>
-				<Button size="lg" variant="secondary" disabled={locked} onClick={() => change({ type: "clear" })}>{requestsCopy.clear}</Button>
+		{draft.items.length > 0 ? <div className={basketStyles.layout}>
+			<section className={basketStyles.groceries} aria-labelledby="basket-groceries-title">
+				<header className={basketStyles.listHeader}>
+					<h2 id="basket-groceries-title">{requestsCopy.listItems}</h2>
+				</header>
+				<ul className={basketStyles.list} aria-label={requestsCopy.listItems}>
+					{draft.items.map((item) => <li key={item.sku} className={basketStyles.row}>
+						<RequestItem product={item} headingLevel={3} className={basketStyles.product}>
+							{item.origin === "SUGGESTED" ? <p className={basketStyles.badge}>{requestsCopy.origins.SUGGESTED}</p> : null}
+							{item.isSubstitute ? <p className={basketStyles.badge}>{requestsCopy.substitute}</p> : null}
+							<div className={basketStyles.controls}>
+								<QuantityControl name={item.displayName} quantity={item.quantity} disabled={locked}
+									maxQuantity={item.origin === "SUGGESTED" ? 6 : 20}
+									onChange={(quantity) => change({ type: "quantity", sku: item.sku, quantity })} />
+								<Button variant="secondary" disabled={locked} className={basketStyles.remove}
+									aria-label={`${requestsCopy.remove}: ${item.displayName}`}
+									onClick={() => change({ type: "remove", sku: item.sku })}>{requestsCopy.remove}</Button>
+							</div>
+						</RequestItem>
+					</li>)}
+				</ul>
+			</section>
+			<aside className={basketStyles.sendPanel} aria-labelledby="send-list-title">
+				<div className={basketStyles.summaryHeading}>
+					<Icon icon={ShoppingBasket01Icon} size={32} />
+					<h2 id="send-list-title">{requestsCopy.readyToSend}</h2>
+				</div>
+				<p className={basketStyles.count}>{requestsCopy.draftCount(draft.items.length)}</p>
+				<p className={basketStyles.help}>{requestsCopy.sendHelp}</p>
+				<div className={basketStyles.sendActions}>
+					<Button size="lg" loading={pending || locked} onClick={send}>{pending || locked ? requestsCopy.sending : requestsCopy.send}</Button>
+					<Button size="lg" variant="secondary" disabled={locked} onClick={() => change({ type: "clear" })}>{requestsCopy.clear}</Button>
+				</div>
 			</aside>
 		</div> : (
 			<section className={basketStyles.empty} aria-labelledby="empty-shopping-list-title">
@@ -88,6 +108,6 @@ export function BasketReview() {
 				</ActionLink>
 			</section>
 		)}
-		<p role="status">{pending || locked ? requestsCopy.sending : ""}</p>
+		<p role="status" className={basketStyles.announcement}>{pending || locked ? requestsCopy.sending : ""}</p>
 	</div>;
 }
