@@ -4,13 +4,15 @@ import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { cx } from "@/lib/class-names";
 import { formatDate, formatTime } from "@/lib/format";
+import { CheckoutPanel } from "@/features/checkout/components/CheckoutPanel/CheckoutPanel";
+import type { CheckoutDto } from "@/features/checkout/types";
 import { requestsCopy as copy } from "../../copy";
 import type { ManagerDetailDto } from "../../types";
 import { ManagerBasket } from "../ManagerBasket/ManagerBasket";
 import { CloseRequestDialog } from "../RequestUi/CloseRequestDialog";
 import styles from "./ManagerRequestDetail.module.css";
 
-export function ManagerRequestDetail({ request }: { request: ManagerDetailDto }) {
+export function ManagerRequestDetail({ request, checkout }: { request: ManagerDetailDto; checkout?: CheckoutDto | null }) {
 	const isPending = request.status === "PENDING_REVIEW";
 	const isPaid = request.status === "PAID";
 	const isClosed = request.status === "DECLINED" || request.status === "CANCELLED";
@@ -55,6 +57,9 @@ export function ManagerRequestDetail({ request }: { request: ManagerDetailDto })
 				{request.editable ? (
 					<CloseRequestDialog requestId={request.id} revision={request.revision} manager />
 				) : <p className={styles.explanation}>{copy.locked}</p>}
+				{checkout !== undefined && (request.editable || request.status === "AWAITING_PAYMENT") ? (
+					<CheckoutPanel requestId={request.id} revision={request.revision} editable={request.editable} checkout={checkout} />
+				) : null}
 			</ManagerBasket>
 		</div>
 	);
