@@ -8,9 +8,9 @@ type Pairing = { id: string; familyId: string | null; profileId: string | null; 
 type Where = { id?: string; familyId?: string | null; profileId?: string; secretHash?: string; status?: string;
   expiresAt?: { gt: Date; equals?: Date } };
 type State = { pairings: Pairing[]; devices: { id: string; familyId: string; profileId: string; tokenHash: string }[];
-  audits: Record<string, unknown>[]; capacity: number; profileExists: boolean; managerExists: boolean; auditFails: boolean };
+  audits: Record<string, unknown>[]; capacity: number; profileExists: boolean; profileKind: string; managerExists: boolean; auditFails: boolean };
 const fake = vi.hoisted(() => {
-  const state: State = { pairings: [], devices: [], audits: [], capacity: 0, profileExists: true, managerExists: true, auditFails: false };
+  const state: State = { pairings: [], devices: [], audits: [], capacity: 0, profileExists: true, profileKind: "ASSISTED_ADULT", managerExists: true, auditFails: false };
   const calls: { method: string; input: unknown }[] = [];
   let queue = Promise.resolve();
   const matches = (row: Pairing, w: Where) => (!w.id || row.id === w.id)
@@ -19,9 +19,10 @@ const fake = vi.hoisted(() => {
     && (!w.expiresAt || row.expiresAt > w.expiresAt.gt && (!w.expiresAt.equals || row.expiresAt.getTime() === w.expiresAt.equals.getTime()));
   function transaction(staged: State) {
     return {
-      managedProfile: { findFirst: async (input: { where: { familyId: string } }) => {
+      managedProfile: { findFirst: async (input: { where: { familyId: string; kind: string } }) => {
         calls.push({ method: "profile.findFirst", input });
-        return staged.profileExists && input.where.familyId === "019a1234-0000-7000-8000-000000000002" ? { id: "profile" } : null;
+        return staged.profileExists && input.where.familyId === "019a1234-0000-7000-8000-000000000002"
+					&& input.where.kind === staged.profileKind ? { id: "profile" } : null;
       } },
       familyMembership: { findFirst: async () => staged.managerExists ? { id: "membership" } : null },
       devicePairing: {
@@ -69,7 +70,7 @@ describe("transactional pairing repository", () => {
   beforeEach(() => {
     vi.useFakeTimers(); vi.setSystemTime(deviceTestNow);
     Object.assign(fake.state, { pairings: [approved()], devices: [], audits: [], capacity: 0,
-      profileExists: true, managerExists: true, auditFails: false }); fake.calls.splice(0);
+      profileExists: true, profileKind: "ASSISTED_ADULT", managerExists: true, auditFails: false }); fake.calls.splice(0);
   });
   afterEach(() => vi.useRealTimers());
   it("binds the session to the approved family/profile and writes two opaque events", async () => {
@@ -118,6 +119,22 @@ describe("transactional pairing repository", () => {
     }, "APPROVED", deviceTestNow)).rejects.toMatchObject({ code: "NOT_FOUND" });
     expect(fake.state.pairings[0].status).toBe("PENDING");
   });
+	it("refuses child approval without changing the pending pairing", async () => {
+		fake.state.profileKind = "CHILD";
+		fake.state.pairings[0] = { ...approved(), status: "PENDING", familyId: null, profileId: null };
+		await expect(decidePairing(makeDeviceAdult(), { pairingId: deviceIds.pairing,
+			expiresAt: approved().expiresAt.toISOString(), profileId: deviceIds.profile, label: "Tablet" },
+		"APPROVED", deviceTestNow)).rejects.toMatchObject({ code: "NOT_FOUND" });
+		expect(fake.state.pairings[0].status).toBe("PENDING");
+		expect(fake.state.audits).toEqual([]);
+	});
+	it("refuses completion of a historically approved child pairing", async () => {
+		fake.state.profileKind = "CHILD";
+		await expect(complete()).rejects.toMatchObject({ code: "NOT_FOUND" });
+		expect(fake.state.pairings[0].status).toBe("APPROVED");
+		expect(fake.state.devices).toEqual([]);
+		expect(fake.state.audits).toEqual([]);
+	});
   it("reserves capacity for uncompleted approvals", async () => {
     fake.state.capacity = 5; fake.state.pairings[0] = { ...approved(), status: "PENDING", familyId: null, profileId: null };
     await expect(decidePairing(makeDeviceAdult(), { pairingId: deviceIds.pairing,
