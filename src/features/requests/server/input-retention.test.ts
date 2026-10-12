@@ -11,7 +11,11 @@ describe("developer-invoked request text retention", () => {
 	it("bounds maintenance to fifty final requests in the explicit family scope", async () => {
 		expect(await purgeRequestInputText(requestIds.family, requestNow)).toEqual({ cleared: 0 });
 		expect(fake.find).toHaveBeenCalledWith({ where: { familyId: requestIds.family, inputText: { not: null },
-			status: { in: ["DECLINED", "CANCELLED"] }, updatedAt: { lte: new Date(requestNow.getTime() - 90 * 24 * 60 * 60_000) } },
+			OR: [
+				{ status: { in: ["DECLINED", "CANCELLED"] }, updatedAt: { lte: new Date(requestNow.getTime() - 90 * 24 * 60 * 60_000) } },
+				{ status: "PAID", payments: { some: { familyId: requestIds.family,
+					status: { in: ["CAPTURED", "REFUNDED", "REVERSED"] }, capturedAt: { lte: new Date(requestNow.getTime() - 90 * 24 * 60 * 60_000) } } } },
+			] },
 			select: { id: true }, take: 50, orderBy: { id: "asc" } });
 		expect(fake.update).not.toHaveBeenCalled();
 	});
@@ -22,5 +26,21 @@ describe("developer-invoked request text retention", () => {
 			id: { in: [requestIds.request] } }), data: { inputText: null } }));
 		expect(fake.audit).toHaveBeenCalledWith({ data: { familyId: requestIds.family, actorType: "SYSTEM", actorId: requestIds.family,
 			action: "request.input_text_cleared", targetType: "Family", targetId: requestIds.family } });
+	});
+	it("rechecks the original final-state and capture cutoff when clearing selected rows", async () => {
+		fake.find.mockResolvedValue([{ id: requestIds.request }]);
+		await purgeRequestInputText(requestIds.family, requestNow);
+		const scope = fake.find.mock.calls[0][0].where;
+		expect(fake.update).toHaveBeenCalledWith({ where: { ...scope, id: { in: [requestIds.request] } }, data: { inputText: null } });
+		const paid = scope.OR[1];
+		expect(paid).not.toHaveProperty("updatedAt");
+		expect(paid.payments.some.status.in).not.toContain("PENDING");
+		expect(paid.payments.some.status.in).not.toContain("APPROVED");
+		expect(paid.payments.some.capturedAt.lte).toEqual(new Date(requestNow.getTime() - 90 * 24 * 60 * 60_000));
+	});
+	it("rejects an invalid family identifier before touching the database", async () => {
+		await expect(purgeRequestInputText("not-a-family", requestNow)).rejects.toThrow();
+		expect(fake.find).not.toHaveBeenCalled();
+		expect(fake.update).not.toHaveBeenCalled();
 	});
 });
