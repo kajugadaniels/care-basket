@@ -25,7 +25,7 @@ import { createManagedProfileAction, updateManagedProfileAction, deleteManagedPr
 
 const actor = { type: "adult", userId: "user-rose", familyId: "family-rose", role: "OWNER" };
 const profileId = "019a1234-0000-7000-8000-000000000003";
-const createInput = { displayName: "  Rose  ", kind: "CHILD", avatarKey: "flower", consent: true };
+const createInput = { displayName: "  Rose  ", kind: "ASSISTED_ADULT", avatarKey: "flower", consent: true };
 const updateInput = { profileId, displayName: "Rose", avatarKey: "sun" };
 const deleteInput = { profileId, confirmed: true };
 const cases = [
@@ -84,6 +84,12 @@ describe.each(cases)("$name managed profile action", ({ action, input, service, 
 
 describe("profile mutation validation", () => {
   beforeEach(() => { vi.clearAllMocks(); mocks.requireAdult.mockResolvedValue(actor); });
+	it("rejects child creation before calling the service or navigating", async () => {
+		await expect(createManagedProfileAction({ ...createInput, kind: "CHILD" }))
+			.resolves.toMatchObject({ ok: false, error: { code: "VALIDATION_FAILED" } });
+		expect(mocks.createManagedProfile).not.toHaveBeenCalled();
+		expect(mocks.redirect).not.toHaveBeenCalled();
+	});
   it("rejects creation without consent", async () => {
     const result = await createManagedProfileAction({ ...createInput, consent: false });
     expect(result).toMatchObject({ ok: false, error: { fieldErrors: { consent: expect.any(Array) } } });
