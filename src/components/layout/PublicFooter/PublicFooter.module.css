@@ -54,6 +54,15 @@
 	text-underline-offset: var(--space-1);
 }
 
+.requester .description {
+	font-family: var(--font-readable);
+	font-size: var(--text-lg);
+}
+
+.requester .link {
+	font-size: var(--text-md);
+}
+
 @media (hover: hover) {
 	.link:hover {
 		color: var(--color-primary-hover);
