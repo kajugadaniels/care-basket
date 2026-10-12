@@ -28,7 +28,7 @@ describe("shared catalog queries", () => {
 		expect(mocks.first).toHaveBeenLastCalledWith(expect.objectContaining({ where: expect.objectContaining({ sku: "example-rice", isChildSuitable: true, isActive: true, archivedAt: null }) }));
 	});
 	it("uses the same current approval cutoff for eligibility and the selected price", async () => {
-		await listCatalogRows({ limit: 12 }, false);
+		await listCatalogRows({ q: "", limit: 12 }, false);
 		const list = mocks.many.mock.lastCall?.[0];
 		expect(list.select.demoPrices.where).toEqual(list.where.demoPrices.some);
 		expect(list.select.demoPrices.where.approvedAt.lte).toEqual(new Date("2026-10-12T10:00:00Z"));
