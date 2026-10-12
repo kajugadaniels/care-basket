@@ -5,7 +5,8 @@ import { requestsCopy } from "../../copy";
 import type { RequestMutationResult } from "../../types";
 const fake = vi.hoisted(() => ({ cancel: vi.fn(), decline: vi.fn(), update: vi.fn(), remove: vi.fn(), refresh: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: fake.refresh }) }));
-vi.mock("@/features/checkout/actions", () => ({ startCheckoutAction: vi.fn(), cancelCheckoutAction: vi.fn() }));
+vi.mock("@/features/checkout/actions", () => ({ startCheckoutAction: vi.fn(), cancelCheckoutAction: vi.fn(),
+	captureCheckoutAction: vi.fn(), refreshCheckoutAction: vi.fn() }));
 vi.mock("@/features/requests/actions", () => ({ cancelRequestAction: fake.cancel, declineRequestAction: fake.decline,
 	updateRequestItemAction: fake.update, removeRequestItemAction: fake.remove }));
 import { RequestDetail } from "./RequestDetail";
