@@ -92,7 +92,7 @@ describe("manager Sandbox checkout panel", () => {
       requestId: props.requestId,
       revision: 0,
     });
-    expect(screen.getByText("ORDER1")).toBeInTheDocument();
+    expect(screen.queryByText("ORDER1")).not.toBeInTheDocument();
     expect(screen.getByText(copy.unavailable)).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /pay with paypal/i }),
@@ -192,7 +192,7 @@ describe("manager Sandbox checkout panel", () => {
       copy.errors.PROVIDER,
     );
     expect(screen.getByText(copy.locked)).toBeInTheDocument();
-    expect(screen.getByText("ORDER1")).toBeInTheDocument();
+    expect(screen.queryByText("ORDER1")).not.toBeInTheDocument();
   });
   it("reconciles action feedback with the next authoritative server revision", async () => {
     const { rerender } = render(<CheckoutPanel {...props} />);
@@ -224,7 +224,7 @@ describe("manager Sandbox checkout panel", () => {
       }),
     );
   });
-  it("renders verified confirmation with Sandbox reference and separate delivery", () => {
+  it("renders verified confirmation without provider identifiers and keeps delivery separate", () => {
     render(
       <CheckoutPanel
         {...props}
@@ -239,7 +239,8 @@ describe("manager Sandbox checkout panel", () => {
       />,
     );
     expect(screen.getByText(copy.statuses.CAPTURED)).toBeInTheDocument();
-    expect(screen.getByText("CAPTURE1")).toBeInTheDocument();
+    expect(screen.queryByText("CAPTURE1")).not.toBeInTheDocument();
+    expect(screen.queryByText("ORDER1")).not.toBeInTheDocument();
     expect(screen.getByText(/\$5.00 · USD/)).toBeInTheDocument();
     expect(screen.getByText(copy.delivery)).toBeInTheDocument();
     expect(
@@ -308,7 +309,7 @@ describe("manager Sandbox checkout panel", () => {
     expect(
       container.querySelector('[class*="successGraphic"][aria-hidden="true"]'),
     ).not.toBeNull();
-    expect(screen.getByText(copy.confirmedHelp)).toBeInTheDocument();
+    expect(screen.queryByText("CAPTURE1")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: copy.back })).toHaveAttribute(
       "href",
       `/family/requests/${props.requestId}`,
