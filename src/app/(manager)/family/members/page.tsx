@@ -22,17 +22,14 @@ type MembersPageProps = {
 export default function MembersPage({ searchParams }: MembersPageProps) {
 	return (
 		<div className={styles.page}>
-			<div className={styles.directoryHeader}>
-				<PageHeader
-					title={profilesCopy.title}
-					description={profilesCopy.description}
-					actions={
-						<ActionLink href="/family/members/add" icon={Add01Icon}>
-							{profilesCopy.add}
-						</ActionLink>
-					}
-				/>
-			</div>
+			<PageHeader
+				title={profilesCopy.title}
+				actions={
+					<ActionLink href="/family/members/add" icon={Add01Icon}>
+						{profilesCopy.add}
+					</ActionLink>
+				}
+			/>
 			<Suspense fallback={<ManagerLoading />}>
 				<MemberDirectory searchParams={searchParams} />
 			</Suspense>
