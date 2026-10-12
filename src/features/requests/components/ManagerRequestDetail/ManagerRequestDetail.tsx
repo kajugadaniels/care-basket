@@ -14,7 +14,8 @@ import styles from "./ManagerRequestDetail.module.css";
 
 export function ManagerRequestDetail({ request, checkout }: { request: ManagerDetailDto; checkout?: CheckoutDto | null }) {
 	const isPending = request.status === "PENDING_REVIEW";
-	const isPaid = request.status === "PAID";
+	const adjusted = checkout?.state === "REFUNDED" || checkout?.state === "REVERSED";
+	const isPaid = request.status === "PAID" && !adjusted;
 	const isClosed = request.status === "DECLINED" || request.status === "CANCELLED";
 	const statusIcon = isPaid ? CheckmarkCircle02Icon : isClosed ? CancelCircleIcon : Clock01Icon;
 
@@ -26,7 +27,7 @@ export function ManagerRequestDetail({ request, checkout }: { request: ManagerDe
 				actions={<ActionLink href="/family/requests" variant="secondary">{copy.back}</ActionLink>}
 			/>
 
-			<section className={styles.overview} aria-label={copy.statuses[request.status]}>
+			<section className={styles.overview} aria-label={adjusted ? copy.paymentUpdated : copy.statuses[request.status]}>
 				<div className={styles.overviewHeader}>
 					<div className={styles.member}>
 						<span className={styles.avatar}><Icon icon={UserIcon} size={24} /></span>
@@ -40,10 +41,10 @@ export function ManagerRequestDetail({ request, checkout }: { request: ManagerDe
 					</div>
 					<p className={cx(styles.status, isPending && styles.pending, isPaid && styles.paid, isClosed && styles.closed)}>
 						<Icon icon={statusIcon} size={20} />
-						{copy.statuses[request.status]}
+						{adjusted ? copy.paymentUpdated : copy.statuses[request.status]}
 					</p>
 				</div>
-				<p className={styles.explanation}>{copy.managerExplanations[request.status]}</p>
+				<p className={styles.explanation}>{adjusted ? copy.paymentAdjusted : copy.managerExplanations[request.status]}</p>
 			</section>
 
 			{request.inputText ? (
@@ -57,7 +58,7 @@ export function ManagerRequestDetail({ request, checkout }: { request: ManagerDe
 				{request.editable ? (
 					<CloseRequestDialog requestId={request.id} revision={request.revision} manager />
 				) : <p className={styles.explanation}>{copy.locked}</p>}
-				{checkout !== undefined && (request.editable || request.status === "AWAITING_PAYMENT") ? (
+				{checkout !== undefined && !isClosed && (request.editable || request.status === "AWAITING_PAYMENT" || checkout) ? (
 					<CheckoutPanel requestId={request.id} revision={request.revision} editable={request.editable} checkout={checkout} />
 				) : null}
 			</ManagerBasket>
