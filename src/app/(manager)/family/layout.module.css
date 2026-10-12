@@ -10,6 +10,7 @@
 }
 
 .headerInner {
+	position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,6 +41,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+	flex-shrink: 0;
+	gap: var(--space-3);
   min-width: var(--control-height);
   min-height: var(--control-height);
 }
