@@ -3,8 +3,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requestIds } from "@/test/factories/requests";
 import type { CheckoutDto, CheckoutResult } from "../../types";
 import { checkoutCopy as copy } from "../../copy";
-const fake = vi.hoisted(() => ({ start: vi.fn(), cancel: vi.fn() }));
-vi.mock("../../actions", () => ({ startCheckoutAction: fake.start, cancelCheckoutAction: fake.cancel }));
+const fake = vi.hoisted(() => ({ start: vi.fn(), cancel: vi.fn(), refresh: vi.fn(), capture: vi.fn() }));
+vi.mock("../../actions", () => ({ startCheckoutAction: fake.start, cancelCheckoutAction: fake.cancel,
+	refreshCheckoutAction: fake.refresh, captureCheckoutAction: fake.capture }));
 import { CheckoutPanel } from "./CheckoutPanel";
 
 const prepared: CheckoutDto = { paymentId: requestIds.key, orderId: "ORDER1", state: "PREPARED", amount: "$5.00", buyerApprovalEnabled: false };
@@ -14,6 +15,7 @@ describe("manager Sandbox checkout panel", () => {
 	beforeEach(() => {
 		vi.resetAllMocks(); fake.start.mockResolvedValue({ ok: true, data: prepared });
 		fake.cancel.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
+		fake.refresh.mockResolvedValue({ ok: true, data: { ...prepared, state: "PENDING", canCancel: false } });
 		Object.defineProperty(HTMLDialogElement.prototype, "showModal", { configurable: true, value: function(this: HTMLDialogElement) { this.setAttribute("open", ""); } });
 		Object.defineProperty(HTMLDialogElement.prototype, "close", { configurable: true, value: function(this: HTMLDialogElement) { this.removeAttribute("open"); this.dispatchEvent(new Event("close")); } });
 	});
@@ -85,5 +87,34 @@ describe("manager Sandbox checkout panel", () => {
 		rerender(<CheckoutPanel {...props} revision={2} checkout={null} />);
 		expect(screen.queryByText("ORDER1")).not.toBeInTheDocument();
 		expect(screen.getByRole("button", { name: copy.prepare })).toBeInTheDocument();
+	});
+	it("shows pending truthfully with authenticated manual refresh, never cancellation", async () => {
+		render(<CheckoutPanel {...props} editable={false} checkout={{ ...prepared, state: "PENDING", canCancel: false }} />);
+		expect(screen.getByText(copy.statuses.PENDING)).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: copy.cancel })).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: copy.refresh }));
+		await waitFor(() => expect(fake.refresh).toHaveBeenCalledWith({ requestId: props.requestId, paypalOrderId: "ORDER1" }));
+	});
+	it("renders verified confirmation with Sandbox reference and separate delivery", () => {
+		render(<CheckoutPanel {...props} editable={false} checkout={{ ...prepared, state: "CAPTURED", captureId: "CAPTURE1",
+			capturedAt: "2026-10-12T00:00:00Z", canCancel: false }} />);
+		expect(screen.getByText(copy.statuses.CAPTURED)).toBeInTheDocument();
+		expect(screen.getByText("CAPTURE1")).toBeInTheDocument(); expect(screen.getByText(/\$5.00 · USD/)).toBeInTheDocument();
+		expect(screen.getByText(copy.delivery)).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: copy.cancel })).not.toBeInTheDocument();
+	});
+	it.each(["REFUNDED", "REVERSED"] as const)("does not display current paid success for %s", (state) => {
+		render(<CheckoutPanel {...props} editable={false} checkout={{ ...prepared, state, captureId: "CAPTURE1", capturedAt: "2026-10-12T00:00:00Z" }} />);
+		expect(screen.getByText(copy.statuses[state])).toBeInTheDocument();
+		expect(screen.queryByText(copy.statuses.CAPTURED)).not.toBeInTheDocument();
+		expect(screen.getByText(copy.historicalCapture)).toBeInTheDocument();
+	});
+	it("lets fresh refund props replace a local result even when revision is unchanged", async () => {
+		const { rerender } = render(<CheckoutPanel {...props} checkout={prepared} />);
+		fireEvent.click(screen.getByRole("button", { name: copy.refresh }));
+		await screen.findByText(copy.statuses.PENDING);
+		rerender(<CheckoutPanel {...props} editable={false} checkout={{ ...prepared, state: "REFUNDED", captureId: "CAPTURE1" }} />);
+		expect(screen.getByText(copy.statuses.REFUNDED)).toBeInTheDocument();
+		expect(screen.queryByText(copy.statuses.PENDING)).not.toBeInTheDocument();
 	});
 });
