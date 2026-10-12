@@ -4,7 +4,6 @@ import { processVerifiedWebhook } from "@/features/checkout/server/webhook-servi
 import { readWebhookBody, verifyWebhookSignature, WebhookInputError } from "@/lib/paypal/webhooks";
 import { logSecurityFailure } from "@/server/logger";
 
-export const runtime = "nodejs";
 // Permit the bounded verification/lookups to finish; no network call holds a DB lock.
 export const maxDuration = 90;
 
