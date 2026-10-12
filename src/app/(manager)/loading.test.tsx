@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { familyLayoutCopy } from "@/features/family/copy";
@@ -18,8 +19,8 @@ const inheritedRoutes = [
 
 describe("shared manager loading", () => {
 	it("removes the manager catalog route without removing requester shopping", () => {
-		expect(existsSync(new URL("./family/catalog/page.tsx", import.meta.url))).toBe(false);
-		expect(existsSync(new URL("../(device)/shop/products/page.tsx", import.meta.url))).toBe(true);
+		expect(existsSync(resolve(process.cwd(), "src/app/(manager)/family/catalog/page.tsx"))).toBe(false);
+		expect(existsSync(resolve(process.cwd(), "src/app/(device)/shop/products/page.tsx"))).toBe(true);
 	});
 
 	it.each([
@@ -41,17 +42,17 @@ describe("shared manager loading", () => {
 	});
 
 	it.each(streamedPages)("uses the shared fallback in %s", (path) => {
-		const source = readFileSync(new URL(`./${path}`, import.meta.url), "utf8");
+		const source = readFileSync(resolve(process.cwd(), "src/app/(manager)", path), "utf8");
 		expect(source).toContain("fallback={<ManagerLoading />}");
 		expect(source).not.toMatch(/Skeleton/);
 	});
 
 	it.each(inheritedRoutes)("inherits loading instead of shadowing it in %s", (path) => {
-		expect(existsSync(new URL(`./family/${path}/loading.tsx`, import.meta.url))).toBe(false);
+		expect(existsSync(resolve(process.cwd(), "src/app/(manager)/family", path, "loading.tsx"))).toBe(false);
 	});
 
 	it("reserves content space and respects reduced motion without an overlay", () => {
-		const css = readFileSync(new URL("../../features/family/components/ManagerLoading/ManagerLoading.module.css", import.meta.url), "utf8");
+		const css = readFileSync(resolve(process.cwd(), "src/features/family/components/ManagerLoading/ManagerLoading.module.css"), "utf8");
 		expect(css).toContain("min-block-size:");
 		expect(css).toContain("prefers-reduced-motion: reduce");
 		expect(css).toContain("animation: none");
