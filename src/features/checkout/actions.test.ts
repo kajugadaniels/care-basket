@@ -2,7 +2,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requestIds, requestManager } from "@/test/factories/requests";
 import { AppError } from "@/server/errors";
-const fake = vi.hoisted(() => ({ adult: vi.fn(), start: vi.fn(), cancel: vi.fn(), limit: vi.fn(), revalidate: vi.fn(), log: vi.fn() }));
+const fake = vi.hoisted(() => ({ adult: vi.fn(), start: vi.fn(), cancel: vi.fn(), reconcile: vi.fn(), limit: vi.fn(), revalidate: vi.fn(), log: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ revalidatePath: fake.revalidate }));
 vi.mock("next/navigation", () => ({ unstable_rethrow: (error: unknown) => { if (error instanceof Error && error.message === "NEXT_REDIRECT") throw error; } }));
@@ -10,7 +10,8 @@ vi.mock("@/server/auth/require-adult", () => ({ requireAdult: fake.adult }));
 vi.mock("@/server/rate-limit/limiter", () => ({ enforceRateLimit: fake.limit }));
 vi.mock("@/server/logger", () => ({ logSecurityFailure: fake.log }));
 vi.mock("./server/service", () => ({ startCheckout: fake.start, cancelCheckout: fake.cancel }));
-import { cancelCheckoutAction, startCheckoutAction } from "./actions";
+vi.mock("./server/capture-service", () => ({ reconcileCheckout: fake.reconcile }));
+import { cancelCheckoutAction, captureCheckoutAction, refreshCheckoutAction, startCheckoutAction } from "./actions";
 import { CheckoutFailure } from "./server/failure";
 import { checkoutCopy as copy } from "./copy";
 
@@ -21,6 +22,7 @@ describe("authenticated checkout actions", () => {
 	beforeEach(() => {
 		vi.resetAllMocks(); fake.adult.mockResolvedValue(requestManager); fake.start.mockResolvedValue(checkout);
 		fake.cancel.mockResolvedValue({ requestId: input.requestId }); fake.limit.mockResolvedValue(undefined);
+		fake.reconcile.mockResolvedValue(checkout);
 	});
 	it("requires the manager actor, validates, rate-limits and revalidates manager/requester paths", async () => {
 		expect(await startCheckoutAction(input)).toEqual({ ok: true, data: checkout });
@@ -69,5 +71,21 @@ describe("authenticated checkout actions", () => {
 		expect(await cancelCheckoutAction(cancel)).toEqual({ ok: true, data: { requestId: input.requestId } });
 		expect(fake.cancel).toHaveBeenCalledWith(requestManager, cancel);
 		expect(fake.limit).toHaveBeenCalledWith(`checkout:cancel:${requestIds.family}:${input.requestId}`, 10, 3_600_000);
+	});
+	it.each([true, false])("authenticates and bounds payment reconciliation with capture=%s", async (capture) => {
+		const action = capture ? captureCheckoutAction : refreshCheckoutAction;
+		const value = { requestId: input.requestId, paypalOrderId: "ORDER1" };
+		expect(await action(value)).toEqual({ ok: true, data: checkout });
+		expect(fake.adult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
+		expect(fake.limit).toHaveBeenCalledWith(`checkout:payment:${requestIds.family}:${input.requestId}`, 10, 60_000);
+		expect(fake.reconcile).toHaveBeenCalledWith(requestManager, value, capture);
+		expect(fake.revalidate).toHaveBeenCalledWith(`/shop/requests/${input.requestId}`);
+	});
+	it.each([captureCheckoutAction, refreshCheckoutAction])("rejects extra client prices/identities and unauthenticated payment actions", async (action) => {
+		const value = { requestId: input.requestId, paypalOrderId: "ORDER1" };
+		expect(await action({ ...value, familyId: requestIds.other, amountMinor: 1 })).toMatchObject({ ok: false, error: { code: "VALIDATION_FAILED" } });
+		fake.adult.mockRejectedValueOnce(new AppError("UNAUTHENTICATED"));
+		expect(await action(value)).toMatchObject({ ok: false, error: { code: "UNAUTHENTICATED" } });
+		expect(fake.reconcile).not.toHaveBeenCalled();
 	});
 });
