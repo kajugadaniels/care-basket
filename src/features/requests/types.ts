@@ -8,6 +8,7 @@ export type DraftItem = CatalogProductDto & { quantity: number; origin?: "REQUES
 export type RequestItemDto = CatalogProductDto & { id: string; quantity: number };
 export type RequestSummaryDto = {
 	id: string; status: RequestStatus; submittedAt: string; itemCount: number;
+	paymentState?: "REFUNDED" | "REVERSED";
 };
 export type RequestDetailDto = RequestSummaryDto & {
 	revision: number; items: RequestItemDto[]; editable: boolean;
