@@ -27,6 +27,18 @@ describe("public footer", () => {
 		expect(within(footer).queryByRole("heading")).not.toBeInTheDocument();
 		expect(within(footer).queryByRole("region")).not.toBeInTheDocument();
 	});
+	it("offers requester-friendly wording without payment jargon or smaller text", () => {
+		render(<PublicFooter audience="requester" />);
+		const footer = screen.getByRole("contentinfo");
+		expect(footer).toHaveTextContent("Groceries made simple, with help from your family.");
+		expect(footer).toHaveTextContent("No real orders or deliveries.");
+		expect(footer).not.toHaveTextContent("PayPal");
+		expect(footer).not.toHaveTextContent("Sandbox");
+		expect(within(footer).getAllByRole("link")).toHaveLength(2);
+		const css = readFileSync(new URL("./PublicFooter.module.css", import.meta.url), "utf8");
+		expect(css).toMatch(/\.requester\s+\.description\s*\{[^}]*font-size:\s*var\(--text-lg\)/);
+		expect(css).toMatch(/\.requester\s+\.link\s*\{[^}]*font-size:\s*var\(--text-md\)/);
+	});
 	it("uses body-sized text and keeps the links in a row within the responsive footer", () => {
 		const css = readFileSync(new URL("./PublicFooter.module.css", import.meta.url), "utf8");
 		expect(css).toMatch(/\.description\s*\{[^}]*font-size:\s*var\(--text-base\)/);
