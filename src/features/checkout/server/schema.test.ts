@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const schema = readFileSync("prisma/schema.prisma", "utf8");
 const sql = readFileSync("prisma/migrations/20261012120000_add_sandbox_payments/migration.sql", "utf8");
+const eventSql = readFileSync("prisma/migrations/20261012160000_add_payment_events/migration.sql", "utf8");
 const payment = schema.match(/model Payment \{([\s\S]*?)\n\}/)?.[1].replace(/\s+/g, " ");
 
 describe("payment ownership, history and SQL guards", () => {
@@ -26,6 +27,17 @@ describe("payment ownership, history and SQL guards", () => {
 		expect(sql).toContain('jsonb_array_length("orderItems") BETWEEN 1 AND 30');
 		expect(payment).toContain("@default(uuid(7))");
 		expect(payment).not.toMatch(/accessToken|payerEmail|payerName|shippingAddress/);
-		expect(schema).not.toContain("model PaymentEvent");
+		expect(schema).toContain("model PaymentEvent");
+		expect(schema).toContain("paypalEventId String? @unique");
+		expect(schema).toContain("processedAt DateTime?");
+		expect(payment).toContain("captureStartedAt DateTime?");
+	});
+	it("adds minimal resumable events without dropping the existing payment guards", () => {
+		expect(eventSql).toContain('CREATE UNIQUE INDEX "PaymentEvent_paypalEventId_key"');
+		expect(eventSql).toContain('ON DELETE SET NULL');
+		expect(eventSql).toContain('"processedAt" TIMESTAMPTZ(3)');
+		expect(eventSql).toContain('"captureStartedAt" TIMESTAMPTZ(3)');
+		expect(eventSql).toContain('CHECK ("amountMinor" IS NULL OR "amountMinor" >= 0)');
+		expect(eventSql).not.toMatch(/DROP (?:TABLE|INDEX)|payerEmail|shippingAddress|accessToken/);
 	});
 });
