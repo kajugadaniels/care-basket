@@ -76,6 +76,7 @@ describe("shopping basket review", () => {
 		fireEvent.click(submit); fireEvent.click(submit);
 		await waitFor(() => expect(fake.submit).toHaveBeenCalledOnce());
 		expect(screen.getByRole("button", { name: "Sending your shopping list…" })).toBeDisabled();
+		expect(screen.getAllByText(requestsCopy.sending)).toHaveLength(1);
 		expect(screen.getByRole("button", { name: "Clear my list" })).toBeDisabled();
 		for (const button of screen.getAllByRole("button", { name: "Increase quantity for Demo milk" })) expect(button).toBeDisabled();
 		resolve({ ok: true, data: { requestId: requestIds.request } });
@@ -124,7 +125,7 @@ describe("shopping basket review", () => {
 		render(<BasketFixture />);
 		add();
 		expect(screen.getByRole("list", { name: "Groceries in your list" })).toHaveTextContent(requestProduct.displayName);
-		expect(screen.getByRole("complementary", { name: "Ready to send?" })).toHaveTextContent("Your family will check your list first.");
+		expect(screen.getByRole("complementary", { name: "Ready to send?" })).toHaveTextContent(requestsCopy.draftCount(1));
 		expect(fake.submit).not.toHaveBeenCalled();
 	});
 	it("keeps product headings below the grocery section and shows reviewed images", () => {
