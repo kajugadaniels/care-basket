@@ -9,7 +9,6 @@ import { interpretTextAction } from "../../actions";
 import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
 import { useAssistant } from "../AssistantProvider/AssistantProvider";
-import { WorkingNotice } from "../WorkingNotice/WorkingNotice";
 import styles from "./AssistantStart.module.css";
 
 const VoiceRecorder = dynamic(
@@ -86,7 +85,6 @@ export function AssistantStart({ displayName, voice, child }: Props) {
 				) : null}
 			</section>
 			{mode === "voice" && canSpeak ? <VoiceRecorder onProposal={review} onType={() => setMode("text")} /> : null}
-			{pending ? <WorkingNotice /> : null}
 			{error ? <p ref={statusRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
 		</div>
 	);
