@@ -1,5 +1,6 @@
 import "server-only";
 import type { Prisma } from "@/generated/prisma/client";
+import { ADULT_PROFILE_KIND } from "@/lib/audience";
 import { writeDeviceEvent } from "@/server/audit/write-device-event";
 import { serializable } from "@/server/db/serializable";
 import { AppError } from "@/server/errors";
@@ -11,7 +12,10 @@ function activeDevices(familyId: string, profileId: string, now: Date) {
     lastSeenAt: { gt: new Date(now.getTime() - DEVICE_IDLE_MS) } };
 }
 async function checkCapacity(tx: Prisma.TransactionClient, familyId: string, profileId: string, now: Date, reserve: boolean) {
-  const profile = await tx.managedProfile.findFirst({ where: { id: profileId, familyId }, select: { id: true } });
+	// Both approval and completion recheck the active audience inside the transaction.
+	const profile = await tx.managedProfile.findFirst({
+		where: { id: profileId, familyId, kind: ADULT_PROFILE_KIND }, select: { id: true },
+	});
   if (!profile) throw new AppError("NOT_FOUND");
   const active = await tx.authorizedDevice.count({ where: activeDevices(familyId, profileId, now) });
   const reservations = reserve ? await tx.devicePairing.count({
