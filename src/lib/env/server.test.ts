@@ -71,3 +71,40 @@ describe("getDeviceEnv", () => {
     expect(message).not.toContain("too-short-test-placeholder");
   });
 });
+
+describe("lazy Sandbox-only payment configuration", () => {
+	afterEach(() => vi.unstubAllEnvs());
+	function configure() {
+		vi.stubEnv("NEXT_PUBLIC_PAYPAL_CLIENT_ID", "fictional_sandbox_client_id_123456");
+		vi.stubEnv("PAYPAL_CLIENT_ID", "fictional_sandbox_client_id_123456");
+		vi.stubEnv("PAYPAL_CLIENT_SECRET", "fictional_sandbox_secret_123456");
+		vi.stubEnv("PAYPAL_ENVIRONMENT", "sandbox");
+		vi.stubEnv("PAYPAL_BUYER_APPROVAL_ENABLED", "false");
+	}
+	it("requires matching app IDs, Sandbox, and a disabled approval gate", async () => {
+		configure();
+		const { getPayPalEnv } = await import("./server");
+		expect(getPayPalEnv().PAYPAL_ENVIRONMENT).toBe("sandbox");
+		expect(getPayPalEnv().PAYPAL_BUYER_APPROVAL_ENABLED).toBe("false");
+		vi.stubEnv("PAYPAL_BUYER_APPROVAL_ENABLED", undefined);
+		expect(getPayPalEnv().PAYPAL_BUYER_APPROVAL_ENABLED).toBe("false");
+	});
+	it.each(["PAYPAL_CLIENT_ID", "PAYPAL_CLIENT_SECRET", "NEXT_PUBLIC_PAYPAL_CLIENT_ID", "PAYPAL_ENVIRONMENT", "PAYPAL_BUYER_APPROVAL_ENABLED"])(
+		"fails closed for invalid %s without exposing values", async (name) => {
+			configure();
+			const value = name === "PAYPAL_ENVIRONMENT" ? "production" : name === "PAYPAL_BUYER_APPROVAL_ENABLED" ? "true" : "private_invalid_credential";
+			vi.stubEnv(name, value);
+			// A well-shaped but incorrect secret cannot be distinguished locally; use a missing one.
+			if (name === "PAYPAL_CLIENT_SECRET") vi.stubEnv(name, "");
+			const { getPayPalEnv } = await import("./server");
+			const message = errorMessageOf(getPayPalEnv);
+			expect(message).toMatch(/PayPal environment variables/);
+			expect(message).not.toContain(value);
+		});
+	it("does not validate payment credentials when unrelated database configuration is used", async () => {
+		vi.stubEnv("PAYPAL_CLIENT_SECRET", "");
+		vi.stubEnv("DATABASE_URL", "postgresql://fictional:fictional@localhost/test");
+		const getServerEnv = await loadGetServerEnv();
+		expect(getServerEnv().DATABASE_URL).toContain("localhost/test");
+	});
+});
