@@ -40,7 +40,7 @@ describe("catalog browsing", () => {
 		const preview = screen.getByRole("complementary", { name: requestsCopy.detailTitle });
 		expect(search.compareDocumentPosition(preview) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 		expect(within(preview).getByText(requestsCopy.draftEmptyHelp)).toBeInTheDocument();
-		expect(screen.queryByText(requestsCopy.sendHelp)).not.toBeInTheDocument();
+		expect(screen.queryByText("Your family will check your list first.")).not.toBeInTheDocument();
 	});
 	it("previews selected products and keeps their quantities synchronized with the cards", () => {
 		const picturedProduct = { ...product, imagePath: "/products/example-rice.jpg" };
