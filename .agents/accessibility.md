@@ -1,6 +1,6 @@
 # Accessibility
 
-**Purpose:** Make CareBasket usable by older adults, children, and people with limited technical experience, meeting WCAG 2.2 Level AA as a minimum.
+**Purpose:** Make CareBasket usable by adults, including older adults and people with limited technical experience, meeting WCAG 2.2 Level AA as a minimum. Audience restrictions follow [project.md § 2](project.md#2-target-users-and-their-difficulties).
 **Applies to:** Any UI, copy, media, or interaction work. This document wins over [design.md](design.md) on any conflict.
 **Related:** [design.md](design.md), [ai.md § 7](ai.md#7-voice-input), [testing.md § 6](testing.md#6-accessibility-checks)
 **Last reviewed:** 2026-10-12
@@ -9,7 +9,7 @@
 
 ## 1. Principles
 
-- **Design for a range, not a stereotype.** Do not assume older users have disabilities, or that all children read at the same level. Provide generous defaults and respect user settings (zoom, text size, reduced motion, screen readers).
+- **Design for a range, not a stereotype.** Do not assume older users have disabilities or that adults share the same reading ability. Provide generous defaults and respect user settings (zoom, text size, reduced motion, screen readers).
 - **Every task has more than one way.** Voice, typing, and pictures each work on their own. Nothing requires voice.
 - **Nothing depends on memory, speed, or precision.** No timeouts that lose work, no small targets, no drag-only actions.
 
