@@ -12,11 +12,11 @@ describe("restricted device actor", () => {
     vi.resetAllMocks(); vi.useFakeTimers(); vi.setSystemTime(deviceTestNow);
     fake.io.mockResolvedValue(undefined);
     fake.session.mockResolvedValue({ id: deviceIds.device, familyId: deviceIds.family, profileId: deviceIds.profile,
-      lastSeenAt: deviceTestNow, profile: { kind: "CHILD" } });
+      lastSeenAt: deviceTestNow, profile: { kind: "ASSISTED_ADULT" } });
   });
   afterEach(() => vi.useRealTimers());
   it("resolves only device permissions, never an adult role", async () => {
-    const actor = await requireDevice(); expect(actor).toMatchObject({ type: "device", profileKind: "CHILD" });
+    const actor = await requireDevice(); expect(actor).toMatchObject({ type: "device", profileKind: "ASSISTED_ADULT" });
     expect(fake.io).toHaveBeenCalledOnce();
     expect(fake.io.mock.invocationCallOrder[0]).toBeLessThan(fake.session.mock.invocationCallOrder[0]);
     expect(actor).not.toHaveProperty("role"); expect(actor).not.toHaveProperty("userId");
@@ -29,6 +29,18 @@ describe("restricted device actor", () => {
     fake.session.mockResolvedValue(null); await expect(requireDevice()).rejects.toMatchObject({ code: "UNAUTHENTICATED" });
     expect(fake.update).not.toHaveBeenCalled();
   });
+	it("denies an existing child session before any activity write", async () => {
+		fake.session.mockResolvedValue({ id: deviceIds.device, familyId: deviceIds.family, profileId: deviceIds.profile,
+			lastSeenAt: new Date(deviceTestNow.getTime() - 3_600_000), profile: { kind: "CHILD" } });
+		await expect(requireDevice()).rejects.toMatchObject({ code: "UNAUTHENTICATED" });
+		expect(fake.update).not.toHaveBeenCalled();
+	});
+	it.each(["view-own-home", "create-own-request", "view-own-requests"] as const)(
+		"denies legacy child capability %s even for a fabricated actor", (capability) => {
+			expect(() => assertDevicePermission({ type: "device", deviceId: deviceIds.device,
+				familyId: deviceIds.family, profileId: deviceIds.profile, profileKind: "CHILD" }, capability))
+				.toThrow(expect.objectContaining({ code: "FORBIDDEN" }));
+		});
   it("updates activity only after an hour, with conditional revocation/expiry/idle checks", async () => {
     fake.session.mockResolvedValue({ id: deviceIds.device, familyId: deviceIds.family, profileId: deviceIds.profile,
       lastSeenAt: new Date(deviceTestNow.getTime() - 3_600_000), profile: { kind: "ASSISTED_ADULT" } });
