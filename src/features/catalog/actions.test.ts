@@ -14,13 +14,13 @@ import { loadRequesterProductsAction } from "./actions";
 describe("requester catalog batches", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
-		fake.device.mockResolvedValue({ ...requester, profileKind: "CHILD" });
+		fake.device.mockResolvedValue(requester);
 		fake.list.mockResolvedValue({ products: [], nextCursor: null });
 	});
 	it("authenticates each page and fixes the batch at twelve while preserving filters", async () => {
 		expect(await loadRequesterProductsAction({ cursor: requestIds.key, q: " rice ", category: "PANTRY" }))
 			.toEqual({ ok: true, data: { items: [], nextCursor: null } });
-		expect(fake.list).toHaveBeenCalledWith({ ...requester, profileKind: "CHILD" }, {
+		expect(fake.list).toHaveBeenCalledWith(requester, {
 			cursor: requestIds.key, q: "rice", category: "PANTRY", limit: 12,
 		});
 	});
