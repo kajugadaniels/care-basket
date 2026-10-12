@@ -33,7 +33,6 @@ export function CloseRequestDialog({ requestId, revision, manager = false }: {
 						() => dialog.current?.close(),
 					)}>{pending ? requestsCopy.closing : requestsCopy.confirm}</Button>
 				</div>
-				<p role="status">{pending ? requestsCopy.closing : ""}</p>
 			</div>
 		</dialog>
 	</>;
