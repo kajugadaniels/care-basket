@@ -64,12 +64,14 @@ describe("assistant authorization and grounding", () => {
 			fake.config.mockReturnValue({ model: "gemini-test" }); fake.profile.mockResolvedValue({ ...consent, ...overrides });
 			expect(await assistantAvailability(requester)).toMatchObject({ voice: false });
 		});
-	it("never uses Gemini or budget totals for children, even with consent and configuration", async () => {
+	it("denies all child assistant access before catalog or provider calls", async () => {
 		const child = { ...requester, profileKind: "CHILD" as const };
 		fake.config.mockReturnValue({ model: "gemini-test" }); fake.catalog.mockResolvedValue([]);
-		const result = await interpretShopping(child, { kind: "text", text: "milk for $20" });
-		expect(result).toMatchObject({ local: true, items: [], budgetMinor: null });
-		expect(fake.catalog).toHaveBeenCalledWith(true, { text: "milk for $20" }); expect(fake.interpret).not.toHaveBeenCalled();
+		await expect(interpretShopping(child, { kind: "text", text: "milk for $20" }))
+			.rejects.toMatchObject({ code: "FORBIDDEN" });
+		expect(fake.profile).not.toHaveBeenCalled();
+		expect(fake.catalog).not.toHaveBeenCalled();
+		expect(fake.interpret).not.toHaveBeenCalled();
 		await expect(requireVoicePermission(child)).rejects.toMatchObject({ code: "FORBIDDEN" });
 		await expect(estimateShoppingBudget(child, {})).rejects.toMatchObject({ code: "FORBIDDEN" });
 	});
