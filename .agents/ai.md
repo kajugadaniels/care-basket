@@ -3,7 +3,7 @@
 **Purpose:** Define what CareBasket's AI does and must never do, the full request workflow and its states, how outputs are grounded in the catalog and validated, and how voice, clarification, budgets, and audiences are handled.
 **Applies to:** Anything touching AI, transcription, catalog matching, suggestions, budgets, or voice capture.
 **Related:** [catalog.md](catalog.md), [privacy.md](privacy.md), [security.md](security.md), [accessibility.md § 7](accessibility.md#7-voice-audio-and-feedback), [api.md § 3](api.md#3-route-handlers), [testing.md](testing.md)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -20,7 +20,7 @@ AI turns what a person says or types into a **proposal**: catalog products with 
 | A | **Voice-to-shopping** | "I need two kilos of rice, one litre of milk, and three bars of soap." | Transcribes a short recording, extracts item names, amounts, and units, matches catalog SKUs | Assisted adults with AI enabled |
 | B | **Context-aware shopping** | "My grandchildren are coming tomorrow. I want to prepare breakfast for four people." | Understands the occasion, suggests suitable catalog items and reasonable quantities, all marked as **suggestions** | Assisted adults with AI enabled |
 | C | **Catalog-grounded results** | Every request | Selects only SKUs from the supplied catalog; never invents products, prices, stock, stores, discounts, or delivery times | Every AI output |
-| D | **Simple clarification** | "I need milk." → "Which size would you like?" with picture options | Asks one short question when unsure; the server builds the options from the catalog | Every interaction; children get non-AI picture choices |
+| D | **Simple clarification** | "I need milk." → "Which size would you like?" with picture options | Asks one short question when unsure; the server builds the options from the catalog | Authorized adult requester interactions |
 | E | **Budget-aware suggestions** | "Breakfast things, but I only have $20." | Extracts the stated budget and ranks items as essential or optional; the **server** prices and fits the basket | Assisted adults with AI enabled |
 | F | **Audience-aware behaviour** | — | No Gemini for children; minimal, anonymous context for adults | See §8 |
 
@@ -187,11 +187,9 @@ Server (Route Handler → assistant service):
 
 ### 8.2 Children
 
-- **Children and Gemini (open compliance issue).** The Gemini API Additional Terms of Service (https://ai.google.dev/gemini-api/terms, checked 2026-10-08) state that the Services must not be used as part of an application "directed towards or … likely to be accessed by individuals under the age of 18." Until the developer resolves this:
-  - `CHILD` profiles MUST NOT trigger any Gemini call: no voice, no AI text interpretation, no budget feature.
-  - Child devices use picture selection, plus the deterministic keyword match for typed words (§12), and clarifications use non-AI picture choices built from `variantGroup`.
-  - No information about a child is ever sent to Gemini.
-  - The restriction concerns the API client as a whole, not only who invokes an endpoint. Blocking child calls alone does **not** establish compliance. Actual Gemini calls remain blocked throughout CareBasket until documented confirmation of a compliant deployment approach, provider eligibility, region, paid-tier handling, and model/audio capabilities exists. No such approval exists for Step 8. Child profiles are not removed automatically.
+- The deployment is adults-only under [project.md § 2](project.md#2-target-users-and-their-difficulties). Historical `CHILD` profiles have no shopping, saved-review, budget, or device access; their information must never reach Gemini. Keep historical manager records and defensive suitability tests, not an active child fallback workflow.
+- Google's [Gemini API terms](https://ai.google.dev/gemini-api/terms) (checked 2026-10-12) restrict API clients directed toward or likely to be accessed by under-18s. The restriction applies to the whole application, not just who invokes an endpoint.
+- The audience change and self-attestation **do not themselves establish provider eligibility**. Actual Gemini calls remain blocked until the developer documents a reviewed deployment approach, account eligibility, supported user regions, paid-tier handling, and a currently supported model with audio and structured-output capabilities. Approval and model constants in `src/lib/ai/eligibility.ts` remain unset; an environment flag cannot bypass them.
 - The catalog excludes age-restricted, medical, and hazardous products for everyone ([catalog.md § 7](catalog.md#7-normalization)).
 
 ### 8.3 Tone
@@ -253,7 +251,8 @@ Warm, short, and plain. Questions are at most 100 characters. No emoji, no excla
 | Invalid or schema-violating output | No retry; log `ai.output_invalid` (no content); run the deterministic matcher on any text or transcript; open pictures |
 | Empty or inaudible audio | "We couldn't hear that. Try again, or type your list." |
 | Rate limit reached | Calm message; pictures still work |
-| AI disabled for the profile, or a `CHILD` profile | Deterministic matcher for typed words, plus pictures |
+| AI disabled for an assisted-adult profile | Deterministic matcher for typed words, plus pictures |
+| Historical `CHILD` profile | Deny requester access before catalog, review, or provider reads |
 
 **Deterministic keyword matcher** (no AI): normalize the text, split it into phrases, match product names, `synonyms`, and `variantGroup` names, read simple quantities ("two", "3", "a dozen"), and send unmatched phrases to "I didn't catch". The full flow must work end to end with AI unavailable.
 
@@ -290,4 +289,4 @@ Follow [privacy.md § 5](privacy.md#5-ai-and-voice-data): no audio retention, no
 - [ ] Budget fitting never removes explicitly requested items, and budgets apply only to the current request.
 - [ ] Voice is optional, limited to 60 seconds and 2 MB, never stored, and fully replaceable by text or pictures.
 - [ ] The full request flow works with AI unavailable.
-- [ ] `CHILD` profiles never trigger a Gemini call while §8.2's compliance issue is open.
+- [ ] Historical `CHILD` profiles have no requester access and never trigger a Gemini call.
