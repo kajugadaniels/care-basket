@@ -30,7 +30,7 @@ export function ManagerBasket({
     remove,
     blockIfBusy,
   } = useManagerBasket(request);
-  const previewing = pendingKey?.startsWith("save:") ?? false;
+	const previewing = !error && (pendingKey?.startsWith("save:") ?? false);
 
   return (
     <div className={styles.layout}>
@@ -43,6 +43,9 @@ export function ManagerBasket({
           <span className={styles.caption}>
             {requestsCopy.count(request.items.length)}
           </span>
+					<Button size="sm" variant="secondary" aria-pressed={sound.enabled} onClick={sound.toggle}>
+						{sound.enabled ? requestsCopy.soundOn : requestsCopy.soundOff}
+					</Button>
         </header>
         {error ? (
           <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>
@@ -132,6 +135,12 @@ export function ManagerBasket({
                     >
                       {requestsCopy.remove}
                     </Button>
+										{!error && pendingKey === `save:${item.id}` ? (
+											<span className={styles.syncing}>{requestsCopy.managerSyncing}</span>
+										) : null}
+										{!error && pendingKey === `remove:${item.id}` ? (
+											<span className={styles.syncing}>{requestsCopy.managerRemoving}</span>
+										) : null}
                   </form>
                 ) : (
                   <p className={styles.readOnlyQuantity}>
@@ -158,6 +167,7 @@ export function ManagerBasket({
           <dt>{requestsCopy.total}</dt>
           <dd>{preview.subtotal}</dd>
         </dl>
+				{previewing ? <p className={styles.syncing}>{requestsCopy.managerPreview}</p> : null}
         {request.budget ? (
           <dl className={styles.budget}>
             <dt>{requestsCopy.budget}</dt>
