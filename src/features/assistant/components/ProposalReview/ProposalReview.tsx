@@ -6,6 +6,7 @@ import { usePagedList } from "@/components/ui/LoadMore/use-paged-list";
 import { ProductCard } from "@/features/catalog/components/ProductCard/ProductCard";
 import { catalogCopy } from "@/features/catalog/copy";
 import { useDraft } from "@/features/requests/components/DraftProvider/DraftProvider";
+import { DraftSummary } from "@/features/requests/components/DraftProvider/DraftSummary";
 import { ProductSelection } from "@/features/requests/components/DraftProvider/ProductSelection";
 import { requestsCopy } from "@/features/requests/copy";
 import { changeDraft } from "@/features/requests/draft";
@@ -19,7 +20,6 @@ type Props = { proposal: Proposal };
 export function ProposalReview({ proposal }: Props) {
 	const { draft, locked, change } = useDraft();
 	const [error, setError] = useState("");
-	const [announcement, setAnnouncement] = useState("");
 	const errorRef = useRef<HTMLParagraphElement>(null);
 	useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
 	const choices = new Map<string, ProposalItem>();
@@ -53,7 +53,6 @@ export function ProposalReview({ proposal }: Props) {
 			return;
 		}
 		change(addition);
-		setAnnouncement(requestsCopy.added(item.displayName));
 	}
 
 	function productCard(item: ProposalItem) {
@@ -66,25 +65,29 @@ export function ProposalReview({ proposal }: Props) {
 		</ProductSelection>;
 	}
 
-	return <div className={styles.page}>
-		{proposal.inputMode === "VOICE" ? <p className={styles.transcript}>{copy.transcript} {proposal.inputText}</p> : null}
-		{feed.items.length || proposal.unrecognized.length ? <div className={styles.results}>
-			<p role="status" aria-live="polite" aria-atomic="true" className={styles.muted}>
-				{catalogCopy.results({ count: feed.items.length })}
-			</p>
-			{proposal.unrecognized.length ? <p className={styles.unrecognized}>
-				{copy.unrecognized({ phrases: proposal.unrecognized })}
-			</p> : null}
-		</div> : null}
-		{(["REQUESTED", "SUGGESTED"] as const).map((origin) => feed.items.some((item) => item.origin === origin) ? <section key={origin} className={styles.group}>
-			<h2>{origin === "REQUESTED" ? copy.requested : copy.suggested}</h2>
-			<p className={styles.muted}>{origin === "REQUESTED" ? copy.selectedHelp : copy.suggestionHelp}</p>
-			<ul className={styles.grid}>{feed.items.filter((item) => item.origin === origin).map((item) => <li key={item.sku}>
-				{productCard(item)}
-			</li>)}</ul>
-		</section> : null)}
-		{feed.items.length || feed.hasMore ? <LoadMore {...feed} onLoad={feed.loadMore} labels={catalogCopy.feed} /> : null}
-		<p role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
-		{error ? <p role="alert" ref={errorRef} tabIndex={-1} className={styles.error}>{error}</p> : null}
+	return <div className={styles.workspace}>
+		<div className={styles.page}>
+			{proposal.inputMode === "VOICE" ? <p className={styles.transcript}>{copy.transcript} {proposal.inputText}</p> : null}
+			{feed.items.length || proposal.unrecognized.length ? <div className={styles.results}>
+				<p role="status" aria-live="polite" aria-atomic="true" className={styles.muted}>
+					{catalogCopy.results({ count: feed.items.length })}
+				</p>
+				{proposal.unrecognized.length ? <p className={styles.unrecognized}>
+					{copy.unrecognized({ phrases: proposal.unrecognized })}
+				</p> : null}
+			</div> : null}
+			{(["REQUESTED", "SUGGESTED"] as const).map((origin) => feed.items.some((item) => item.origin === origin) ? <section key={origin} className={styles.group}>
+				<h2>{origin === "REQUESTED" ? copy.requested : copy.suggested}</h2>
+				<p className={styles.muted}>{origin === "REQUESTED" ? copy.selectedHelp : copy.suggestionHelp}</p>
+				<ul className={styles.grid}>{feed.items.filter((item) => item.origin === origin).map((item) => <li key={item.sku}>
+					{productCard(item)}
+				</li>)}</ul>
+			</section> : null)}
+			{feed.items.length || feed.hasMore ? <LoadMore {...feed} onLoad={feed.loadMore} labels={catalogCopy.feed} /> : null}
+			{error ? <p role="alert" ref={errorRef} tabIndex={-1} className={styles.error}>{error}</p> : null}
+		</div>
+		<aside className={styles.listPanel} aria-label={requestsCopy.detailTitle}>
+			<DraftSummary />
+		</aside>
 	</div>;
 }
