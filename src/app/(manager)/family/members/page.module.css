@@ -9,6 +9,20 @@
 	max-inline-size: var(--reading-max);
 }
 
+.directoryHeader {
+	padding-block-end: var(--space-5);
+	border-block-end: 1px solid var(--color-border);
+}
+
+.pagination {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: end;
+	gap: var(--space-3);
+	padding-block-start: var(--space-4);
+	border-block-start: 1px solid var(--color-border);
+}
+
 /* Error and not-found titles; pages use PageHeader. */
 .title {
 	font-size: var(--text-xl);
