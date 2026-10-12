@@ -51,7 +51,10 @@ describe("MembersPage", () => {
 		expect(mocks.requireAdult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
 		expect(mocks.list).toHaveBeenCalledWith(actor, { after });
 		expect(screen.getByRole("heading", { level: 1, name: profilesCopy.title })).toBeInTheDocument();
-		expect(screen.getByRole("region", { name: profilesCopy.directoryTitle })).toBeInTheDocument();
+		expect(screen.getByRole("list", { name: profilesCopy.title })).toBeInTheDocument();
+		expect(screen.getAllByRole("heading")).toHaveLength(2);
+		expect(screen.getAllByRole("link", { name: profilesCopy.add })).toHaveLength(1);
+		expect(screen.queryByText("Member profiles")).not.toBeInTheDocument();
 		expect(screen.getByRole("navigation", { name: profilesCopy.title })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: profilesCopy.first })).toHaveAttribute("href", "/family/members");
 		expect(screen.getByRole("link", { name: profilesCopy.next })).toHaveAttribute("href", `/family/members?after=${next}`);
@@ -70,7 +73,8 @@ describe("MembersPage loading", () => {
 		expect(screen.getByRole("heading", { level: 1, name: "Family Members" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
 		expect(screen.getByRole("status")).toHaveTextContent("Loading your family workspace…");
-		expect(screen.getByText(profilesCopy.description)).toBeInTheDocument();
+		expect(screen.getAllByRole("heading")).toHaveLength(1);
+		expect(screen.getAllByRole("link")).toHaveLength(1);
 		expect(screen.queryByRole("article")).not.toBeInTheDocument();
 		expect(mocks.requireAdult).not.toHaveBeenCalled();
 	});
