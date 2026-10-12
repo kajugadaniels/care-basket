@@ -4,7 +4,9 @@ import { resolveServerTree } from "@/test/resolve-server-tree";
 import { makeManagerRequest, makeOwnRequest, requestIds, requestManager, requester } from "@/test/factories/requests";
 import { AppError } from "@/server/errors";
 const fake = vi.hoisted(() => ({ device: vi.fn(), adult: vi.fn(), own: vi.fn(), family: vi.fn(),
-	ownList: vi.fn(), familyList: vi.fn(), notFound: vi.fn(), refresh: vi.fn() }));
+	ownList: vi.fn(), familyList: vi.fn(), checkout: vi.fn(), notFound: vi.fn(), refresh: vi.fn() }));
+vi.mock("@/features/checkout/server/service", () => ({ getCheckout: fake.checkout }));
+vi.mock("@/features/checkout/actions", () => ({ startCheckoutAction: vi.fn(), cancelCheckoutAction: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/navigation", () => ({ notFound: fake.notFound, useRouter: () => ({ refresh: fake.refresh }) }));
 vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
@@ -26,6 +28,7 @@ describe("streamed authenticated shopping routes", () => {
 		vi.resetAllMocks(); fake.device.mockResolvedValue(requester); fake.adult.mockResolvedValue(requestManager);
 		fake.ownList.mockResolvedValue({ requests: [], nextCursor: null }); fake.familyList.mockResolvedValue({ requests: [], nextCursor: null });
 		fake.own.mockResolvedValue(makeOwnRequest()); fake.family.mockResolvedValue(makeManagerRequest());
+		fake.checkout.mockResolvedValue(null);
 		fake.notFound.mockImplementation(() => { throw new Error("NEXT_NOT_FOUND"); });
 	});
 	it("does not access request-time auth outside Suspense", () => {
@@ -53,6 +56,14 @@ describe("streamed authenticated shopping routes", () => {
 		fake.family.mockRejectedValue(new AppError("NOT_FOUND"));
 		await expect(resolveServerTree(ManagerDetailPage({ params }))).rejects.toThrow("NEXT_NOT_FOUND");
 		expect(fake.family).toHaveBeenCalledWith(requestManager, requestIds.request);
+	});
+	it("loads checkout only for the authenticated manager detail route", async () => {
+		render(await resolveServerTree(ManagerDetailPage({ params })));
+		expect(fake.checkout).toHaveBeenCalledWith(requestManager, requestIds.request);
+		expect(screen.getByRole("button", { name: "Prepare checkout" })).toBeInTheDocument();
+		fake.checkout.mockClear();
+		await resolveServerTree(OwnDetailPage({ params }));
+		expect(fake.checkout).not.toHaveBeenCalled();
 	});
 	it("protects inbox reads with an adult family role and validates filters", async () => {
 		render(await resolveServerTree(InboxPage({ searchParams: Promise.resolve({ status: "PENDING_REVIEW" }) })));
