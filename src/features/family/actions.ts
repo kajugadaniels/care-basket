@@ -18,7 +18,7 @@ function readText(formData: FormData, name: string): string {
 
 /**
  * Creates the signed-in adult's family with them as OWNER, then opens the dashboard.
- * Only the two names are read from the form; user, family, and role come from the server.
+ * Reads names and adult confirmation; user, family, and role come from the server.
  * Repeated or concurrent submissions resolve to the same family (see createFamilyForUser).
  */
 export async function createFamilyAction(
@@ -33,7 +33,10 @@ export async function createFamilyAction(
     displayName: readText(formData, "displayName"),
   };
 
-  const parsed = createFamilySchema.safeParse(values);
+	const parsed = createFamilySchema.safeParse({
+		...values,
+		adultConfirmed: formData.get("adultConfirmed") === "on",
+	});
   if (!parsed.success) {
     return {
       values,
