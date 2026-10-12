@@ -2,13 +2,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requestIds, requestManager, requester, requestNow, requestProduct } from "@/test/factories/requests";
 const fake = vi.hoisted(() => ({ insert: vi.fn(), edit: vi.fn(), close: vi.fn(), own: vi.fn(), family: vi.fn(),
-	ownList: vi.fn(), familyList: vi.fn(), count: vi.fn() }));
+	ownList: vi.fn(), familyList: vi.fn(), count: vi.fn(), notifications: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/features/requests/server/submission-repository", () => ({ insertRequest: fake.insert }));
 vi.mock("@/features/requests/server/mutation-repository", () => ({ editRequestItem: fake.edit, closeRequest: fake.close }));
 vi.mock("@/features/requests/server/repository", () => ({ readDeviceRequest: fake.own, readManagerRequest: fake.family,
-	readDeviceRequests: fake.ownList, readManagerRequests: fake.familyList, countPendingRequests: fake.count }));
-import { cancelRequest, countWaitingRequests, declineRequest, getFamilyRequest, getOwnRequest,
+	readDeviceRequests: fake.ownList, readManagerRequests: fake.familyList, countPendingRequests: fake.count,
+	readRequestNotifications: fake.notifications }));
+import { cancelRequest, countWaitingRequests, declineRequest, getFamilyRequest, getOwnRequest, getRequestNotifications,
 	listFamilyRequests, listOwnRequests, removeRequestItem, submitRequest, updateRequestItem } from "./service";
 
 const submit = { clientRequestKey: requestIds.key, inputMode: "PICTURES", items: [{ sku: "demo-milk", quantity: 2 }] };
@@ -34,7 +35,9 @@ describe("shopping request service authorization and DTOs", () => {
 			expect(() => countWaitingRequests(actor)).toThrow("FORBIDDEN");
 			await expect(getFamilyRequest(actor, requestIds.request)).rejects.toMatchObject({ code: "FORBIDDEN" });
 			await expect(listFamilyRequests(actor)).rejects.toMatchObject({ code: "FORBIDDEN" });
+			await expect(getRequestNotifications(actor)).rejects.toMatchObject({ code: "FORBIDDEN" });
 		}
+		expect(fake.notifications).not.toHaveBeenCalled();
 	});
 	it.each(["OWNER", "MANAGER"] as const)("allows a %s to review its own family", async (role) => {
 		fake.family.mockResolvedValue(null);
@@ -87,5 +90,28 @@ describe("shopping request service authorization and DTOs", () => {
 		const result = await listOwnRequests(requester);
 		expect(result.requests).toHaveLength(20); expect(result.nextCursor).toBe("row-19");
 		expect(result.requests[0]).toEqual({ id: "row-0", status: "PENDING_REVIEW", submittedAt: requestNow.toISOString(), itemCount: 1 });
+	});
+	it.each(["OWNER", "MANAGER"] as const)("returns minimal notifications and the full pending count for a %s", async (role) => {
+		fake.count.mockResolvedValue(23);
+		fake.notifications.mockResolvedValue([{
+			id: requestIds.request, submittedAt: requestNow, profile: { displayName: "Rose" }, inputText: "not exposed",
+		}]);
+
+		expect(await getRequestNotifications({ ...requestManager, role })).toEqual({
+			count: 23,
+			notifications: [{ id: requestIds.request, displayName: "Rose", submittedAt: requestNow.toISOString() }],
+		});
+		expect(fake.count).toHaveBeenCalledWith(requestIds.family);
+		expect(fake.notifications).toHaveBeenCalledWith(requestIds.family);
+	});
+	it("returns an empty notification feed after all requests leave pending review", async () => {
+		fake.count.mockResolvedValue(0);
+		fake.notifications.mockResolvedValue([]);
+		expect(await getRequestNotifications(requestManager)).toEqual({ count: 0, notifications: [] });
+	});
+	it("never shows a count smaller than the visible feed during a concurrent submission", async () => {
+		fake.count.mockResolvedValue(0);
+		fake.notifications.mockResolvedValue([{ id: requestIds.request, submittedAt: requestNow, profile: { displayName: "Rose" } }]);
+		expect((await getRequestNotifications(requestManager)).count).toBe(1);
 	});
 });
