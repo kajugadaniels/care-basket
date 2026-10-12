@@ -51,12 +51,13 @@ describe("explicit proposal review", () => {
 	});
 	afterEach(() => vi.unstubAllGlobals());
 
-	it("adds only the clicked product without a duplicate add or basket button", () => {
+	it("adds only the clicked product and updates the shopping-list summary", () => {
 		review();
 		expect(screen.getByRole("heading", { name: copy.suggested })).toBeInTheDocument();
+		expect(screen.getByRole("complementary", { name: requestsCopy.detailTitle })).toBeInTheDocument();
 		expect(draft().items).toEqual([]);
 		expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
-		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
+		expect(screen.queryByRole("link", { name: requestsCopy.basket })).not.toBeInTheDocument();
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.increase("Milk") }));
 		fireEvent.click(card("Milk").getByRole("button", { name: requestsCopy.add }));
 		expect(draft().items).toEqual([expect.objectContaining({ sku: "demo-milk", quantity: 2, origin: "REQUESTED" })]);
@@ -64,7 +65,8 @@ describe("explicit proposal review", () => {
 		expect(card("Bread").getByRole("button", { name: requestsCopy.add })).toBeEnabled();
 		expect(fake.push).not.toHaveBeenCalled();
 		expect(card("Milk").queryByRole("button", { name: requestsCopy.add })).not.toBeInTheDocument();
-		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
+		expect(screen.getByRole("link", { name: requestsCopy.basket })).toHaveAttribute("href", "/shop/basket");
+		expect(screen.getByText(requestsCopy.draftCount(1))).toBeInTheDocument();
 		expect(draft().items).toHaveLength(1);
 		expect(draft().items[0].quantity).toBe(2);
 	});
@@ -171,7 +173,7 @@ describe("explicit proposal review", () => {
 		}
 		expect(card("Milk").getByRole("button", { name: `${requestsCopy.remove}: Milk` })).toBeDisabled();
 		expect(card("Bread").getByRole("button", { name: requestsCopy.add })).toBeDisabled();
-		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
+		expect(screen.getByRole("link", { name: requestsCopy.basket })).toHaveAttribute("href", "/shop/basket");
 	});
 
 	it("keeps the catalog card layout without the removed notices or checkbox controls", () => {
@@ -191,6 +193,13 @@ describe("explicit proposal review", () => {
 		expect(sharedStyles).toMatch(/\.selection\s*\{[^}]*display: flex;[^}]*flex-direction: column;/);
 		expect(sharedStyles).toMatch(/\.selection > article\s*\{[^}]*block-size: auto;/);
 		expect(sharedStyles).toMatch(/\.selection \.controls\s*\{[^}]*margin-block-start: auto;/);
+	});
+
+	it("keeps the list summary beside products on wide screens and in normal flow on narrow screens", () => {
+		review();
+		const css = readFileSync(resolve("src/features/assistant/components/ProposalReview/ProposalReview.module.css"), "utf8");
+		expect(css).toMatch(/@media \(min-width: 64rem\)[\s\S]*\.workspace\s*\{[^}]*grid-template-columns:/);
+		expect(css).toMatch(/@media \(min-width: 64rem\) and \(min-height: 32rem\)[\s\S]*\.listPanel\s*\{[^}]*position: sticky;/);
 	});
 
 	it("loads the next private batch without losing quantities, selection or provenance", async () => {
