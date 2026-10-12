@@ -6,7 +6,8 @@ import { AppError } from "@/server/errors";
 const fake = vi.hoisted(() => ({ device: vi.fn(), adult: vi.fn(), own: vi.fn(), family: vi.fn(),
 	ownList: vi.fn(), familyList: vi.fn(), checkout: vi.fn(), notFound: vi.fn(), refresh: vi.fn() }));
 vi.mock("@/features/checkout/server/service", () => ({ getCheckout: fake.checkout }));
-vi.mock("@/features/checkout/actions", () => ({ startCheckoutAction: vi.fn(), cancelCheckoutAction: vi.fn() }));
+vi.mock("@/features/checkout/actions", () => ({ startCheckoutAction: vi.fn(), cancelCheckoutAction: vi.fn(),
+	captureCheckoutAction: vi.fn(), refreshCheckoutAction: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/navigation", () => ({ notFound: fake.notFound, useRouter: () => ({ refresh: fake.refresh }) }));
 vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
