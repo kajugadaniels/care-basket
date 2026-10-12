@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { Add01Icon } from "@hugeicons/core-free-icons";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { ProfileList } from "@/features/profiles/components/ProfileList/ProfileList";
@@ -21,11 +22,17 @@ type MembersPageProps = {
 export default function MembersPage({ searchParams }: MembersPageProps) {
 	return (
 		<div className={styles.page}>
-			<PageHeader
-				title={profilesCopy.title}
-				description={profilesCopy.description}
-				actions={<ActionLink href="/family/members/add">{profilesCopy.add}</ActionLink>}
-			/>
+			<div className={styles.directoryHeader}>
+				<PageHeader
+					title={profilesCopy.title}
+					description={profilesCopy.description}
+					actions={
+						<ActionLink href="/family/members/add" icon={Add01Icon}>
+							{profilesCopy.add}
+						</ActionLink>
+					}
+				/>
+			</div>
 			<Suspense fallback={<ManagerLoading />}>
 				<MemberDirectory searchParams={searchParams} />
 			</Suspense>
@@ -45,7 +52,7 @@ async function MemberDirectory({ searchParams }: MembersPageProps) {
 		<>
 			<ProfileList profiles={profiles} />
 			{hasPagination ? (
-				<div className={styles.actions}>
+				<nav className={styles.pagination} aria-label={profilesCopy.title}>
 					{parsed.data.after ? (
 						<ActionLink href="/family/members" variant="secondary">
 							{profilesCopy.first}
@@ -56,7 +63,7 @@ async function MemberDirectory({ searchParams }: MembersPageProps) {
 							{profilesCopy.next}
 						</ActionLink>
 					) : null}
-				</div>
+				</nav>
 			) : null}
 		</>
 	);
