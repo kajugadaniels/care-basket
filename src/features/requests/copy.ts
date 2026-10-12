@@ -62,19 +62,19 @@ export const requestsCopy = {
 	dismissSuccess: "Dismiss success message",
 	managerExplanations: {
 		PENDING_REVIEW: "Review the items below. You can adjust quantities or decline this request.",
-		AWAITING_PAYMENT: "This request is waiting for payment. Payment is not available here yet.",
+		AWAITING_PAYMENT: "The basket is locked for checkout. No payment has been confirmed.",
 		PAID: "Payment has been confirmed. Delivery has not been confirmed.",
 		DECLINED: "You declined this request. It remains in your family's history.",
 		CANCELLED: "The requester cancelled this list. It remains in your family's history.",
 	},
 	pendingCount: (count: number) => `${count} ${count === 1 ? "request" : "requests"} waiting for review`,
 	statuses: {
-		PENDING_REVIEW: "For review", AWAITING_PAYMENT: "Payment not yet available",
+		PENDING_REVIEW: "For review", AWAITING_PAYMENT: "Family review in progress",
 		PAID: "Payment confirmed", DECLINED: "Declined", CANCELLED: "Cancelled",
 	},
 	explanations: {
 		PENDING_REVIEW: "Your family can review this list. Nothing has been paid for or scheduled for delivery.",
-		AWAITING_PAYMENT: "This list is waiting for your family. Payment is not available here.",
+		AWAITING_PAYMENT: "Your family is reviewing your shopping list.",
 		PAID: "Your family has confirmed payment. This does not mean the groceries have been delivered.",
 		DECLINED: "Your family declined this list. You can start a new shopping list.",
 		CANCELLED: "You cancelled this list. You can start a new shopping list.",
