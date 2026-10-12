@@ -110,7 +110,7 @@ describe("catalog browsing", () => {
 	});
 	it("focuses a friendly error and provides retry and a safe home path", () => {
 		const retry = vi.fn();
-		render(<CatalogError requester retry={retry} />);
+		render(<CatalogError retry={retry} />);
 		expect(screen.getByRole("heading", { name: "We couldn't load the groceries" })).toHaveFocus();
 		fireEvent.click(screen.getByRole("button", { name: "Try Again" }));
 		expect(retry).toHaveBeenCalledTimes(1);
