@@ -6,6 +6,7 @@ import { ProfileAvatar } from "@/features/profiles/components/ProfileAvatar/Prof
 import { profilesCopy } from "@/features/profiles/copy";
 import type { ManagedProfileDto } from "@/features/profiles/types";
 import { formatDate } from "@/lib/format";
+import { isAdultProfile } from "@/lib/audience";
 import styles from "./ProfileDetails.module.css";
 
 type ProfileDetailsProps = {
@@ -48,10 +49,12 @@ export function ProfileDetails({ profile, familyName }: ProfileDetailsProps) {
 						<Icon icon={SmartPhone01Icon} size={24} />
 						<h3 id="profile-device-title">{profilesCopy.deviceTitle}</h3>
 					</div>
-					<p>{profilesCopy.deviceNotice}</p>
-					<ActionLink href={`/family/devices/connect?profileId=${profile.id}`} size="sm">
-						{profilesCopy.connectDevice}
-					</ActionLink>
+					{isAdultProfile(profile.kind) ? <>
+						<p>{profilesCopy.deviceNotice}</p>
+						<ActionLink href={`/family/devices/connect?profileId=${profile.id}`} size="sm">
+							{profilesCopy.connectDevice}
+						</ActionLink>
+					</> : <p>{profilesCopy.legacyNotice}</p>}
 				</section>
 			</div>
 			<footer className={styles.footer}>
