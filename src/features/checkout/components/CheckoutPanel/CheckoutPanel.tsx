@@ -155,12 +155,6 @@ export function CheckoutPanel({
           ) ? (
             <p className={styles.help}>{copy.locked}</p>
           ) : null}
-          {current.orderId ? (
-            <dl className={styles.reference}>
-              <dt>{copy.order}</dt>
-              <dd>{current.orderId}</dd>
-            </dl>
-          ) : null}
           {!current.buyerApprovalEnabled &&
           ["PREPARED", "PREPARING"].includes(current.state) ? (
             <p className={styles.help}>{copy.unavailable}</p>
