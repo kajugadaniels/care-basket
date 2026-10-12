@@ -7,7 +7,7 @@ import { requestsCopy } from "@/features/requests/copy";
 import { CATEGORY_ICONS } from "../../category-icons";
 import { catalogCopy } from "../../copy";
 import type { CatalogFilters, CatalogPage, CatalogProductDto } from "../../types";
-import { CatalogToolbar } from "../ManagerCatalog/CatalogToolbar";
+import { CatalogToolbar } from "../CatalogToolbar/CatalogToolbar";
 import { RequesterProductFeed } from "./RequesterProductFeed";
 import { catalogHref } from "./catalog-href";
 import styles from "./CatalogBrowser.module.css";
@@ -35,7 +35,7 @@ export function CatalogBrowser({ filters, result, selectable = false, child = fa
 				</div>
 			</header>
 
-			<CatalogToolbar action={BASE} filters={filters} audience="requester" />
+			<CatalogToolbar action={BASE} filters={filters} />
 
 			{hasFilters ? (
 				<div className={styles.resultsBar}>
