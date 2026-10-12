@@ -3,7 +3,7 @@
 **Purpose:** Make every server entry point consistent, typed, validated, authorized, and safe to call twice.
 **Applies to:** Every Server Action and Route Handler.
 **Related:** [architecture.md § 4](architecture.md#4-server-actions-and-route-handlers), [security.md](security.md), [payments.md](payments.md), [ai.md](ai.md)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -94,7 +94,7 @@ Also used: 200 OK, 201 Created (new resource), 204 No Content, 405 (unsupported 
 | Approve, decline, or cancel a request | Conditional status update (`where status = expected`); repeat calls return the current state |
 | Start checkout | Basket lock (conditional update on `lockedAt`) allows one open `Payment`; repeat calls return the existing PayPal order ([payments.md § 5](payments.md#5-idempotency-and-concurrency)) |
 | Capture payment | `PayPal-Request-Id` derived from the payment ID; already-captured payments return the stored result |
-| Webhooks | Unique `paypalEventId`; duplicates acknowledged with 200 and ignored |
+| Webhooks | Unique `paypalEventId`; completed duplicates return 200, unfinished deliveries resume; state/audit/event completion are atomic |
 | Pairing completion | Conditional update from `APPROVED` to `COMPLETED` |
 
 Buttons that trigger these show a pending state and ignore repeat presses, but the server never relies on that.
