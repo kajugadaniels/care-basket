@@ -170,6 +170,7 @@ Every interactive component defines: default, hover (pointer devices only), acti
 
 - **Focus:** `outline: 3px solid var(--color-focus); outline-offset: 2px;` on `:focus-visible`. Never removed.
 - **Loading (actions):** the button keeps its width, shows a spinner and a verb ("Sending…"), sets `aria-busy`, and ignores repeat presses.
+- Show an action's progress once. When the initiating button already has a spinner, progress verb, and `aria-busy`, do not repeat the same loading or syncing message elsewhere on the page or in a second live region.
 - **Disabled:** used sparingly; never to signal invalid input.
 - **Selected** (for example, a chosen clarification option): 2px `--color-primary` border, checkmark icon, and changed text ("Chosen"), never color alone.
 - Transitions use `--duration-fast` or `--duration-base` on `opacity`, `transform`, `background-color`, and `border-color` only, and are removed under `prefers-reduced-motion: reduce`.
@@ -229,7 +230,7 @@ The manager can create profiles, authorize devices, review requests, inspect pro
   - The requester's stated budget, if any.
   - Optionally, an Open Prices reference price, clearly labelled ([catalog.md § 6](catalog.md#6-observed-prices-vs-demo-merchant-prices)).
   - The total, then actions: the **official PayPal button**, **Decline**, and **Edit**.
-- **Payment confirmation:** the confirmation screen pattern with the amount, "Paid with PayPal (Sandbox)", date, and transaction ID, and a separate delivery status card. The shared manager test-environment disclosure follows [payments.md § 8](payments.md#8-user-facing-states).
+- **Payment confirmation:** the confirmation screen pattern with the verified amount and date, plus a separate delivery status. Provider order and capture identifiers remain available to the server and audit trail but are not exposed in the routine interface. The shared manager test-environment disclosure follows [payments.md § 8](payments.md#8-user-facing-states).
 - **Profiles and Devices:** card grids (1, 2, then 3 columns), each with a clear primary action (Add a family member, Connect a device, Revoke).
 - **History:** a simple list filterable by status, paginated.
 - **Width:** content capped at `--content-max`; forms at `--reading-max`.
