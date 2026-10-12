@@ -28,7 +28,7 @@ export async function updateAiPreferenceAction(input: unknown): Promise<ActionRe
 	try {
 		const actor = await requireAdult({ roles: ["OWNER", "MANAGER"] });
 		const result = await updateAiPreference(actor, input);
-		revalidatePath(`/family/members/${result.profileId}`);
+		revalidatePath(`/family/members/${result.profileId}/edit`);
 		return { ok: true, data: result };
 	} catch (error) { return assistantFailure(error); }
 }
