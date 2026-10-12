@@ -1,6 +1,6 @@
 # CareBasket
 
-CareBasket helps people who find online shopping difficult ask a trusted family member for groceries. Requesters type or choose product pictures on a connected device; an authenticated adult reviews quantities and decides whether to pay using PayPal Sandbox.
+CareBasket helps adults aged 18 or older who find online shopping difficult ask a trusted family member for groceries. Requesters type or choose product pictures on a connected device; an authenticated adult reviews quantities and decides whether to pay using PayPal Sandbox.
 
 This is an independent PayPal AI Hackathon 2026 prototype, not a live grocery service or a PayPal-endorsed product. **CareBasket Demo Market**, its approved prices and fulfillment are simulated. No real grocery orders, deliveries or money transfers take place. Use fictional people and Sandbox test accounts only.
 
@@ -8,13 +8,15 @@ This is an independent PayPal AI Hackathon 2026 prototype, not a live grocery se
 
 Source implements family setup, consent-based profiles, secure pairing, catalog browsing, shopping lists, private reviews, manager review, Sandbox order creation, capture verification and signed webhook reconciliation. Source presence is not evidence of a successful deployment, payment or accessibility test.
 
-Buyer approval is **off by default** pending controlled verification. Gemini and voice processing remain **blocked** by unresolved application-wide eligibility for this child-accessible application. Deterministic text matching and pictures remain available; they are not real Gemini calls. No end-to-end provider operation is claimed here.
+Buyer approval is **off by default** pending controlled verification. The supported deployment audience is **adults 18+ only**. New setup/profile consent confirms age eligibility and permission; child profile creation, pairing, existing device access, and shopping/review access are blocked. Historical child records remain available for manager review and confirmed deletion, not automatically relabelled or deleted. These controls are not age verification.
+
+Gemini and voice processing remain **blocked** pending a separate application-wide eligibility, account/billing, region, and model review. Changing the audience does not activate Gemini. Deterministic text matching and pictures remain available; they are not real Gemini calls. No end-to-end provider operation is claimed here.
 
 Demo URL: not yet supplied/verified. Video URL: not yet supplied/verified. See [release readiness](docs/release-readiness.md) and [submission readiness](docs/submission-readiness.md).
 
 ## Core journey
 
-1. An adult signs in with Clerk, creates a family and adds a managed profile with consent.
+1. An adult signs in with Clerk, confirms adult-only use, creates a family and adds an adult managed profile with consent.
 2. A separate requester browser starts pairing; the adult reviews and approves that device.
 3. The requester opens `/shop/assistant` or `/shop/products`, builds a list and explicitly sends it.
 4. The adult reviews `/family/requests`, adjusts quantities and decides whether to pay.
@@ -40,7 +42,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 
 - `src/app/` composes routes/API handlers. `/family/*` uses Clerk-derived OWNER/MANAGER authorization; `/shop/*` uses a freshly validated device actor. `/shop` redirects to the assistant. The former manager catalog route is removed.
 - `src/features/` owns components, authenticated Server Actions, Zod schemas, business services and scoped repositories. `src/server/` owns auth, database, rate limits and safe logs.
-- Shared caching is restricted to nonpersonal catalog data with bounded cursor loading. Devices receive no prices; children see only explicitly reviewed child-suitable products. Shopping never calls Open Prices/Open Food Facts.
+- Shared caching is restricted to nonpersonal catalog data with bounded cursor loading. Adult requester devices receive no prices; historical child profiles cannot browse. Shopping never calls Open Prices/Open Food Facts.
 - Send snapshots server-owned approved USD prices and stable submission identity. Optimistic manager edits require backend validation and rollback on failure. Checkout serializes mutations and locks the basket.
 - Stable order/capture keys, operation fences and verified identities/amounts prevent duplicate or false success. Only a verified completed capture marks PAID. Unknown outcomes remain unconfirmed; minimal verified PaymentEvents reconcile signed duplicates, out-of-order events and reversals without storing bodies.
 - AI only proposes. Device-bound encrypted reviews expire within 30 minutes or earlier proof expiry. URLs contain opaque lookup IDs, not words/audio/proofs. Audio is never persisted. Private requests/payments are not shared-cached.
