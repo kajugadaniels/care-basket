@@ -20,6 +20,7 @@ type Props = { proposal: Proposal };
 export function ProposalReview({ proposal }: Props) {
 	const { draft, locked, change } = useDraft();
 	const [error, setError] = useState("");
+	const [announcement, setAnnouncement] = useState("");
 	const errorRef = useRef<HTMLParagraphElement>(null);
 	useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
 	const choices = new Map<string, ProposalItem>();
@@ -53,6 +54,7 @@ export function ProposalReview({ proposal }: Props) {
 			return;
 		}
 		change(addition);
+		setAnnouncement(requestsCopy.added(item.displayName));
 	}
 
 	function productCard(item: ProposalItem) {
@@ -84,6 +86,7 @@ export function ProposalReview({ proposal }: Props) {
 				</li>)}</ul>
 			</section> : null)}
 			{feed.items.length || feed.hasMore ? <LoadMore {...feed} onLoad={feed.loadMore} labels={catalogCopy.feed} /> : null}
+			<p role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
 			{error ? <p role="alert" ref={errorRef} tabIndex={-1} className={styles.error}>{error}</p> : null}
 		</div>
 		<aside className={styles.listPanel} aria-label={requestsCopy.detailTitle}>
