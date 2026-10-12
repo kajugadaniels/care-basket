@@ -1,8 +1,9 @@
 import { z } from "zod";
+import { ACTIVE_PROFILE_KINDS } from "@/lib/audience";
 import { DISPLAY_NAME_MAX_LENGTH } from "@/features/family/limits";
 import { hasUnsafeCharacters } from "@/features/family/schemas";
 import { profilesCopy } from "./copy";
-import { PROFILE_AVATAR_KEYS, PROFILE_KINDS } from "./presets";
+import { PROFILE_AVATAR_KEYS } from "./presets";
 
 const displayNameSchema = z.string({ error: profilesCopy.errors.nameRequired })
   // Check before trimming so leading/trailing controls cannot disappear during normalization.
@@ -15,7 +16,7 @@ const avatarSchema = z.enum(PROFILE_AVATAR_KEYS, { error: profilesCopy.errors.av
 export const profileIdSchema = z.uuid();
 export const createManagedProfileSchema = z.strictObject({
   displayName: displayNameSchema,
-  kind: z.enum(PROFILE_KINDS, { error: profilesCopy.errors.kind }),
+	kind: z.enum(ACTIVE_PROFILE_KINDS, { error: profilesCopy.errors.kind }),
   avatarKey: avatarSchema,
   consent: z.literal(true, { error: profilesCopy.errors.consent }),
 });
