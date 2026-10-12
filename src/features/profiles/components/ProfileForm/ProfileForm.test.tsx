@@ -63,7 +63,7 @@ describe("ProfileForm", () => {
     expect(screen.getByRole("checkbox")).toBeChecked();
     expect(mocks.create).toHaveBeenCalledWith({ displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", consent: true });
   });
-  it("announces loading and prevents repeat submissions", async () => {
+  it("keeps progress in the submit button and prevents repeat submissions", async () => {
     let resolveRequest!: (value: { ok: true; data: { profileId: string } }) => void;
     mocks.create.mockReturnValue(new Promise((resolve) => { resolveRequest = resolve; }));
     render(<ProfileForm />);
@@ -71,7 +71,7 @@ describe("ProfileForm", () => {
     const button = await screen.findByRole("button", { name: profilesCopy.adding });
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-busy", "true");
-    expect(screen.getByRole("status")).toHaveTextContent(profilesCopy.adding);
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
     fireEvent.click(button);
     expect(mocks.create).toHaveBeenCalledTimes(1);
     await act(async () => { resolveRequest({ ok: true, data: { profileId: "profile-rose" } }); });
