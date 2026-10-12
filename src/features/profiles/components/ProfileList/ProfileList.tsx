@@ -21,14 +21,8 @@ export function ProfileList({ profiles }: { profiles: ManagedProfileDto[] }) {
 	}
 
 	return (
-		<section className={styles.directory} aria-labelledby="profiles-directory-title">
-			<div className={styles.heading}>
-				<h2 id="profiles-directory-title">{profilesCopy.directoryTitle}</h2>
-				<p>{profilesCopy.directoryHelp}</p>
-			</div>
-			<ul className={styles.grid} role="list" aria-labelledby="profiles-directory-title">
-				{profiles.map((profile) => <li key={profile.id}><ProfileCard profile={profile} /></li>)}
-			</ul>
-		</section>
+		<ul className={styles.grid} role="list" aria-label={profilesCopy.title}>
+			{profiles.map((profile) => <li key={profile.id}><ProfileCard profile={profile} /></li>)}
+		</ul>
 	);
 }
