@@ -19,6 +19,9 @@ describe("public privacy page", () => {
 		render(<PrivacyPage />);
 		const main = screen.getByRole("main");
 		expect(main).toHaveTextContent("Gemini processing and voice interpretation are currently disabled");
+		expect(main).toHaveTextContent("for adults aged 18 or older");
+		expect(main).toHaveTextContent("We do not collect birth dates or verify ages");
+		expect(main).toHaveTextContent("not automatically converted into adult profiles or erased");
 		expect(main).toHaveTextContent("developer-run maintenance, not an automatic scheduled service");
 		expect(main).toHaveTextContent("30 minutes");
 		expect(main).toHaveTextContent("90 days");
