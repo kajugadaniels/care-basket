@@ -99,8 +99,10 @@ describe("lazy Sandbox-only payment configuration", () => {
 			if (name === "PAYPAL_CLIENT_SECRET") vi.stubEnv(name, "");
 			const { getPayPalEnv } = await import("./server");
 			const message = errorMessageOf(getPayPalEnv);
-			expect(message).toMatch(/PayPal environment variables/);
-			expect(message).not.toContain(value);
+			expect(message).toMatch(/^Missing or invalid PayPal environment variables: [A-Z_]+(?:, [A-Z_]+)*\. See \.env\.local\.example or \.env\.production\.example\.$/);
+			// "production" is part of the public template filename, not an echoed value.
+			const diagnostic = message.replace(". See .env.local.example or .env.production.example.", "");
+			expect(diagnostic).not.toContain(value);
 		});
 	it("does not validate payment credentials when unrelated database configuration is used", async () => {
 		vi.stubEnv("PAYPAL_CLIENT_SECRET", "");
