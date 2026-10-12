@@ -3,7 +3,7 @@ import type { Prisma } from "@/generated/prisma/client";
 import type { DeviceActor } from "@/server/auth/device-policy";
 import { getDb } from "@/server/db/client";
 import { AppError } from "@/server/errors";
-import { REQUEST_PAGE_SIZE } from "../limits";
+import { REQUEST_NOTIFICATION_LIMIT, REQUEST_PAGE_SIZE } from "../limits";
 import type { RequestListInput } from "../schemas";
 
 const productSelect = { sku: true, displayName: true, category: true, sizeLabel: true, imagePath: true } as const;
@@ -54,4 +54,13 @@ export async function readManagerRequests(familyId: string, input: RequestListIn
 }
 export function countPendingRequests(familyId: string) {
 	return getDb().shoppingRequest.count({ where: { familyId, status: "PENDING_REVIEW" } });
+}
+
+export function readRequestNotifications(familyId: string) {
+	return getDb().shoppingRequest.findMany({
+		where: { familyId, status: "PENDING_REVIEW" },
+		orderBy: { id: "desc" },
+		take: REQUEST_NOTIFICATION_LIMIT,
+		select: { id: true, submittedAt: true, profile: { select: { displayName: true } } },
+	});
 }
