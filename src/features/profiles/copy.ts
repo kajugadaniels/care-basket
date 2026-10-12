@@ -31,7 +31,6 @@ export const profilesCopy = {
   consentLabel: "Consent",
 	consent: "We are both at least 18. This person has agreed, or I am their authorized guardian.",
 	consentHint: "CareBasket is for adults only. Confirm their age and permission before adding them.",
-  aiNotice: "AI assistance is off. Enabling it will require separate consent in a later step.",
   detailTitle: "Family member profile",
   familyLabel: "Family",
   createdLabel: "Added on",
