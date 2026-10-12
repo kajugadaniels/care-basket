@@ -1,5 +1,7 @@
 import { Suspense, type ReactElement } from "react";
+import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { devicesCopy } from "@/features/devices/copy";
 
 const mocks = vi.hoisted(() => ({ device: vi.fn(), list: vi.fn() }));
 vi.mock("server-only", () => ({}));
@@ -25,8 +27,9 @@ describe("protected requester catalog entry", () => {
 	it.each(["missing", "revoked", "expired"])("shows reconnect for a %s session without reading the catalog", async () => {
 		mocks.list.mockClear();
 		mocks.device.mockRejectedValue(new AppError("UNAUTHENTICATED"));
-		const result = await content();
-		expect(result.props).toMatchObject({ profile: null });
+		render(await content());
+		expect(screen.getByRole("heading", { level: 1, name: devicesCopy.reconnect })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: devicesCopy.reconnectAction })).toHaveAttribute("href", "/connect");
 		expect(mocks.list).not.toHaveBeenCalled();
 	});
 	it("resolves the device before reading URL filters and catalog data", async () => {
