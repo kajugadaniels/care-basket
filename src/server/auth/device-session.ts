@@ -1,4 +1,5 @@
 import "server-only";
+import { ADULT_PROFILE_KIND } from "@/lib/audience";
 import { getDb } from "@/server/db/client";
 import { readDeviceCookie } from "./device-cookies";
 import { hashSecret } from "./device-crypto";
@@ -16,7 +17,7 @@ export async function resolveDeviceSession(now = new Date()) {
   return getDb().authorizedDevice.findFirst({
     where: { id: scope.id, familyId: scope.familyId, profileId: scope.profileId, tokenHash,
       revokedAt: null, expiresAt: { gt: now }, lastSeenAt: { gt: new Date(now.getTime() - DEVICE_IDLE_MS) },
-      profile: { is: { id: scope.profileId, familyId: scope.familyId } } },
+			profile: { is: { id: scope.profileId, familyId: scope.familyId, kind: ADULT_PROFILE_KIND } } },
     select: { id: true, familyId: true, profileId: true, lastSeenAt: true,
       profile: { select: { kind: true } } },
   });
