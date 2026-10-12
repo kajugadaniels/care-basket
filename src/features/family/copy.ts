@@ -10,7 +10,6 @@ export const familyLayoutCopy = {
     overview: "Overview",
     members: "Family Members",
     devices: "Devices",
-		catalog: "Catalog",
 		requests: "Requests",
   },
 } as const;
