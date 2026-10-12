@@ -121,13 +121,16 @@ describe("reloadable private shopping reviews", () => {
 		expect(await restoreShoppingReview(requester, requestIds.key)).toBeNull();
 	});
 
-	it("keeps child reviews local, budget-free and child-filtered", async () => {
+	it("denies legacy child review restore, creation and paging before storage access", async () => {
 		await save();
 		const child = { ...requester, profileKind: "CHILD" as const };
-		expect(await restoreShoppingReview(child, requestIds.key)).not.toBeNull();
-		expect(fake.catalog).toHaveBeenLastCalledWith(true, { skus: ["demo-milk", "demo-rice", "demo-bread"] });
-		await save(proposal({ local: false }));
-		expect(await restoreShoppingReview(child, requestIds.key)).toBeNull();
+		fake.read.mockClear(); fake.write.mockClear(); fake.catalog.mockClear(); fake.interpret.mockClear();
+		await expect(restoreShoppingReview(child, requestIds.key)).rejects.toMatchObject({ code: "FORBIDDEN" });
+		await expect(interpretShoppingForReview(child, { kind: "text", text: "milk" }))
+			.rejects.toMatchObject({ code: "FORBIDDEN" });
+		await expect(loadShoppingReviewPage(child, { reviewId: requestIds.key, offset: 12 }))
+			.rejects.toMatchObject({ code: "FORBIDDEN" });
+		for (const mock of [fake.read, fake.write, fake.catalog, fake.interpret]) expect(mock).not.toHaveBeenCalled();
 	});
 
 	it("does not interpret or save when the review quota is exceeded", async () => {
