@@ -6,9 +6,9 @@ import type { StartCheckoutInput } from "../schemas";
 import { auditCheckout, conflictOnRace, lockRequest, OPEN_PAYMENT_STATUSES, paymentSelect, TRANSACTION_OPTIONS } from "./persistence";
 import { priceBasket } from "./pricing";
 
-export async function readOpenPayment(actor: AdultActor, requestId: string) {
+export async function readLatestPayment(actor: AdultActor, requestId: string) {
 	return getDb().payment.findFirst({ where: { familyId: actor.familyId, requestId,
-		status: { in: [...OPEN_PAYMENT_STATUSES] }, request: { status: "AWAITING_PAYMENT" } }, select: paymentSelect });
+		status: { not: "VOIDED" } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], select: paymentSelect });
 }
 
 export async function reserveCheckout(actor: AdultActor, input: StartCheckoutInput, paypalClientId: string) {
@@ -35,7 +35,7 @@ export async function reserveCheckout(actor: AdultActor, input: StartCheckoutInp
 			const existing = basket.payments[0];
 			if (request.status === "AWAITING_PAYMENT" && basket.lockedAt && existing) {
 				// Replaying the original start revision is safe only for this already-locked attempt.
-				if (existing.status !== "CREATED") throw new AppError("CONFLICT");
+				if (!["CREATED", "APPROVED"].includes(existing.status)) throw new AppError("CONFLICT");
 				return { kind: "attempt" as const, payment: existing };
 			}
 			if (request.status !== "PENDING_REVIEW" || basket.lockedAt || existing || request.revision !== input.revision) {
