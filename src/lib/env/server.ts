@@ -118,11 +118,14 @@ export function getPayPalEnv() {
 		PAYPAL_CLIENT_ID: credential,
 		PAYPAL_CLIENT_SECRET: credential,
 		PAYPAL_ENVIRONMENT: z.literal("sandbox"),
-		// Step 9 cannot approve buyers: even setting true fails closed until capture exists.
-		PAYPAL_BUYER_APPROVAL_ENABLED: z.literal("false").default("false"),
+		PAYPAL_BUYER_APPROVAL_ENABLED: z.enum(["false", "true"]).default("false"),
+		PAYPAL_WEBHOOK_ID: z.string().min(1).max(50).regex(/^[A-Za-z0-9]+$/).optional(),
 	}).superRefine((env, context) => {
 		if (env.NEXT_PUBLIC_PAYPAL_CLIENT_ID !== env.PAYPAL_CLIENT_ID) {
 			context.addIssue({ code: "custom", path: ["NEXT_PUBLIC_PAYPAL_CLIENT_ID"], message: "Sandbox client IDs must match." });
+		}
+		if (env.PAYPAL_BUYER_APPROVAL_ENABLED === "true" && !env.PAYPAL_WEBHOOK_ID) {
+			context.addIssue({ code: "custom", path: ["PAYPAL_WEBHOOK_ID"], message: "Configure verified webhooks before enabling approval." });
 		}
 	}).safeParse({
 		NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
@@ -130,6 +133,7 @@ export function getPayPalEnv() {
 		PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET,
 		PAYPAL_ENVIRONMENT: process.env.PAYPAL_ENVIRONMENT,
 		PAYPAL_BUYER_APPROVAL_ENABLED: process.env.PAYPAL_BUYER_APPROVAL_ENABLED,
+		PAYPAL_WEBHOOK_ID: process.env.PAYPAL_WEBHOOK_ID || undefined,
 	});
 	if (!result.success) {
 		const names = [...new Set(result.error.issues.map((issue) => issue.path.join(".")))];
