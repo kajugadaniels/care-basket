@@ -7,7 +7,7 @@ type Write = { table: string; data: Record<string, unknown> };
 // mirroring how PostgreSQL rolls back a failed Prisma interactive transaction.
 const fake = vi.hoisted(() => {
   const committed: Write[] = [];
-  const failures: { membership: Error | null } = { membership: null };
+  const failures: { membership: Error | null; audit: Error | null } = { membership: null, audit: null };
 
   const db = {
     $transaction: vi.fn(async (callback: (tx: unknown) => Promise<unknown>) => {
@@ -28,6 +28,13 @@ const fake = vi.hoisted(() => {
             return { role: data.role, displayName: data.displayName };
           }),
         },
+				auditLog: {
+					create: vi.fn(async ({ data }: { data: Record<string, unknown> }) => {
+						if (failures.audit) throw failures.audit;
+						staged.push({ table: "auditLog", data });
+						return { id: "audit-1" };
+					}),
+				},
       };
       const result = await callback(tx);
       committed.push(...staged);
@@ -44,13 +51,15 @@ vi.mock("server-only", () => ({}));
 vi.mock("@/server/db/client", () => ({ getDb: () => fake.db }));
 
 import { createFamilyWithOwner } from "./repository";
+import { ADULT_ACCESS_CONSENT_VERSION } from "@/lib/audience";
 
-const input = { userId: "user-1", familyName: "Jane's Family", displayName: "Jane" };
+const input = { userId: "user-1", familyName: "Jane's Family", displayName: "Jane", adultConfirmed: true as const };
 
 describe("createFamilyWithOwner", () => {
   beforeEach(() => {
     fake.committed.length = 0;
     fake.failures.membership = null;
+		fake.failures.audit = null;
     fake.db.$transaction.mockClear();
   });
 
@@ -69,6 +78,13 @@ describe("createFamilyWithOwner", () => {
         table: "familyMembership",
         data: { familyId: "family-1", userId: "user-1", role: "OWNER", displayName: "Jane" },
       },
+			{
+				table: "auditLog",
+				data: {
+					familyId: "family-1", actorType: "ADULT", actorId: "user-1",
+					action: `family.created.${ADULT_ACCESS_CONSENT_VERSION}`, targetType: "Family", targetId: "family-1",
+				},
+			},
     ]);
   });
 
@@ -86,4 +102,10 @@ describe("createFamilyWithOwner", () => {
     expect(fake.db.family.create).not.toHaveBeenCalled();
     expect(fake.db.familyMembership.create).not.toHaveBeenCalled();
   });
+
+	it("rolls back setup if the self-attestation audit cannot be saved", async () => {
+		fake.failures.audit = new Error("audit failed");
+		await expect(createFamilyWithOwner(input)).rejects.toThrow("audit failed");
+		expect(fake.committed).toEqual([]);
+	});
 });
