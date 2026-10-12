@@ -2,10 +2,10 @@
 // People in examples are fictional.
 
 export const heroCopy = {
-  status: "Hackathon demo, in development",
+  status: "Adults 18+ · Hackathon prototype",
   title: "Just tell us what you need. Your family takes care of the rest.",
   description:
-    "CareBasket makes asking for groceries easy. Speak, type, or choose pictures. Your family can review your basket and pay securely.",
+    "CareBasket makes asking for groceries easy for adults aged 18 or older. Type or choose pictures, then let your family review your basket. Voice is coming after provider approval.",
   primaryAction: "See How It Works",
   waysToAskLabel: "Ways to ask",
   waysToAsk: [
@@ -71,7 +71,7 @@ export const familiesCopy = {
       role: "For the person asking",
       title: "Asking is easy",
       summary:
-        "Made for older adults and anyone who finds online shopping hard, with supervised options for children.",
+        "Made for adults aged 18 or older who want help with online shopping, including older adults.",
       points: [
         "No complicated account registration",
         "Voice, text, or picture-based requests",
