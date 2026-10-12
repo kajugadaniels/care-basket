@@ -30,7 +30,7 @@ describe("protected requester catalog entry", () => {
 		expect(mocks.list).not.toHaveBeenCalled();
 	});
 	it("resolves the device before reading URL filters and catalog data", async () => {
-		const actor = { type: "device", familyId: "family", profileId: "profile", deviceId: "device", profileKind: "CHILD" };
+		const actor = { type: "device", familyId: "family", profileId: "profile", deviceId: "device", profileKind: "ASSISTED_ADULT" };
 		mocks.device.mockResolvedValue(actor);
 		mocks.list.mockResolvedValue({ products: [], nextCursor: null });
 		await content(Promise.resolve({ category: "PANTRY", q: "rice" }));
