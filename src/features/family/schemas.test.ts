@@ -14,11 +14,11 @@ function fieldError(input: Record<string, unknown>, field: "familyName" | "displ
   return result.error.issues.find((issue) => issue.path[0] === field)?.message;
 }
 
-const valid = { familyName: "Jane's Family", displayName: "Jane" };
+const valid = { familyName: "Jane's Family", displayName: "Jane", adultConfirmed: true };
 
 describe("createFamilySchema", () => {
   it("accepts and trims valid names", () => {
-    const result = parse({ familyName: "  Jane's Family  ", displayName: "  Jane " });
+    const result = parse({ ...valid, familyName: "  Jane's Family  ", displayName: "  Jane " });
 
     expect(result.success && result.data).toEqual(valid);
   });
@@ -74,9 +74,9 @@ describe("createFamilySchema", () => {
   });
 
   it("accepts international names, apostrophes, hyphens, and emoji", () => {
-    expect(parse({ familyName: "Famille Lefèvre-Ngoma", displayName: "Zoë" }).success).toBe(true);
-    expect(parse({ familyName: "李家", displayName: "李" }).success).toBe(true);
-    expect(parse({ familyName: "The O'Briens 👨‍👩‍👧", displayName: "Mum" }).success).toBe(true);
+    expect(parse({ ...valid, familyName: "Famille Lefèvre-Ngoma", displayName: "Zoë" }).success).toBe(true);
+    expect(parse({ ...valid, familyName: "李家", displayName: "李" }).success).toBe(true);
+    expect(parse({ ...valid, familyName: "The O'Briens 👨‍👩‍👧", displayName: "Mum" }).success).toBe(true);
   });
 
   it("rejects ownership fields instead of trusting them", () => {
@@ -84,6 +84,10 @@ describe("createFamilySchema", () => {
     expect(parse({ ...valid, familyId: "another-family" }).success).toBe(false);
     expect(parse({ ...valid, userId: "another-user" }).success).toBe(false);
   });
+
+	it.each([undefined, false, "true", "on", 1])("rejects unconfirmed adult access: %s", (adultConfirmed) => {
+		expect(parse({ ...valid, adultConfirmed }).success).toBe(false);
+	});
 
   it("rejects malformed input types", () => {
     expect(parse({ familyName: 42, displayName: "Jane" }).success).toBe(false);
