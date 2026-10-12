@@ -6,3 +6,8 @@ export const startCheckoutSchema = z.strictObject({
 export const cancelCheckoutSchema = startCheckoutSchema.extend({ paymentId: z.uuid(), confirmed: z.literal(true) });
 export type StartCheckoutInput = z.infer<typeof startCheckoutSchema>;
 export type CancelCheckoutInput = z.infer<typeof cancelCheckoutSchema>;
+
+export const captureCheckoutSchema = z.strictObject({
+	requestId: z.uuid(), paypalOrderId: z.string().min(1).max(36).regex(/^[A-Z0-9]+$/),
+});
+export type CaptureCheckoutInput = z.infer<typeof captureCheckoutSchema>;
