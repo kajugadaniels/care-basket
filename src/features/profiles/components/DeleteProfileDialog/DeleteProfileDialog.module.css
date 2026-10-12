@@ -27,17 +27,6 @@
 .content h2 { font-size: var(--text-xl); overflow-wrap: anywhere; }
 .error { color: var(--color-danger); }
 .actions { display: grid; gap: var(--space-3); }
-.visuallyHidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
 @media (hover: hover) {
   .trigger:hover, .cancel:hover { background-color: var(--color-surface-soft); }
 }
