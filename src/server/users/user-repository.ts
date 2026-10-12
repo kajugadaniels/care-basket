@@ -9,6 +9,14 @@ export type UserRecord = {
 
 const userSelect = { id: true, clerkUserId: true } as const;
 
+/** Resolve API access from a verified Clerk ID without provisioning a user during GET. */
+export function findExistingAdultByClerkId(clerkUserId: string) {
+	return getDb().user.findUnique({
+		where: { clerkUserId },
+		select: { id: true, membership: { select: { familyId: true, role: true } } },
+	});
+}
+
 /**
  * Returns the user for a Clerk account, creating it on first sight. Safe to call repeatedly
  * and concurrently: the unique clerkUserId constraint guarantees a single row, and a request
