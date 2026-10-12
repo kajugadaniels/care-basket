@@ -7,7 +7,9 @@ vi.mock("@/server/logger", () => ({ logSecurityFailure: fake.log }));
 vi.mock("@/lib/env/server", () => ({ getPayPalEnv: fake.env }));
 vi.mock("@/lib/paypal/client", () => ({ getPayPalClient: fake.client }));
 vi.mock("@/features/checkout/server/webhook-service", () => ({ processVerifiedWebhook: fake.process }));
-import { POST } from "./route";
+import * as paypalRoute from "./route";
+
+const { POST } = paypalRoute;
 
 function notification(body: unknown = { id: "WH-FICTIONAL1", event_type: "PAYMENT.CAPTURE.COMPLETED", resource: { payer: "must remain in signature input only" } }) {
 	return new Request("https://carebasket.invalid/api/webhooks/paypal", { method: "POST", body: JSON.stringify(body), headers: {
@@ -23,6 +25,10 @@ describe("public signed PayPal webhook boundary", () => {
 		vi.resetAllMocks(); fake.env.mockReturnValue({ PAYPAL_WEBHOOK_ID: "WEBHOOK1" });
 		fake.client.mockReturnValue({ verifyWebhook: fake.verify });
 		fake.verify.mockResolvedValue({ verification_status: "SUCCESS" }); fake.process.mockResolvedValue(null);
+	});
+	it("uses the default Node runtime without a Cache Components-incompatible override", () => {
+		expect(paypalRoute).not.toHaveProperty("runtime");
+		expect(paypalRoute.maxDuration).toBe(90);
 	});
 	it("verifies the unmodified event before processing without Clerk/device/Origin authentication", async () => {
 		const request = notification(); const original = await request.clone().json();
