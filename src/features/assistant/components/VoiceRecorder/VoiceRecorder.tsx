@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button/Button";
 import { AUDIO_LIMIT } from "@/lib/audio";
 import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
-import { WorkingNotice } from "../WorkingNotice/WorkingNotice";
 import styles from "./VoiceRecorder.module.css";
 
 export function VoiceRecorder({ onProposal, onType }: { onProposal(proposal: Proposal): void; onType(): void }) {
@@ -101,11 +100,13 @@ export function VoiceRecorder({ onProposal, onType }: { onProposal(proposal: Pro
 		finally { acquiring.current = false; }
 	}
 	return <section className={styles.panel}>
-		{state === "pending" ? <WorkingNotice /> : <p role="status">{state === "recording" ? copy.listening : copy.speak}</p>}
+		{state !== "pending" ? <p role="status">{state === "recording" ? copy.listening : copy.speak}</p> : null}
 		{state === "recording" ? <><p><time>{seconds}s</time> / 60s</p>
 			{seconds >= 50 ? <p role="status">{copy.warning}</p> : null}
 			<Button size="lg" onClick={() => recorder.current?.stop()}>{copy.stop}</Button></>
-			: <Button size="lg" loading={state === "pending"} onClick={() => void start()}>{copy.start}</Button>}
+			: <Button size="lg" loading={state === "pending"} onClick={() => void start()}>
+				{state === "pending" ? copy.working : copy.start}
+			</Button>}
 		{error ? <p ref={errorRef} tabIndex={-1} role="alert">{error}</p> : null}
 		<Button variant="secondary" size="lg" disabled={state !== "idle"} onClick={onType}>{copy.type}</Button>
 	</section>;
