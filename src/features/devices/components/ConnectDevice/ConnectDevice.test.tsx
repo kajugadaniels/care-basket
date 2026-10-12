@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const fake = vi.hoisted(() => ({ start: vi.fn() }));
 vi.mock("../../actions", () => ({ startPairingAction: fake.start }));
@@ -18,5 +18,16 @@ describe("requester device connection", () => {
     fake.start.mockResolvedValue({ ok: false, error: { message: "Please wait before trying again." } });
     render(<ConnectDevice />); fireEvent.click(screen.getByRole("button", { name: "Connect This Device" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Please wait"); expect(fake.start).toHaveBeenCalledTimes(1);
+  });
+  it("keeps connection progress in the initiating button", async () => {
+    let finish!: (result: { ok: false; error: { message: string } }) => void;
+    fake.start.mockReturnValue(new Promise((resolve) => { finish = resolve; }));
+    render(<ConnectDevice />);
+    fireEvent.click(screen.getByRole("button", { name: "Connect This Device" }));
+    const button = await screen.findByRole("button", { name: "Getting your code…" });
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(screen.getAllByText("Getting your code…")).toHaveLength(1);
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    await act(async () => finish({ ok: false, error: { message: "Please try again." } }));
   });
 });
