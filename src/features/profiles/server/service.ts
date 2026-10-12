@@ -5,7 +5,7 @@ import { PROFILE_AVATAR_KEYS, PROFILE_CONSENT_VERSION, PROFILE_LOCALE, PROFILE_P
 import {
   createManagedProfileSchema, deleteManagedProfileSchema, listManagedProfilesSchema,
   profileIdSchema, updateManagedProfileSchema,
-  type CreateManagedProfileInput, type DeleteManagedProfileInput,
+  type DeleteManagedProfileInput,
   type ListManagedProfilesInput, type UpdateManagedProfileInput,
 } from "../schemas";
 import type { ManagedProfileDto, ProfileAvatarKey, ProfileListDto } from "../types";
@@ -29,7 +29,7 @@ function toDto(profile: ProfileRecord): ManagedProfileDto {
   };
 }
 
-export async function createManagedProfile(actor: AdultActor, input: CreateManagedProfileInput) {
+export async function createManagedProfile(actor: AdultActor, input: unknown) {
   assertManager(actor);
   const parsed = createManagedProfileSchema.safeParse(input);
   if (!parsed.success) throw new AppError("VALIDATION_FAILED");
