@@ -7,22 +7,25 @@ vi.mock("server-only", () => ({}));
 vi.mock("./cached-catalog", () => ({ readCatalogPage: mocks.page, readCatalogProduct: mocks.product }));
 import { getRequesterProduct, listRequesterProducts } from "./service";
 
-const device: DeviceActor = { type: "device", deviceId: "device", familyId: "family", profileId: "profile", profileKind: "CHILD" };
+const device: DeviceActor = { type: "device", deviceId: "device", familyId: "family", profileId: "profile", profileKind: "ASSISTED_ADULT" };
 const adult: AdultActor = { type: "adult", userId: "adult", familyId: "family", role: "OWNER" };
 const row = { id: "019a1234-0000-7000-8000-000000000001", sku: "example-rice", displayName: "Example Rice", category: "PANTRY", sizeLabel: "1 lb", imagePath: null, brand: "Example", source: "OPEN_PRICES", imageAttribution: null, imageSourceUrl: null, imageProductUrl: null, demoPrices: [{ priceMinor: 349, currency: "USD" }] };
 
 describe("catalog actor boundaries", () => {
 	beforeEach(() => { mocks.page.mockReset().mockResolvedValue([row]); mocks.product.mockReset().mockResolvedValue(row); });
-	it("returns only the safe device DTO and passes child suitability, never actor identity, to cache", async () => {
+	it("returns only the safe adult device DTO and never passes actor identity to cache", async () => {
 		const result = await listRequesterProducts(device, {});
 		expect(result.products[0]).toEqual({ sku: row.sku, displayName: row.displayName, category: row.category, sizeLabel: row.sizeLabel, imagePath: null });
-		expect(mocks.page).toHaveBeenCalledWith({ q: "", limit: 24 }, true);
+		expect(mocks.page).toHaveBeenCalledWith({ q: "", limit: 24 }, false);
 		expect(JSON.stringify(result)).not.toContain("price");
 		expect(JSON.stringify(result)).not.toContain("family");
 	});
-	it("allows assisted adults to browse without child-only filtering", async () => {
-		await listRequesterProducts({ ...device, profileKind: "ASSISTED_ADULT" }, {});
-		expect(mocks.page).toHaveBeenCalledWith({ q: "", limit: 24 }, false);
+	it("denies legacy child actors before page or product cache reads", async () => {
+		const child = { ...device, profileKind: "CHILD" as const };
+		await expect(listRequesterProducts(child, {})).rejects.toMatchObject({ code: "FORBIDDEN" });
+		await expect(getRequesterProduct(child, "example-rice")).rejects.toMatchObject({ code: "FORBIDDEN" });
+		expect(mocks.page).not.toHaveBeenCalled();
+		expect(mocks.product).not.toHaveBeenCalled();
 	});
 	it("rejects the wrong actor type before reading the catalog", async () => {
 		await expect(listRequesterProducts(adult as unknown as DeviceActor, {})).rejects.toMatchObject({ code: "FORBIDDEN" });
@@ -57,7 +60,7 @@ describe("catalog actor boundaries", () => {
 	});
 	it("applies the same suitability and not-found rules to individual lookups", async () => {
 		await getRequesterProduct(device, "example-rice");
-		expect(mocks.product).toHaveBeenCalledWith("example-rice", true);
+		expect(mocks.product).toHaveBeenCalledWith("example-rice", false);
 		mocks.product.mockResolvedValue(null);
 		await expect(getRequesterProduct(device, "missing-product")).rejects.toMatchObject({ code: "NOT_FOUND" });
 	});
