@@ -4,7 +4,7 @@ import { requestIds, requester } from "@/test/factories/requests";
 const fake = vi.hoisted(() => ({ first: vi.fn(), many: vi.fn(), count: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/db/client", () => ({ getDb: () => ({ shoppingRequest: { findFirst: fake.first, findMany: fake.many, count: fake.count } }) }));
-import { countPendingRequests, readDeviceRequest, readDeviceRequests, readManagerRequest, readManagerRequests } from "./repository";
+import { countPendingRequests, readDeviceRequest, readDeviceRequests, readManagerRequest, readManagerRequests, readRequestNotifications } from "./repository";
 
 describe("family-scoped request reads", () => {
 	beforeEach(() => { vi.resetAllMocks(); fake.many.mockResolvedValue([]); fake.first.mockResolvedValue(null); });
@@ -36,5 +36,16 @@ describe("family-scoped request reads", () => {
 	it("does not permit another family's cursor", async () => {
 		await expect(readManagerRequests(requestIds.family, { after: requestIds.other })).rejects.toMatchObject({ code: "NOT_FOUND" });
 		expect(fake.many).not.toHaveBeenCalled();
+	});
+	it("bounds notifications to eight committed pending requests in this family", async () => {
+		await readRequestNotifications(requestIds.family);
+		expect(fake.many).toHaveBeenCalledWith({
+			where: { familyId: requestIds.family, status: "PENDING_REVIEW" },
+			orderBy: { id: "desc" }, take: 8,
+			select: { id: true, submittedAt: true, profile: { select: { displayName: true } } },
+		});
+		for (const field of ["inputText", "items", "subtotalMinor", "device", "token"]) {
+			expect(JSON.stringify(fake.many.mock.calls[0][0].select)).not.toContain(field);
+		}
 	});
 });
