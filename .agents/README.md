@@ -2,7 +2,7 @@
 
 **Purpose:** Authoritative index of the rules that every coding agent (Codex, Claude Code, and any other assistant) and every human contributor follows on CareBasket.
 **Applies to:** Every task, without exception.
-**Last reviewed:** 2026-10-09
+**Last reviewed:** 2026-10-12
 
 The rules in this directory are permanent project policy. They are not suggestions. Read this file first, then the documents your task requires.
 
@@ -90,7 +90,7 @@ When instructions conflict, apply the first matching level:
 | Term | Meaning |
 | --- | --- |
 | **Family manager** | Adult with a Clerk account and an `OWNER` or `MANAGER` membership in a family. Only family managers review and pay. |
-| **Managed profile** | A person the manager sets up who has no Clerk account: an *assisted adult* (for example, an elderly relative) or a *supervised child*. |
+| **Managed profile** | An assisted adult aged 18 or older with no Clerk account. Historical `CHILD` records remain manager-readable but have no requester access ([project.md](project.md)). |
 | **Authorized device** | A browser that a family manager has paired to exactly one managed profile. |
 | **Device session** | The restricted, revocable session that an authorized device holds. |
 | **Requester** | The managed profile that creates a shopping request. |
