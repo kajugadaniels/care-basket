@@ -1,5 +1,6 @@
 import "server-only";
 import { io } from "next/cache";
+import { isAdultProfile } from "@/lib/audience";
 import { AppError } from "@/server/errors";
 import { getDb } from "@/server/db/client";
 import { resolveDeviceSession } from "./device-session";
@@ -10,7 +11,7 @@ export async function requireDevice(): Promise<DeviceActor> {
   await io();
   const now = new Date();
   const device = await resolveDeviceSession(now);
-  if (!device) throw new AppError("UNAUTHENTICATED");
+	if (!device || !isAdultProfile(device.profile.kind)) throw new AppError("UNAUTHENTICATED");
   if (now.getTime() - device.lastSeenAt.getTime() >= DEVICE_ACTIVITY_MS) {
     await getDb().authorizedDevice.updateMany({
       where: { id: device.id, familyId: device.familyId, profileId: device.profileId,
@@ -24,7 +25,7 @@ export async function requireDevice(): Promise<DeviceActor> {
 }
 
 export function assertDevicePermission(actor: DeviceActor, capability: "view-own-home" | "create-own-request" | "view-own-requests") {
-  if (!actor || actor.type !== "device" || !["ASSISTED_ADULT", "CHILD"].includes(actor.profileKind)
+	if (!actor || actor.type !== "device" || !isAdultProfile(actor.profileKind)
     || !["view-own-home", "create-own-request", "view-own-requests"].includes(capability)) {
     throw new AppError("FORBIDDEN");
   }
