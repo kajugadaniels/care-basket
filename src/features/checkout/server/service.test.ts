@@ -7,6 +7,7 @@ const fake = vi.hoisted(() => ({ database: vi.fn(), client: vi.fn(), create: vi.
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/db/client", () => ({ getDb: fake.database }));
 vi.mock("@/lib/paypal/client", () => ({ getPayPalClient: fake.client }));
+vi.mock("@/lib/env/server", () => ({ getPayPalEnv: () => ({ PAYPAL_BUYER_APPROVAL_ENABLED: "false" }) }));
 vi.mock("@/lib/paypal/orders", async (original) => ({ ...await original<typeof import("@/lib/paypal/orders")>(),
 	createSandboxOrder: fake.create, readSandboxOrder: fake.read }));
 import { cancelCheckout, getCheckout, startCheckout } from "./service";
