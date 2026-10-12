@@ -30,7 +30,6 @@ export function ManagerBasket({
     remove,
     blockIfBusy,
   } = useManagerBasket(request);
-	const previewing = !error && (pendingKey?.startsWith("save:") ?? false);
 
   return (
     <div className={styles.layout}>
@@ -167,7 +166,6 @@ export function ManagerBasket({
           <dt>{requestsCopy.total}</dt>
           <dd>{preview.subtotal}</dd>
         </dl>
-				{previewing ? <p className={styles.syncing}>{requestsCopy.managerPreview}</p> : null}
         {request.budget ? (
           <dl className={styles.budget}>
             <dt>{requestsCopy.budget}</dt>
