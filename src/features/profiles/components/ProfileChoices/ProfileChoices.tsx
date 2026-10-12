@@ -2,8 +2,9 @@ import { CheckmarkCircle02Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { ProfileAvatar } from "@/features/profiles/components/ProfileAvatar/ProfileAvatar";
 import { profilesCopy } from "@/features/profiles/copy";
-import { PROFILE_AVATAR_KEYS, PROFILE_KINDS } from "@/features/profiles/presets";
+import { PROFILE_AVATAR_KEYS } from "@/features/profiles/presets";
 import type { ProfileAvatarKey, ProfileKind } from "@/features/profiles/types";
+import { ACTIVE_PROFILE_KINDS } from "@/lib/audience";
 import { cx } from "@/lib/class-names";
 import styles from "./ProfileChoices.module.css";
 
@@ -26,7 +27,7 @@ export function ProfileChoices({ group, value, onChange, error }: ProfileChoices
 			<legend className={styles.legend}>{isKind ? profilesCopy.kindLabel : profilesCopy.avatarLabel}</legend>
 			{isKind ? (
 				<div className={styles.options}>
-					{PROFILE_KINDS.map((kind) => (
+					{ACTIVE_PROFILE_KINDS.map((kind) => (
 						<KindOption key={kind} kind={kind} checked={value === kind} onChange={onChange} />
 					))}
 				</div>
