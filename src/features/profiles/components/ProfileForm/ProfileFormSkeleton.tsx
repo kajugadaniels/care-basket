@@ -27,9 +27,6 @@ export function ProfileFormSkeleton({ isEditing = false }: { isEditing?: boolean
 					</div>
 				)}
 			</div>
-			<p className={styles.notice} aria-hidden="true">
-				{profilesCopy.aiNotice}
-			</p>
 			<div className={styles.actions}>
 				<Skeleton shape="pill" className={styles.submitSkeleton} />
 				<Skeleton shape="pill" className={styles.cancelSkeleton} />
