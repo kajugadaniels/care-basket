@@ -146,8 +146,8 @@ describe("shopping basket review", () => {
 		fireEvent.click(addButtons[1]);
 		const summary = screen.getByRole("complementary", { name: requestsCopy.readyToSend });
 		expect(within(summary).getByText(requestsCopy.draftCount(2))).toBeInTheDocument();
-		fireEvent.click(screen.getByRole("button", { name: `${requestsCopy.remove}: ${requestProduct.displayName}` }));
 		const groceries = screen.getByRole("region", { name: requestsCopy.listItems });
+		fireEvent.click(within(groceries).getByRole("button", { name: `${requestsCopy.remove}: ${requestProduct.displayName}` }));
 		expect(within(groceries).queryByRole("heading", { name: requestProduct.displayName })).not.toBeInTheDocument();
 		expect(within(groceries).getByRole("heading", { name: bread.displayName })).toBeInTheDocument();
 		expect(within(summary).getByText(requestsCopy.draftCount(1))).toBeInTheDocument();
@@ -173,7 +173,8 @@ describe("shopping basket review", () => {
 	it("returns to the empty state after removing the last grocery", () => {
 		render(<BasketFixture />);
 		add();
-		fireEvent.click(screen.getByRole("button", { name: `${requestsCopy.remove}: ${requestProduct.displayName}` }));
+		const groceries = screen.getByRole("region", { name: requestsCopy.listItems });
+		fireEvent.click(within(groceries).getByRole("button", { name: `${requestsCopy.remove}: ${requestProduct.displayName}` }));
 		expect(screen.getByRole("region", { name: requestsCopy.emptyBasket })).toBeInTheDocument();
 		expect(screen.queryByRole("complementary", { name: requestsCopy.readyToSend })).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: requestsCopy.send })).not.toBeInTheDocument();
