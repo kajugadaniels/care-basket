@@ -1,12 +1,5 @@
 export const profilesCopy = {
   title: "Family Members",
-	description: "Manage the people you shop for, all in one place.",
-	directoryTitle: "Member profiles",
-	directoryHelp: "Choose a profile to view or update their details.",
-	profileSummaries: {
-		ASSISTED_ADULT: "Shopping with a little support from family.",
-		CHILD: "Shopping with guidance from a trusted adult.",
-	},
   add: "Add Family Member",
   adding: "Adding family member…",
   edit: "Edit Profile",
