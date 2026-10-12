@@ -22,7 +22,7 @@ type RequestListProps =
 function ManagerRequestRow({ request }: { request: ManagerSummaryDto }) {
 	const isPending = request.status === "PENDING_REVIEW";
 	const isClosed = request.status === "DECLINED" || request.status === "CANCELLED";
-	const isPaid = request.status === "PAID";
+	const isPaid = request.status === "PAID" && !request.paymentState;
 	const action = isPending ? requestsCopy.review : requestsCopy.inboxView;
 	const statusIcon = isPaid ? CheckmarkCircle02Icon : isClosed ? CancelCircleIcon : Clock01Icon;
 
@@ -41,7 +41,7 @@ function ManagerRequestRow({ request }: { request: ManagerSummaryDto }) {
 			</div>
 			<p className={cx(inboxStyles.status, isPending && inboxStyles.pending, isPaid && inboxStyles.paid, isClosed && inboxStyles.closed)}>
 				<Icon icon={statusIcon} size={20} />
-				{requestsCopy.statuses[request.status]}
+				{request.paymentState ? requestsCopy.paymentUpdated : requestsCopy.statuses[request.status]}
 			</p>
 			<dl className={inboxStyles.total}>
 				<dt>{requestsCopy.total}</dt>
@@ -85,9 +85,9 @@ export function RequestList(props: RequestListProps) {
 							<li key={request.id} className={cx(styles.panel, styles.historyCard)}>
 								<h2>{formatDate(request.submittedAt)}</h2>
 								<p>{requestsCopy.count(request.itemCount)}</p>
-								<p className={cx(styles.status, request.status === "PAID" && styles.paidStatus)}>
-									<Icon icon={request.status === "PAID" ? CheckmarkCircle02Icon : Task01Icon} size={24} />
-									{requestsCopy.statuses[request.status]}
+								<p className={cx(styles.status, request.status === "PAID" && !request.paymentState && styles.paidStatus)}>
+									<Icon icon={request.status === "PAID" && !request.paymentState ? CheckmarkCircle02Icon : Task01Icon} size={24} />
+									{request.paymentState ? requestsCopy.paymentUpdated : requestsCopy.statuses[request.status]}
 								</p>
 								<div className={styles.actions}>
 									<ActionLink href={`${base}/${request.id}`} variant="secondary" size="lg">{requestsCopy.view}</ActionLink>
