@@ -1,4 +1,5 @@
 .screen,
+.workspace,
 .page,
 .heading,
 .group {
@@ -56,6 +57,12 @@
 
 .page {
 	gap: var(--space-5);
+}
+
+.listPanel {
+	display: grid;
+	align-content: start;
+	min-inline-size: 0;
 }
 
 .results {
@@ -197,7 +204,37 @@
 }
 
 @media (min-width: 64rem) {
+	.workspace {
+		grid-template-columns: minmax(0, 1fr) calc(var(--sidebar-width) + var(--space-8));
+		align-items: start;
+		gap: var(--space-6);
+	}
+
+	.listPanel {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.page {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
 	.grid {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 80rem) {
+	.grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 64rem) and (min-height: 32rem) {
+	.listPanel {
+		position: sticky;
+		inset-block-start: var(--space-5);
+		align-self: start;
 	}
 }
