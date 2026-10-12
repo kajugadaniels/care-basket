@@ -140,7 +140,6 @@
 	font-variant-numeric: tabular-nums;
 }
 
-.help,
 .confirmationCopy p {
 	color: var(--color-text-muted);
 }
@@ -224,15 +223,6 @@
 	border: 1px solid var(--color-border-strong);
 	border-radius: var(--radius-full);
 	font-size: var(--text-md);
-}
-
-.announcement {
-	position: absolute;
-	inline-size: 1px;
-	block-size: 1px;
-	overflow: hidden;
-	clip-path: inset(50%);
-	white-space: nowrap;
 }
 
 @media (min-width: 40rem) {
