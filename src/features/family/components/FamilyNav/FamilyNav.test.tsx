@@ -23,13 +23,15 @@ describe("FamilyNav", () => {
   });
   it("offers only implemented family routes", () => {
     render(<FamilyNav />);
-    expect(screen.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["/family", "/family/members", "/family/devices", "/family/catalog", "/family/requests"]);
+    expect(screen.getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual(["/family", "/family/members", "/family/devices", "/family/requests"]);
   });
-	it("marks the catalog active only on its own route", () => {
+	it("does not offer the removed catalog route", () => {
 		mocks.path = "/family/catalog";
 		render(<FamilyNav />);
-		expect(screen.getByRole("link", { name: "Catalog" })).toHaveAttribute("aria-current", "page");
-		expect(screen.getByRole("link", { name: "Devices" })).not.toHaveAttribute("aria-current");
+		expect(screen.queryByRole("link", { name: "Catalog" })).not.toBeInTheDocument();
+		for (const link of screen.getAllByRole("link")) {
+			expect(link).not.toHaveAttribute("aria-current");
+		}
 	});
 	it("keeps Requests active on a request detail", () => {
 		mocks.path = "/family/requests/request-id";
