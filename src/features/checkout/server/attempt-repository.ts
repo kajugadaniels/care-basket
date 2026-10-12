@@ -20,7 +20,7 @@ export async function claimAttempt(actor: AdultActor, requestId: string, payment
 			select: { status: true, revision: true, basket: { select: { lockedAt: true } } } });
 		const payment = await tx.payment.findFirst({ where: { id: paymentId, requestId, familyId: actor.familyId }, select: paymentSelect });
 		if (!payment) throw new AppError("NOT_FOUND");
-		if (payment.status !== "CREATED" || request?.status !== "AWAITING_PAYMENT" || !request.basket?.lockedAt
+		if (payment.status !== "CREATED" || payment.captureStartedAt || request?.status !== "AWAITING_PAYMENT" || !request.basket?.lockedAt
 			|| (revision !== undefined && request.revision !== revision)) throw new AppError("CONFLICT");
 		const now = new Date();
 		if (payment.operationExpiresAt && payment.operationExpiresAt > now) throw new CheckoutFailure("IN_PROGRESS");
@@ -39,7 +39,7 @@ export async function claimAttempt(actor: AdultActor, requestId: string, payment
 
 function activeAttempt(actor: AdultActor, requestId: string, paymentId: string, token: string) {
 	return { id: paymentId, requestId, familyId: actor.familyId, status: "CREATED" as const,
-		operationToken: token, operationExpiresAt: { gt: new Date() },
+		operationToken: token, operationExpiresAt: { gt: new Date() }, captureStartedAt: null,
 		request: { status: "AWAITING_PAYMENT" as const, basket: { lockedAt: { not: null } } } };
 }
 
