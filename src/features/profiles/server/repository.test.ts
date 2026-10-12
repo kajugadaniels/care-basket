@@ -104,8 +104,8 @@ import { insertProfile, listProfiles, findProfile, countProfiles, hasProfilesAft
 const context = { familyId: "019a1234-0000-7000-8000-000000000002", userId: "019a1234-0000-7000-8000-000000000001" };
 const profileId = "019a1234-0000-7000-8000-000000000003";
 const date = new Date("2026-10-08T12:00:00Z");
-const input = { displayName: "Rose", kind: "CHILD", avatarKey: "flower", locale: "en-US",
-  consentVersion: "2026-10-08", consentConfirmedAt: date } as const;
+const input = { displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", locale: "en-US",
+  consentVersion: "adults-only-2026-10-12", consentConfirmedAt: date } as const;
 const own: Row = { ...input, id: profileId, familyId: context.familyId, createdByUserId: context.userId,
   createdAt: date, aiAssistEnabled: false, aiConsentConfirmedAt: null, aiConsentVersion: null };
 const other: Row = { ...own, id: "019a1234-0000-7000-8000-000000000004", familyId: "other-family", displayName: "Sam" };
@@ -129,6 +129,13 @@ describe("managed profile repository", () => {
     });
     expect(JSON.stringify(fake.committed.filter((write) => write.table === "audit"))).not.toContain("Rose");
   });
+	it("refuses a forged child creation before starting a transaction", async () => {
+		// @ts-expect-error simulate a caller bypassing the adult-only validated type.
+		await expect(insertProfile(context, { ...input, kind: "CHILD" }))
+			.rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+		expect(fake.db.$transaction).not.toHaveBeenCalled();
+		expect(fake.rows).toEqual([]);
+	});
   it("lists and counts only profiles in the supplied family", async () => {
     fake.rows.push({ ...own }, { ...other });
     expect(await listProfiles(context.familyId)).toEqual([{
