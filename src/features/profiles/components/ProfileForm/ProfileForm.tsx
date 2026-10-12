@@ -103,7 +103,6 @@ export function ProfileForm({ profile }: { profile?: ManagedProfileDto }) {
 					</div>
 				)}
 			</fieldset>
-			<p className={styles.notice}>{profilesCopy.aiNotice}</p>
 			<div className={styles.actions}>
 				<Button type="submit" loading={isPending}>
 					{isPending ? pendingText : profile ? profilesCopy.save : profilesCopy.add}
@@ -112,10 +111,6 @@ export function ProfileForm({ profile }: { profile?: ManagedProfileDto }) {
 					{profilesCopy.cancel}
 				</ActionLink>
 			</div>
-			{/* The button shows the progress; this announces it to screen readers. */}
-			<p role="status" className={styles.visuallyHidden}>
-				{isPending ? pendingText : ""}
-			</p>
 		</form>
 	);
 }
