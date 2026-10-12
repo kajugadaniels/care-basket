@@ -12,7 +12,7 @@ const db = vi.hoisted(() => ({
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/db/client", () => ({ getDb: () => db }));
 
-import { findOrCreateUserByClerkId } from "./user-repository";
+import { findExistingAdultByClerkId, findOrCreateUserByClerkId } from "./user-repository";
 
 const storedUser = { id: "0192f0c2-0000-7000-8000-000000000001", clerkUserId: "user_123" };
 
@@ -63,4 +63,22 @@ describe("findOrCreateUserByClerkId", () => {
     await expect(findOrCreateUserByClerkId("user_123")).rejects.toBe(failure);
     expect(db.user.findUniqueOrThrow).not.toHaveBeenCalled();
   });
+
+	it("reads only actor fields and membership from the verified Clerk account", async () => {
+		const user = { id: storedUser.id, membership: { familyId: "family-1", role: "OWNER" } };
+		db.user.findUnique.mockResolvedValue(user);
+		expect(await findExistingAdultByClerkId("user_123")).toEqual(user);
+		expect(db.user.findUnique).toHaveBeenCalledWith({
+			where: { clerkUserId: "user_123" },
+			select: { id: true, membership: { select: { familyId: true, role: true } } },
+		});
+		expect(db.user.create).not.toHaveBeenCalled();
+	});
+
+	it("does not provision a missing account for a read-only API request", async () => {
+		db.user.findUnique.mockResolvedValue(null);
+		expect(await findExistingAdultByClerkId("missing-user")).toBeNull();
+		expect(db.user.create).not.toHaveBeenCalled();
+		expect(db.user.findUniqueOrThrow).not.toHaveBeenCalled();
+	});
 });
