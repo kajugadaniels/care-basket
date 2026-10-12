@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef } from "react";
 import { Alert02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/Button/Button";
+import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { TextField } from "@/components/ui/TextField/TextField";
 import { createFamilyAction } from "@/features/family/actions";
@@ -27,7 +28,9 @@ export function CreateFamilyForm({ defaultDisplayName }: CreateFamilyFormProps) 
   const fieldErrors = state.error?.fieldErrors ?? {};
   const familyNameError = fieldErrors.familyName?.[0];
   const displayNameError = fieldErrors.displayName?.[0];
-  const formError = state.error && !familyNameError && !displayNameError ? state.error : null;
+	const adultConfirmationError = fieldErrors.adultConfirmed?.[0];
+	const formError = state.error && !familyNameError && !displayNameError && !adultConfirmationError
+		? state.error : null;
 
   // After a failed submission, move focus to the first field that needs attention.
   useEffect(() => {
@@ -65,6 +68,14 @@ export function CreateFamilyForm({ defaultDisplayName }: CreateFamilyFormProps) 
         autoComplete="given-name"
         required
       />
+
+			<Checkbox
+				name="adultConfirmed"
+				label={familySetupCopy.adultConfirmation}
+				hint={familySetupCopy.adultConfirmationHint}
+				error={adultConfirmationError}
+				required
+			/>
 
       {/* Disabled only while sending, so a double press cannot submit twice. */}
       <Button type="submit" loading={isPending} className={styles.submit}>
