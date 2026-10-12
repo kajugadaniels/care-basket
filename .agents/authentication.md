@@ -26,7 +26,7 @@ There is no third kind. Anonymous visitors can only see public pages, sign in or
 
 MVP constraints:
 
-- The supported audience is adults aged 18 or older ([project.md § 2](project.md#2-target-users-and-their-difficulties)). New family setup also requires an unchecked-by-default adult-only confirmation, validated in the action and service. The transaction records self-attestation using the fixed, versioned action `family.created.adults-only-2026-10-12` in the existing audit schema; no birth date or verified-age claim is recorded.
+- The supported audience is adults aged 18 or older ([project.md § 2](project.md#2-target-users-and-their-difficulties)). New family setup also requires an unchecked-by-default adult-only confirmation, validated in the action and service. The transaction records self-attestation using the fixed, versioned action `family.created.adult-v1-2026-10-12` in the existing audit schema; no birth date or verified-age claim is recorded. The shared version identifier stays within the managed-profile consent column's 20-character limit.
 - An adult belongs to **at most one family** (unique `FamilyMembership.userId`). Supporting several families later requires a family switcher and a migration.
 - The creator is the `OWNER`. The `MANAGER` role exists in the schema for a later "invite another adult" feature; the MVP does not build invitations. Permission checks use role helpers so adding managers later changes no call sites.
 
