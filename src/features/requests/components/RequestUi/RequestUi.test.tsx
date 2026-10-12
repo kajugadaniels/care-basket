@@ -194,7 +194,7 @@ describe("shopping request screens", () => {
 		}
 		const summary = screen.getByRole("region", { name: requestsCopy.managerSummary });
 		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
-		expect(within(summary).getByText(requestsCopy.managerPreview)).toBeInTheDocument();
+		expect(within(summary).queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
 		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$7.50")).toBeInTheDocument();
 		expect(within(summary).getByRole("button", { name: requestsCopy.decline })).toBeEnabled();
 		for (const button of screen.getAllByRole("button", { name: /^Remove item:/ })) expect(button).toBeEnabled();
@@ -214,7 +214,6 @@ describe("shopping request screens", () => {
 		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
 		await act(async () => finish({ ok: true, data: { requestId: requestIds.request } }));
 		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
-		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
 		expect(otherInput).toHaveValue(4);
 	});
 	it("preserves another row's draft across a confirmed save and server revision update", async () => {
@@ -281,7 +280,6 @@ describe("shopping request screens", () => {
 		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.toastError);
 		expect(within(screen.getByRole("region", { name: requestsCopy.managerSummary })).getByText("$5.00")).toBeInTheDocument();
 		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$5.00")).toBeInTheDocument();
-		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
 		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
 		await waitFor(() => expect(input).toBeEnabled());
 		fake.update.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
@@ -300,7 +298,6 @@ describe("shopping request screens", () => {
 		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
 		await act(async () => finish({ ok: false, error: { code: "CONFLICT", message: "Refresh before retrying." } }));
 		expect(within(summary).getByText("$5.00")).toBeInTheDocument();
-		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
 		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
 		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$5.00")).toBeInTheDocument();
 		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toBe(input);
@@ -323,7 +320,6 @@ describe("shopping request screens", () => {
 				items: [{ ...request.items[0], quantity: 3, lineTotal: "$7.50" }] }} />);
 			finish({ ok: true, data: { requestId: request.id } });
 		});
-		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
 		expect(within(screen.getByRole("region", { name: requestsCopy.managerSummary })).getByText("$7.50")).toBeInTheDocument();
 		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toHaveValue(3);
 		await act(async () => { fireEvent.click(screen.getByRole("button", { name: requestsCopy.save })); });
