@@ -1,0 +1,67 @@
+.header {
+	padding-block: var(--space-4);
+	border-block-end: 1px solid var(--color-border);
+}
+
+.page {
+	max-inline-size: var(--reading-max);
+	margin-inline: auto;
+	padding-block: var(--space-7);
+	display: grid;
+	gap: var(--space-6);
+	font-size: var(--text-base);
+	overflow-wrap: anywhere;
+}
+
+.intro,
+.section {
+	display: grid;
+	gap: var(--space-3);
+}
+
+.intro h1 {
+	font-size: clamp(var(--text-xl), 5vw, var(--text-2xl));
+}
+
+.section h2 {
+	font-size: var(--text-md);
+}
+
+.updated {
+	color: var(--color-text-muted);
+}
+
+.retention {
+	border-block-start: 1px solid var(--color-border);
+}
+
+.retention div {
+	display: grid;
+	gap: var(--space-2);
+	padding-block: var(--space-4);
+	border-block-end: 1px solid var(--color-border);
+}
+
+.retention dt {
+	font-weight: var(--weight-semibold);
+}
+
+.retention dd {
+	margin: 0;
+	color: var(--color-text-muted);
+}
+
+.page a {
+	display: inline-flex;
+	align-items: center;
+	min-block-size: var(--control-height);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+@media (min-width: 48rem) {
+	.retention div {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+		gap: var(--space-5);
+	}
+}
