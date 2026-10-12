@@ -75,6 +75,15 @@ describe("shopping request service authorization and DTOs", () => {
 		expect(await getFamilyRequest(requestManager, requestIds.request)).toMatchObject({ subtotal: "$5.00", subtotalMinor: 500, currency: "USD",
 			items: [{ unitPriceMinor: 250, unitPrice: "$2.50", lineTotal: "$5.00" }] });
 	});
+	it.each(["REFUNDED", "REVERSED"])("exposes only a simple %s update to requesters", async (status) => {
+		fake.own.mockResolvedValue({ ...row, status: "PAID", payments: [{ status, paypalOrderId: "PRIVATEORDER", paypalCaptureId: "PRIVATECAPTURE",
+			amountMinor: 500, currency: "USD", payer: "private" }] });
+		const result = await getOwnRequest(requester, requestIds.request);
+		expect(result.paymentState).toBe(status);
+		for (const field of ["PRIVATEORDER", "PRIVATECAPTURE", "amountMinor", "currency", "payer"]) {
+			expect(JSON.stringify(result)).not.toContain(field);
+		}
+	});
 	it.each(["DECLINED", "CANCELLED", "PAID", "AWAITING_PAYMENT"])("does not expose editing for %s", async (status) => {
 		fake.own.mockResolvedValue({ ...row, status });
 		expect((await getOwnRequest(requester, requestIds.request)).editable).toBe(false);
