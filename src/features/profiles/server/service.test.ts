@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AdultActor } from "@/server/auth/require-adult";
+import { ADULT_ACCESS_CONSENT_VERSION } from "@/lib/audience";
 
 const mocks = vi.hoisted(() => ({
   insertProfile: vi.fn(), listProfiles: vi.fn(), findProfile: vi.fn(),
@@ -17,8 +18,8 @@ const actor: AdultActor = { type: "adult", userId: "019a1234-0000-7000-8000-0000
   familyId: "019a1234-0000-7000-8000-000000000002", role: "OWNER" };
 const profileId = "019a1234-0000-7000-8000-000000000003";
 const now = new Date("2026-10-08T12:00:00Z");
-const record = { id: profileId, displayName: "Rose", kind: "CHILD", avatarKey: "flower", createdAt: now };
-const input = { displayName: "Rose", kind: "CHILD", avatarKey: "flower", consent: true } as const;
+const record = { id: profileId, displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", createdAt: now };
+const input = { displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", consent: true } as const;
 
 describe("managed profile service", () => {
   beforeEach(() => {
@@ -37,15 +38,26 @@ describe("managed profile service", () => {
     const manager = { ...actor, role };
     await expect(createManagedProfile(manager, input)).resolves.toEqual({ profileId });
     expect(mocks.insertProfile).toHaveBeenCalledWith(manager, {
-      displayName: "Rose", kind: "CHILD", avatarKey: "flower", locale: "en-US",
-      consentConfirmedAt: now, consentVersion: "2026-10-08",
+      displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", locale: "en-US",
+      consentConfirmedAt: now, consentVersion: ADULT_ACCESS_CONSENT_VERSION,
     });
   });
   it("never creates a profile without explicit consent", async () => {
-    // @ts-expect-error untrusted callers can send false even though the validated type cannot.
     await expect(createManagedProfile(actor, { ...input, consent: false })).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
     expect(mocks.insertProfile).not.toHaveBeenCalled();
   });
+	it("never inserts a new child profile, including forged consented inputs", async () => {
+		await expect(createManagedProfile(actor, { ...input, kind: "CHILD" }))
+			.rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+		expect(mocks.insertProfile).not.toHaveBeenCalled();
+	});
+	it("keeps historical child records accessible to their family manager", async () => {
+		const legacy = { ...record, kind: "CHILD" };
+		mocks.listProfiles.mockResolvedValue([legacy]);
+		mocks.findProfile.mockResolvedValue(legacy);
+		expect((await listManagedProfiles(actor)).profiles[0].kind).toBe("CHILD");
+		expect((await getManagedProfile(actor, profileId)).kind).toBe("CHILD");
+	});
   it("returns only serializable display fields for the current family", async () => {
     await expect(listManagedProfiles(actor)).resolves.toEqual({
       profiles: [{ ...record, createdAt: now.toISOString() }], nextCursor: null,
