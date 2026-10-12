@@ -1,5 +1,6 @@
-import { CancelCircleIcon, CheckmarkCircle02Icon, Clock01Icon } from "@hugeicons/core-free-icons";
+import { CancelCircleIcon, CheckmarkCircle02Icon, Clock01Icon, SmartPhone01Icon } from "@hugeicons/core-free-icons";
 import { Icon } from "@/components/ui/Icon/Icon";
+import { cx } from "@/lib/class-names";
 import { formatDate } from "@/lib/format";
 import { devicesCopy } from "../../copy";
 import type { DeviceDto } from "../../types";
@@ -12,26 +13,44 @@ const STATUS_ICONS = {
 	REVOKED: CancelCircleIcon,
 } as const;
 
-// DeviceListSkeleton mirrors these cards.
+const STATUS_STYLES = {
+	ACTIVE: styles.active,
+	EXPIRED: styles.expired,
+	REVOKED: styles.revoked,
+} as const;
+
 export function DeviceList({ devices }: { devices: DeviceDto[] }) {
 	if (!devices.length) {
-		return <p className={styles.empty}>{devicesCopy.empty}</p>;
+		return (
+			<section className={styles.empty} aria-labelledby="devices-empty-title">
+				<span className={styles.emptyIcon}><Icon icon={SmartPhone01Icon} size={48} /></span>
+				<div className={styles.emptyText}>
+					<h2 id="devices-empty-title">{devicesCopy.empty}</h2>
+					<p>{devicesCopy.emptyHelp}</p>
+				</div>
+			</section>
+		);
 	}
 
 	return (
-		<ul className={styles.list}>
+		<ul className={styles.list} role="list" aria-label={devicesCopy.title}>
 			{devices.map((device) => (
 				<li key={device.id} className={styles.card}>
-					{/* Focus target after this device is disconnected. */}
-					<h2 id={`device-${device.id}`} tabIndex={-1} className={styles.title}>
-						{device.label}
-					</h2>
-					<p>{device.profileName}</p>
-					<p>{device.userAgentSummary}</p>
-					<p className={styles.status}>
-						<Icon icon={STATUS_ICONS[device.status]} size={24} />
-						{devicesCopy.states[device.status]}
-					</p>
+					<div className={styles.header}>
+						<span className={styles.deviceIcon}><Icon icon={SmartPhone01Icon} size={24} /></span>
+						<span className={cx(styles.status, STATUS_STYLES[device.status])}>
+							<Icon icon={STATUS_ICONS[device.status]} size={20} />
+							{devicesCopy.states[device.status]}
+						</span>
+					</div>
+					<div className={styles.identity}>
+						{/* Revocation returns focus here when the action disappears. */}
+						<h2 id={`device-${device.id}`} tabIndex={-1} className={styles.title}>
+							{device.label}
+						</h2>
+						<p className={styles.owner}>{devicesCopy.assignedTo(device.profileName)}</p>
+						<p className={styles.browser}>{device.userAgentSummary}</p>
+					</div>
 					<dl className={styles.facts}>
 						<div>
 							<dt className={styles.term}>{devicesCopy.connected}</dt>
@@ -46,7 +65,11 @@ export function DeviceList({ devices }: { devices: DeviceDto[] }) {
 							</dd>
 						</div>
 					</dl>
-					{device.status === "ACTIVE" ? <RevokeDeviceDialog deviceId={device.id} label={device.label} /> : null}
+					{device.status === "ACTIVE" ? (
+						<div className={styles.action}>
+							<RevokeDeviceDialog deviceId={device.id} label={device.label} />
+						</div>
+					) : null}
 				</li>
 			))}
 		</ul>
