@@ -187,6 +187,11 @@ export function CheckoutPanel({
           </p>
         </div>
       ) : null}
+      {announcement ? (
+        <p className={styles.status} role="status" aria-live="polite">
+          {announcement}
+        </p>
+      ) : null}
       {(editable && (!current || current.state === "DENIED")) ||
       current?.state === "PREPARING" ? (
         <Button
