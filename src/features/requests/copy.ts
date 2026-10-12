@@ -60,6 +60,9 @@ export const requestsCopy = {
 	managerQuantitySaved: ({ name, quantity }: { name: string; quantity: number }) => `Quantity saved for ${name}: ${quantity}.`,
 	managerItemRemoved: ({ name }: { name: string }) => `${name} removed from this request.`,
 	dismissSuccess: "Dismiss success message",
+	paymentUpdated: "Payment updated",
+	paymentAdjusted: "The payment has changed. Check the payment details below. Delivery has not been confirmed.",
+	requesterPaymentAdjusted: "There is an update about this payment. Ask your family to help.",
 	managerExplanations: {
 		PENDING_REVIEW: "Review the items below. You can adjust quantities or decline this request.",
 		AWAITING_PAYMENT: "The basket is locked for checkout. No payment has been confirmed.",
@@ -75,7 +78,7 @@ export const requestsCopy = {
 	explanations: {
 		PENDING_REVIEW: "Your family can review this list. Nothing has been paid for or scheduled for delivery.",
 		AWAITING_PAYMENT: "Your family is reviewing your shopping list.",
-		PAID: "Your family has confirmed payment. This does not mean the groceries have been delivered.",
+		PAID: "Your shopping list has been paid for. This does not mean the groceries have been delivered.",
 		DECLINED: "Your family declined this list. You can start a new shopping list.",
 		CANCELLED: "You cancelled this list. You can start a new shopping list.",
 	},
