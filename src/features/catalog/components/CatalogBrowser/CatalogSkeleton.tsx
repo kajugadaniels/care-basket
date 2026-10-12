@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/Skeleton/Skeleton";
 import { requestsCopy } from "@/features/requests/copy";
 import { cx } from "@/lib/class-names";
 import { catalogCopy } from "../../copy";
-import toolbarStyles from "../ManagerCatalog/ManagerCatalog.module.css";
+import toolbarStyles from "../CatalogToolbar/CatalogToolbar.module.css";
 import styles from "./CatalogBrowser.module.css";
 
 // Mirror the shared toolbar and price-free cards, without focusable loading controls.
