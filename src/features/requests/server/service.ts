@@ -7,10 +7,10 @@ import { AppError } from "@/server/errors";
 import { formatMoney } from "@/lib/format";
 import { REQUEST_PAGE_SIZE } from "../limits";
 import { closeRequestSchema, removeRequestItemSchema, requestListSchema, submitRequestSchema, updateRequestItemSchema } from "../schemas";
-import type { ManagerDetailDto, ManagerSummaryDto, RequestDetailDto, RequestPage, RequestSummaryDto } from "../types";
+import type { ManagerDetailDto, ManagerSummaryDto, RequestDetailDto, RequestNotificationsDto, RequestPage, RequestSummaryDto } from "../types";
 import { insertRequest } from "./submission-repository";
 import { closeRequest, editRequestItem } from "./mutation-repository";
-import { countPendingRequests, readDeviceRequest, readDeviceRequests, readManagerRequest, readManagerRequests } from "./repository";
+import { countPendingRequests, readDeviceRequest, readDeviceRequests, readManagerRequest, readManagerRequests, readRequestNotifications } from "./repository";
 
 function assertManager(actor: AdultActor) {
 	if (!actor || actor.type !== "adult" || !["OWNER", "MANAGER"].includes(actor.role)) throw new AppError("FORBIDDEN");
@@ -45,6 +45,23 @@ export function removeRequestItem(actor: AdultActor, input: unknown) {
 export function countWaitingRequests(actor: AdultActor) {
 	assertManager(actor);
 	return countPendingRequests(actor.familyId);
+}
+
+export async function getRequestNotifications(actor: AdultActor): Promise<RequestNotificationsDto> {
+	assertManager(actor);
+	// Derive notifications from committed requests: retries never create a second event.
+	const [count, rows] = await Promise.all([
+		countPendingRequests(actor.familyId),
+		readRequestNotifications(actor.familyId),
+	]);
+	return {
+		count: Math.max(count, rows.length),
+		notifications: rows.map((row) => ({
+			id: row.id,
+			displayName: row.profile.displayName,
+			submittedAt: row.submittedAt.toISOString(),
+		})),
+	};
 }
 export async function listOwnRequests(actor: DeviceActor, input: unknown = {}): Promise<RequestPage<RequestSummaryDto>> {
 	assertDevicePermission(actor, "view-own-requests");
