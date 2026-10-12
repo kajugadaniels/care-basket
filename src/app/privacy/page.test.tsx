@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { privacyCopy as copy } from "@/features/privacy/copy";
@@ -34,7 +35,7 @@ describe("public privacy page", () => {
 		}
 	});
 	it("keeps reading text, long addresses and retention rows fluid", () => {
-		const css = readFileSync(new URL("./page.module.css", import.meta.url), "utf8");
+		const css = readFileSync(resolve(process.cwd(), "src/app/privacy/page.module.css"), "utf8");
 		expect(css).toContain("font-size: var(--text-base)");
 		expect(css).toContain("overflow-wrap: anywhere");
 		expect(css).toContain("min-block-size: var(--control-height)");
