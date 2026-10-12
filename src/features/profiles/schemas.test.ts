@@ -5,9 +5,12 @@ const profileId = "019a1234-0000-7000-8000-000000000001";
 const valid = { displayName: "Grandma Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", consent: true };
 
 describe("managed profile schemas", () => {
-  it.each(["ASSISTED_ADULT", "CHILD"])("accepts a consented %s profile", (kind) => {
-    expect(createManagedProfileSchema.safeParse({ ...valid, kind }).success).toBe(true);
+  it("accepts a consented adult profile", () => {
+    expect(createManagedProfileSchema.safeParse(valid).success).toBe(true);
   });
+	it("rejects new child profiles even with consent", () => {
+		expect(createManagedProfileSchema.safeParse({ ...valid, kind: "CHILD" }).success).toBe(false);
+	});
   it("trims names and accepts the 40-character boundary", () => {
     expect(createManagedProfileSchema.parse({ ...valid, displayName: "  Rose  " }).displayName).toBe("Rose");
     expect(createManagedProfileSchema.safeParse({ ...valid, displayName: "R".repeat(40) }).success).toBe(true);
