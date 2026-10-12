@@ -1,11 +1,14 @@
 import "server-only";
+import { ADULT_ACCESS_CONSENT_VERSION } from "@/lib/audience";
 import type { FamilyMembershipRecord } from "@/server/auth/family-membership";
 import { getDb } from "@/server/db/client";
+import { AppError } from "@/server/errors";
 
 type CreateFamilyWithOwnerInput = {
   userId: string;
   familyName: string;
   displayName: string;
+	adultConfirmed: true;
 };
 
 /**
@@ -16,6 +19,7 @@ type CreateFamilyWithOwnerInput = {
 export async function createFamilyWithOwner(
   input: CreateFamilyWithOwnerInput,
 ): Promise<FamilyMembershipRecord> {
+	if (input.adultConfirmed !== true) throw new AppError("VALIDATION_FAILED");
   return getDb().$transaction(async (tx) => {
     const family = await tx.family.create({
       data: { name: input.familyName },
@@ -31,6 +35,19 @@ export async function createFamilyWithOwner(
       },
       select: { role: true, displayName: true },
     });
+
+		// Record self-attestation, not a verified age or date of birth.
+		await tx.auditLog.create({
+			data: {
+				familyId: family.id,
+				actorType: "ADULT",
+				actorId: input.userId,
+				action: `family.created.${ADULT_ACCESS_CONSENT_VERSION}`,
+				targetType: "Family",
+				targetId: family.id,
+			},
+			select: { id: true },
+		});
 
     return {
       familyId: family.id,
