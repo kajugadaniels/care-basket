@@ -29,7 +29,7 @@ export const previewCopy = {
   ],
   status: "Ready to send to Anna for review",
   caption:
-    "Illustrative preview with example data. It shows how a request could look and is not a working feature yet.",
+    "Illustrative preview with fictional data. It shows the request workflow, not a real grocery order.",
 } as const;
 
 export const howItWorksCopy = {
