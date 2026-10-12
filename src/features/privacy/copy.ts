@@ -2,11 +2,15 @@ export const privacyCopy = {
 	title: "Privacy at CareBasket",
 	description: "What this prototype stores, who processes it, and how to ask for deletion.",
 	updated: "Updated October 12, 2026",
-	intro: "CareBasket helps people ask a trusted family member for groceries. This is a hackathon prototype, not a live grocery service. Use fictional people and test accounts. No real orders or deliveries take place.",
+	intro: "CareBasket is for adults aged 18 or older who want family support with groceries. This is a hackathon prototype, not a live grocery service. Use fictional people and test accounts. No real orders or deliveries take place.",
 	sections: [
 		{ id: "identity", title: "Sign-in and family profiles", paragraphs: [
 			"Clerk handles adult names, email addresses, sign-in credentials and authentication cookies. CareBasket stores a Clerk identifier, a family name and the adult’s chosen family display name in Neon PostgreSQL—not their password.",
-			"A manager creates each assisted-adult or child profile with a nickname, profile type, preset avatar and language setting. We record who created it and when consent was confirmed. The manager must be a parent or guardian, or have the person’s permission. Profiles do not need an email or password.",
+			"A manager creates each assisted-adult profile with a nickname, profile type, preset avatar and language setting. Profile consent confirms that both people are at least 18 and that the person agrees or the manager has legal authority. We record who created it and when consent was confirmed. Profiles do not need an email or password.",
+		] },
+		{ id: "adults-only", title: "Adults-only access", paragraphs: [
+			"New family setup requires an adult-only confirmation, recorded with its wording version in an audit event. We do not collect birth dates or verify ages. Existing records are not automatically re-consented or certified by this change.",
+			"New child profiles, child device connections and existing child-device shopping access are blocked. Historical child profiles and requests remain private to their family managers for review or confirmed deletion; they are not automatically converted into adult profiles or erased.",
 		] },
 		{ id: "devices", title: "Connecting a device", paragraphs: [
 			"A device can connect only after a signed-in family manager approves it. Necessary cookies keep the short-lived pairing and device connection working. The database stores hashes of device tokens and pairing secrets, device labels, a browser summary and last-use times. Disconnecting a device prevents its next protected request.",
@@ -17,7 +21,7 @@ export const privacyCopy = {
 			"Before Send, a private encrypted review can keep your words and product matches for up to 30 minutes, or less if its proof expires. Its URL contains only an access-controlled lookup identifier. It contains no recording or prices. A new interpretation replaces the review. Your unsent shopping-list draft otherwise stays in browser memory and is lost on reload or closing the page.",
 		] },
 		{ id: "voice", title: "Voice and Google Gemini", paragraphs: [
-			"Gemini processing and voice interpretation are currently disabled for this child-accessible deployment while provider eligibility is unresolved. Turning on a profile setting alone cannot enable them. Pictures and simple text matching continue to work without Gemini. Children’s data is never sent to Gemini.",
+			"Gemini processing and voice interpretation are currently disabled while deployment eligibility, billing, regions and model capabilities are reviewed. Adults-only access and turning on a profile setting alone cannot enable them. Pictures and simple text matching continue to work without Gemini. Children’s data is never sent to Gemini.",
 			"If an eligible deployment is approved, an assisted adult’s manager must separately confirm that person’s agreement before Google processes text or audio. Microphone access starts only after a button press. Recordings are handled in memory and discarded; CareBasket never saves them to files, logs or the database. Names and family history are not included in AI requests.",
 			"Google’s unpaid API terms allow use of submitted content to improve products and possible human review. A paid-tier service and an eligibility review are required before any real person’s data is processed. Do not include sensitive information in a test request.",
 		] },
