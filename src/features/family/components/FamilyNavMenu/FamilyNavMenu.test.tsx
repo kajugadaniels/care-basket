@@ -11,9 +11,9 @@ describe("FamilyNavMenu", () => {
 			"/family",
 			"/family/members",
 			"/family/devices",
-			"/family/catalog",
 			"/family/requests",
 		]);
+		expect(screen.queryByRole("link", { name: "Catalog" })).not.toBeInTheDocument();
 		for (const link of links) {
 			expect(link).not.toHaveAttribute("aria-current");
 		}
