@@ -1,9 +1,24 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 import { requestIds } from "@/test/factories/requests";
-import { closeRequestSchema, removeRequestItemSchema, requestListSchema, submitRequestSchema, updateRequestItemSchema } from "./schemas";
+import { closeRequestSchema, removeRequestItemSchema, requestListSchema, requestNotificationsSchema, submitRequestSchema, updateRequestItemSchema } from "./schemas";
 
 const input = { clientRequestKey: requestIds.key, inputMode: "PICTURES", items: [{ sku: "demo-milk", quantity: 1 }] };
+describe("request notification response", () => {
+	const item = { id: requestIds.request, displayName: "Rose", submittedAt: "2026-10-12T12:00:00Z" };
+	it("accepts a bounded feed with a larger total count", () => {
+		expect(requestNotificationsSchema.safeParse({ count: 125, notifications: [item] }).success).toBe(true);
+	});
+	it("rejects invalid counts, excess entries, unsafe links and unexpected data", () => {
+		for (const payload of [
+			{ count: -1, notifications: [] }, { count: 1.5, notifications: [] },
+			{ count: 9, notifications: Array.from({ length: 9 }, () => item) },
+			{ count: 1, notifications: [{ ...item, id: "../other-family" }] },
+			{ count: 1, notifications: [{ ...item, submittedAt: "invalid" }] },
+			{ count: 1, notifications: [{ ...item, inputText: "private" }] },
+		]) expect(requestNotificationsSchema.safeParse(payload).success).toBe(false);
+	});
+});
 describe("shopping request inputs", () => {
 	it.each([1, 20])("accepts quantity boundary %s", (quantity) => {
 		expect(submitRequestSchema.safeParse({ ...input, items: [{ sku: "demo-milk", quantity }] }).success).toBe(true);
