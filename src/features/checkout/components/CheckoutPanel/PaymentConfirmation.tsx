@@ -26,13 +26,11 @@ export function PaymentConfirmation({ checkout }: { checkout: CheckoutDto }) {
 		</div> : null}
 		<p ref={statusRef} tabIndex={-1} role="status" className={cx(styles.status,
 			captured && styles.confirmed, denied && styles.denied)}>{copy.statuses[checkout.state]}</p>
-		{captured ? <p className={styles.help}>{copy.confirmedHelp}</p> : null}
 		{captured || adjusted ? <dl className={styles.reference}>
 			<dt>{adjusted ? copy.historicalCapture : copy.confirmedAmount}</dt><dd>{checkout.amount} · USD</dd>
 			{checkout.capturedAt ? <><dt>{copy.capturedOn}</dt><dd><time dateTime={checkout.capturedAt}>
 				{formatDate(checkout.capturedAt)} · {formatTime(checkout.capturedAt)} UTC
 			</time></dd></> : null}
-			{checkout.captureId ? <><dt>{copy.captureReference}</dt><dd>{checkout.captureId}</dd></> : null}
 		</dl> : null}
 		{captured || adjusted ? <p className={styles.help}>{copy.delivery}</p> : null}
 	</>;
