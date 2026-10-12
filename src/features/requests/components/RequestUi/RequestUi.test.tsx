@@ -246,6 +246,9 @@ describe("shopping request screens", () => {
 		expect(error).toHaveTextContent(requestsCopy.managerConfirmFailed);
 		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.toastError);
 		expect(within(screen.getByRole("region", { name: requestsCopy.managerSummary })).getByText("$5.00")).toBeInTheDocument();
+		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$5.00")).toBeInTheDocument();
+		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
+		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
 		fake.update.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
 		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 5."));
@@ -262,6 +265,8 @@ describe("shopping request screens", () => {
 		await act(async () => finish({ ok: false, error: { code: "CONFLICT", message: "Refresh before retrying." } }));
 		expect(within(summary).getByText("$5.00")).toBeInTheDocument();
 		expect(screen.queryByText(requestsCopy.managerPreview)).not.toBeInTheDocument();
+		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
+		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$5.00")).toBeInTheDocument();
 		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toBe(input);
 		expect(input).toHaveValue(5);
 		expect(screen.getByRole("alert")).toHaveTextContent("Refresh before retrying.");
@@ -275,6 +280,8 @@ describe("shopping request screens", () => {
 		fireEvent.click(screen.getByRole("button", { name: requestsCopy.save }));
 		fireEvent.click(screen.getByRole("button", { name: requestsCopy.soundOn }));
 		expect(screen.getByRole("button", { name: requestsCopy.soundOff })).toHaveAttribute("aria-pressed", "false");
+		expect(fake.update).toHaveBeenCalledOnce();
+		expect(screen.getByRole("status")).toBeEmptyDOMElement();
 		await act(async () => {
 			rerender(<RequestDetail request={{ ...request, revision: 1, subtotalMinor: 750, subtotal: "$7.50",
 				items: [{ ...request.items[0], quantity: 3, lineTotal: "$7.50" }] }} />);
