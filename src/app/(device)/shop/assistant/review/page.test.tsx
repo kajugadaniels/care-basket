@@ -33,8 +33,8 @@ describe("dedicated assistant review route", () => {
 		expect(metadata.title).toBe(assistantCopy.reviewPageTitle);
 	});
 
-	it.each(["ASSISTED_ADULT", "CHILD"] as const)("authenticates the %s device before showing the budget-free review", async (profileKind) => {
-		fake.device.mockResolvedValue({ ...makeDeviceActor(), profileKind });
+	it("authenticates the adult device before showing the budget-free review", async () => {
+		fake.device.mockResolvedValue(makeDeviceActor());
 		render(await resolveServerTree(ReviewPage()));
 		expect(fake.device).toHaveBeenCalledOnce();
 		expect(fake.review).toHaveBeenCalledExactlyOnceWith(undefined);
@@ -60,7 +60,7 @@ describe("dedicated assistant review route", () => {
 		expect(fake.review).toHaveBeenCalledExactlyOnceWith(null);
 	});
 
-	it.each(["missing", "expired", "revoked"])("shows reconnect instead of review for a %s device", async () => {
+	it.each(["missing", "expired", "revoked", "child"])("shows reconnect instead of review for a %s device", async () => {
 		fake.device.mockRejectedValue(new AppError("UNAUTHENTICATED"));
 		render(await resolveServerTree(ReviewPage({ searchParams: Promise.resolve({ review: "0199a100-0000-7000-8000-000000000007" }) })));
 		expect(fake.review).not.toHaveBeenCalled();
