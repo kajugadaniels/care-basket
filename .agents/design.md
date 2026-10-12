@@ -202,6 +202,8 @@ Every interactive component defines: default, hover (pointer devices only), acti
 
 ## 8. Requester interface (assisted adults and children)
 
+The supported deployment audience is assisted adults aged 18 or older under [project.md § 2](project.md#2-target-users-and-their-difficulties). This historical section title remains for existing links; it does not permit child requester access or child onboarding. Accessibility and plain-language requirements remain unchanged.
+
 What they see:
 
 - **Welcome:** "Hi, Rose" in `--text-display`, and one prominent **Start my list** button (`lg`, full width on phones).
