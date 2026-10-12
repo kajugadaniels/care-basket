@@ -337,6 +337,13 @@ enum PaymentStatus {
 	DENIED
 	VOIDED
 	REFUNDED
+	REVERSED
+}
+
+enum PaymentEventSource {
+	CAPTURE_RESPONSE
+	WEBHOOK
+	SYSTEM
 }
 
 model ShoppingRequest {
@@ -434,6 +441,8 @@ model Payment {
 	orderItems Json
 	// Durable fencing: crashed workers can resume, but concurrent workers cannot cancel/create.
 	creationStartedAt DateTime? @db.Timestamptz(3)
+	// Once capture has started, cancellation can never unlock an uncertain charge.
+	captureStartedAt DateTime? @db.Timestamptz(3)
 	operationToken String? @db.Uuid
 	operationExpiresAt DateTime? @db.Timestamptz(3)
 	createdAt DateTime @default(now()) @db.Timestamptz(3)
@@ -443,10 +452,33 @@ model Payment {
 	request ShoppingRequest @relation(fields: [requestId, familyId], references: [id, familyId], onDelete: Cascade)
 	basket ShoppingBasket @relation(fields: [basketId, requestId, familyId, currency], references: [id, requestId, familyId, currency], onDelete: Cascade)
 	initiatedBy User @relation(fields: [initiatedByUserId], references: [id], onDelete: Restrict)
+	events PaymentEvent[]
 
 	@@index([familyId, requestId, createdAt])
 	@@index([requestId, familyId])
 	@@index([basketId, requestId, familyId, currency])
 	@@index([initiatedByUserId])
 	// One open attempt per basket is enforced by the partial index in migration SQL.
+}
+
+/// Minimal verified metadata only; never persist a webhook body or payer details.
+model PaymentEvent {
+	id String @id @default(uuid(7)) @db.Uuid
+	paymentId String? @db.Uuid
+	source PaymentEventSource
+	paypalEventId String? @unique @db.VarChar(80)
+	eventType String @db.VarChar(100)
+	resourceId String? @db.VarChar(36)
+	resourceStatus String? @db.VarChar(40)
+	amountMinor Int?
+	currency String? @db.Char(3)
+	// Application-owned outcome, not the provider's free-text summary.
+	summary String @db.VarChar(40)
+	verifiedAt DateTime? @db.Timestamptz(3)
+	receivedAt DateTime @default(now()) @db.Timestamptz(3)
+	processedAt DateTime? @db.Timestamptz(3)
+	payment Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+	@@index([paymentId, receivedAt])
+	@@index([source, processedAt, receivedAt])
 }
