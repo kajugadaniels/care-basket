@@ -1,0 +1,11 @@
+.footer {
+	background-color: var(--color-bg);
+	/* Family navigation is fixed below 64rem; leave its touch targets and safe area clear. */
+	padding-block-end: calc(var(--control-height-lg) + var(--space-5) + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 64rem) {
+	.footer {
+		padding-block-end: 0;
+	}
+}
