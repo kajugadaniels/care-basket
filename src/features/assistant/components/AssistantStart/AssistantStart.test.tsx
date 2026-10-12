@@ -108,8 +108,7 @@ describe("assistant entry", () => {
 		fireEvent.click(screen.getByRole("button", { name: copy.continue }));
 		await waitFor(() => expect(screen.getByRole("button", { name: copy.continue })).toHaveAttribute("aria-busy", "true"));
 		expect(screen.getByRole("button", { name: copy.continue })).toBeDisabled();
-		expect(screen.getByRole("status").querySelector("p")).toBeNull();
-		expect(screen.queryByText("Understanding your list…")).not.toBeInTheDocument();
+		expect(screen.queryByRole("status")).not.toBeInTheDocument();
 		await act(async () => { finish?.(); });
 		expect(screen.getByRole("button", { name: copy.continue })).toBeEnabled();
 	});
