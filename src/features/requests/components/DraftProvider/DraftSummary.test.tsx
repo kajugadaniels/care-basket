@@ -108,6 +108,21 @@ describe("shopping list preview", () => {
 		expect(list).toHaveAttribute("tabindex", "0");
 	});
 
+	it("provides a distinctly labelled remove button for each preview grocery", () => {
+		const bread = { ...picturedItem, sku: "demo-bread", displayName: "Demo bread" };
+		renderPreview([picturedItem, bread]);
+		fireEvent.click(screen.getByRole("button", { name: "Add groceries" }));
+		const rows = screen.getAllByRole("listitem");
+		for (const [index, item] of [picturedItem, bread].entries()) {
+			const button = within(rows[index]).getByRole("button", {
+				name: requestsCopy.draftRemoveLabel({ name: item.displayName }),
+			});
+			expect(button).toHaveTextContent(requestsCopy.draftRemove);
+			expect(button).toHaveAttribute("type", "button");
+			expect(button).toBeEnabled();
+		}
+	});
+
 	it("prevents removals and undo while the draft is being sent", () => {
 		renderPreview([picturedItem, { ...picturedItem, sku: "demo-bread", displayName: "Demo bread" }]);
 		fireEvent.click(screen.getByRole("button", { name: "Add groceries" }));
