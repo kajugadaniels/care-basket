@@ -5,7 +5,7 @@ import type { DeviceActor } from "@/server/auth/device-policy";
 const mocks = vi.hoisted(() => ({ page: vi.fn(), product: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("./cached-catalog", () => ({ readCatalogPage: mocks.page, readCatalogProduct: mocks.product }));
-import { getManagerProduct, getRequesterProduct, listManagerProducts, listRequesterProducts } from "./service";
+import { getRequesterProduct, listRequesterProducts } from "./service";
 
 const device: DeviceActor = { type: "device", deviceId: "device", familyId: "family", profileId: "profile", profileKind: "CHILD" };
 const adult: AdultActor = { type: "adult", userId: "adult", familyId: "family", role: "OWNER" };
@@ -24,11 +24,7 @@ describe("catalog actor boundaries", () => {
 		await listRequesterProducts({ ...device, profileKind: "ASSISTED_ADULT" }, {});
 		expect(mocks.page).toHaveBeenCalledWith({ q: "", limit: 24 }, false);
 	});
-	it.each(["OWNER", "MANAGER"] as const)("returns approved demo prices to adult %s", async (role) => {
-		expect((await listManagerProducts({ ...adult, role }, {})).products[0]).toMatchObject({ demoPrice: { priceMinor: 349, currency: "USD" }, attribution: expect.stringContaining("ODbL") });
-	});
 	it("rejects the wrong actor type before reading the catalog", async () => {
-		await expect(listManagerProducts(device as unknown as AdultActor, {})).rejects.toMatchObject({ code: "FORBIDDEN" });
 		await expect(listRequesterProducts(adult as unknown as DeviceActor, {})).rejects.toMatchObject({ code: "FORBIDDEN" });
 		expect(mocks.page).not.toHaveBeenCalled();
 	});
@@ -41,7 +37,7 @@ describe("catalog actor boundaries", () => {
 		mocks.page.mockResolvedValue([]);
 		expect(await listRequesterProducts(device, {})).toEqual({ products: [], nextCursor: null, previousCursor: null });
 		mocks.page.mockRejectedValue(new Error("database unavailable"));
-		await expect(listManagerProducts(adult, {})).rejects.toThrow();
+		await expect(listRequesterProducts(device, {})).rejects.toThrow();
 	});
 	it("reverses backward results after removing lookahead and provides both boundaries", async () => {
 		const middle = { ...row, id: "019a1234-0000-7000-8000-000000000002", sku: "middle" };
@@ -63,6 +59,11 @@ describe("catalog actor boundaries", () => {
 		await getRequesterProduct(device, "example-rice");
 		expect(mocks.product).toHaveBeenCalledWith("example-rice", true);
 		mocks.product.mockResolvedValue(null);
-		await expect(getManagerProduct(adult, "missing-product")).rejects.toMatchObject({ code: "NOT_FOUND" });
+		await expect(getRequesterProduct(device, "missing-product")).rejects.toMatchObject({ code: "NOT_FOUND" });
+	});
+	it("rejects adult actors and malformed SKUs before individual lookups", async () => {
+		await expect(getRequesterProduct(adult as unknown as DeviceActor, "example-rice")).rejects.toMatchObject({ code: "FORBIDDEN" });
+		await expect(getRequesterProduct(device, "invalid/sku")).rejects.toThrow();
+		expect(mocks.product).not.toHaveBeenCalled();
 	});
 });
