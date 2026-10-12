@@ -1,9 +1,9 @@
 # Privacy
 
-**Purpose:** Protect older adults, children, and family information by collecting as little as possible, being clear about consent and ownership, and deleting data on schedule.
+**Purpose:** Protect adult users, historical child records, and family information by collecting as little as possible, being clear about consent and ownership, and deleting data on schedule.
 **Applies to:** Any personal data, voice input, deletion, third-party processing, and anything shown in public demos.
 **Related:** [security.md](security.md), [authentication.md § 5](authentication.md#5-managed-profiles-consent-and-ownership), [ai.md](ai.md), [database.md § 9](database.md#9-sensitive-data-deletion-and-retention), [submission.md](submission.md)
-**Last reviewed:** 2026-10-11
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -17,7 +17,7 @@
 
 ## 2. Consent
 
-- Creating a managed profile requires the adult's explicit confirmation that they are the parent or guardian, or that the person asked them to set it up ([authentication.md § 5](authentication.md#5-managed-profiles-consent-and-ownership)). Store `consentConfirmedAt` and `consentVersion`. Increase `consentVersion` when the wording changes materially.
+- Adult-only audience controls follow [project.md § 2](project.md#2-target-users-and-their-difficulties). New family setup stores a versioned self-attestation in its audit event; profile consent confirms both people's 18+ status and permission or legal authority ([authentication.md § 5](authentication.md#5-managed-profiles-consent-and-ownership)). Store `consentConfirmedAt` and the updated `consentVersion`. Existing records are not automatically re-consented. No dates of birth or verified ages are collected.
 - **AI processing for assisted adults** is off by default. The manager turns it on per profile and confirms that the person agrees to their requests being processed by Google's AI service. Store `aiConsentConfirmedAt` and `aiConsentVersion`; the requester sees a one-line notice wherever AI is used ([ai.md § 8.1](ai.md#81-assisted-adults)). Children's data is never sent to the AI provider.
 - Microphone access is requested only when the user taps the microphone and is explained in plain words first ([ai.md § 7](ai.md#7-voice-input)).
 - No cookies other than strictly necessary ones: Clerk's authentication cookies, the device session cookie, and the short-lived pairing cookie. No consent banner is needed for these; do not add tracking that would require one.
@@ -32,6 +32,7 @@
 | Family name | Adult | Dashboard label | `Family` |
 | Profile display name, kind, avatar preset, locale | Adult | Personalising the requester UI | `ManagedProfile` |
 | Consent confirmation | Adult | Accountability | `ManagedProfile` |
+| Adult-only setup self-attestation and wording version | Adult | Audience accountability, not verified age | `AuditLog` (versioned `family.created.*` action); retention follows §7 |
 | Device label, browser and OS summary, last use | Adult and device | Device management and revocation | `AuthorizedDevice` |
 | Device token and pairing secrets | Generated | Authentication | Hashes only |
 | Request text or transcript | Requester | Shows the manager what was asked | `ShoppingRequest.inputText` |
@@ -46,7 +47,7 @@
 
 Open Prices records include contributor usernames, comments, and proof images (receipts and price-tag photos). CareBasket **never stores, displays, or redistributes** them ([catalog.md § 10](catalog.md#10-licensing-and-attribution)).
 
-Not collected in the MVP: dates of birth, ages, addresses, phone numbers, photos, payer names or emails, card data, location, contacts, health information.
+Not collected in the MVP: dates of birth, exact ages, addresses, phone numbers, photos, payer names or emails, card data, location, contacts, health information. A boolean 18+ self-attestation is not a verified age.
 
 ## 4. Data minimization rules
 
@@ -69,12 +70,11 @@ Not collected in the MVP: dates of birth, ages, addresses, phone numbers, photos
 
 ## 6. Children
 
-- Children never have accounts, emails, or passwords. A parent or guardian creates and controls the profile.
-- Child profiles store only a display name, avatar preset, and locale.
-- Child requests always go to an adult for review; children never see prices or payment controls.
-- Child profiles make no Gemini calls while the compliance issue in [ai.md § 8](ai.md#8-profiles-children-and-tone) is open.
+- Children are not a supported audience in this deployment. Do not create child profiles or permit child device/shopping access ([project.md § 2](project.md#2-target-users-and-their-difficulties)).
+- Historical child profiles and requests remain family-scoped and manager-accessible for review and confirmed deletion under §7. Do not silently relabel, bulk-delete, or claim newly verified consent for them.
+- Child information never reaches Gemini, including through historical saved reviews.
 - No public display of anything a child entered.
-- Before any real launch that includes children, obtain legal review of applicable children's privacy law (for example COPPA in the United States and age-appropriate design codes elsewhere). The MVP design keeps child data minimal so that compliance is feasible; it does not claim compliance.
+- Any future child-accessible launch requires new scope approval and legal/provider eligibility review; this prototype claims neither age verification nor children's-privacy compliance.
 
 ## 7. Deletion and retention
 
