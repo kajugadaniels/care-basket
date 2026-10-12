@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Add01Icon } from "@hugeicons/core-free-icons";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/layout/PageHeader/PageHeader";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
@@ -22,8 +23,11 @@ export default function DevicesPage({ searchParams }: DevicesPageProps) {
 		<div className={styles.page}>
 			<PageHeader
 				title={devicesCopy.title}
-				description={devicesCopy.description}
-				actions={<ActionLink href="/family/devices/connect">{devicesCopy.connect}</ActionLink>}
+				actions={
+					<ActionLink href="/family/devices/connect" size="sm" icon={Add01Icon}>
+						{devicesCopy.connect}
+					</ActionLink>
+				}
 			/>
 			<Suspense fallback={<ManagerLoading />}>
 				<DeviceDirectory searchParams={searchParams} />
@@ -45,12 +49,12 @@ async function DeviceDirectory({ searchParams }: DevicesPageProps) {
 			{hasPagination ? (
 				<div className={styles.actions}>
 					{nextCursor ? (
-						<ActionLink href={`/family/devices?after=${nextCursor}`} variant="secondary">
+						<ActionLink href={`/family/devices?after=${nextCursor}`} variant="secondary" size="sm">
 							{devicesCopy.next}
 						</ActionLink>
 					) : null}
 					{input.after ? (
-						<ActionLink href="/family/devices" variant="secondary">
+						<ActionLink href="/family/devices" variant="secondary" size="sm">
 							{devicesCopy.first}
 						</ActionLink>
 					) : null}
