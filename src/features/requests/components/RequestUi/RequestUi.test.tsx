@@ -5,6 +5,7 @@ import { requestsCopy } from "../../copy";
 import type { RequestMutationResult } from "../../types";
 const fake = vi.hoisted(() => ({ cancel: vi.fn(), decline: vi.fn(), update: vi.fn(), remove: vi.fn(), refresh: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: fake.refresh }) }));
+vi.mock("@/features/checkout/actions", () => ({ startCheckoutAction: vi.fn(), cancelCheckoutAction: vi.fn() }));
 vi.mock("@/features/requests/actions", () => ({ cancelRequestAction: fake.cancel, declineRequestAction: fake.decline,
 	updateRequestItemAction: fake.update, removeRequestItemAction: fake.remove }));
 import { RequestDetail } from "./RequestDetail";
@@ -30,6 +31,19 @@ describe("shopping request screens", () => {
 		await waitFor(() => expect(fake.cancel).toHaveBeenCalledWith({ requestId: requestIds.request, revision: 0, confirmed: true }));
 		await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
 		expect(fake.refresh).not.toHaveBeenCalled();
+	});
+	it("never exposes checkout references or controls to requester details, even if supplied accidentally", () => {
+		render(<RequestDetail request={makeOwnRequest({ status: "AWAITING_PAYMENT", editable: false })}
+			checkout={{ paymentId: requestIds.key, orderId: "PRIVATEORDER1", state: "PREPARED", amount: "$5.00", buyerApprovalEnabled: false }} />);
+		expect(screen.getByText("Your family is reviewing your shopping list.")).toBeInTheDocument();
+		expect(screen.queryByText(/PRIVATEORDER1|\$5\.00|PayPal Sandbox/)).not.toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: /checkout|prepare|cancel/i })).not.toBeInTheDocument();
+	});
+	it("shows preparation only for manager checkout data and never fabricates payment confirmation", () => {
+		render(<RequestDetail request={makeManagerRequest()} checkout={null} />);
+		expect(screen.getByRole("button", { name: "Prepare checkout" })).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: /pay with paypal/i })).not.toBeInTheDocument();
+		expect(screen.queryByText("Payment confirmed")).not.toBeInTheDocument();
 	});
 	it("keeps the list when the cancellation dialog is dismissed", () => {
 		render(<RequestDetail request={makeOwnRequest()} />);
