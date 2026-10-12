@@ -1,7 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
-import { formatDate } from "@/lib/format";
 import { ProfileList } from "./ProfileList";
 import { ProfileListSkeleton } from "./ProfileListSkeleton";
 
@@ -26,19 +25,27 @@ describe("ProfileList", () => {
       { id: "sam", displayName: "Sam", kind: "CHILD", avatarKey: "sun", createdAt: "2026-10-08T12:00:00Z" },
     ]} />);
     const rose = screen.getByRole("article", { name: "Rose" });
-    expect(screen.getByRole("heading", { level: 2, name: profilesCopy.directoryTitle })).toBeInTheDocument();
-    expect(screen.getByRole("list", { name: profilesCopy.directoryTitle })).toBeInTheDocument();
-    expect(within(rose).getByRole("heading", { level: 3, name: "Rose" })).toBeInTheDocument();
+		expect(screen.getByRole("list", { name: profilesCopy.title })).toBeInTheDocument();
+		expect(within(rose).getByRole("heading", { level: 2, name: "Rose" })).toBeInTheDocument();
     expect(within(rose).getByText("Assisted Adult")).toBeInTheDocument();
-    expect(within(rose).getByText(profilesCopy.profileSummaries.ASSISTED_ADULT)).toBeInTheDocument();
-    expect(within(rose).getByRole("term")).toHaveTextContent(profilesCopy.createdLabel);
-    expect(within(rose).getByText(formatDate("2026-10-08T12:00:00Z"))).toHaveAttribute("datetime", "2026-10-08T12:00:00Z");
     expect(within(rose).getByRole("link", { name: "View Profile" })).toHaveAttribute("href", "/family/members/rose");
     expect(within(screen.getByRole("article", { name: "Sam" })).getByText("Child")).toBeInTheDocument();
-    expect(within(screen.getByRole("article", { name: "Sam" })).getByText(profilesCopy.profileSummaries.CHILD)).toBeInTheDocument();
     expect(screen.getAllByRole("listitem")).toHaveLength(2);
     expect(screen.queryByText(/balance|requests received|device connected/i)).not.toBeInTheDocument();
   });
+	it("keeps the directory free of repeated headings, explanations, and metadata", () => {
+		render(<ProfileList profiles={[
+			{ id: "rose", displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", createdAt: "2026-10-08T12:00:00Z" },
+		]} />);
+
+		const card = screen.getByRole("article", { name: "Rose" });
+		expect(screen.getAllByRole("heading")).toHaveLength(1);
+		expect(within(card).getAllByRole("link")).toHaveLength(1);
+		expect(within(card).queryByRole("button")).not.toBeInTheDocument();
+		expect(screen.queryByText("Member profiles")).not.toBeInTheDocument();
+		expect(screen.queryByText(/choose a profile|shopping with/i)).not.toBeInTheDocument();
+		expect(screen.queryByText(profilesCopy.createdLabel)).not.toBeInTheDocument();
+	});
 	it("keeps long names and duplicate display names attached to distinct profiles", () => {
 		const displayName = "Alexandria Catherine Montgomery Williams";
 		render(<ProfileList profiles={[
@@ -50,7 +57,6 @@ describe("ProfileList", () => {
 		expect(cards).toHaveLength(2);
 		expect(within(cards[0]).getByRole("link", { name: profilesCopy.view })).toHaveAttribute("href", "/family/members/first");
 		expect(within(cards[1]).getByRole("link", { name: profilesCopy.view })).toHaveAttribute("href", "/family/members/second");
-		expect(within(cards[0]).getByText("October 9, 2026")).toBeInTheDocument();
 		expect(cards[0].getAttribute("aria-labelledby")).not.toBe(cards[1].getAttribute("aria-labelledby"));
 	});
 });
