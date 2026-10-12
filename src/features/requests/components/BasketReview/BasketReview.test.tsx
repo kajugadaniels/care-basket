@@ -9,9 +9,15 @@ import { DraftProvider } from "../DraftProvider/DraftProvider";
 import { ProductSelection } from "../DraftProvider/ProductSelection";
 import { BasketReview } from "./BasketReview";
 
-function BasketFixture({ selecting = true, reviewing = true }: { selecting?: boolean; reviewing?: boolean }) {
+function BasketFixture({ selecting = true, reviewing = true, products = [requestProduct] }: {
+	selecting?: boolean;
+	reviewing?: boolean;
+	products?: (typeof requestProduct)[];
+}) {
 	return <DraftProvider>
-		{selecting ? <ProductSelection product={requestProduct}><p>Catalog item</p></ProductSelection> : null}
+		{selecting ? products.map((product) => (
+			<ProductSelection key={product.sku} product={product}><p>Catalog item</p></ProductSelection>
+		)) : null}
 		{reviewing ? <BasketReview /> : null}
 	</DraftProvider>;
 }
@@ -119,6 +125,58 @@ describe("shopping basket review", () => {
 		add();
 		expect(screen.getByRole("list", { name: "Groceries in your list" })).toHaveTextContent(requestProduct.displayName);
 		expect(screen.getByRole("complementary", { name: "Ready to send?" })).toHaveTextContent("Your family will check your list first.");
+		expect(fake.submit).not.toHaveBeenCalled();
+	});
+	it("keeps product headings below the grocery section and shows reviewed images", () => {
+		const pictured = { ...requestProduct, imagePath: "/products/demo-milk.jpg" };
+		render(<BasketFixture products={[pictured]} />);
+		add();
+		const groceries = screen.getByRole("region", { name: requestsCopy.listItems });
+		expect(within(groceries).getByRole("heading", { level: 2, name: requestsCopy.listItems })).toBeInTheDocument();
+		expect(within(groceries).getByRole("heading", { level: 3, name: pictured.displayName })).toBeInTheDocument();
+		expect(within(groceries).getByRole("img", { name: `${pictured.displayName}, ${pictured.sizeLabel}` })).toBeInTheDocument();
+		expect(within(groceries).getByRole("group", { name: `${requestsCopy.quantity}: ${pictured.displayName}` })).toBeInTheDocument();
+		expect(within(groceries).queryByText(/\$\d/)).not.toBeInTheDocument();
+	});
+	it("updates the summary immediately when a specific grocery is removed", () => {
+		const bread = { ...requestProduct, sku: "demo-bread", displayName: "Demo bread" };
+		render(<BasketFixture products={[requestProduct, bread]} />);
+		const addButtons = screen.getAllByRole("button", { name: "Add to my list" });
+		fireEvent.click(addButtons[0]);
+		fireEvent.click(addButtons[1]);
+		const summary = screen.getByRole("complementary", { name: requestsCopy.readyToSend });
+		expect(within(summary).getByText(requestsCopy.draftCount(2))).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: `${requestsCopy.remove}: ${requestProduct.displayName}` }));
+		const groceries = screen.getByRole("region", { name: requestsCopy.listItems });
+		expect(within(groceries).queryByRole("heading", { name: requestProduct.displayName })).not.toBeInTheDocument();
+		expect(within(groceries).getByRole("heading", { name: bread.displayName })).toBeInTheDocument();
+		expect(within(summary).getByText(requestsCopy.draftCount(1))).toBeInTheDocument();
+		expect(fake.submit).not.toHaveBeenCalled();
+	});
+	it("keeps quantity limits and announcements in the redesigned row", () => {
+		render(<BasketFixture />);
+		add();
+		const groceries = screen.getByRole("region", { name: requestsCopy.listItems });
+		const decrease = within(groceries).getByRole("button", { name: requestsCopy.decrease(requestProduct.displayName) });
+		const increase = within(groceries).getByRole("button", { name: requestsCopy.increase(requestProduct.displayName) });
+		expect(decrease).toBeDisabled();
+		for (let quantity = 1; quantity < 20; quantity += 1) fireEvent.click(increase);
+		expect(increase).toBeDisabled();
+		const output = within(groceries).getByRole("status");
+		expect(output).toHaveTextContent(`${requestsCopy.quantity}: 20`);
+		expect(output).toHaveAttribute("aria-live", "polite");
+		fireEvent.click(decrease);
+		expect(output).toHaveTextContent(`${requestsCopy.quantity}: 19`);
+		expect(increase).toBeEnabled();
+		expect(fake.submit).not.toHaveBeenCalled();
+	});
+	it("returns to the empty state after removing the last grocery", () => {
+		render(<BasketFixture />);
+		add();
+		fireEvent.click(screen.getByRole("button", { name: `${requestsCopy.remove}: ${requestProduct.displayName}` }));
+		expect(screen.getByRole("region", { name: requestsCopy.emptyBasket })).toBeInTheDocument();
+		expect(screen.queryByRole("complementary", { name: requestsCopy.readyToSend })).not.toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: requestsCopy.send })).not.toBeInTheDocument();
 		expect(fake.submit).not.toHaveBeenCalled();
 	});
 });
