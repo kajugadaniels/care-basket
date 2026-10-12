@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { PublicFooter } from "./PublicFooter";
@@ -37,12 +38,12 @@ describe("public footer", () => {
 		expect(footer).not.toHaveTextContent("PayPal");
 		expect(footer).not.toHaveTextContent("Sandbox");
 		expect(within(footer).getAllByRole("link")).toHaveLength(2);
-		const css = readFileSync(new URL("./PublicFooter.module.css", import.meta.url), "utf8");
+		const css = readFileSync(resolve(process.cwd(), "src/components/layout/PublicFooter/PublicFooter.module.css"), "utf8");
 		expect(css).toMatch(/\.requester\s+\.description\s*\{[^}]*font-size:\s*var\(--text-lg\)/);
 		expect(css).toMatch(/\.requester\s+\.link\s*\{[^}]*font-size:\s*var\(--text-md\)/);
 	});
 	it("uses body-sized text and keeps the links in a row within the responsive footer", () => {
-		const css = readFileSync(new URL("./PublicFooter.module.css", import.meta.url), "utf8");
+		const css = readFileSync(resolve(process.cwd(), "src/components/layout/PublicFooter/PublicFooter.module.css"), "utf8");
 		expect(css).toMatch(/\.description\s*\{[^}]*font-size:\s*var\(--text-base\)/);
 		expect(css).toMatch(/\.links\s*\{[^}]*display:\s*flex;[^}]*flex-wrap:\s*nowrap/);
 		expect(css).toMatch(/\.inner\s*\{[^}]*flex-direction:\s*column/);
