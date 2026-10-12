@@ -108,3 +108,32 @@ export function getCloudinaryUploadEnv() {
 	if (!result.success) throw new Error("Set valid CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET and CLOUDINARY_FOLDER_MODE in the selected environment.");
 	return result.data;
 }
+
+// Lazy and isolated: missing checkout credentials never break public/device pages.
+export function getPayPalEnv() {
+	const credential = z.string().min(20).max(256).regex(/^[A-Za-z0-9_-]+$/)
+		.refine((value) => !value.toLowerCase().includes("replace_with"));
+	const result = z.object({
+		NEXT_PUBLIC_PAYPAL_CLIENT_ID: credential,
+		PAYPAL_CLIENT_ID: credential,
+		PAYPAL_CLIENT_SECRET: credential,
+		PAYPAL_ENVIRONMENT: z.literal("sandbox"),
+		// Step 9 cannot approve buyers: even setting true fails closed until capture exists.
+		PAYPAL_BUYER_APPROVAL_ENABLED: z.literal("false").default("false"),
+	}).superRefine((env, context) => {
+		if (env.NEXT_PUBLIC_PAYPAL_CLIENT_ID !== env.PAYPAL_CLIENT_ID) {
+			context.addIssue({ code: "custom", path: ["NEXT_PUBLIC_PAYPAL_CLIENT_ID"], message: "Sandbox client IDs must match." });
+		}
+	}).safeParse({
+		NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+		PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
+		PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET,
+		PAYPAL_ENVIRONMENT: process.env.PAYPAL_ENVIRONMENT,
+		PAYPAL_BUYER_APPROVAL_ENABLED: process.env.PAYPAL_BUYER_APPROVAL_ENABLED,
+	});
+	if (!result.success) {
+		const names = [...new Set(result.error.issues.map((issue) => issue.path.join(".")))];
+		throw new Error(`Missing or invalid PayPal environment variables: ${names.join(", ")}. See .env.local.example or .env.production.example.`);
+	}
+	return result.data;
+}
