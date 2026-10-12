@@ -17,7 +17,7 @@ vi.mock("./repository", () => ({ createFamilyWithOwner: mocks.createFamilyWithOw
 import type { AdultActor } from "@/server/auth/require-adult";
 import { createFamilyForUser, getFamilyOverview } from "./service";
 
-const input = { familyName: "Jane's Family", displayName: "Jane" };
+const input = { familyName: "Jane's Family", displayName: "Jane", adultConfirmed: true };
 const janesFamily = {
   familyId: "family-1",
   familyName: "Jane's Family",
@@ -51,6 +51,7 @@ describe("createFamilyForUser", () => {
     mocks.findFamilyMembership.mockResolvedValue(janesFamily);
 
     const outcome = await createFamilyForUser("user-1", {
+			...input,
       familyName: "A Different Name",
       displayName: "Someone Else",
     });
@@ -88,6 +89,13 @@ describe("createFamilyForUser", () => {
     await expect(createFamilyForUser("user-1", input)).rejects.toBe(failure);
     expect(mocks.readFamilyMembership).not.toHaveBeenCalled();
   });
+
+	it("rejects unconfirmed setup before any membership lookup or write", async () => {
+		await expect(createFamilyForUser("user-1", { ...input, adultConfirmed: false }))
+			.rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+		expect(mocks.findFamilyMembership).not.toHaveBeenCalled();
+		expect(mocks.createFamilyWithOwner).not.toHaveBeenCalled();
+	});
 });
 
 describe("getFamilyOverview", () => {
