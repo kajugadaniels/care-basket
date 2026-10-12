@@ -24,3 +24,8 @@ export type ManagerDetailDto = Omit<RequestDetailDto, "items"> & ManagerSummaryD
 };
 export type RequestPage<T> = { requests: T[]; nextCursor: string | null };
 export type RequestMutationResult = ActionResult<{ requestId: string }>;
+
+export type RequestNotificationsDto = {
+	count: number;
+	notifications: { id: string; displayName: string; submittedAt: string }[];
+};
