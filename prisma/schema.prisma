@@ -41,6 +41,7 @@ model User {
   approvedDevices AuthorizedDevice[] @relation("DeviceApprover")
   revokedDevices AuthorizedDevice[] @relation("DeviceRevoker")
 	reviewedRequests ShoppingRequest[]
+	initiatedPayments Payment[]
 }
 
 /// The deletion root for everything a family owns.
@@ -58,6 +59,7 @@ model Family {
 	requests ShoppingRequest[]
 	baskets ShoppingBasket[]
 	assistantReviews AssistantReview[]
+	payments Payment[]
 }
 
 /// Links an adult to the family they manage. MVP: one family per adult (unique userId).
@@ -327,6 +329,16 @@ enum ItemOrigin {
 	SUGGESTED
 }
 
+enum PaymentStatus {
+	CREATED
+	APPROVED
+	PENDING
+	CAPTURED
+	DENIED
+	VOIDED
+	REFUNDED
+}
+
 model ShoppingRequest {
 	id String @id @default(uuid(7)) @db.Uuid
 	familyId String @db.Uuid
@@ -353,6 +365,7 @@ model ShoppingRequest {
 	device AuthorizedDevice? @relation(fields: [deviceId], references: [id], onDelete: SetNull)
 	reviewedBy User? @relation(fields: [reviewedByUserId], references: [id], onDelete: SetNull)
 	basket ShoppingBasket?
+	payments Payment[]
 
 	@@unique([profileId, clientRequestKey])
 	@@index([familyId, status, id])
@@ -375,8 +388,11 @@ model ShoppingBasket {
 	request ShoppingRequest @relation(fields: [requestId, familyId], references: [id, familyId], onDelete: Cascade)
 	family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
 	items BasketItem[]
+	payments Payment[]
 
 	@@unique([requestId, familyId])
+	// Payment's composite FK also binds its request, family, and currency.
+	@@unique([id, requestId, familyId, currency])
 	@@index([familyId])
 }
 
@@ -397,4 +413,40 @@ model BasketItem {
 
 	@@unique([basketId, productId])
 	@@index([productId])
+}
+
+/// Sandbox attempts only. Never store OAuth tokens, payer details, or provider payloads.
+model Payment {
+	id String @id @default(uuid(7)) @db.Uuid
+	familyId String @db.Uuid
+	requestId String @db.Uuid
+	basketId String @db.Uuid
+	status PaymentStatus @default(CREATED)
+	amountMinor Int
+	currency String @db.Char(3)
+	paypalOrderId String? @unique @db.VarChar(36)
+	paypalCaptureId String? @unique @db.VarChar(36)
+	// Idempotency belongs to this Sandbox application, even if configuration changes.
+	paypalClientId String @db.VarChar(256)
+	initiatedByUserId String @db.Uuid
+	capturedAt DateTime? @db.Timestamptz(3)
+	// Immutable catalog-only lines ensure every create retry sends the same body.
+	orderItems Json
+	// Durable fencing: crashed workers can resume, but concurrent workers cannot cancel/create.
+	creationStartedAt DateTime? @db.Timestamptz(3)
+	operationToken String? @db.Uuid
+	operationExpiresAt DateTime? @db.Timestamptz(3)
+	createdAt DateTime @default(now()) @db.Timestamptz(3)
+	updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+	family Family @relation(fields: [familyId], references: [id], onDelete: Cascade)
+	request ShoppingRequest @relation(fields: [requestId, familyId], references: [id, familyId], onDelete: Cascade)
+	basket ShoppingBasket @relation(fields: [basketId, requestId, familyId, currency], references: [id, requestId, familyId, currency], onDelete: Cascade)
+	initiatedBy User @relation(fields: [initiatedByUserId], references: [id], onDelete: Restrict)
+
+	@@index([familyId, requestId, createdAt])
+	@@index([requestId, familyId])
+	@@index([basketId, requestId, familyId, currency])
+	@@index([initiatedByUserId])
+	// One open attempt per basket is enforced by the partial index in migration SQL.
 }
