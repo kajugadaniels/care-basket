@@ -3,6 +3,7 @@ import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { cx } from "@/lib/class-names";
 import { formatDate } from "@/lib/format";
+import type { CheckoutDto } from "@/features/checkout/types";
 import type { ManagerDetailDto, RequestDetailDto } from "../../types";
 import { requestsCopy } from "../../copy";
 import { ManagerRequestDetail } from "../ManagerRequestDetail/ManagerRequestDetail";
@@ -10,8 +11,8 @@ import { CloseRequestDialog } from "./CloseRequestDialog";
 import { RequestItem } from "./RequestItem";
 import styles from "./RequestUi.module.css";
 
-export function RequestDetail({ request }: { request: RequestDetailDto | ManagerDetailDto }) {
-	if ("displayName" in request) return <ManagerRequestDetail request={request} />;
+export function RequestDetail({ request, checkout }: { request: RequestDetailDto | ManagerDetailDto; checkout?: CheckoutDto | null }) {
+	if ("displayName" in request) return <ManagerRequestDetail request={request} checkout={checkout} />;
 
 	return <div className={cx(styles.page, styles.requester, styles.reading)}>
 		<header className={styles.header}>
