@@ -1,4 +1,6 @@
+import { PencilEdit02Icon, SmartPhone01Icon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import { Icon } from "@/components/ui/Icon/Icon";
 import { DeleteProfileDialog } from "@/features/profiles/components/DeleteProfileDialog/DeleteProfileDialog";
 import { ProfileAvatar } from "@/features/profiles/components/ProfileAvatar/ProfileAvatar";
 import { profilesCopy } from "@/features/profiles/copy";
@@ -11,42 +13,50 @@ type ProfileDetailsProps = {
 	familyName: string;
 };
 
-// One family member's profile and its actions. ProfileDetailsSkeleton mirrors this layout.
 export function ProfileDetails({ profile, familyName }: ProfileDetailsProps) {
 	return (
 		<section className={styles.detail} aria-labelledby="profile-name">
-			<div className={styles.identity}>
-				<ProfileAvatar avatarKey={profile.avatarKey} />
-				<div className={styles.identityText}>
-					<h2 id="profile-name" className={styles.name}>
-						{profile.displayName}
-					</h2>
-					<p>{profilesCopy.kinds[profile.kind]}</p>
+			<header className={styles.header}>
+				<div className={styles.identity}>
+					<ProfileAvatar avatarKey={profile.avatarKey} />
+					<div className={styles.identityText}>
+						<h2 id="profile-name" className={styles.name}>
+							{profile.displayName}
+						</h2>
+						<p className={styles.kind}>{profilesCopy.kinds[profile.kind]}</p>
+					</div>
 				</div>
-			</div>
-			<dl className={styles.facts}>
-				<div>
-					<dt className={styles.term}>{profilesCopy.familyLabel}</dt>
-					<dd className={styles.value}>{familyName}</dd>
-				</div>
-				<div>
-					<dt className={styles.term}>{profilesCopy.createdLabel}</dt>
-					<dd className={styles.value}>
-						<time dateTime={profile.createdAt}>{formatDate(profile.createdAt)}</time>
-					</dd>
-				</div>
-			</dl>
-			<div className={styles.notice}>
-				<p>{profilesCopy.deviceNotice}</p>
-				<p>{profilesCopy.deviceUnavailable}</p>
-			</div>
-			<div className={styles.actions}>
-				<ActionLink href={`/family/devices/connect?profileId=${profile.id}`}>{profilesCopy.connectDevice}</ActionLink>
-				<ActionLink href={`/family/members/${profile.id}/edit`} variant="secondary">
+				<ActionLink href={`/family/members/${profile.id}/edit`} variant="secondary" size="sm" icon={PencilEdit02Icon}>
 					{profilesCopy.edit}
 				</ActionLink>
-				<DeleteProfileDialog profileId={profile.id} displayName={profile.displayName} />
+			</header>
+			<div className={styles.content}>
+				<dl className={styles.facts}>
+					<div className={styles.fact}>
+						<dt className={styles.term}>{profilesCopy.familyLabel}</dt>
+						<dd className={styles.value}>{familyName}</dd>
+					</div>
+					<div className={styles.fact}>
+						<dt className={styles.term}>{profilesCopy.createdLabel}</dt>
+						<dd className={styles.value}>
+							<time dateTime={profile.createdAt}>{formatDate(profile.createdAt)}</time>
+						</dd>
+					</div>
+				</dl>
+				<section className={styles.device} aria-labelledby="profile-device-title">
+					<div className={styles.deviceHeading}>
+						<Icon icon={SmartPhone01Icon} size={24} />
+						<h3 id="profile-device-title">{profilesCopy.deviceTitle}</h3>
+					</div>
+					<p>{profilesCopy.deviceNotice}</p>
+					<ActionLink href={`/family/devices/connect?profileId=${profile.id}`} size="sm">
+						{profilesCopy.connectDevice}
+					</ActionLink>
+				</section>
 			</div>
+			<footer className={styles.footer}>
+				<DeleteProfileDialog profileId={profile.id} displayName={profile.displayName} />
+			</footer>
 		</section>
 	);
 }
