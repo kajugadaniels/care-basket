@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({ createFamilyAction: vi.fn() }));
 vi.mock("@/features/family/actions", () => ({ createFamilyAction: mocks.createFamilyAction }));
 
 import { CreateFamilyForm } from "./CreateFamilyForm";
+import { familySetupCopy } from "@/features/family/copy";
 
 function submit() {
   fireEvent.click(screen.getByRole("button", { name: "Create My Family" }));
@@ -17,7 +18,7 @@ describe("CreateFamilyForm", () => {
     mocks.createFamilyAction.mockReset();
   });
 
-  it("asks only for a family name and a display name", () => {
+  it("asks for two names and explicit adult confirmation, without birth dates", () => {
     render(<CreateFamilyForm defaultDisplayName="" />);
 
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
@@ -26,6 +27,9 @@ describe("CreateFamilyForm", () => {
     );
     expect(screen.getByRole("textbox", { name: "Your display name" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Create My Family" })).toBeEnabled();
+		const consent = screen.getByRole("checkbox", { name: familySetupCopy.adultConfirmation });
+		expect(consent).not.toBeChecked();
+		expect(consent).toBeRequired();
   });
 
   it("prefills the display name from the adult's first name", () => {
@@ -74,6 +78,23 @@ describe("CreateFamilyForm", () => {
       "We couldn't create your family. Please try again in a moment.",
     );
   });
+
+	it("describes and focuses an unconfirmed adult-access checkbox", async () => {
+		mocks.createFamilyAction.mockResolvedValue({
+			values: { familyName: "Jane's Family", displayName: "Jane" },
+			error: {
+				code: "VALIDATION_FAILED", message: "Please check the highlighted fields.",
+				fieldErrors: { adultConfirmed: [familySetupCopy.adultConfirmationError] },
+			},
+		} satisfies CreateFamilyFormState);
+		render(<CreateFamilyForm defaultDisplayName="Jane" />);
+		submit();
+		const consent = screen.getByRole("checkbox", { name: familySetupCopy.adultConfirmation });
+		await waitFor(() => expect(consent).toHaveFocus());
+		expect(consent).toHaveAccessibleDescription(
+			`${familySetupCopy.adultConfirmationHint} ${familySetupCopy.adultConfirmationError}`,
+		);
+	});
 
   it("disables the button while sending, so the form cannot be submitted twice", async () => {
     mocks.createFamilyAction.mockReturnValue(new Promise(() => undefined));
