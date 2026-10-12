@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { familySetupCopy } from "@/features/family/copy";
 import {
   DISPLAY_NAME_MAX_LENGTH,
   FAMILY_NAME_MAX_LENGTH,
@@ -52,6 +53,7 @@ const displayNameSchema = z
 export const createFamilySchema = z.strictObject({
   familyName: familyNameSchema,
   displayName: displayNameSchema,
+	adultConfirmed: z.literal(true, { error: familySetupCopy.adultConfirmationError }),
 });
 
 export type CreateFamilyInput = z.infer<typeof createFamilySchema>;
