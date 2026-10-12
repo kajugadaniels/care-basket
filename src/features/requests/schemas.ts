@@ -1,5 +1,12 @@
 import { z } from "zod";
-import { MAX_ITEM_QUANTITY, MAX_REQUEST_ITEMS, REQUEST_STATUSES } from "./limits";
+import { MAX_ITEM_QUANTITY, MAX_REQUEST_ITEMS, REQUEST_NOTIFICATION_LIMIT, REQUEST_STATUSES } from "./limits";
+
+export const requestNotificationsSchema = z.strictObject({
+	count: z.int().min(0),
+	notifications: z.array(z.strictObject({
+		id: z.uuid(), displayName: z.string().min(1).max(40), submittedAt: z.iso.datetime(),
+	})).max(REQUEST_NOTIFICATION_LIMIT),
+});
 
 export const quantitySchema = z.number().int().min(1).max(MAX_ITEM_QUANTITY);
 export const requestItemSchema = z.strictObject({
