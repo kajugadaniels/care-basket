@@ -1,5 +1,5 @@
 import "server-only";
-import type { CreateFamilyInput } from "@/features/family/schemas";
+import { createFamilySchema } from "@/features/family/schemas";
 import type { FamilyOverview } from "@/features/family/types";
 import {
   findFamilyMembership,
@@ -24,15 +24,17 @@ export type CreateFamilyOutcome = {
  */
 export async function createFamilyForUser(
   userId: string,
-  input: CreateFamilyInput,
+	input: unknown,
 ): Promise<CreateFamilyOutcome> {
+	const parsed = createFamilySchema.safeParse(input);
+	if (!parsed.success) throw new AppError("VALIDATION_FAILED");
   const existing = await findFamilyMembership(userId);
   if (existing) {
     return { status: "existing", family: existing };
   }
 
   try {
-    const family = await createFamilyWithOwner({ userId, ...input });
+		const family = await createFamilyWithOwner({ userId, ...parsed.data });
     return { status: "created", family };
   } catch (error) {
     if (!isUniqueConstraintViolation(error)) {
