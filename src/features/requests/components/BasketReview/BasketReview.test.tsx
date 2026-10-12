@@ -60,7 +60,7 @@ describe("shopping basket review", () => {
 		const heading = await screen.findByRole("heading", { name: "Your shopping list has been sent!" });
 		await waitFor(() => expect(heading).toHaveFocus());
 		expect(screen.getByRole("link", { name: "View Details" })).toHaveAttribute("href", `/shop/requests/${requestIds.request}`);
-		expect(screen.getByText("Waiting for review")).toBeInTheDocument();
+		expect(screen.getByText(requestsCopy.statuses.PENDING_REVIEW)).toHaveAttribute("role", "status");
 	});
 	it("freezes quantities and prevents double submissions while pending", async () => {
 		let resolve!: (result: RequestMutationResult) => void;
