@@ -57,9 +57,14 @@ describe("shopping request screens", () => {
 		expect(screen.queryByText(/PRIVATEORDER1|\$5\.00|PayPal Sandbox/)).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /checkout|prepare|cancel/i })).not.toBeInTheDocument();
 	});
-	it("shows preparation only for manager checkout data and never fabricates payment confirmation", () => {
+	it("links below decline to dedicated checkout without mounting payment controls", () => {
 		render(<RequestDetail request={makeManagerRequest()} checkout={null} />);
-		expect(screen.getByRole("button", { name: "Prepare checkout" })).toBeInTheDocument();
+		const summary = screen.getByRole("region", { name: requestsCopy.managerSummary });
+		const checkout = within(summary).getByRole("link", { name: "Checkout" });
+		expect(checkout).toHaveAttribute("href", `/family/requests/${requestIds.request}/checkout`);
+		expect(within(summary).getByRole("button", { name: requestsCopy.decline }).compareDocumentPosition(checkout) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		expect(screen.queryByRole("button", { name: "Prepare checkout" })).not.toBeInTheDocument();
+		expect(screen.queryByText(/PayPal Sandbox checkout|Prepare a test order for the reviewed basket/)).not.toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /pay with paypal/i })).not.toBeInTheDocument();
 		expect(screen.queryByText("Payment confirmed")).not.toBeInTheDocument();
 	});
@@ -198,6 +203,7 @@ describe("shopping request screens", () => {
 		fireEvent.click(screen.getAllByRole("button", { name: requestsCopy.save })[1]);
 		fireEvent.click(screen.getByRole("button", { name: "Remove item: Demo bread" }));
 		fireEvent.click(screen.getByRole("button", { name: requestsCopy.decline }));
+		expect(fireEvent.click(within(summary).getByRole("link", { name: "Checkout" }))).toBe(false);
 		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusyTitle);
 		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusy);
 		expect(fake.update).toHaveBeenCalledOnce();

@@ -50,7 +50,8 @@ describe("authenticated request actions", () => {
 	it.each([submitRequestAction, cancelRequestAction, updateRequestItemAction, removeRequestItemAction, declineRequestAction])("refreshes both detail paths in the successful action response", async (action) => {
 		await action({});
 		expect(fake.revalidate.mock.calls.map(([path]) => path)).toEqual([
-			"/family", "/family/requests", `/family/requests/${requestIds.request}`, "/shop/requests", `/shop/requests/${requestIds.request}`,
+			"/family", "/family/requests", `/family/requests/${requestIds.request}`,
+			`/family/requests/${requestIds.request}/checkout`, "/shop/requests", `/shop/requests/${requestIds.request}`,
 		]);
 	});
 	it("returns a friendly conflict without revalidating failed mutations", async () => {

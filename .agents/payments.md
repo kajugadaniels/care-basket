@@ -34,7 +34,7 @@
 | 1 | A managed profile submits a shopping request. | Device → `submitRequestAction` |
 | 2 | The server validates SKUs, quantities (1–20), and availability, snapshots `DemoMerchantPrice` values into `BasketItem.unitPriceMinor`, records each item's origin, and computes the subtotal. | `requests` service, one transaction |
 | 3 | The manager reviews items, quantities, prices, substitutions, and total; can edit quantities, remove items, or decline. | `/family/requests/[requestId]` |
-| 4 | The manager explicitly chooses **Pay with PayPal**. | Manager UI (Client Component) |
+| 4 | The manager chooses **Checkout** below the decline action and navigates to `/family/requests/[requestId]/checkout`. Preparation, official PayPal approval, cancellation, recovery, and verified results stay on this dedicated manager-only page. Navigation and page reads never create or capture an order. | Manager UI |
 | 5 | `createOrder` calls `startCheckoutAction({ requestId })`. The server re-authorizes the adult and **re-prices** every item from `DemoMerchantPrice`. If a price changed or an item became unavailable, it updates the unlocked basket to current catalog data, returns `CONFLICT`, and asks the manager to review again. Otherwise, in one transaction, it locks the basket (`lockedAt`, conditional on it being unlocked), sets the request to `AWAITING_PAYMENT`, and creates a `Payment` (`CREATED`). Outside the transaction it creates the PayPal order and stores `paypalOrderId`. It returns only the order ID. | `checkout` service + `src/lib/paypal` |
 | 6 | The manager approves the payment in the PayPal popup or modal. | PayPal |
 | 7 | `onApprove` calls `captureCheckoutAction({ requestId, paypalOrderId })`. The server checks that the order ID belongs to this request's open payment, then calls capture with `PayPal-Request-Id: capture-<paymentId>`. | `checkout` service |
@@ -110,6 +110,8 @@ A payment becomes `CAPTURED` only when **all** of these hold, using the capture 
 A capture status of `PENDING` sets `Payment.status = PENDING` and leaves the request in `AWAITING_PAYMENT` until a verified `PAYMENT.CAPTURE.COMPLETED` arrives. Any mismatch leaves the payment unconfirmed, writes an audit entry `payment.verification_failed`, and shows the manager a calm message to contact support. It is never shown as paid.
 
 A browser redirect, a client-side `onApprove` callback, or a URL parameter **never** marks anything paid.
+
+The checkout page may show a short, reduced-motion-aware result animation only for the verified server state. Network errors and closed popups do not imply a declined payment or no charge: retain the uncertain-state copy and a recovery action. Every outcome keeps a **Back to request** link to the originating request details; payment outcomes never disappear automatically.
 
 Recoverable PayPal errors (for example `INSTRUMENT_DECLINED`) keep the payment open so the manager can try another funding source; tell them "PayPal couldn't use that payment method. Please try again." `ORDER_ALREADY_CAPTURED` triggers a re-fetch and reconciliation.
 

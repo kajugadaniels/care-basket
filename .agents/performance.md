@@ -56,7 +56,7 @@ The endpoint targets exclude browser latency and external providers such as Cler
 
 - `'use client'` only at interactive leaves ([architecture.md § 3](architecture.md#3-server-and-client-components)).
 - **Requester routes** (`/shop`, `/connect`) MUST NOT render Clerk UI components or load the PayPal SDK or any AI SDK. They SHOULD also avoid Clerk's client runtime by scoping `ClerkProvider` to the adult and auth route groups, if Clerk's current docs support that ([authentication.md § 3](authentication.md#3-clerk-sign-in-and-sessions)).
-- **PayPal SDK** loads only on the manager's request review page, and only when the manager reaches the payment step.
+- **PayPal SDK** loads only on `/family/requests/[requestId]/checkout`, after deliberate preparation of a server-enabled checkout. Request details show a navigation link only; they never mount payment controls or load the SDK.
 - Import Hugeicons one icon at a time; never import a whole icon set.
 - Heavy, rarely used UI (for example, the voice recorder) is lazy-loaded with `next/dynamic` or `React.lazy` when it is not needed for first paint.
 - New client dependencies need approval and a size justification ([workflow.md § 3](workflow.md#3-dependency-changes)).

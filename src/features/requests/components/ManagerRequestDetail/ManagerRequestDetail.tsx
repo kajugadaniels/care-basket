@@ -4,7 +4,7 @@ import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { cx } from "@/lib/class-names";
 import { formatDate, formatTime } from "@/lib/format";
-import { CheckoutPanel } from "@/features/checkout/components/CheckoutPanel/CheckoutPanel";
+import { checkoutCopy } from "@/features/checkout/copy";
 import type { CheckoutDto } from "@/features/checkout/types";
 import { requestsCopy as copy } from "../../copy";
 import type { ManagerDetailDto } from "../../types";
@@ -58,8 +58,10 @@ export function ManagerRequestDetail({ request, checkout }: { request: ManagerDe
 				{request.editable ? (
 					<CloseRequestDialog requestId={request.id} revision={request.revision} manager />
 				) : <p className={styles.explanation}>{copy.locked}</p>}
-				{checkout !== undefined && !isClosed && (request.editable || request.status === "AWAITING_PAYMENT" || checkout) ? (
-					<CheckoutPanel requestId={request.id} revision={request.revision} editable={request.editable} checkout={checkout} />
+				{!isClosed && (request.editable || request.status === "AWAITING_PAYMENT" || checkout) ? (
+					<ActionLink href={`/family/requests/${request.id}/checkout`}>
+						{request.status === "PAID" ? checkoutCopy.viewPayment : checkoutCopy.checkout}
+					</ActionLink>
 				) : null}
 			</ManagerBasket>
 		</div>

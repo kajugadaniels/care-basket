@@ -2,12 +2,14 @@
 	display: grid;
 	gap: var(--space-3);
 	min-inline-size: 0;
-	padding-block-start: var(--space-4);
-	border-block-start: 1px solid var(--color-border);
+	padding: var(--space-5);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface);
 }
 
-.panel h3 {
-	font-size: var(--text-base);
+.panel h2 {
+	font-size: var(--text-md);
 }
 
 .help,
@@ -29,12 +31,13 @@
 .reference dd {
 	margin: 0;
 	color: var(--color-text);
+	font-size: var(--text-base);
 	font-variant-numeric: tabular-nums;
 }
 
 .status {
 	color: var(--color-info);
-	font-size: var(--text-sm);
+	font-size: var(--text-base);
 	font-weight: var(--weight-semibold);
 }
 
@@ -45,6 +48,127 @@
 	background: var(--color-danger-bg);
 	color: var(--color-danger);
 	font-size: var(--text-base);
+}
+
+.status.confirmed,
+.status.denied {
+	font-size: var(--text-md);
+}
+
+.confirmed {
+	color: var(--color-success);
+}
+
+.denied {
+	color: var(--color-danger);
+}
+
+.receiptGraphic {
+	position: relative;
+	justify-self: center;
+	inline-size: calc(var(--space-8) + var(--space-6));
+	block-size: calc(var(--space-8) + var(--space-6));
+	margin-block: var(--space-4);
+}
+
+.receipt {
+	display: grid;
+	place-items: center;
+	inline-size: 100%;
+	block-size: 100%;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	background: var(--color-surface-soft);
+	color: var(--color-primary);
+	animation: receiptArrives var(--duration-base) var(--ease-standard) both;
+}
+
+.seal {
+	position: absolute;
+	inset-inline-end: calc(-1 * var(--space-2));
+	inset-block-end: calc(-1 * var(--space-2));
+	display: grid;
+	place-items: center;
+	inline-size: var(--control-height);
+	block-size: var(--control-height);
+	border: 1px solid currentColor;
+	border-radius: var(--radius-full);
+	animation-duration: var(--duration-base);
+	animation-delay: var(--duration-fast);
+	animation-timing-function: var(--ease-standard);
+	animation-fill-mode: both;
+}
+
+.successGraphic .seal {
+	background: var(--color-success-bg);
+	color: var(--color-success);
+	animation-name: receiptAccepted;
+}
+
+.failureGraphic .seal {
+	background: var(--color-danger-bg);
+	color: var(--color-danger);
+	animation-name: receiptReturned;
+}
+
+.errorFeedback {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: start;
+	gap: var(--space-3);
+	padding: var(--space-4);
+	border: 1px solid var(--color-danger);
+	border-radius: var(--radius-md);
+	background: var(--color-danger-bg);
+}
+
+.errorFeedback .error {
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+.errorIcon {
+	color: var(--color-danger);
+	animation: receiptReturned var(--duration-base) var(--ease-standard) both;
+}
+
+.back {
+	inline-size: 100%;
+	margin-block-start: var(--space-3);
+	white-space: normal;
+}
+
+/* Two short receipt/seal movements explain the result without delaying actions. */
+@keyframes receiptArrives {
+	from { opacity: 0; transform: translateY(var(--space-2)) rotate(-6deg); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes receiptAccepted {
+	from { opacity: 0; transform: translateY(calc(-1 * var(--space-4))) rotate(-16deg) scale(0.9); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes receiptReturned {
+	from { opacity: 0; transform: translateX(var(--space-4)) rotate(16deg); }
+	to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.receipt,
+	.seal,
+	.errorIcon {
+		animation: none;
+	}
+}
+
+@media (forced-colors: active) {
+	.receipt,
+	.seal,
+	.errorFeedback {
+		border-color: CanvasText;
+	}
 }
 
 .dialog {

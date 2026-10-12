@@ -31,7 +31,8 @@ describe("authenticated checkout actions", () => {
 		expect(fake.start).toHaveBeenCalledWith(requestManager, input);
 		expect(fake.adult.mock.invocationCallOrder[0]).toBeLessThan(fake.limit.mock.invocationCallOrder[0]);
 		expect(fake.limit.mock.invocationCallOrder[0]).toBeLessThan(fake.start.mock.invocationCallOrder[0]);
-		for (const path of ["/family", "/family/requests", `/family/requests/${input.requestId}`, "/shop/requests", `/shop/requests/${input.requestId}`]) {
+		for (const path of ["/family", "/family/requests", `/family/requests/${input.requestId}`,
+			`/family/requests/${input.requestId}/checkout`, "/shop/requests", `/shop/requests/${input.requestId}`]) {
 			expect(fake.revalidate).toHaveBeenCalledWith(path);
 		}
 	});
@@ -56,6 +57,7 @@ describe("authenticated checkout actions", () => {
 			fake.start.mockRejectedValue(new CheckoutFailure(reason));
 			expect(await startCheckoutAction(input)).toMatchObject({ ok: false, error: { message: copy.errors[reason] } });
 			expect(fake.revalidate).toHaveBeenCalledWith(`/family/requests/${input.requestId}`);
+			expect(fake.revalidate).toHaveBeenCalledWith(`/family/requests/${input.requestId}/checkout`);
 		});
 	it("does not log raw provider errors or return diagnostics", async () => {
 		fake.start.mockRejectedValue(new Error("private payer and credential information"));
@@ -71,6 +73,7 @@ describe("authenticated checkout actions", () => {
 		expect(await cancelCheckoutAction(cancel)).toEqual({ ok: true, data: { requestId: input.requestId } });
 		expect(fake.cancel).toHaveBeenCalledWith(requestManager, cancel);
 		expect(fake.limit).toHaveBeenCalledWith(`checkout:cancel:${requestIds.family}:${input.requestId}`, 10, 3_600_000);
+		expect(fake.revalidate).toHaveBeenCalledWith(`/family/requests/${input.requestId}/checkout`);
 	});
 	it.each([true, false])("authenticates and bounds payment reconciliation with capture=%s", async (capture) => {
 		const action = capture ? captureCheckoutAction : refreshCheckoutAction;
@@ -80,6 +83,7 @@ describe("authenticated checkout actions", () => {
 		expect(fake.limit).toHaveBeenCalledWith(`checkout:payment:${requestIds.family}:${input.requestId}`, 10, 60_000);
 		expect(fake.reconcile).toHaveBeenCalledWith(requestManager, value, capture);
 		expect(fake.revalidate).toHaveBeenCalledWith(`/shop/requests/${input.requestId}`);
+		expect(fake.revalidate).toHaveBeenCalledWith(`/family/requests/${input.requestId}/checkout`);
 	});
 	it.each([captureCheckoutAction, refreshCheckoutAction])("rejects extra client prices/identities and unauthenticated payment actions", async (action) => {
 		const value = { requestId: input.requestId, paypalOrderId: "ORDER1" };

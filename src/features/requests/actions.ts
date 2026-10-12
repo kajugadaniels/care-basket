@@ -12,6 +12,7 @@ function invalidate(requestId: string) {
 	revalidatePath("/family");
 	revalidatePath("/family/requests");
 	revalidatePath(`/family/requests/${requestId}`);
+	revalidatePath(`/family/requests/${requestId}/checkout`);
 	revalidatePath("/shop/requests");
 	revalidatePath(`/shop/requests/${requestId}`);
 }

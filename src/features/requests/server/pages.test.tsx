@@ -22,6 +22,7 @@ import HistoryPage from "@/app/(device)/shop/requests/page";
 import OwnDetailPage from "@/app/(device)/shop/requests/[requestId]/page";
 import InboxPage from "@/app/(manager)/family/requests/page";
 import ManagerDetailPage from "@/app/(manager)/family/requests/[requestId]/page";
+import CheckoutPage from "@/app/(manager)/family/requests/[requestId]/checkout/page";
 
 const params = Promise.resolve({ requestId: requestIds.request });
 describe("streamed authenticated shopping routes", () => {
@@ -34,7 +35,7 @@ describe("streamed authenticated shopping routes", () => {
 	});
 	it("does not access request-time auth outside Suspense", () => {
 		BasketPage(); HistoryPage({ searchParams: Promise.resolve({}) }); OwnDetailPage({ params });
-		InboxPage({ searchParams: Promise.resolve({}) }); ManagerDetailPage({ params });
+		InboxPage({ searchParams: Promise.resolve({}) }); ManagerDetailPage({ params }); CheckoutPage({ params });
 		expect(fake.device).not.toHaveBeenCalled(); expect(fake.adult).not.toHaveBeenCalled();
 	});
 	it.each(["missing", "revoked", "expired"])("shows reconnect instead of a basket for a %s device", async () => {
@@ -58,13 +59,42 @@ describe("streamed authenticated shopping routes", () => {
 		await expect(resolveServerTree(ManagerDetailPage({ params }))).rejects.toThrow("NEXT_NOT_FOUND");
 		expect(fake.family).toHaveBeenCalledWith(requestManager, requestIds.request);
 	});
-	it("loads checkout only for the authenticated manager detail route", async () => {
+	it("keeps details navigation-only and mounts payment controls on checkout", async () => {
 		render(await resolveServerTree(ManagerDetailPage({ params })));
 		expect(fake.checkout).toHaveBeenCalledWith(requestManager, requestIds.request);
+		expect(screen.getByRole("link", { name: "Checkout" })).toHaveAttribute("href", `/family/requests/${requestIds.request}/checkout`);
+		expect(screen.queryByRole("button", { name: "Prepare checkout" })).not.toBeInTheDocument();
+		render(await resolveServerTree(CheckoutPage({ params })));
+		expect(screen.getByRole("heading", { level: 1, name: "Checkout" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Prepare checkout" })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Back to request" })).toHaveAttribute("href", `/family/requests/${requestIds.request}`);
 		fake.checkout.mockClear();
 		await resolveServerTree(OwnDetailPage({ params }));
 		expect(fake.checkout).not.toHaveBeenCalled();
+	});
+	it("protects checkout reads with the manager role before using route IDs", async () => {
+		render(await resolveServerTree(CheckoutPage({ params })));
+		expect(fake.adult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
+		expect(fake.family).toHaveBeenCalledWith(requestManager, requestIds.request);
+		expect(fake.checkout).toHaveBeenCalledWith(requestManager, requestIds.request);
+		expect(fake.adult.mock.invocationCallOrder[0]).toBeLessThan(fake.checkout.mock.invocationCallOrder[0]);
+	});
+	it.each(["UNAUTHENTICATED", "FORBIDDEN"] as const)("does not read checkout after %s", async (code) => {
+		fake.adult.mockRejectedValue(new AppError(code));
+		await expect(resolveServerTree(CheckoutPage({ params }))).rejects.toThrow(AppError);
+		expect(fake.family).not.toHaveBeenCalled();
+		expect(fake.checkout).not.toHaveBeenCalled();
+	});
+	it("maps foreign checkout requests to the same not-found boundary", async () => {
+		fake.family.mockRejectedValue(new AppError("NOT_FOUND"));
+		await expect(resolveServerTree(CheckoutPage({ params }))).rejects.toThrow("NEXT_NOT_FOUND");
+		expect(fake.notFound).toHaveBeenCalledOnce();
+	});
+	it.each(["DECLINED", "CANCELLED"] as const)("offers only a return path for a %s checkout", async (status) => {
+		fake.family.mockResolvedValue(makeManagerRequest({ status, editable: false }));
+		render(await resolveServerTree(CheckoutPage({ params })));
+		expect(screen.queryByRole("button", { name: "Prepare checkout" })).not.toBeInTheDocument();
+		expect(screen.getByRole("link", { name: "Back to request" })).toHaveAttribute("href", `/family/requests/${requestIds.request}`);
 	});
 	it("protects inbox reads with an adult family role and validates filters", async () => {
 		render(await resolveServerTree(InboxPage({ searchParams: Promise.resolve({ status: "PENDING_REVIEW" }) })));
