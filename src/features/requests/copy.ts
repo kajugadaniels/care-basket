@@ -1,7 +1,7 @@
 export const requestsCopy = {
 	historyIntro: "See what you sent to your family.", detailTitle: "Your shopping list",
 	unavailableHelp: "Go back to see your other lists.",
-	readyToSend: "Ready to send?", sendHelp: "Your family will check your list first.",
+	readyToSend: "Ready to send?",
 	listItems: "Groceries in your list", deliveryNotice: "Demo only. No delivery has been arranged.",
 	budget: "Requester’s budget (context only)",
 	basketTitle: "Check your shopping list",
@@ -46,7 +46,6 @@ export const requestsCopy = {
 	managerEmptyItems: "This request has no groceries to review.",
 	managerReviewHelp: "Save quantity changes before leaving this request.",
 	managerSyncing: "Syncing…",
-	managerPreview: "Preview · awaiting confirmation",
 	managerConfirmFailed: "We couldn't confirm this change. Your input is still here. Refresh to check the saved quantity before retrying.",
 	toastSuccess: "Change saved",
 	toastError: "Change not confirmed",
