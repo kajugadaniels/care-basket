@@ -80,8 +80,9 @@ describe("lazy Sandbox-only payment configuration", () => {
 		vi.stubEnv("PAYPAL_CLIENT_SECRET", "fictional_sandbox_secret_123456");
 		vi.stubEnv("PAYPAL_ENVIRONMENT", "sandbox");
 		vi.stubEnv("PAYPAL_BUYER_APPROVAL_ENABLED", "false");
+		vi.stubEnv("PAYPAL_WEBHOOK_ID", undefined);
 	}
-	it("requires matching app IDs, Sandbox, and a disabled approval gate", async () => {
+	it("requires matching app IDs and Sandbox, defaulting buyer approval to disabled", async () => {
 		configure();
 		const { getPayPalEnv } = await import("./server");
 		expect(getPayPalEnv().PAYPAL_ENVIRONMENT).toBe("sandbox");
@@ -106,5 +107,14 @@ describe("lazy Sandbox-only payment configuration", () => {
 		vi.stubEnv("DATABASE_URL", "postgresql://fictional:fictional@localhost/test");
 		const getServerEnv = await loadGetServerEnv();
 		expect(getServerEnv().DATABASE_URL).toContain("localhost/test");
+	});
+	it("enables approval only with matching Sandbox credentials and a registered webhook ID", async () => {
+		configure();
+		vi.stubEnv("PAYPAL_BUYER_APPROVAL_ENABLED", "true");
+		vi.stubEnv("PAYPAL_WEBHOOK_ID", "FICTIONAL123WEBHOOK");
+		const { getPayPalEnv } = await import("./server");
+		expect(getPayPalEnv().PAYPAL_BUYER_APPROVAL_ENABLED).toBe("true");
+		vi.stubEnv("PAYPAL_WEBHOOK_ID", "replace_with_webhook");
+		expect(getPayPalEnv).toThrow(/PAYPAL_WEBHOOK_ID/);
 	});
 });
