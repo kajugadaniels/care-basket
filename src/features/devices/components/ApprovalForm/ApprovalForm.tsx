@@ -32,7 +32,5 @@ export function ApprovalForm({ profiles, preselected }: { profiles: ProfileOptio
       error={error ?? undefined} disabled={isPending} />
     {error ? <p ref={errorRef} tabIndex={-1} role="alert" className={styles.error}>{error}</p> : null}
     <Button type="submit" loading={isPending} className={styles.submit}>{isPending ? devicesCopy.checking : devicesCopy.lookup}</Button>
-    {/* The button shows the progress; this announces it to screen readers. */}
-    <p role="status" className={styles.visuallyHidden}>{isPending ? devicesCopy.checking : ""}</p>
   </form>;
 }
