@@ -52,8 +52,6 @@ export function DeleteProfileDialog({ profileId, displayName }: { profileId: str
               {isPending ? profilesCopy.removing : profilesCopy.remove}
             </Button>
           </div>
-          {/* The button shows the progress; this announces it to screen readers. */}
-          <p role="status" className={styles.visuallyHidden}>{isPending ? profilesCopy.removing : ""}</p>
         </form>
       </dialog>
     </>
