@@ -1,5 +1,6 @@
 import "server-only";
 import { z } from "zod";
+import { isAdultProfile } from "@/lib/audience";
 import type { DeviceActor } from "@/server/auth/device-policy";
 import { AppError } from "@/server/errors";
 import { catalogFiltersSchema } from "../schemas";
@@ -8,7 +9,7 @@ import { readCatalogPage, readCatalogProduct } from "./cached-catalog";
 import type { CatalogRow } from "./repository";
 
 function assertDevice(actor: DeviceActor) {
-	if (actor.type !== "device" || !["ASSISTED_ADULT", "CHILD"].includes(actor.profileKind)) throw new AppError("FORBIDDEN");
+	if (actor.type !== "device" || !isAdultProfile(actor.profileKind)) throw new AppError("FORBIDDEN");
 }
 
 function requesterProduct(row: CatalogRow): CatalogProductDto {
@@ -39,12 +40,12 @@ function page<T>(rows: CatalogRow[], filters: CatalogFilters, project: (row: Cat
 export async function listRequesterProducts(actor: DeviceActor, input: unknown): Promise<CatalogPage<CatalogProductDto>> {
 	assertDevice(actor);
 	const filters = catalogFiltersSchema.parse(input);
-	return page(await readCatalogPage(filters, actor.profileKind === "CHILD"), filters, requesterProduct);
+	return page(await readCatalogPage(filters, false), filters, requesterProduct);
 }
 
 export async function getRequesterProduct(actor: DeviceActor, sku: string): Promise<CatalogProductDto> {
 	assertDevice(actor);
-	const row = await readCatalogProduct(z.string().max(60).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).parse(sku), actor.profileKind === "CHILD");
+	const row = await readCatalogProduct(z.string().max(60).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).parse(sku), false);
 	if (!row) throw new AppError("NOT_FOUND");
 	return requesterProduct(row);
 }
