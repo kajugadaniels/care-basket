@@ -22,6 +22,10 @@ function requestId(value: string) {
 function page<T extends { id: string }>(rows: T[]): RequestPage<T> {
 	return { requests: rows.slice(0, REQUEST_PAGE_SIZE), nextCursor: rows.length > REQUEST_PAGE_SIZE ? rows[REQUEST_PAGE_SIZE - 1].id : null };
 }
+function paymentState(row: { payments?: { status: string }[] }): { paymentState?: "REFUNDED" | "REVERSED" } {
+	const status = row.payments?.[0]?.status;
+	return status === "REFUNDED" || status === "REVERSED" ? { paymentState: status } : {};
+}
 export function submitRequest(actor: DeviceActor, input: unknown) {
 	assertDevicePermission(actor, "create-own-request");
 	return insertRequest(actor, submitRequestSchema.parse(input));
@@ -66,12 +70,12 @@ export async function getRequestNotifications(actor: AdultActor): Promise<Reques
 export async function listOwnRequests(actor: DeviceActor, input: unknown = {}): Promise<RequestPage<RequestSummaryDto>> {
 	assertDevicePermission(actor, "view-own-requests");
 	const rows = await readDeviceRequests(actor, requestListSchema.parse(input));
-	return page(rows.map((row) => ({ id: row.id, status: row.status, submittedAt: row.submittedAt.toISOString(), itemCount: row.basket?._count.items ?? 0 })));
+	return page(rows.map((row) => ({ id: row.id, status: row.status, ...paymentState(row), submittedAt: row.submittedAt.toISOString(), itemCount: row.basket?._count.items ?? 0 })));
 }
 export async function listFamilyRequests(actor: AdultActor, input: unknown = {}): Promise<RequestPage<ManagerSummaryDto>> {
 	assertManager(actor);
 	const rows = await readManagerRequests(actor.familyId, requestListSchema.parse(input));
-	return page(rows.map((row) => ({ id: row.id, status: row.status, submittedAt: row.submittedAt.toISOString(),
+	return page(rows.map((row) => ({ id: row.id, status: row.status, ...paymentState(row), submittedAt: row.submittedAt.toISOString(),
 		itemCount: row.basket?._count.items ?? 0, displayName: row.profile.displayName,
 		subtotal: row.basket ? formatMoney(row.basket.subtotalMinor, row.basket.currency) : "—" })));
 }
@@ -79,7 +83,7 @@ export async function getOwnRequest(actor: DeviceActor, id: string): Promise<Req
 	assertDevicePermission(actor, "view-own-requests");
 	const row = await readDeviceRequest(actor, requestId(id));
 	if (!row?.basket) throw new AppError("NOT_FOUND");
-	return { id: row.id, status: row.status, submittedAt: row.submittedAt.toISOString(), revision: row.revision,
+	return { id: row.id, status: row.status, ...paymentState(row), submittedAt: row.submittedAt.toISOString(), revision: row.revision,
 		itemCount: row.basket.items.length, editable: row.status === "PENDING_REVIEW" && row.basket.lockedAt === null,
 		items: row.basket.items.map((item) => ({ id: item.id, quantity: item.quantity, ...item.product })) };
 }
@@ -88,7 +92,7 @@ export async function getFamilyRequest(actor: AdultActor, id: string): Promise<M
 	const row = await readManagerRequest(actor.familyId, requestId(id));
 	if (!row?.basket) throw new AppError("NOT_FOUND");
 	const currency = row.basket.currency;
-	return { id: row.id, status: row.status, submittedAt: row.submittedAt.toISOString(), revision: row.revision,
+	return { id: row.id, status: row.status, ...paymentState(row), submittedAt: row.submittedAt.toISOString(), revision: row.revision,
 		itemCount: row.basket.items.length, editable: row.status === "PENDING_REVIEW" && row.basket.lockedAt === null,
 		displayName: row.profile.displayName, inputText: row.inputText, subtotal: formatMoney(row.basket.subtotalMinor, currency),
 		currency, subtotalMinor: row.basket.subtotalMinor,
