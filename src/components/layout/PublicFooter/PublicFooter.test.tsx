@@ -9,15 +9,32 @@ describe("public footer", () => {
 		const footer = screen.getByRole("contentinfo");
 		expect(within(footer).getByRole("link", { name: "Privacy" })).toHaveAttribute("href", "/privacy");
 		expect(within(footer).getByRole("link", { name: "Data sources" })).toHaveAttribute("href", "/data-sources");
-		expect(footer).toHaveTextContent("disabled by default until controlled verification");
-		expect(footer).toHaveTextContent("no real money moves");
+		expect(footer).toHaveTextContent("Sandbox-only payments");
+		expect(footer).toHaveTextContent("simulated merchant and prices");
+		expect(footer).toHaveTextContent("no real money, orders or deliveries");
 		expect(footer).toHaveTextContent("not affiliated with or endorsed by PayPal");
-		expect(footer).toHaveTextContent("no real grocery orders or deliveries");
 		expect(footer).not.toHaveTextContent("When payments are added");
 	});
-	it("uses body-sized disclosure text and wraps long content", () => {
+	it("keeps only the brand, description and two labelled navigation links", () => {
+		render(<PublicFooter />);
+		const footer = screen.getByRole("contentinfo");
+		const navigation = within(footer).getByRole("navigation", { name: "Footer links" });
+		const links = within(footer).getAllByRole("link");
+		expect(links.map((link) => link.textContent)).toEqual(["Data sources", "Privacy"]);
+		expect(within(navigation).getAllByRole("listitem")).toHaveLength(2);
+		expect(within(footer).getByText("CareBasket")).toBeInTheDocument();
+		expect(footer.querySelectorAll("p")).toHaveLength(1);
+		expect(within(footer).queryByRole("heading")).not.toBeInTheDocument();
+		expect(within(footer).queryByRole("region")).not.toBeInTheDocument();
+	});
+	it("uses body-sized text and keeps the links in a row within the responsive footer", () => {
 		const css = readFileSync(new URL("./PublicFooter.module.css", import.meta.url), "utf8");
-		expect(css).toMatch(/\.disclosure\s*\{[^}]*font-size:\s*var\(--text-base\)/);
+		expect(css).toMatch(/\.description\s*\{[^}]*font-size:\s*var\(--text-base\)/);
+		expect(css).toMatch(/\.links\s*\{[^}]*display:\s*flex;[^}]*flex-wrap:\s*nowrap/);
+		expect(css).toMatch(/\.inner\s*\{[^}]*flex-direction:\s*column/);
+		expect(css).toContain("flex-direction: row");
+		expect(css).toContain("min-block-size: var(--control-height)");
 		expect(css).toContain("overflow-wrap: anywhere");
+		expect(css).not.toContain(".disclosure");
 	});
 });
