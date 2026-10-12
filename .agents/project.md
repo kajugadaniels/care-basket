@@ -3,7 +3,7 @@
 **Purpose:** Define what CareBasket is, who it serves, and what is in and out of scope, so every change can be checked against the product's intent.
 **Applies to:** Every task (scope check) and all product decisions.
 **Related:** [hackathon.md](hackathon.md), [authentication.md](authentication.md), [payments.md](payments.md), [ai.md](ai.md), [catalog.md](catalog.md), [accessibility.md](accessibility.md)
-**Last reviewed:** 2026-10-08
+**Last reviewed:** 2026-10-12
 
 ---
 
@@ -20,8 +20,15 @@ CareBasket lets people who find online shopping hard ask for the essentials they
 | User | Typical difficulties CareBasket must design for |
 | --- | --- |
 | **Assisted adults** (often older adults, or adults with limited technical experience) | Unfamiliar interfaces, small text and controls, passwords, multi-step checkouts, fear of "doing something wrong", sometimes reduced vision, hearing, dexterity, or memory. **Not all have any disability.** |
-| **Supervised children** | Varying reading ability, limited spelling, no means of payment, need for adult oversight. **Reading ability varies widely by age and individual.** |
 | **Family managers** (trusted adults) | Limited time, remote from the requester, need to see exactly what is requested and what it costs before paying. |
+
+### Adults-only deployment (developer-approved, 2026-10-12)
+
+- Managers and requesters must be **18 or older**. New family setup requires explicit adult-only self-attestation; new profile consent confirms both the manager and profile holder are at least 18, with permission or legal authority to set up the profile.
+- Only `ASSISTED_ADULT` profiles may be created, paired, or issued device access. Approval and completion recheck the profile kind transactionally. Existing `CHILD` device sessions and fabricated child actors are denied before shopping, private reviews, or AI access.
+- Keep historical `CHILD` records and their relationships for scoped manager review and confirmed deletion. Do not silently relabel them as adults, bulk-delete them, or remove the database enum. Existing adult-labelled records are not automatically certified or re-consented by this change.
+- Do not collect dates of birth or claim verified ages. Self-attestation and restricted profile kinds are audience controls, not age verification or proof of provider eligibility.
+- Public copy must describe the supported adult audience, not offer supervised child use. Gemini stays globally disabled pending the separate deployment eligibility review in [ai.md § 8](ai.md#8-profiles-children-and-tone).
 
 ## 3. Roles
 
@@ -42,7 +49,7 @@ Managed profiles have no Clerk account in the MVP. They use an authorized device
 | Product term | Internal `kind` | Notes |
 | --- | --- | --- |
 | Managed elderly profile / assisted adult | `ASSISTED_ADULT` | An adult who wants help. Treated as an adult with their own preferences. Future path: claim their own account ([authentication.md § 11](authentication.md#11-future-independent-adults-claiming-their-profile)). |
-| Supervised child profile | `CHILD` | Always supervised. Requests always require manager review. Stricter privacy rules apply ([privacy.md § 6](privacy.md#6-children)). No Gemini AI while the compliance issue in [ai.md § 8](ai.md#8-profiles-children-and-tone) is open; children use pictures and simple typed matching. |
+| Historical child profile (inactive) | `CHILD` | Retained only for manager review and confirmed deletion; no new creation, device pairing, or requester access. Privacy protections still apply ([privacy.md § 6](privacy.md#6-children)). |
 
 A managed profile can only create and follow its own shopping requests. It cannot see prices, other profiles, family settings, or payment controls.
 
@@ -89,6 +96,7 @@ Do not build these without developer approval:
 - Independent adult account claiming (documented future path only)
 - Analytics dashboards, charts, social sharing, reviews, product recommendations
 - Storing audio recordings
+- Child onboarding or shopping access in this adults-only deployment
 
 ## 7. Non-goals and scope boundaries
 
