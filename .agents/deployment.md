@@ -92,7 +92,8 @@ Rules:
 
 ### 5.3 Gemini
 
-- Actual Gemini use remains blocked for this child-accessible application until application-wide provider eligibility is confirmed and documented. Profile consent and blocking child endpoints do not resolve this restriction. Keep `GEMINI_SHOPPING_ENABLED=false` and the approval/model constants in `src/lib/ai/eligibility.ts` unset until that review is approved ([ai.md](ai.md)).
+- CareBasket supports adults aged 18 or older ([project.md § 2](project.md#2-target-users-and-their-difficulties)). Verify child creation, pairing, existing device access, and review restoration are denied on the deployed build. New setup/profile confirmations are self-attestations, not age verification; historical adult records are not automatically re-consented.
+- Actual Gemini use remains blocked until application-wide provider eligibility, account/billing status, supported user regions, and the model's audio/structured-output capabilities are reviewed and documented. The adults-only change alone does not complete that review. Keep `GEMINI_SHOPPING_ENABLED=false` and the approval/model constants in `src/lib/ai/eligibility.ts` unset until approval ([ai.md](ai.md)).
 - A separate API key for the demo, with a budget alert or spending cap set by the developer ([ai.md § 11](ai.md#11-cost-controls)).
 - Use a paid-tier key before any real person's data is processed ([privacy.md § 5](privacy.md#5-ai-and-voice-data)).
 
