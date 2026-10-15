@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { resetClerkMock, setSignedIn } from "@/test/mocks/clerk-nextjs";
 import { PublicHeader } from "./PublicHeader";
@@ -24,19 +24,12 @@ describe("PublicHeader", () => {
     expect(screen.getByRole("link", { name: "CareBasket" })).toHaveAttribute("href", "/");
   });
 
-  it("labels the main navigation and links to the landing sections", () => {
+  it("keeps the header focused on the brand and account actions", () => {
     render(<PublicHeader />);
 
-    const nav = screen.getByRole("navigation", { name: "Main" });
-    expect(within(nav).getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
-    expect(within(nav).getByRole("link", { name: "How it works" })).toHaveAttribute(
-      "href",
-      "#how-it-works",
-    );
-    expect(within(nav).getByRole("link", { name: "For families" })).toHaveAttribute(
-      "href",
-      "#families",
-    );
+    expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "CareBasket" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Get Started" })).toBeInTheDocument();
   });
 
   describe("when signed out", () => {
