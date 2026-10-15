@@ -3,6 +3,7 @@ import { act, fireEvent, render as renderTree, screen, waitFor, within } from "@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ShopShell } from "@/features/devices/components/ShopShell/ShopShell";
 import { devicesCopy } from "@/features/devices/copy";
+import { DraftProvider } from "@/features/requests/components/DraftProvider/DraftProvider";
 import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
 import { AssistantProvider } from "../AssistantProvider/AssistantProvider";
@@ -26,7 +27,7 @@ vi.mock("../VoiceRecorder/VoiceRecorder", () => ({
 import { AssistantStart } from "./AssistantStart";
 
 function render(ui: ReactNode) {
-	return renderTree(<AssistantProvider>{ui}</AssistantProvider>);
+	return renderTree(<DraftProvider><AssistantProvider>{ui}</AssistantProvider></DraftProvider>);
 }
 
 describe("assistant entry", () => {
@@ -46,7 +47,8 @@ describe("assistant entry", () => {
 		expect(screen.getByRole("button", { name: copy.speak })).toHaveAccessibleDescription(copy.voiceUnavailable);
 		const navigation = within(screen.getByRole("navigation", { name: devicesCopy.shopNav }));
 		expect(navigation.getByRole("link", { name: devicesCopy.shopProducts })).toHaveAttribute("href", "/shop/products");
-		expect(navigation.getByRole("link", { name: devicesCopy.shopList })).toHaveAttribute("href", "/shop/basket");
+		expect(navigation.getByRole("link", { name: `${devicesCopy.shopList}, ${devicesCopy.shopListCount(0)}` }))
+			.toHaveAttribute("href", "/shop/basket");
 		expect(fake.recorder).not.toHaveBeenCalled();
 	});
 
