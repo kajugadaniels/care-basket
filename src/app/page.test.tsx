@@ -50,6 +50,29 @@ describe("HomePage", () => {
     expect(screen.getByRole("heading", { name: "For the family manager" })).toBeInTheDocument();
   });
 
+  it("switches to a distinct background for each slide while retaining the page chrome", () => {
+    const { container } = render(<HomePage />);
+    const backgrounds = Array.from(container.querySelectorAll<HTMLImageElement>('img[alt=""]'));
+    expect(backgrounds).toHaveLength(4);
+    expect(new Set(backgrounds.map((image) => image.getAttribute("src"))).size).toBe(4);
+
+    for (const [label, filename] of [
+      ["How it works", "choosing-groceries"],
+      ["For families", "family-review"],
+      ["Trust", "home-essentials"],
+      ["Welcome", "family-kitchen"],
+    ]) {
+      fireEvent.click(screen.getByRole("button", { name: `Show ${label}` }));
+      const active = backgrounds.find((image) => image.getAttribute("src")?.includes(filename));
+      expect(active).toHaveStyle({ opacity: "1" });
+      for (const image of backgrounds.filter((image) => image !== active)) {
+        expect(image).toHaveStyle({ opacity: "0" });
+      }
+      expect(screen.getByRole("banner")).toBeInTheDocument();
+      expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+    }
+  });
+
   it("keeps authentication actions in the minimal header", () => {
     render(<HomePage />);
 
