@@ -68,7 +68,7 @@ describe("FamilyPage", () => {
 		expect(screen.getByRole("heading", { level: 1, name: "Welcome back, Jane" })).toBeInTheDocument();
 		const summary = screen.getByRole("region", { name: "Jane's Family" });
 		expect(within(summary).getByText("Owner")).toBeInTheDocument();
-		expect(screen.getByText("Your family has 0 members.")).toBeInTheDocument();
+		expect(screen.getByText("0 family members")).toBeInTheDocument();
 	});
 
 	it("shows a manager's role", async () => {
@@ -80,7 +80,7 @@ describe("FamilyPage", () => {
 		expect(screen.getByText("Manager")).toBeInTheDocument();
 	});
 
-	it("offers profile creation and leaves only future features marked coming soon", async () => {
+	it("offers profile creation without stale planned-feature content", async () => {
 		mocks.requireAdult.mockResolvedValue(actor);
 		mocks.getFamilyOverview.mockResolvedValue(overview);
 
@@ -88,8 +88,8 @@ describe("FamilyPage", () => {
 
 		expect(screen.queryAllByRole("button")).toHaveLength(0);
 		expect(screen.getByRole("link", { name: "Add Family Member" })).toHaveAttribute("href", "/family/members/add");
-		expect(screen.getAllByText("Coming soon")).toHaveLength(1);
-		expect(screen.queryByText("Create your family")).not.toBeInTheDocument();
+		expect(screen.queryByText("Coming soon")).not.toBeInTheDocument();
+		expect(screen.queryByText("Pay through PayPal")).not.toBeInTheDocument();
 	});
 
 	it.each([1, 2])("shows the real count of %s managed profiles", async (count) => {
@@ -100,7 +100,7 @@ describe("FamilyPage", () => {
 		await renderPage();
 
 		expect(mocks.countManagedProfiles).toHaveBeenCalledWith(actor);
-		expect(screen.getByText(`Your family has ${count} ${count === 1 ? "member" : "members"}.`)).toBeInTheDocument();
+		expect(screen.getByText(`${count} ${count === 1 ? "family member" : "family members"}`)).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "View Family Members" })).toHaveAttribute("href", "/family/members");
 	});
 	it("shows the authenticated family's real pending request count", async () => {
@@ -122,9 +122,9 @@ describe("FamilyLoading", () => {
 		expect(screen.queryByRole("heading", { level: 1 })).not.toBeInTheDocument();
 		expect(screen.queryByRole("link")).not.toBeInTheDocument();
 	});
-	it("keeps the real static preview while the overview streams", () => {
+	it("does not show stale dashboard content while the overview streams", () => {
 		render(serverFallbackTree(FamilyPage()));
 		expect(screen.getByRole("status")).toHaveTextContent("Loading your family workspace…");
-		expect(screen.getByRole("heading", { name: "Coming next" })).toBeInTheDocument();
+		expect(screen.queryByText("Coming soon")).not.toBeInTheDocument();
 	});
 });
