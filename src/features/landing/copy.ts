@@ -7,6 +7,9 @@ export const landingCopy = {
 		`Slide ${current} of ${total}: ${label}`,
 	previous: "Previous slide",
 	next: "Next slide",
+	pause: "Pause slideshow",
+	resume: "Play slideshow",
+	manualPlayback: "Autoplay off",
 	showSlide: (label: string) => `Show ${label}`,
 	slides: [
 		{
