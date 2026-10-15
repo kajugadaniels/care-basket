@@ -13,23 +13,25 @@ async function DraftSession({ children }: { children: ReactNode }) {
 	try {
 		actor = await requireDevice();
 	} catch (error) {
-		if (error instanceof AppError && error.code === "UNAUTHENTICATED") return children;
+		if (error instanceof AppError && error.code === "UNAUTHENTICATED") {
+			return <DraftProvider key="unconnected"><ShopShell>{children}</ShopShell></DraftProvider>;
+		}
 		throw error;
 	}
 
 	return (
 		<DraftProvider key={`${actor.deviceId}:${actor.profileId}`}>
-			<AssistantProvider>{children}</AssistantProvider>
+			<AssistantProvider>
+				<ShopShell>{children}</ShopShell>
+			</AssistantProvider>
 		</DraftProvider>
 	);
 }
 
 export default function ShopLayout({ children }: { children: ReactNode }) {
 	return (
-		<ShopShell>
-			<Suspense fallback={<ShopLoading />}>
-				<DraftSession>{children}</DraftSession>
-			</Suspense>
-		</ShopShell>
+		<Suspense fallback={<DraftProvider><ShopShell><ShopLoading /></ShopShell></DraftProvider>}>
+			<DraftSession>{children}</DraftSession>
+		</Suspense>
 	);
 }
