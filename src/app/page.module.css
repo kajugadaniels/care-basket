@@ -1,8 +1,48 @@
-.main {
-  display: block;
+.experience {
+	position: relative;
+	isolation: isolate;
+	display: flex;
+	flex-direction: column;
+	min-height: 100svh;
+	background-color: var(--color-primary-hover);
+	color: var(--color-on-primary);
 }
 
-/* The main region only receives focus from the skip link; it is not an interactive control. */
+.backdrop {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	overflow: hidden;
+}
+
+.backgroundImage {
+	object-fit: cover;
+	object-position: 68% center;
+}
+
+/* The scrim keeps text readable independently of the photograph's bright areas. */
+.backdrop::after {
+	position: absolute;
+	inset: 0;
+	content: "";
+	background:
+		linear-gradient(90deg, rgb(0 18 45 / 0.94), rgb(0 18 45 / 0.75) 44%, rgb(0 18 45 / 0.25)),
+		linear-gradient(0deg, rgb(0 18 45 / 0.95), transparent 40%, rgb(0 18 45 / 0.75));
+}
+
+.main {
+	display: flex;
+	flex: 1;
+	min-width: 0;
+}
+
 .main:focus {
-  outline: none;
+	outline: none;
+}
+
+@media (max-width: 47.99rem) {
+	.backdrop::after {
+		background: linear-gradient(90deg, rgb(0 18 45 / 0.9), rgb(0 18 45 / 0.65)),
+			linear-gradient(0deg, rgb(0 18 45 / 0.95), transparent);
+	}
 }
