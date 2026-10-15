@@ -60,7 +60,7 @@
 }
 
 .listPanel {
-	display: grid;
+	display: none;
 	align-content: start;
 	min-inline-size: 0;
 }
@@ -203,6 +203,12 @@
 	}
 }
 
+@media (min-width: 48rem) {
+	.listPanel {
+		display: grid;
+	}
+}
+
 @media (min-width: 64rem) {
 	.workspace {
 		grid-template-columns: minmax(0, 1fr) calc(var(--sidebar-width) + var(--space-8));
@@ -211,6 +217,7 @@
 	}
 
 	.listPanel {
+		display: grid;
 		grid-column: 2;
 		grid-row: 1;
 	}
