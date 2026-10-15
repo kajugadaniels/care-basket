@@ -15,7 +15,7 @@
 .quote {
 	margin-block-start: var(--space-3);
 	font-family: var(--font-readable);
-	font-size: var(--text-xl);
+	font-size: var(--text-md);
 	line-height: 1.45;
 }
 
