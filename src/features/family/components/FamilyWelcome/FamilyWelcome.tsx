@@ -1,4 +1,4 @@
-import { CheckmarkCircle02Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, ShoppingBasket01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { familyDashboardCopy } from "@/features/family/copy";
@@ -12,43 +12,73 @@ type FamilyWelcomeProps = {
 	pendingRequestCount?: number;
 };
 
-// The personal part of the family overview. FamilyWelcomeSkeleton mirrors this layout.
+// The personal overview for the authenticated manager's family.
 export function FamilyWelcome({ family, profileCount, pendingRequestCount = 0 }: FamilyWelcomeProps) {
 	const hasMembers = profileCount > 0;
+	const hasPendingRequests = pendingRequestCount > 0;
 
 	return (
 		<div className={styles.welcome}>
-			<h1 className={styles.title}>{familyDashboardCopy.greeting(family.displayName)}</h1>
-
-			<section aria-labelledby="family-summary-title" className={styles.summary}>
-				<span className={styles.summaryIcon}>
-					<Icon icon={UserGroupIcon} size={24} />
-				</span>
-				<div className={styles.summaryText}>
-					<p className={styles.summaryLabel}>{familyDashboardCopy.familyLabel}</p>
-					<h2 id="family-summary-title" className={styles.familyName}>
-						{family.familyName}
-					</h2>
+			<section aria-label={family.familyName} className={styles.hero}>
+				<div className={styles.heroText}>
+					<h1 className={styles.title}>{familyDashboardCopy.greeting(family.displayName)}</h1>
+					<p className={styles.intro}>{familyDashboardCopy.intro}</p>
 				</div>
-				<span className={styles.role}>{familyDashboardCopy.roles[family.role]}</span>
+
+				<div className={styles.identity}>
+					<span className={styles.identityIcon}>
+						<Icon icon={UserGroupIcon} size={24} />
+					</span>
+					<div className={styles.identityText}>
+						<p className={styles.familyName}>{family.familyName}</p>
+						<p className={styles.role}>{familyDashboardCopy.roles[family.role]}</p>
+					</div>
+				</div>
 			</section>
 
-			<div className={styles.ready}>
-				<Icon icon={CheckmarkCircle02Icon} size={24} className={styles.readyIcon} />
-				<div>
-					<p className={styles.readyTitle}>{familyDashboardCopy.memberCount({ count: profileCount })}</p>
-					{hasMembers ? null : <p className={styles.readyText}>{familyDashboardCopy.readyText}</p>}
+			<section aria-labelledby="family-overview-title" className={styles.overview}>
+				<div className={styles.overviewHeading}>
+					<h2 id="family-overview-title">{familyDashboardCopy.atAGlance}</h2>
 				</div>
-			</div>
 
-			<ActionLink href={hasMembers ? "/family/members" : "/family/members/add"} className={styles.memberAction}>
-				{hasMembers ? familyDashboardCopy.viewMembers : familyDashboardCopy.addMember}
-			</ActionLink>
-			<section aria-labelledby="pending-requests-title" className={styles.ready}>
-				<div>
-					<h2 id="pending-requests-title">{requestsCopy.pendingCount(pendingRequestCount)}</h2>
-					{pendingRequestCount === 0 ? <p>{requestsCopy.emptyHelp}</p> : null}
-					<ActionLink href="/family/requests" variant="secondary">{requestsCopy.inbox}</ActionLink>
+				<div className={styles.rows}>
+					<article className={styles.row}>
+						<span className={styles.rowIcon}>
+							<Icon icon={UserGroupIcon} size={24} />
+						</span>
+						<div className={styles.rowText}>
+							<h3>{familyDashboardCopy.memberCount({ count: profileCount })}</h3>
+							<p>{hasMembers ? familyDashboardCopy.membersHelp : familyDashboardCopy.readyText}</p>
+						</div>
+						<ActionLink
+							href={hasMembers ? "/family/members" : "/family/members/add"}
+							variant={hasMembers ? "secondary" : "primary"}
+							size="sm"
+							icon={ArrowRight01Icon}
+							className={styles.rowAction}
+						>
+							{hasMembers ? familyDashboardCopy.viewMembers : familyDashboardCopy.addMember}
+						</ActionLink>
+					</article>
+
+					<article className={hasPendingRequests ? styles.attentionRow : styles.row}>
+						<span className={hasPendingRequests ? styles.attentionIcon : styles.rowIcon}>
+							<Icon icon={ShoppingBasket01Icon} size={24} />
+						</span>
+						<div className={styles.rowText}>
+							<h3>{requestsCopy.pendingCount(pendingRequestCount)}</h3>
+							<p>{hasPendingRequests ? familyDashboardCopy.requestsHelp(pendingRequestCount) : requestsCopy.emptyHelp}</p>
+						</div>
+						<ActionLink
+							href="/family/requests"
+							variant={hasPendingRequests ? "primary" : "secondary"}
+							size="sm"
+							icon={ArrowRight01Icon}
+							className={styles.rowAction}
+						>
+							{requestsCopy.inbox}
+						</ActionLink>
+					</article>
 				</div>
 			</section>
 		</div>
