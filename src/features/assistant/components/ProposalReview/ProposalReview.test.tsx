@@ -195,10 +195,13 @@ describe("explicit proposal review", () => {
 		expect(sharedStyles).toMatch(/\.selection \.controls\s*\{[^}]*margin-block-start: auto;/);
 	});
 
-	it("keeps the list summary beside products on wide screens and in normal flow on narrow screens", () => {
+	it("hides the list summary on phones and keeps it sticky beside products on wide screens", () => {
 		review();
 		const css = readFileSync(resolve("src/features/assistant/components/ProposalReview/ProposalReview.module.css"), "utf8");
+		expect(css).toMatch(/\.listPanel\s*\{[^}]*display: none;/);
+		expect(css).toMatch(/@media \(min-width: 48rem\)[\s\S]*\.listPanel\s*\{[^}]*display: grid;/);
 		expect(css).toMatch(/@media \(min-width: 64rem\)[\s\S]*\.workspace\s*\{[^}]*grid-template-columns:/);
+		expect(css).toMatch(/@media \(min-width: 64rem\)[\s\S]*\.listPanel\s*\{[^}]*display: grid;/);
 		expect(css).toMatch(/@media \(min-width: 64rem\) and \(min-height: 32rem\)[\s\S]*\.listPanel\s*\{[^}]*position: sticky;/);
 	});
 
