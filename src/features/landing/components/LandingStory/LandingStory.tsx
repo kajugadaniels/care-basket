@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
 	ArrowLeft01Icon,
 	ArrowRight01Icon,
@@ -19,6 +20,20 @@ export function LandingStory() {
 
 	return (
 		<section className={styles.story} aria-label={landingCopy.carouselLabel} aria-roledescription="carousel">
+			<div className={styles.backdrop} aria-hidden="true">
+				{landingCopy.slides.map((item, index) => (
+					<Image
+						key={item.id}
+						src={item.image}
+						alt=""
+						fill
+						sizes="100vw"
+						preload={index === 0}
+						className={styles.backgroundImage}
+						style={{ opacity: index === current ? 1 : 0 }}
+					/>
+				))}
+			</div>
 			<Container className={styles.shell}>
 				<p className={styles.progress} aria-live="polite" aria-atomic="true">
 					{landingCopy.slideStatus({ current: current + 1, total: landingCopy.slides.length, label: slide.label })}
