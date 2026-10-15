@@ -33,34 +33,21 @@ export const familySetupCopy = {
 } as const;
 
 export const familyDashboardCopy = {
-  metaTitle: "Your family",
-  greeting: (displayName: string) => `Welcome back, ${displayName}`,
-  familyLabel: "Your family",
-  roles: {
-    OWNER: "Owner",
-    MANAGER: "Manager",
-  },
-  readyText:
-    "Add someone you care for. They won't need an email address or password.",
-  memberCount: ({ count }: { count: number }) =>
-    `Your family has ${count} ${new Intl.PluralRules("en-US").select(count) === "one" ? "member" : "members"}.`,
-  addMember: "Add Family Member",
-  viewMembers: "View Family Members",
-  loading: "Loading your family…",
+	metaTitle: "Your family",
+	greeting: (displayName: string) => `Welcome back, ${displayName}`,
+	intro: "Review new shopping lists and manage the people you help.",
+	roles: {
+		OWNER: "Owner",
+		MANAGER: "Manager",
+	},
+	atAGlance: "Family workspace",
+	readyText: "Add someone you help so they can start a shopping list.",
+	membersHelp: "Manage family profiles and their access.",
+	requestsHelp: (count: number) =>
+		`${count === 1 ? "A shopping list is" : "Shopping lists are"} ready for you to review.`,
+	memberCount: ({ count }: { count: number }) =>
+		`${count} ${new Intl.PluralRules("en-US").select(count) === "one" ? "family member" : "family members"}`,
+	addMember: "Add Family Member",
+	viewMembers: "View Family Members",
+	loading: "Loading your family…",
 } as const;
-
-export const setupPreviewCopy = {
-  title: "Coming next",
-  description: "These features are planned and not available yet.",
-  comingSoon: "Coming soon",
-  items: [
-    {
-      id: "payments",
-      title: "Pay through PayPal",
-      description:
-				"Review each request and pay only when you choose to.",
-    },
-  ],
-} as const;
-
-export type SetupStepId = (typeof setupPreviewCopy.items)[number]["id"];
