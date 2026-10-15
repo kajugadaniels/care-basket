@@ -3,6 +3,30 @@
 	background-color: var(--color-bg);
 }
 
+.overImage {
+	position: relative;
+	z-index: 1;
+	--brand-color: var(--color-on-primary);
+	--brand-mark-background: rgb(255 255 255 / 0.16);
+	border-color: rgb(255 255 255 / 0.2);
+	background-color: transparent;
+}
+
+.overImage .action {
+	border-color: var(--color-on-primary);
+	background-color: transparent;
+	color: var(--color-on-primary);
+}
+
+.overImage .action:hover {
+	background-color: var(--color-on-primary);
+	color: var(--color-primary);
+}
+
+.overImage :focus-visible {
+	outline-color: var(--color-on-primary);
+}
+
 .inner {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
