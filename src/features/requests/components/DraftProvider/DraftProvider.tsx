@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useRef, useState, type ReactNode } from "react";
+import { useToastSound } from "@/components/ui/Toast/use-toast-sound";
 import type { SubmitRequestInput } from "../../schemas";
 import { changeDraft, createDraftKey, EMPTY_DRAFT, type Draft, type DraftChange } from "../../draft";
 import { requestsCopy } from "../../copy";
@@ -19,14 +20,18 @@ export function DraftProvider({ children }: { children: ReactNode }) {
 	const [locked, setLocked] = useState(false);
 	const [message, setMessage] = useState("");
 	const current = useRef({ draft: EMPTY_DRAFT, locked: false });
+	const sound = useToastSound();
 
 	function change(change: DraftChange): boolean {
 		if (current.current.locked) return false;
+		const previousCount = current.current.draft.items.length;
+		if (change.type === "add" || change.type === "proposal") sound.prepare();
 		try {
 			const next = changeDraft(current.current.draft, change, createDraftKey());
 			current.current.draft = next;
 			setDraft(next);
 			setMessage(change.type === "add" ? requestsCopy.added(change.item.displayName) : "");
+			if (next.items.length > previousCount) sound.play("success");
 			return true;
 		} catch {
 			setMessage(requestsCopy.limit);
