@@ -1,35 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import type { IconSvgElement } from "@hugeicons/react";
 import {
 	ArrowLeft01Icon,
 	ArrowRight01Icon,
-	SecurityCheckIcon,
-	ShoppingBasket01Icon,
-	UserMultiple02Icon,
 } from "@hugeicons/core-free-icons";
 import { Container } from "@/components/layout/Container/Container";
 import { Button } from "@/components/ui/Button/Button";
-import { Icon } from "@/components/ui/Icon/Icon";
 import { RequestPreview } from "@/features/landing/components/RequestPreview/RequestPreview";
-import { landingCopy, type LandingSlideId } from "@/features/landing/copy";
-import { cx } from "@/lib/class-names";
+import { landingCopy } from "@/features/landing/copy";
 import styles from "./LandingStory.module.css";
-
-const SLIDE_ICONS: Record<LandingSlideId, IconSvgElement> = {
-	welcome: ShoppingBasket01Icon,
-	"how-it-works": ArrowRight01Icon,
-	families: UserMultiple02Icon,
-	trust: SecurityCheckIcon,
-};
 
 export function LandingStory() {
 	const [current, setCurrent] = useState(0);
 	const slide = landingCopy.slides[current];
 	const isFirst = current === 0;
 	const isLast = current === landingCopy.slides.length - 1;
-	const Heading = isFirst ? "h1" : "h2";
 
 	return (
 		<section className={styles.story} aria-label={landingCopy.carouselLabel} aria-roledescription="carousel">
@@ -38,11 +24,10 @@ export function LandingStory() {
 					{landingCopy.slideStatus({ current: current + 1, total: landingCopy.slides.length, label: slide.label })}
 				</p>
 
-				<div className={cx(styles.slide, isFirst && styles.hero)} role="group" aria-roledescription="slide"
+				<div key={slide.id} className={styles.slide} role="group" aria-roledescription="slide"
 					aria-labelledby={`${slide.id}-title`}>
 					<div className={styles.copy}>
-						<span className={styles.icon} aria-hidden="true"><Icon icon={SLIDE_ICONS[slide.id]} size={28} /></span>
-						<Heading id={`${slide.id}-title`} className={styles.title}>{slide.title}</Heading>
+						<h1 id={`${slide.id}-title`} className={styles.title}>{slide.title}</h1>
 						<p className={styles.description}>{slide.description}</p>
 						{isFirst ? (
 							<ul role="list" className={styles.ways}>
@@ -64,7 +49,7 @@ export function LandingStory() {
 				</div>
 
 				<nav className={styles.controls} aria-label="Landing page slides">
-					<Button size="xs" variant="secondary" icon={ArrowLeft01Icon} disabled={isFirst}
+					<Button className={styles.arrow} size="xs" variant="secondary" icon={ArrowLeft01Icon} disabled={isFirst}
 						onClick={() => setCurrent((index) => Math.max(0, index - 1))}>{landingCopy.previous}</Button>
 					<ol className={styles.steps}>
 						{landingCopy.slides.map((item, index) => (
@@ -76,7 +61,7 @@ export function LandingStory() {
 							</li>
 						))}
 					</ol>
-					<Button size="xs" variant="secondary" icon={ArrowRight01Icon} disabled={isLast}
+					<Button className={styles.arrow} size="xs" variant="secondary" icon={ArrowRight01Icon} disabled={isLast}
 						onClick={() => setCurrent((index) => Math.min(landingCopy.slides.length - 1, index + 1))}>{landingCopy.next}</Button>
 				</nav>
 			</Container>
