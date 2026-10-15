@@ -22,43 +22,16 @@
 
 .headerInner {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--space-3) var(--space-5);
+	gap: var(--space-2);
 	padding-block: var(--space-3);
 }
 
 .identity {
 	font-family: var(--font-sans);
 	font-size: var(--text-lg);
-}
-.tools {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--space-3);
-	min-inline-size: 0;
-}
-
-.navigation {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-2);
-}
-
-.navigation a {
-	padding-inline: var(--space-4);
-}
-
-@media (max-width: 39.999rem) {
-	.tools,
-	.navigation {
-		inline-size: 100%;
-	}
-	.navigation a {
-		flex: 1 1 auto;
-	}
 }
 
 .shell a,
