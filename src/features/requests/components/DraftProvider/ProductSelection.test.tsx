@@ -1,11 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requestProduct } from "@/test/factories/requests";
 import { CatalogBrowser } from "@/features/catalog/components/CatalogBrowser/CatalogBrowser";
 import { DraftProvider, useDraft } from "./DraftProvider";
 import { ProductSelection } from "./ProductSelection";
 
+const sound = vi.hoisted(() => ({ prepare: vi.fn(), play: vi.fn(), toggle: vi.fn(), enabled: true }));
 vi.mock("@/features/catalog/actions", () => ({ loadRequesterProductsAction: vi.fn() }));
+vi.mock("@/components/ui/Toast/use-toast-sound", () => ({ useToastSound: () => sound }));
 
 function SuggestedSelection() {
 	const { change } = useDraft();
@@ -16,6 +18,8 @@ function SuggestedSelection() {
 }
 
 describe("catalog draft selection", () => {
+	beforeEach(() => vi.clearAllMocks());
+
 	it("uses initial quantities and a custom add handler without also adding a catalog item", () => {
 		const onAdd = vi.fn();
 		render(<DraftProvider><ProductSelection product={requestProduct} initialQuantity={5} maxQuantity={6} onAdd={onAdd}>
@@ -49,6 +53,17 @@ describe("catalog draft selection", () => {
 		for (let i = 0; i < 18; i++) fireEvent.click(screen.getByRole("button", { name: "Increase quantity for Demo milk" }));
 		expect(screen.getByRole("button", { name: "Increase quantity for Demo milk" })).toBeDisabled();
 		expect(screen.getByText("Quantity: 20")).toBeInTheDocument();
+	});
+
+	it("plays one brief success tone only when a product enters the list", () => {
+		render(<DraftProvider><ProductSelection product={requestProduct}>
+			<p>{requestProduct.displayName}</p>
+		</ProductSelection></DraftProvider>);
+		fireEvent.click(screen.getByRole("button", { name: "Add to my list" }));
+		expect(sound.prepare).toHaveBeenCalledOnce();
+		expect(sound.play).toHaveBeenCalledExactlyOnceWith("success");
+		fireEvent.click(screen.getByRole("button", { name: "Increase quantity for Demo milk" }));
+		expect(sound.play).toHaveBeenCalledOnce();
 	});
 	it("preserves added items across search, category and pagination rerenders", () => {
 		const { rerender } = render(<DraftProvider><CatalogBrowser filters={{ q: "", limit: 24 }} selectable
