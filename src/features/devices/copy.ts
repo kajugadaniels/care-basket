@@ -1,6 +1,7 @@
 export const devicesCopy = {
 	shopHome: "Home", skipShopping: "Skip to shopping",
 	shopNav: "Shopping", shopProducts: "Products", shopList: "My List",
+	shopListCount: (count: number) => `${count} ${count === 1 ? "product" : "products"}`,
 	loadingShopping: "Opening your shopping…",
 	loadingShoppingHelp: "You can keep this page open.",
   connectTitle: "Connect your device", connectDescription: "CareBasket is for adults aged 18 or older. Someone in your family can help you connect.",
