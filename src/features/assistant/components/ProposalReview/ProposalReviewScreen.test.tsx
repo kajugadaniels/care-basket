@@ -43,7 +43,9 @@ function Flow({ child, savedProposal }: { child: boolean; savedProposal?: Propos
 }
 
 function open(child = false, savedProposal?: Proposal | null) {
-	render(<ShopShell><DraftProvider><AssistantProvider><Flow child={child} savedProposal={savedProposal} /></AssistantProvider></DraftProvider></ShopShell>);
+	render(<DraftProvider><ShopShell><AssistantProvider>
+		<Flow child={child} savedProposal={savedProposal} />
+	</AssistantProvider></ShopShell></DraftProvider>);
 }
 
 describe("separate proposal review screen", () => {
@@ -134,7 +136,8 @@ describe("separate proposal review screen", () => {
 		expect(screen.getByRole("heading", { name: copy.review })).toBeInTheDocument();
 		expect(fake.push).not.toHaveBeenCalled();
 		const navigation = screen.getByRole("navigation", { name: devicesCopy.shopNav });
-		expect(within(navigation).getByRole("link", { name: devicesCopy.shopList })).toHaveAttribute("href", "/shop/basket");
+		expect(within(navigation).getByRole("link", { name: `${devicesCopy.shopList}, ${devicesCopy.shopListCount(1)}` }))
+			.toHaveAttribute("href", "/shop/basket");
 		expect(screen.queryByRole("button", { name: /check my list/i })).not.toBeInTheDocument();
 	});
 
@@ -145,7 +148,8 @@ describe("separate proposal review screen", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Clear proposal" }));
 		expect(screen.getByLabelText("Draft quantity")).toHaveTextContent("1");
 		expect(screen.getByRole("heading", { name: copy.emptyReview })).toHaveFocus();
-		expect(screen.getByRole("link", { name: devicesCopy.shopList })).toHaveAttribute("href", "/shop/basket");
+		expect(screen.getByRole("link", { name: `${devicesCopy.shopList}, ${devicesCopy.shopListCount(1)}` }))
+			.toHaveAttribute("href", "/shop/basket");
 		expect(fake.push).not.toHaveBeenCalled();
 	});
 
