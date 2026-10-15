@@ -46,3 +46,5 @@ next-env.d.ts
 
 # Unreviewed catalog reports and temporary downloads are never published.
 /.catalog-output/
+
+credentials.md
