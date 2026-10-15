@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { FamilyWelcome } from "@/features/family/components/FamilyWelcome/FamilyWelcome";
 import { ManagerLoading } from "@/features/family/components/ManagerLoading/ManagerLoading";
-import { SetupPreview } from "@/features/family/components/SetupPreview/SetupPreview";
 import { familyDashboardCopy } from "@/features/family/copy";
 import { getFamilyOverview } from "@/features/family/server/service";
 import { countManagedProfiles } from "@/features/profiles/server/service";
@@ -22,7 +21,6 @@ export default function FamilyPage() {
 			<Suspense fallback={<ManagerLoading />}>
 				<FamilyOverviewSection />
 			</Suspense>
-			<SetupPreview />
 		</div>
 	);
 }
