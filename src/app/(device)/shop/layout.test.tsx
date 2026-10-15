@@ -16,8 +16,7 @@ type SessionProps = { children: ReactNode };
 
 function session(children: ReactNode) {
 	const layout = ShopLayout({ children });
-	const boundary = layout.props.children as ReactElement<SessionProps>;
-	const element = boundary.props.children as ReactElement<SessionProps>;
+	const element = layout.props.children as ReactElement<SessionProps>;
 	const resolve = element.type as (props: SessionProps) => Promise<ReactNode>;
 	return resolve(element.props);
 }
@@ -30,10 +29,10 @@ describe("requester draft layout", () => {
 
 	it("defers session access to a child inside Suspense", () => {
 		const layout = ShopLayout({ children: <p>Shopping</p> });
-		expect(layout.type).toBe(ShopShell);
-		const boundary = layout.props.children as ReactElement<{ fallback: ReactNode }>;
-		expect(boundary.type).toBe(Suspense);
-		expect(boundary.props.fallback).toBeDefined();
+		expect(layout.type).toBe(Suspense);
+		const fallback = layout.props.fallback as ReactElement<SessionProps>;
+		expect(fallback.type).toBe(DraftProvider);
+		expect((fallback.props.children as ReactElement).type).toBe(ShopShell);
 		expect(mocks.device).not.toHaveBeenCalled();
 	});
 
@@ -44,13 +43,19 @@ describe("requester draft layout", () => {
 		expect(result.key).toBe(`${requester.deviceId}:${requester.profileId}`);
 		const assistant = result.props.children as ReactElement<SessionProps>;
 		expect(assistant.type).toBe(AssistantProvider);
-		expect(assistant.props).toEqual({ children });
+		const shell = assistant.props.children as ReactElement<SessionProps>;
+		expect(shell.type).toBe(ShopShell);
+		expect(shell.props).toEqual({ children });
 	});
 
 	it("leaves reconnect rendering to the page for an unauthenticated device", async () => {
 		mocks.device.mockRejectedValue(new AppError("UNAUTHENTICATED"));
 		const children = <p>Reconnect</p>;
-		await expect(session(children)).resolves.toBe(children);
+		const result = await session(children) as ReactElement<SessionProps>;
+		expect(result.type).toBe(DraftProvider);
+		const shell = result.props.children as ReactElement<SessionProps>;
+		expect(shell.type).toBe(ShopShell);
+		expect(shell.props).toEqual({ children });
 	});
 
 	it.each([new AppError("FORBIDDEN"), new Error("database unavailable")])(
