@@ -14,7 +14,7 @@ function renderShell(children = <h1>Shopping</h1>) {
 
 function AddProduct() {
 	const { change } = useDraft();
-	return <button onClick={() => change({ type: "add", item: requestProduct })}>Add product</button>;
+	return <button onClick={() => change({ type: "add", item: { ...requestProduct, quantity: 1 } })}>Add product</button>;
 }
 
 describe("shared shopping shell", () => {
