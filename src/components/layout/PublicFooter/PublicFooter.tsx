@@ -7,14 +7,15 @@ import styles from "./PublicFooter.module.css";
 
 type PublicFooterProps = {
 	audience?: "public" | "requester";
+	overImage?: boolean;
 };
 
-export function PublicFooter({ audience = "public" }: PublicFooterProps) {
+export function PublicFooter({ audience = "public", overImage = false }: PublicFooterProps) {
 	const isRequester = audience === "requester";
 	const description = isRequester ? copy.requesterDescription : copy.description;
 
 	return (
-		<footer className={cx(styles.footer, isRequester && styles.requester)}>
+		<footer className={cx(styles.footer, isRequester && styles.requester, overImage && styles.overImage)}>
 			<Container className={styles.inner}>
 				<div className={styles.intro}>
 					<Brand />
