@@ -28,7 +28,7 @@ describe("HomePage", () => {
     expect(screen.getByRole("figure")).toHaveTextContent(/not a real grocery order/i);
   });
 
-  it("moves through the information slides without autoplay", () => {
+  it("moves through the information slides with manual controls", () => {
     render(<HomePage />);
 
     expect(screen.getByText("Slide 1 of 4: Welcome")).toBeInTheDocument();
@@ -48,6 +48,13 @@ describe("HomePage", () => {
     expect(screen.getByText("Slide 3 of 4: For families")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "For the person asking" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "For the family manager" })).toBeInTheDocument();
+  });
+
+  it("pauses automatic playback when keyboard users focus slide navigation", () => {
+    render(<HomePage />);
+    const next = screen.getByRole("button", { name: "Next slide" });
+    fireEvent.focus(next);
+    expect(screen.getByRole("button", { name: "Play slideshow" })).toBeInTheDocument();
   });
 
   it("switches to a distinct background for each slide while retaining the page chrome", () => {
