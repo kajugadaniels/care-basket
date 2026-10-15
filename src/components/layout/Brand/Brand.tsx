@@ -5,20 +5,21 @@ import { cx } from "@/lib/class-names";
 import styles from "./Brand.module.css";
 
 type BrandProps = {
-  // When set, the brand is a link (for example, to the home page).
-  href?: string;
+	// When set, the brand is a link (for example, to the home page).
+	href?: string;
+	iconOnly?: boolean;
 };
 
 // CareBasket's own mark: a single-color wordmark, deliberately unlike PayPal's two-tone wordmark.
-export function Brand({ href }: BrandProps) {
-  const content = (
-    <>
-      <span className={styles.mark}>
-        <Icon icon={ShoppingBasket01Icon} size={24} />
-      </span>
-      <span className={styles.name}>CareBasket</span>
-    </>
-  );
+export function Brand({ href, iconOnly = false }: BrandProps) {
+	const content = (
+		<>
+			<span className={styles.mark}>
+				<Icon icon={ShoppingBasket01Icon} size={24} />
+			</span>
+			<span className={iconOnly ? styles.visuallyHidden : styles.name}>CareBasket</span>
+		</>
+	);
 
   if (href) {
     return (
