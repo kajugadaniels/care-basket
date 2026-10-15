@@ -4,6 +4,35 @@
 	padding-block: var(--space-5);
 }
 
+.overImage {
+	position: relative;
+	z-index: 1;
+	--brand-color: var(--color-on-primary);
+	--brand-mark-background: rgb(255 255 255 / 0.16);
+	border-color: rgb(255 255 255 / 0.2);
+	background-color: transparent;
+}
+
+.overImage .intro {
+	max-inline-size: 52rem;
+}
+
+.overImage .description {
+	color: var(--color-on-primary);
+	font-size: var(--text-xs);
+	line-height: 1.6;
+}
+
+.overImage .link,
+.overImage .link:hover {
+	color: var(--color-on-primary);
+	font-size: var(--text-sm);
+}
+
+.overImage :focus-visible {
+	outline-color: var(--color-on-primary);
+}
+
 .inner {
 	display: flex;
 	flex-direction: column;
