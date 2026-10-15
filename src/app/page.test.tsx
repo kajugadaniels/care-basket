@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { resetClerkMock } from "@/test/mocks/clerk-nextjs";
 import HomePage from "./page";
@@ -16,73 +16,46 @@ describe("HomePage", () => {
     resetClerkMock();
   });
 
-  it("shows the hero headline as the only level-one heading", () => {
+  it("opens with one clear headline and a fictional product preview", () => {
     render(<HomePage />);
 
     const headings = screen.getAllByRole("heading", { level: 1 });
     expect(headings).toHaveLength(1);
     expect(headings[0]).toHaveTextContent(
-      "Just tell us what you need. Your family takes care of the rest.",
+      "Ask for groceries. Your family handles the rest.",
     );
-  });
-
-  it("offers one primary action that leads to How CareBasket works", () => {
-    render(<HomePage />);
-
-    expect(screen.getByRole("link", { name: "See How It Works" })).toHaveAttribute(
-      "href",
-      "#how-it-works",
-    );
-  });
-
-  it("lists the four steps in order", () => {
-    render(<HomePage />);
-
-    const section = screen.getByRole("region", { name: "How CareBasket works" });
-    const stepTitles = within(section)
-      .getAllByRole("heading", { level: 3 })
-      .map((heading) => heading.textContent);
-
-    expect(stepTitles).toEqual([
-      "Say what you need.",
-      "CareBasket prepares your basket.",
-      "Your family reviews the request.",
-      "They can approve payment through PayPal.",
-    ]);
-  });
-
-  it("explains both family experiences", () => {
-    render(<HomePage />);
-
-    const section = screen.getByRole("region", { name: "Built for families" });
-    expect(within(section).getByText("No complicated account registration")).toBeInTheDocument();
-    expect(within(section).getByText("Decide whether to pay")).toBeInTheDocument();
-  });
-
-  it("labels the product preview as fictional, not a real grocery order", () => {
-    render(<HomePage />);
-
     expect(screen.getByRole("figure")).toHaveTextContent(/illustrative preview/i);
     expect(screen.getByRole("figure")).toHaveTextContent(/not a real grocery order/i);
   });
 
-  it("points every in-page link at an element that exists", () => {
-    const { container } = render(<HomePage />);
-
-    const anchors = container.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
-    expect(anchors.length).toBeGreaterThan(0);
-    for (const anchor of anchors) {
-      const targetId = anchor.getAttribute("href")?.slice(1) ?? "";
-      expect(container.querySelector(`#${targetId}`)).not.toBeNull();
-    }
-  });
-
-  it("has no actions besides the sign-in and sign-up dialog buttons", () => {
+  it("moves through the information slides without autoplay", () => {
     render(<HomePage />);
 
-    const buttonNames = screen.getAllByRole("button").map((button) => button.textContent);
-    expect(buttonNames).toEqual(["Sign In", "Get Started"]);
-    expect(within(screen.getByRole("main")).queryAllByRole("button")).toHaveLength(0);
+    expect(screen.getByText("Slide 1 of 4: Welcome")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Next slide" }));
+    expect(screen.getByText("Slide 2 of 4: How it works")).toBeInTheDocument();
+    const stepTitles = within(screen.getByRole("group", { name: "A clear path from request to review." }))
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent);
+
+    expect(stepTitles).toEqual(["Ask", "Check", "Review", "Decide"]);
+  });
+
+  it("offers direct access to every slide", () => {
+    render(<HomePage />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Show For families" }));
+    expect(screen.getByText("Slide 3 of 4: For families")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "For the person asking" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "For the family manager" })).toBeInTheDocument();
+  });
+
+  it("keeps authentication actions in the minimal header", () => {
+    render(<HomePage />);
+
+    expect(screen.getByRole("button", { name: "Sign In" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Get Started" })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Main" })).not.toBeInTheDocument();
   });
 
   it("discloses the hackathon demo and PayPal independence in the footer", () => {
