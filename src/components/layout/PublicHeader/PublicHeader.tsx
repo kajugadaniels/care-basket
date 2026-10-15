@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/Button/Button";
 import { SkipLink } from "@/components/ui/SkipLink/SkipLink";
 import { userButtonAppearance } from "@/lib/clerk/appearance";
 import { signInDialogOptions, signUpDialogOptions } from "@/lib/clerk/auth-dialogs";
+import { cx } from "@/lib/class-names";
 import styles from "./PublicHeader.module.css";
 
-export function PublicHeader() {
+export function PublicHeader({ overImage = false }: { overImage?: boolean }) {
   return (
-    <header className={styles.header}>
+    <header className={cx(styles.header, overImage && styles.overImage)}>
       <SkipLink targetId="main-content" />
       <Container className={styles.inner}>
         <div className={styles.brand}>
