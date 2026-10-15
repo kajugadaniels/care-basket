@@ -11,6 +11,7 @@ export const landingCopy = {
 	slides: [
 		{
 			id: "welcome",
+			image: "/landing/family-kitchen.jpg",
 			label: "Welcome",
 			title: "Ask for groceries. Your family handles the rest.",
 			description: "CareBasket helps adults aged 18 or older ask for everyday essentials without navigating a complicated checkout.",
@@ -22,6 +23,7 @@ export const landingCopy = {
 		},
 		{
 			id: "how-it-works",
+			image: "/landing/choosing-groceries.jpg",
 			label: "How it works",
 			title: "A clear path from request to review.",
 			description: "The person asking stays involved, while a trusted adult controls the payment.",
@@ -34,6 +36,7 @@ export const landingCopy = {
 		},
 		{
 			id: "families",
+			image: "/landing/family-review.jpg",
 			label: "For families",
 			title: "Simple for the requester. Clear for the manager.",
 			description: "Each person sees only the tools needed for their part of the shopping list.",
@@ -44,6 +47,7 @@ export const landingCopy = {
 		},
 		{
 			id: "trust",
+			image: "/landing/home-essentials.jpg",
 			label: "Trust",
 			title: "Help without giving up control.",
 			description: "CareBasket is designed around consent, readable interfaces, and deliberate decisions.",
