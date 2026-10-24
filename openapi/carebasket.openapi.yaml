@@ -1,0 +1,505 @@
+openapi: 3.0.3
+info:
+  title: CareBasket Route Handler API
+  version: 1.0.0
+  description: |
+    Contract for CareBasket's three HTTP Route Handlers. Authenticated application
+    mutations use Next.js Server Actions and are intentionally not exposed here.
+
+    Pairing and voice routes use opaque, HttpOnly browser cookies. The PayPal route
+    accepts only signed Sandbox webhook deliveries. This contract must not be used
+    to weaken those browser, origin, consent, rate-limit, or signature boundaries.
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://care-basket.vercel.app
+    description: Public CareBasket deployment
+tags:
+  - name: Pairing
+    description: Read-only polling for an existing browser-bound pairing attempt.
+  - name: Assistant
+    description: Consent-gated voice interpretation for an authenticated adult device.
+  - name: PayPal
+    description: Signed PayPal Sandbox webhook ingestion.
+paths:
+  /api/pairing/status:
+    get:
+      tags:
+        - Pairing
+      operationId: getPairingStatus
+      summary: Poll the current pairing attempt
+      description: |
+        Validates the pairing cookie and applies the PostgreSQL-backed limit of 30
+        polls per minute per pairing. This request never approves, rejects, completes,
+        extends, or otherwise changes a pairing record.
+      security:
+        - pairingCookie: []
+      responses:
+        "200":
+          description: Current pairing state.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/NoStore"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PairingStatusResponse"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/assistant/voice:
+    post:
+      tags:
+        - Assistant
+      operationId: interpretVoiceShoppingList
+      summary: Create a private review from a short voice recording
+      description: |
+        Requires a freshly validated device session, an adult profile with current AI
+        consent, the canonical Origin header, and enabled deployment eligibility. Audio
+        is bounded, validated, processed in memory, and never persisted. The returned
+        review is private, device-bound, and short-lived.
+      security:
+        - deviceCookie: []
+      parameters:
+        - name: Origin
+          in: header
+          required: true
+          description: Exact canonical application origin.
+          schema:
+            type: string
+            format: uri
+          example: http://localhost:3000
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - audio
+              properties:
+                audio:
+                  type: string
+                  format: binary
+                  description: One supported audio file, no larger than 2 MiB.
+            encoding:
+              audio:
+                contentType: audio/webm, audio/ogg, audio/mp4, audio/m4a, audio/aac, audio/mpeg, audio/wav
+      responses:
+        "200":
+          description: Private shopping review created.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/NoStore"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProposalResponse"
+        "401":
+          $ref: "#/components/responses/Unauthenticated"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "413":
+          $ref: "#/components/responses/VoiceUploadError"
+        "415":
+          $ref: "#/components/responses/VoiceUploadError"
+        "422":
+          $ref: "#/components/responses/VoiceUploadError"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/AssistantUnavailable"
+  /api/webhooks/paypal:
+    post:
+      tags:
+        - PayPal
+      operationId: receivePayPalWebhook
+      summary: Verify and reconcile a PayPal Sandbox webhook
+      description: |
+        Public only so PayPal can deliver notifications. The handler reads the exact raw
+        JSON bytes, validates every required transmission header, verifies the signature
+        with PayPal, and only then performs idempotent reconciliation. Do not send browser
+        cookies or application credentials to this endpoint.
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/PayPalAuthAlgo"
+        - $ref: "#/components/parameters/PayPalCertUrl"
+        - $ref: "#/components/parameters/PayPalTransmissionId"
+        - $ref: "#/components/parameters/PayPalTransmissionSig"
+        - $ref: "#/components/parameters/PayPalTransmissionTime"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: Exact PayPal webhook event; maximum raw body size is 64 KiB.
+            example:
+              id: WH-FICTIONAL-UNSIGNED
+              event_type: PAYMENT.CAPTURE.COMPLETED
+              resource:
+                id: FICTIONAL-CAPTURE
+      responses:
+        "200":
+          description: Authentic notification accepted or safely deduplicated.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/NoStore"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookAccepted"
+        "400":
+          description: Invalid body, headers, certificate URL, or signature.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/NoStore"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookError"
+        "413":
+          description: The raw webhook body exceeds 64 KiB.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/NoStore"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookError"
+        "503":
+          description: Verification provider or reconciliation is temporarily unavailable.
+          headers:
+            Cache-Control:
+              $ref: "#/components/headers/NoStore"
+            Retry-After:
+              $ref: "#/components/headers/RetryAfter"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookError"
+components:
+  securitySchemes:
+    pairingCookie:
+      type: apiKey
+      in: cookie
+      name: __Host-cb_pairing
+      description: Opaque production pairing cookie set by CareBasket; never paste it into committed files.
+    deviceCookie:
+      type: apiKey
+      in: cookie
+      name: __Host-cb_device
+      description: Opaque production device cookie set by CareBasket; never paste it into committed files.
+  headers:
+    NoStore:
+      description: Prevents storage of private or security-sensitive responses.
+      schema:
+        type: string
+        enum:
+          - no-store
+    RetryAfter:
+      description: Whole seconds to wait before retrying.
+      schema:
+        type: string
+        pattern: "^[1-9][0-9]*$"
+  parameters:
+    PayPalAuthAlgo:
+      name: paypal-auth-algo
+      in: header
+      required: true
+      schema:
+        type: string
+        enum:
+          - SHA256withRSA
+    PayPalCertUrl:
+      name: paypal-cert-url
+      in: header
+      required: true
+      description: PayPal-hosted certificate URL accepted by the server allowlist.
+      schema:
+        type: string
+        format: uri
+        maxLength: 500
+    PayPalTransmissionId:
+      name: paypal-transmission-id
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 100
+        pattern: "^[A-Za-z0-9-]+$"
+    PayPalTransmissionSig:
+      name: paypal-transmission-sig
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 20
+        maxLength: 500
+        pattern: "^[A-Za-z0-9+/=]+$"
+    PayPalTransmissionTime:
+      name: paypal-transmission-time
+      in: header
+      required: true
+      schema:
+        type: string
+        format: date-time
+        maxLength: 100
+  responses:
+    Unauthenticated:
+      description: The required opaque browser session is absent or invalid.
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/NoStore"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    Forbidden:
+      description: Origin, profile eligibility, or consent validation failed.
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/NoStore"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    RateLimited:
+      description: The caller exceeded a database-backed limit.
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/NoStore"
+        Retry-After:
+          $ref: "#/components/headers/RetryAfter"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    VoiceUploadError:
+      description: The multipart upload is too large, unsupported, or malformed.
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/NoStore"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    AssistantUnavailable:
+      description: The approved AI provider path is unavailable.
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/NoStore"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    InternalError:
+      description: A generic failure with no sensitive diagnostic content.
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/NoStore"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+  schemas:
+    PairingStatus:
+      type: string
+      enum:
+        - PENDING
+        - APPROVED
+        - REJECTED
+        - COMPLETED
+        - EXPIRED
+    PairingStatusResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          additionalProperties: false
+          required:
+            - status
+          properties:
+            status:
+              $ref: "#/components/schemas/PairingStatus"
+    ErrorEnvelope:
+      type: object
+      additionalProperties: false
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required:
+            - code
+            - message
+            - requestId
+          properties:
+            code:
+              type: string
+              example: UNAUTHENTICATED
+            message:
+              type: string
+            requestId:
+              type: string
+              format: uuid
+    ProductCategory:
+      type: string
+      enum:
+        - PRODUCE
+        - DAIRY_EGGS
+        - BAKERY
+        - PANTRY
+        - BREAKFAST
+        - MEAT_SEAFOOD
+        - FROZEN
+        - SNACKS
+        - BEVERAGES
+        - HOUSEHOLD
+        - PERSONAL_CARE
+    ProposalItem:
+      type: object
+      additionalProperties: false
+      required:
+        - sku
+        - displayName
+        - category
+        - sizeLabel
+        - imagePath
+        - quantity
+        - origin
+        - uncertain
+        - isSubstitute
+        - substitutionNote
+      properties:
+        sku:
+          type: string
+        displayName:
+          type: string
+        category:
+          $ref: "#/components/schemas/ProductCategory"
+        sizeLabel:
+          type: string
+        imagePath:
+          type: string
+          nullable: true
+        quantity:
+          type: integer
+          minimum: 1
+        origin:
+          type: string
+          enum:
+            - REQUESTED
+            - SUGGESTED
+        uncertain:
+          type: boolean
+        isSubstitute:
+          type: boolean
+        substitutionNote:
+          type: string
+          nullable: true
+        proof:
+          type: string
+          description: Opaque server proof. Never place it in a URL or committed fixture.
+    ProposalQuestion:
+      type: object
+      additionalProperties: false
+      required:
+        - question
+        - options
+      properties:
+        question:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProposalItem"
+    Proposal:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+        - questions
+        - unrecognized
+        - inputMode
+        - inputText
+        - budgetMinor
+        - local
+      properties:
+        reviewId:
+          type: string
+          format: uuid
+        nextOffset:
+          type: integer
+          nullable: true
+          minimum: 0
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProposalItem"
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProposalQuestion"
+        unrecognized:
+          type: array
+          items:
+            type: string
+        inputMode:
+          type: string
+          enum:
+            - TEXT
+            - VOICE
+        inputText:
+          type: string
+          description: Sensitive transcript returned only to the authenticated device.
+        budgetMinor:
+          type: integer
+          nullable: true
+          minimum: 0
+        local:
+          type: boolean
+        sourceProof:
+          type: string
+          description: Opaque server proof. Never place it in a URL or committed fixture.
+    ProposalResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/Proposal"
+    WebhookAccepted:
+      type: object
+      additionalProperties: false
+      required:
+        - received
+      properties:
+        received:
+          type: boolean
+          enum:
+            - true
+    WebhookError:
+      type: object
+      additionalProperties: false
+      required:
+        - error
+      properties:
+        error:
+          type: string
