@@ -4,7 +4,7 @@ import { requester, requestIds, requestManager } from "@/test/factories/requests
 import { AppError } from "@/server/errors";
 
 const fake = vi.hoisted(() => ({
-	device: vi.fn(), interpret: vi.fn(), page: vi.fn(),
+	device: vi.fn(), interpret: vi.fn(), page: vi.fn(), guide: vi.fn(),
 	adult: vi.fn(), preference: vi.fn(), revalidate: vi.fn(),
 }));
 vi.mock("server-only", () => ({}));
@@ -13,10 +13,43 @@ vi.mock("next/navigation", () => ({ unstable_rethrow: vi.fn() }));
 vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
 vi.mock("@/server/auth/require-adult", () => ({ requireAdult: fake.adult }));
 vi.mock("@/server/logger", () => ({ logSecurityFailure: vi.fn() }));
-vi.mock("./server/service", () => ({ estimateShoppingBudget: vi.fn(), updateAiPreference: fake.preference }));
+vi.mock("./server/service", () => ({ estimateShoppingBudget: vi.fn(), guideShopping: fake.guide,
+	updateAiPreference: fake.preference }));
 vi.mock("./server/saved-review", () => ({ interpretShoppingForReview: fake.interpret, loadShoppingReviewPage: fake.page }));
 
-import { interpretTextAction, loadReviewProductsAction, updateAiPreferenceAction } from "./actions";
+import { guideShoppingAction, interpretTextAction, loadReviewProductsAction, updateAiPreferenceAction } from "./actions";
+
+describe("shopping guide action", () => {
+	beforeEach(() => {
+		vi.resetAllMocks();
+		fake.device.mockResolvedValue(requester);
+		fake.guide.mockResolvedValue({ kind: "PROPOSAL", requestedText: "rice", products: [],
+			unresolved: ["rice"], hasMore: false });
+	});
+
+	it("authenticates and validates a bounded operation before guiding", async () => {
+		const input = { kind: "SEARCH", query: " rice " };
+		expect(await guideShoppingAction(input)).toMatchObject({ ok: true, data: { requestedText: "rice" } });
+		expect(fake.guide).toHaveBeenCalledWith(requester, { kind: "SEARCH", query: "rice", limit: 6 });
+		expect(fake.device.mock.invocationCallOrder[0]).toBeLessThan(fake.guide.mock.invocationCallOrder[0]);
+	});
+
+	it.each([
+		{ kind: "START_CHECKOUT", requestId: requestIds.key },
+		{ kind: "SEARCH", query: "rice", familyId: requestIds.family },
+		{ kind: "COMPARE", skus: ["same-product", "same-product"] },
+	])("rejects restricted, ownership-bearing, or malformed operation %#", async (input) => {
+		expect(await guideShoppingAction(input)).toMatchObject({ ok: false, error: { code: "VALIDATION_FAILED" } });
+		expect(fake.guide).not.toHaveBeenCalled();
+	});
+
+	it("does not guide without a valid device session", async () => {
+		fake.device.mockRejectedValue(new AppError("UNAUTHENTICATED"));
+		expect(await guideShoppingAction({ kind: "SEARCH", query: "rice" }))
+			.toMatchObject({ ok: false, error: { code: "UNAUTHENTICATED" } });
+		expect(fake.guide).not.toHaveBeenCalled();
+	});
+});
 
 describe("saved text review action", () => {
 	beforeEach(() => {
