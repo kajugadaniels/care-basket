@@ -17,6 +17,7 @@ export type ManagerSummaryDto = RequestSummaryDto & { displayName: string; subto
 export type ManagerDetailDto = Omit<RequestDetailDto, "items"> & ManagerSummaryDto & {
 	inputText: string | null;
 	budget?: string | null;
+	budgetMinor: number | null;
 	currency: string; subtotalMinor: number;
 	items: (RequestItemDto & {
 		unitPriceMinor: number; unitPrice: string; lineTotal: string; origin: "REQUESTED" | "SUGGESTED";
