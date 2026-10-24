@@ -2,17 +2,25 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { AdultActor } from "@/server/auth/require-adult";
 import type { DeviceActor } from "@/server/auth/device-policy";
-const mocks = vi.hoisted(() => ({ page: vi.fn(), product: vi.fn() }));
+const mocks = vi.hoisted(() => ({ page: vi.fn(), product: vi.fn(), products: vi.fn() }));
 vi.mock("server-only", () => ({}));
-vi.mock("./cached-catalog", () => ({ readCatalogPage: mocks.page, readCatalogProduct: mocks.product }));
-import { getRequesterProduct, listRequesterProducts } from "./service";
+vi.mock("./cached-catalog", () => ({
+	readCatalogPage: mocks.page,
+	readCatalogProduct: mocks.product,
+	readCatalogProducts: mocks.products,
+}));
+import { getRequesterProduct, getRequesterProducts, listRequesterProducts } from "./service";
 
 const device: DeviceActor = { type: "device", deviceId: "device", familyId: "family", profileId: "profile", profileKind: "ASSISTED_ADULT" };
 const adult: AdultActor = { type: "adult", userId: "adult", familyId: "family", role: "OWNER" };
 const row = { id: "019a1234-0000-7000-8000-000000000001", sku: "example-rice", displayName: "Example Rice", category: "PANTRY", sizeLabel: "1 lb", imagePath: null, brand: "Example", source: "OPEN_PRICES", imageAttribution: null, imageSourceUrl: null, imageProductUrl: null, demoPrices: [{ priceMinor: 349, currency: "USD" }] };
 
 describe("catalog actor boundaries", () => {
-	beforeEach(() => { mocks.page.mockReset().mockResolvedValue([row]); mocks.product.mockReset().mockResolvedValue(row); });
+	beforeEach(() => {
+		mocks.page.mockReset().mockResolvedValue([row]);
+		mocks.product.mockReset().mockResolvedValue(row);
+		mocks.products.mockReset().mockResolvedValue([row]);
+	});
 	it("returns only the safe adult device DTO and never passes actor identity to cache", async () => {
 		const result = await listRequesterProducts(device, {});
 		expect(result.products[0]).toEqual({ sku: row.sku, displayName: row.displayName, category: row.category, sizeLabel: row.sizeLabel, imagePath: null });
@@ -68,5 +76,23 @@ describe("catalog actor boundaries", () => {
 		await expect(getRequesterProduct(adult as unknown as DeviceActor, "example-rice")).rejects.toMatchObject({ code: "FORBIDDEN" });
 		await expect(getRequesterProduct(device, "invalid/sku")).rejects.toThrow();
 		expect(mocks.product).not.toHaveBeenCalled();
+	});
+	it("reads products once and restores the requested order without exposing prices", async () => {
+		const beans = { ...row, id: "019a1234-0000-7000-8000-000000000002", sku: "example-beans",
+			displayName: "Example Beans", sizeLabel: "15 oz" };
+		mocks.products.mockResolvedValue([row, beans]);
+		const products = await getRequesterProducts(device, ["example-beans", "example-rice"]);
+
+		expect(mocks.products).toHaveBeenCalledWith(["example-beans", "example-rice"], false);
+		expect(products.map((product) => product.sku)).toEqual(["example-beans", "example-rice"]);
+		expect(JSON.stringify(products)).not.toContain("price");
+	});
+	it("rejects duplicate, excessive, malformed, and unauthorized product sets before reading", async () => {
+		await expect(getRequesterProducts(device, ["example-rice", "example-rice"])).rejects.toThrow();
+		await expect(getRequesterProducts(device, Array.from({ length: 13 }, (_, index) => `product-${index}`))).rejects.toThrow();
+		await expect(getRequesterProducts(device, ["invalid/sku"])).rejects.toThrow();
+		await expect(getRequesterProducts(adult as unknown as DeviceActor, ["example-rice"]))
+			.rejects.toMatchObject({ code: "FORBIDDEN" });
+		expect(mocks.products).not.toHaveBeenCalled();
 	});
 });
