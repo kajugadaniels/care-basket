@@ -14,3 +14,17 @@ export type Proposal = {
 	unrecognized: string[]; inputMode: "TEXT" | "VOICE"; inputText: string;
 	budgetMinor: number | null; local: boolean; sourceProof?: string;
 };
+
+export type ShoppingGuideCatalogSearchResult = {
+	products: CatalogProductDto[];
+	hasMore: boolean;
+};
+
+export type ShoppingGuideProductComparison = {
+	products: CatalogProductDto[];
+	differences: {
+		displayName: boolean;
+		category: boolean;
+		sizeLabel: boolean;
+	};
+};
