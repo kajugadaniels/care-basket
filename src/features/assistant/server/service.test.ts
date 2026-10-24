@@ -4,20 +4,69 @@ import { requester, requestIds, requestManager } from "@/test/factories/requests
 import { assistantCatalog, interpretation } from "@/test/factories/assistant";
 
 const fake = vi.hoisted(() => ({ profile: vi.fn(), catalog: vi.fn(), preference: vi.fn(), write: vi.fn(),
-	config: vi.fn(), limit: vi.fn(), interpret: vi.fn() }));
+	config: vi.fn(), limit: vi.fn(), interpret: vi.fn(), guide: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/env/server", () => ({ getShoppingAiConfig: fake.config }));
 vi.mock("@/lib/ai/get-provider", () => ({ getShoppingProvider: () => ({ interpret: fake.interpret }) }));
 vi.mock("@/server/auth/shopping-proposal", () => ({ signShoppingProposal: () => "fictional-proof" }));
 vi.mock("@/server/rate-limit/limiter", () => ({ enforceRateLimit: fake.limit }));
+vi.mock("./shopping-guide-orchestrator", () => ({ orchestrateShoppingGuide: fake.guide }));
 vi.mock("./repository", () => ({ AI_CONSENT_VERSION: "ai-shopping-v1", readAssistantProfile: fake.profile,
 	readAssistantCatalog: fake.catalog, readAiPreference: fake.preference, writeAiPreference: fake.write,
 	readProviderContext: async () => assistantCatalog.map((p) => ({ sku: p.sku, name: p.displayName,
 		category: p.category, sizeLabel: p.sizeLabel, variantGroup: p.variantGroup, synonyms: p.synonyms })) }));
-import { assistantAvailability, estimateShoppingBudget, interpretShopping, requireVoicePermission, updateAiPreference } from "./service";
+import { assistantAvailability, estimateShoppingBudget, guideShopping, interpretShopping, requireVoicePermission, updateAiPreference } from "./service";
 
 const consent = { kind: "ASSISTED_ADULT", aiAssistEnabled: true,
 	aiConsentConfirmedAt: new Date("2026-01-01"), aiConsentVersion: "ai-shopping-v1" };
+
+describe("controlled shopping guidance", () => {
+	beforeEach(() => {
+		vi.resetAllMocks();
+		fake.guide.mockResolvedValue({ kind: "PROPOSAL", requestedText: "rice", products: [],
+			unresolved: ["rice"], hasMore: false });
+	});
+
+	it("returns a bounded search proposal without another operation", async () => {
+		const result = await guideShopping(requester, { kind: "SEARCH", query: "rice" });
+		expect(result).toMatchObject({ kind: "PROPOSAL", requestedText: "rice" });
+		expect(fake.guide).toHaveBeenCalledExactlyOnceWith(requester, { kind: "SEARCH", query: "rice", limit: 6 });
+	});
+
+	it("does not present a partial page as a complete comparison", async () => {
+		const products = assistantCatalog.slice(0, 3).map(({ sku, displayName, category, sizeLabel, imagePath }) =>
+			({ sku, displayName, category, sizeLabel, imagePath }));
+		fake.guide.mockResolvedValue({ kind: "PROPOSAL", requestedText: "milk", products,
+			unresolved: [], hasMore: true });
+
+		expect(await guideShopping(requester, { kind: "SEARCH", query: "milk" }))
+			.toMatchObject({ kind: "PROPOSAL", hasMore: true });
+		expect(fake.guide).toHaveBeenCalledOnce();
+	});
+
+	it("turns two to four search choices into one comparison clarification", async () => {
+		const products = assistantCatalog.slice(0, 3).map(({ sku, displayName, category, sizeLabel, imagePath }) =>
+			({ sku, displayName, category, sizeLabel, imagePath }));
+		fake.guide
+			.mockResolvedValueOnce({ kind: "PROPOSAL", requestedText: "milk", products, unresolved: [], hasMore: false })
+			.mockResolvedValueOnce({ kind: "CLARIFICATION", question: "Which one would you like?", options: products,
+				differences: { displayName: true, category: false, sizeLabel: true } });
+
+		const result = await guideShopping(requester, { kind: "SEARCH", query: "milk", limit: 4 });
+		expect(result).toMatchObject({ kind: "CLARIFICATION", options: products });
+		expect(fake.guide).toHaveBeenNthCalledWith(2, requester, {
+			kind: "COMPARE",
+			skus: products.map((product) => product.sku),
+		});
+	});
+
+	it("rejects historical child access before orchestration", async () => {
+		await expect(guideShopping({ ...requester, profileKind: "CHILD" }, { kind: "SEARCH", query: "rice" }))
+			.rejects.toMatchObject({ code: "FORBIDDEN" });
+		expect(fake.guide).not.toHaveBeenCalled();
+	});
+});
+
 describe("assistant authorization and grounding", () => {
 	beforeEach(() => {
 		vi.resetAllMocks(); fake.profile.mockResolvedValue(consent); fake.catalog.mockResolvedValue(assistantCatalog);
