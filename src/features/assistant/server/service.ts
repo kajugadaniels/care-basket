@@ -14,7 +14,7 @@ import { getShoppingProvider } from "@/lib/ai/get-provider";
 import type { InterpretInput } from "@/lib/ai/provider";
 import { requireShoppingAgentAuthority } from "../agent-policy";
 import { aiPreferenceSchema, shoppingGuideOperationSchema, textRequestSchema,
-	type ShoppingGuideOperation } from "../schemas";
+	type ShoppingGuideOperationInput } from "../schemas";
 import type { Proposal, ShoppingGuideOrchestrationResult } from "../types";
 import { AI_CONSENT_VERSION, readAiPreference, readAssistantCatalog, readAssistantProfile, readProviderContext, writeAiPreference } from "./repository";
 import { matchKeywords } from "./keyword-matcher";
@@ -23,7 +23,7 @@ import { fitBudget } from "./budget";
 import { assistantCopy } from "../copy";
 import { orchestrateShoppingGuide } from "./shopping-guide-orchestrator";
 
-export async function guideShopping(actor: DeviceActor, input: ShoppingGuideOperation): Promise<ShoppingGuideOrchestrationResult> {
+export async function guideShopping(actor: DeviceActor, input: ShoppingGuideOperationInput): Promise<ShoppingGuideOrchestrationResult> {
 	assertDevicePermission(actor, "create-own-request");
 	const operation = shoppingGuideOperationSchema.parse(input);
 	const result = await orchestrateShoppingGuide(actor, operation);
