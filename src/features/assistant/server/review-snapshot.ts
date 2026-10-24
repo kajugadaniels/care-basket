@@ -12,7 +12,9 @@ export const reviewItemSchema = z.strictObject({
 	uncertain: z.boolean(),
 	isSubstitute: z.boolean(),
 	substitutionNote: z.string().max(120).nullable(),
-}).refine((item) => item.origin !== "SUGGESTED" || item.quantity <= 6);
+	suggestionReason: z.string().max(120).nullable().optional(),
+}).refine((item) => item.origin !== "SUGGESTED" || item.quantity <= 6)
+	.refine((item) => item.origin === "SUGGESTED" || !item.suggestionReason);
 
 export const reviewSnapshotSchema = z.strictObject({
 	items: z.array(reviewItemSchema).max(200),
@@ -31,8 +33,8 @@ export const reviewSnapshotSchema = z.strictObject({
 
 export type ReviewSnapshot = z.infer<typeof reviewSnapshotSchema>;
 
-export function snapshotItem({ sku, quantity, origin, uncertain, isSubstitute, substitutionNote }: ProposalItem) {
-	return { sku, quantity, origin, uncertain, isSubstitute, substitutionNote };
+export function snapshotItem({ sku, quantity, origin, uncertain, isSubstitute, substitutionNote, suggestionReason }: ProposalItem) {
+	return { sku, quantity, origin, uncertain, isSubstitute, substitutionNote, suggestionReason: suggestionReason ?? null };
 }
 
 export function reviewDigest(items: ReviewSnapshot["items"]) {
