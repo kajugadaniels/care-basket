@@ -12,6 +12,7 @@ import { getShoppingAiConfig } from "@/lib/env/server";
 import { interpretationSchema } from "@/lib/ai/schemas";
 import { getShoppingProvider } from "@/lib/ai/get-provider";
 import type { InterpretInput } from "@/lib/ai/provider";
+import { requireShoppingAgentAuthority } from "../agent-policy";
 import { aiPreferenceSchema, textRequestSchema } from "../schemas";
 import type { Proposal } from "../types";
 import { AI_CONSENT_VERSION, readAiPreference, readAssistantCatalog, readAssistantProfile, readProviderContext, writeAiPreference } from "./repository";
@@ -38,6 +39,7 @@ export async function enforceAssistantLimits(actor: DeviceActor) {
 	await enforceRateLimit(`ai:family:${actor.familyId}`, 200, 24 * 60 * 60_000);
 }
 export async function interpretShopping(actor: DeviceActor, request: InterpretInput["request"], voiceRateLimited = false): Promise<Proposal & GroundedProposal> {
+	requireShoppingAgentAuthority("INTERPRET_REQUEST");
 	const deadline = Date.now() + 25_000;
 	const availability = await assistantAvailability(actor);
 	if (request.kind === "audio") await requireVoicePermission(actor);
