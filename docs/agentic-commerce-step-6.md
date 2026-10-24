@@ -30,3 +30,5 @@ The ledger is decision support, not a recommendation. It does not approve, decli
 ## Deliberately excluded
 
 Step 6 does not recommend approval, automatically remove suggestions, select substitutes, change quantities, start checkout, contact the requester, or predict future needs. Every consequential action remains with the family manager.
+
+The next release gate is the [Step 7 agent safety evaluation](agentic-commerce-step-7.md), which exercises hostile and ambiguous input, provider fallback, ownership isolation, explicit confirmation, and the checkout boundary.
