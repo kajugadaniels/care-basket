@@ -83,6 +83,19 @@ describe("deterministic shopping interpretation", () => {
 			origin: "suggested", packCount: 20 })) }), catalog);
 		expect(result.items).toHaveLength(12); expect(result.items.every((item) => item.quantity === 6 && item.origin === "SUGGESTED")).toBe(true);
 	});
+	it("explains suggestions only from current-request catalog categories", () => {
+		const requested = interpretation().items[0];
+		const result = groundInterpretation(interpretation({ items: [
+			requested,
+			{ ...requested, sku: "demo-eggs", requestedText: "eggs", origin: "suggested" },
+			{ ...requested, sku: "demo-bread", requestedText: "bread", origin: "suggested" },
+		] }), assistantCatalog);
+		expect(result.items.find((item) => item.sku === "demo-milk")?.suggestionReason).toBeNull();
+		expect(result.items.find((item) => item.sku === "demo-eggs")?.suggestionReason)
+			.toBe("Another dairy and eggs choice based on the groceries you asked for.");
+		expect(result.items.find((item) => item.sku === "demo-bread")?.suggestionReason)
+			.toBe("An extra bakery idea based on this shopping request.");
+	});
 	it("limits clarification questions to three without adding unresolved low-confidence items", () => {
 		const catalog = [...assistantCatalog, { ...assistantCatalog[0], sku: "milk-small", netQuantity: 500 }];
 		const result = groundInterpretation(interpretation({ items: Array.from({ length: 5 }, () => ({ ...interpretation().items[0], confidence: "low" })) }), catalog);
