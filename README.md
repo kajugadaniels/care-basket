@@ -37,6 +37,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 | Images | Reviewed photos, Cloudinary mappings, same-origin Next image optimization |
 | UI | CSS Modules, Hugeicons, DM Sans and Atkinson Hyperlegible |
 | Tests | Vitest 4, Testing Library, jsdom; mocked providers and database boundaries |
+| API tooling | OpenAPI 3.0 contract prepared for APIMatic; secret-free Postman security checks |
 
 ## Architecture
 
@@ -81,6 +82,20 @@ npm run build
 Generate Prisma first on a clean checkout. Build already runs generation before next build; generated client files are ignored. It neither migrates nor seeds nor verifies provider credentials/browser behavior. Tests use fakes, never live PayPal/Gemini/Clerk/Neon. No new hooks or CI were added.
 
 For a demo database use `NODE_ENV=production npx prisma migrate deploy --config prisma7.config.ts`, never migrate dev/reset/db push. Follow [deployment preparation](docs/deployment/demo-deployment.md) for HTTPS, Clerk, an isolated Neon branch, trusted IP, Sandbox signing, images and function limits. Keep local secret files out of production build contexts.
+
+## API contract, APIMatic and Postman
+
+The [OpenAPI contract](openapi/carebasket.openapi.yaml) documents only CareBasket's HTTP Route Handlers: read-only pairing polling, consent-gated voice interpretation and signed PayPal webhook ingestion. Authenticated application mutations remain Server Actions and are deliberately excluded. The contract preserves browser-cookie, origin, rate-limit, upload and PayPal-signature requirements; it does not create an alternative authentication path.
+
+The contract is ready to import into APIMatic for contract validation and generated reference documentation. APIMatic also offers a PayPal Context Plugin that can support documentation-aware review of PayPal integrations:
+
+```bash
+npx context-plugins install paypal
+```
+
+Installing or importing a tool is not evidence that PayPal Sandbox behavior works. Before describing APIMatic as a completed sponsor integration, record the APIMatic validation result and use its PayPal context in a real review of the Sandbox order, capture and webhook implementation. CareBasket continues to use its small reviewed REST adapter; this tooling does not replace it or add a production payment dependency.
+
+Import [the Postman collection](postman/CareBasket.postman_collection.json) and [local environment](postman/CareBasket.local.postman_environment.json) into Postman, start CareBasket locally, select the environment and run the collection. Its automated checks intentionally confirm that missing pairing/device sessions and unsigned PayPal webhooks fail closed. The committed files contain fictional data and no secrets. Successful browser flows must be tested through the UI, while authentic webhook success must come from PayPal Sandbox. Never paste cookies, credentials, transcripts or real customer data into a committed collection, environment or example.
 
 ## Documentation and limitations
 
