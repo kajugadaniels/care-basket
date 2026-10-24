@@ -13,13 +13,30 @@ import { interpretationSchema } from "@/lib/ai/schemas";
 import { getShoppingProvider } from "@/lib/ai/get-provider";
 import type { InterpretInput } from "@/lib/ai/provider";
 import { requireShoppingAgentAuthority } from "../agent-policy";
-import { aiPreferenceSchema, textRequestSchema } from "../schemas";
-import type { Proposal } from "../types";
+import { aiPreferenceSchema, shoppingGuideOperationSchema, textRequestSchema,
+	type ShoppingGuideOperation } from "../schemas";
+import type { Proposal, ShoppingGuideOrchestrationResult } from "../types";
 import { AI_CONSENT_VERSION, readAiPreference, readAssistantCatalog, readAssistantProfile, readProviderContext, writeAiPreference } from "./repository";
 import { matchKeywords } from "./keyword-matcher";
 import { groundInterpretation, type GroundedProposal } from "./grounding";
 import { fitBudget } from "./budget";
 import { assistantCopy } from "../copy";
+import { orchestrateShoppingGuide } from "./shopping-guide-orchestrator";
+
+export async function guideShopping(actor: DeviceActor, input: ShoppingGuideOperation): Promise<ShoppingGuideOrchestrationResult> {
+	assertDevicePermission(actor, "create-own-request");
+	const operation = shoppingGuideOperationSchema.parse(input);
+	const result = await orchestrateShoppingGuide(actor, operation);
+
+	// A short search result is already the bounded set a requester needs to compare.
+	if (operation.kind !== "SEARCH" || result.kind !== "PROPOSAL"
+		|| result.hasMore || result.products.length < 2 || result.products.length > 4) return result;
+
+	return orchestrateShoppingGuide(actor, {
+		kind: "COMPARE",
+		skus: result.products.map((product) => product.sku),
+	});
+}
 
 export async function assistantAvailability(actor: DeviceActor) {
 	assertDevicePermission(actor, "create-own-request");
