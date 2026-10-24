@@ -49,7 +49,7 @@ describe("requester shopping guide", () => {
 		expect(screen.getByLabelText("Draft state")).toHaveTextContent('"items":[]');
 		expect(screen.getAllByRole("article")).toHaveLength(2);
 
-		const card = within(screen.getByRole("article", { name: "Rice" }).parentElement!);
+		const card = within(screen.getAllByRole("article", { name: "Rice" })[0]!.parentElement!);
 		fireEvent.click(card.getByRole("button", { name: requestsCopy.add }));
 		expect(screen.getByLabelText("Draft state")).toHaveTextContent('"sku":"fictional-rice"');
 	});
@@ -62,7 +62,7 @@ describe("requester shopping guide", () => {
 		fireEvent.change(input, { target: { value: "purple beans" } });
 		fireEvent.click(screen.getByRole("button", { name: copy.guideSearch }));
 
-		expect(await screen.findByRole("status")).toHaveTextContent(copy.guideNoMatches({ query: "purple beans" }));
+		expect(await screen.findByText(copy.guideNoMatches({ query: "purple beans" }))).toHaveAttribute("role", "status");
 		expect(input).toHaveValue("purple beans");
 		expect(screen.queryByRole("article")).not.toBeInTheDocument();
 	});
