@@ -25,6 +25,8 @@ export const shoppingGuideOperationSchema = z.discriminatedUnion("kind", [
 	shoppingGuideComparisonSchema.extend({ kind: z.literal("COMPARE") }),
 ]);
 
+export type ShoppingGuideOperation = z.infer<typeof shoppingGuideOperationSchema>;
+
 export const reviewPageSchema = z.strictObject({
 	reviewId: z.uuid(),
 	offset: z.int().min(0).max(192).multipleOf(12).default(0),
