@@ -63,6 +63,9 @@ export function ProposalReview({ proposal }: Props) {
 			maxQuantity={item.origin === "SUGGESTED" ? 6 : 20}
 			onAdd={(quantity) => { add(item, quantity); }}>
 			<ProductCard product={item} idPrefix="proposal" />
+			{item.origin === "SUGGESTED" && item.suggestionReason ? <p className={styles.suggestionReason}>
+				<strong>{copy.whySuggested}</strong> {item.suggestionReason}
+			</p> : null}
 			{item.uncertain ? <p className={styles.annotation}>{copy.uncertain}</p> : null}
 			{item.isSubstitute ? <p className={styles.annotation}>{item.substitutionNote}</p> : null}
 		</ProductSelection>;
