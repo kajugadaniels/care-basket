@@ -49,6 +49,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 - AI only proposes. Device-bound encrypted reviews expire within 30 minutes or earlier proof expiry. URLs contain opaque lookup IDs, not words/audio/proofs. Audio is never persisted. Private requests/payments are not shared-cached.
 - The [CareBasket Shopping Guide contract](docs/agentic-commerce-step-1.md) defines a single supervised assistant with catalog read/proposal authority only. Request submission, manager decisions, family access and PayPal checkout remain outside assistant control.
 - Its [catalog capabilities](docs/agentic-commerce-step-2.md) provide bounded, price-free search, product lookup and package-size comparison behind the existing authenticated catalog service; they are internal capabilities, not public APIs or autonomous model tools.
+- The [controlled orchestration layer](docs/agentic-commerce-step-3.md) deterministically routes strict search, lookup and comparison operations to those capabilities and returns proposals or one clarification without changing a draft.
 
 ## Local setup (developer-run)
 
@@ -107,6 +108,7 @@ Import [the Postman collection](postman/CareBasket.postman_collection.json) and 
 - [Catalog guide](prisma/catalog/README.md), [photo attribution](public/products/ATTRIBUTION.md), public `/data-sources` and `/privacy` pages.
 - [Agent contract](docs/agentic-commerce-step-1.md): purpose, authority, confirmation and data boundaries for supervised shopping assistance.
 - [Agent catalog capabilities](docs/agentic-commerce-step-2.md): bounded internal search, lookup and comparison contracts.
+- [Agent orchestration](docs/agentic-commerce-step-3.md): deterministic capability selection, unresolved-phrase handling and proposal-only results.
 - [Engineering rulebook](.agents/README.md): security boundaries and agent execution restrictions.
 
 Privacy contact: kajugadaniels@gmail.com. Cleanup is developer-run, not automatically scheduled. Full family/account deletion has no self-service UI; an operator procedure is still needed. Backups and provider logs have separate retention. Review privacy/child-related obligations before any real users.
