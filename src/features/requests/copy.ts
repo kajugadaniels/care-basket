@@ -43,6 +43,16 @@ export const requestsCopy = {
 	managerDetailIntro: "Review the groceries and quantities in this request.",
 	managerDetailTitle: "Shopping request details",
 	managerItems: "Requested groceries", managerSummary: "Request summary",
+	managerReviewNotes: "Review notes",
+	managerOriginSummary: ({ requested, suggested }: { requested: number; suggested: number }) => {
+		const requestedLabel = `${requested} ${requested === 1 ? "product was" : "products were"}`;
+		if (!suggested) return `All ${requestedLabel} selected by the requester.`;
+		return `${requestedLabel} selected by the requester; ${suggested} ${suggested === 1 ? "was" : "were"} suggested.`;
+	},
+	managerSubstituteSummary: (count: number) => `${count} ${count === 1 ? "substitute needs" : "substitutes need"} a closer look.`,
+	managerBudgetBelow: (amount: string) => `The total is ${amount} below the stated budget.`,
+	managerBudgetMatches: "The total matches the stated budget.",
+	managerBudgetAbove: (amount: string) => `The total is ${amount} above the stated budget.`,
 	managerEmptyItems: "This request has no groceries to review.",
 	managerReviewHelp: "Save quantity changes before leaving this request.",
 	managerSyncing: "Syncing…",
