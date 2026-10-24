@@ -7,6 +7,7 @@ import { requestsCopy } from "../../copy";
 import { MAX_ITEM_QUANTITY } from "../../limits";
 import { useManagerBasket } from "../../hooks/use-manager-basket";
 import type { ManagerDetailDto } from "../../types";
+import { ManagerReviewNotes } from "../ManagerReviewNotes/ManagerReviewNotes";
 import { RequestItem } from "../RequestUi/RequestItem";
 import styles from "./ManagerBasket.module.css";
 
@@ -172,6 +173,7 @@ export function ManagerBasket({
             <dd>{request.budget}</dd>
           </dl>
         ) : null}
+		<ManagerReviewNotes request={preview} />
         {request.editable ? (
           <p className={styles.note}>{requestsCopy.managerReviewHelp}</p>
         ) : null}
