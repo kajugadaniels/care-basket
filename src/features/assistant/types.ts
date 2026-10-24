@@ -28,3 +28,18 @@ export type ShoppingGuideProductComparison = {
 		sizeLabel: boolean;
 	};
 };
+
+export type ShoppingGuideOrchestrationResult =
+	| {
+		kind: "PROPOSAL";
+		requestedText: string;
+		products: CatalogProductDto[];
+		unresolved: string[];
+		hasMore: boolean;
+	}
+	| {
+		kind: "CLARIFICATION";
+		question: string;
+		options: CatalogProductDto[];
+		differences: ShoppingGuideProductComparison["differences"];
+	};
