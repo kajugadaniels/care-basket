@@ -1,10 +1,15 @@
 // @vitest-environment node
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ life: vi.fn(), tag: vi.fn(), list: vi.fn().mockResolvedValue([]), product: vi.fn().mockResolvedValue(null) }));
+const mocks = vi.hoisted(() => ({ life: vi.fn(), tag: vi.fn(), list: vi.fn().mockResolvedValue([]),
+	product: vi.fn().mockResolvedValue(null), products: vi.fn().mockResolvedValue([]) }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ cacheLife: mocks.life, cacheTag: mocks.tag }));
-vi.mock("./repository", () => ({ listCatalogRows: mocks.list, findCatalogRow: mocks.product }));
-import { readCatalogPage, readCatalogProduct } from "./cached-catalog";
+vi.mock("./repository", () => ({
+	listCatalogRows: mocks.list,
+	findCatalogRow: mocks.product,
+	findCatalogRows: mocks.products,
+}));
+import { readCatalogPage, readCatalogProduct, readCatalogProducts } from "./cached-catalog";
 
 describe("shared catalog cache boundaries", () => {
 	beforeEach(() => { vi.clearAllMocks(); });
@@ -23,6 +28,12 @@ describe("shared catalog cache boundaries", () => {
 	it("uses the same shared catalog tag for individual sku reads", async () => {
 		await readCatalogProduct("example-rice", true);
 		expect(mocks.product).toHaveBeenCalledWith("example-rice", true);
+		expect(mocks.tag).toHaveBeenCalledWith("catalog");
+	});
+	it("uses one shared cache entry for a bounded sku set", async () => {
+		await readCatalogProducts(["example-beans", "example-rice"], false);
+		expect(mocks.products).toHaveBeenCalledWith(["example-beans", "example-rice"], false);
+		expect(mocks.life).toHaveBeenCalledWith("hours");
 		expect(mocks.tag).toHaveBeenCalledWith("catalog");
 	});
 });
