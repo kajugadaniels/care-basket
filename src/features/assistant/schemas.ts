@@ -19,6 +19,12 @@ export const shoppingGuideComparisonSchema = z.strictObject({
 		.refine((skus) => new Set(skus).size === skus.length, "Choose each product once."),
 });
 
+export const shoppingGuideOperationSchema = z.discriminatedUnion("kind", [
+	shoppingGuideCatalogSearchSchema.extend({ kind: z.literal("SEARCH") }),
+	shoppingGuideProductSchema.extend({ kind: z.literal("PRODUCT") }),
+	shoppingGuideComparisonSchema.extend({ kind: z.literal("COMPARE") }),
+]);
+
 export const reviewPageSchema = z.strictObject({
 	reviewId: z.uuid(),
 	offset: z.int().min(0).max(192).multipleOf(12).default(0),
