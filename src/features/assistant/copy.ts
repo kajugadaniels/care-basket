@@ -23,6 +23,7 @@ export const assistantCopy = {
 	prompt: "What groceries do you need?", placeholder: "Try: two bags of rice and one carton of milk",
 	continue: "Find my groceries", cancel: "Cancel", working: "Finding groceries…",
 	review: "Here is what I understood", requested: "Your groceries", suggested: "Suggested for you",
+	whySuggested: "Why this idea:",
 	uncertain: "Is this right?", question: "Which one would you like?", none: "None of these",
 	substitution: "A different product or package was suggested. Please check this choice.",
 	unrecognized: ({ phrases }: { phrases: string[] }) => `We couldn't find: ${phrases.join(", ")}.`,
