@@ -31,4 +31,4 @@ No guide appears when the original interpretation resolved every phrase, keeping
 
 ## Deliberately deferred
 
-Step 4 does not personalize from history, mutate or persist the draft on the server, submit a request, notify a manager, calculate prices, or touch checkout. A later approved step may add explainable suggestion reasons from current-request context only, provided they remain catalog-grounded and requester-confirmed.
+Step 4 does not personalize from history, mutate or persist the draft on the server, submit a request, notify a manager, calculate prices, or touch checkout. Catalog-grounded, requester-confirmed explanations are implemented separately in [Step 5](agentic-commerce-step-5.md).
