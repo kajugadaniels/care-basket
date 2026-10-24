@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { PRODUCT_CATEGORIES } from "./taxonomy";
 
+export const catalogSkuSchema = z.string().max(60).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+export const catalogSkusSchema = z.array(catalogSkuSchema).min(1).max(12)
+	.refine((skus) => new Set(skus).size === skus.length, "Choose each product once.");
+
 export const catalogFiltersSchema = z.strictObject({
 	category: z.enum(PRODUCT_CATEGORIES).optional(),
 	q: z.string().trim().max(80).regex(/^[^\p{Cc}\p{Cf}<>]*$/u).default(""),
