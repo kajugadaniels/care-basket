@@ -14,9 +14,10 @@ import { AssistantStart } from "../AssistantStart/AssistantStart";
 import { ProposalReviewScreen } from "./ProposalReviewScreen";
 import styles from "./ProposalReview.module.css";
 
-const fake = vi.hoisted(() => ({ push: vi.fn(), text: vi.fn() }));
+const fake = vi.hoisted(() => ({ push: vi.fn(), text: vi.fn(), guide: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: fake.push }) }));
-vi.mock("../../actions", () => ({ interpretTextAction: fake.text, loadReviewProductsAction: vi.fn() }));
+vi.mock("../../actions", () => ({ interpretTextAction: fake.text, loadReviewProductsAction: vi.fn(),
+	guideShoppingAction: fake.guide }));
 
 const proposal: Proposal = {
 	inputMode: "TEXT", inputText: "milk", budgetMinor: null, local: true,
