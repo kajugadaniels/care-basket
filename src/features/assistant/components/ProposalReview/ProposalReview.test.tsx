@@ -14,9 +14,9 @@ import { ProposalReview } from "./ProposalReview";
 import cardStyles from "@/features/requests/components/RequestUi/RequestUi.module.css";
 import styles from "./ProposalReview.module.css";
 
-const fake = vi.hoisted(() => ({ push: vi.fn(), page: vi.fn() }));
+const fake = vi.hoisted(() => ({ push: vi.fn(), page: vi.fn(), guide: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: fake.push }) }));
-vi.mock("../../actions", () => ({ loadReviewProductsAction: fake.page }));
+vi.mock("../../actions", () => ({ loadReviewProductsAction: fake.page, guideShoppingAction: fake.guide }));
 const proposal: Proposal = { inputMode: "TEXT", inputText: "milk", local: true, sourceProof: requestIds.key,
 	budgetMinor: null, items: [displayItem(assistantCatalog[0], 1, "REQUESTED"), displayItem(assistantCatalog[1], 1, "SUGGESTED")],
 	questions: [], unrecognized: [] };
@@ -54,6 +54,7 @@ describe("explicit proposal review", () => {
 	it("adds only the clicked product and updates the shopping-list summary", () => {
 		review();
 		expect(screen.getByRole("heading", { name: copy.suggested })).toBeInTheDocument();
+		expect(screen.queryByRole("heading", { name: copy.guideTitle })).not.toBeInTheDocument();
 		expect(screen.getByRole("complementary", { name: requestsCopy.detailTitle })).toBeInTheDocument();
 		expect(draft().items).toEqual([]);
 		expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
@@ -232,6 +233,8 @@ describe("explicit proposal review", () => {
 		expect(message.tagName).toBe("P");
 		expect(screen.queryByRole("heading", { name: "I didn't catch these things." })).not.toBeInTheDocument();
 		expect(screen.queryByRole("link", { name: copy.pictures })).not.toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: copy.guideTitle })).toBeInTheDocument();
+		expect(screen.getByRole("textbox", { name: copy.guideLabel })).toHaveValue(phrases[0]);
 		const css = readFileSync(resolve("src/features/assistant/components/ProposalReview/ProposalReview.module.css"), "utf8");
 		expect(css).toMatch(/\.unrecognized\s*\{[^}]*color: var\(--color-danger\);[^}]*font-size: var\(--text-md\);/);
 	});
