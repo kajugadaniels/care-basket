@@ -29,4 +29,4 @@ Requested products do not receive suggestion explanations. Substitutions keep th
 
 ## Deliberately excluded
 
-Step 5 does not rank suggestions from personal history, silently add products, change quantities, submit a request, notify a manager, approve a request, or start payment. Those decisions remain explicit human actions.
+Step 5 does not rank suggestions from personal history, silently add products, change quantities, submit a request, notify a manager, approve a request, or start payment. Manager-side, current-request review notes are implemented separately in [Step 6](agentic-commerce-step-6.md).
