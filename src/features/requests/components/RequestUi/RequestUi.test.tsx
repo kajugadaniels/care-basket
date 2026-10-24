@@ -99,7 +99,7 @@ describe("shopping request screens", () => {
 		expect(screen.queryByRole("button", { name: /pay|approve/i })).not.toBeInTheDocument();
 	});
 	it("renders original text, suggested origin, substitutions and budget as manager context", () => {
-		const request = makeManagerRequest({ budget: "$20.00", inputText: "Breakfast groceries" });
+		const request = makeManagerRequest({ budget: "$20.00", budgetMinor: 2_000, inputText: "Breakfast groceries" });
 		request.items[0] = { ...request.items[0], origin: "SUGGESTED", isSubstitute: true, substitutionNote: "Different package size" };
 		render(<RequestDetail request={request} />);
 		expect(screen.getByText("Breakfast groceries")).toBeInTheDocument();
@@ -107,6 +107,17 @@ describe("shopping request screens", () => {
 		expect(screen.getByText(/\$20\.00/)).toBeInTheDocument();
 		expect(screen.getByText("Suggested item")).toBeInTheDocument();
 		expect(screen.getByText("Substitute")).toBeInTheDocument();
+		const notes = screen.getByRole("region", { name: requestsCopy.managerReviewNotes });
+		expect(within(notes).getByText("0 products were selected by the requester; 1 was suggested.")).toBeInTheDocument();
+		expect(within(notes).getByText("1 substitute needs a closer look.")).toBeInTheDocument();
+		expect(within(notes).getByText("The total is $15.00 below the stated budget.")).toBeInTheDocument();
+	});
+	it("shows an over-budget note without recommending or taking an action", () => {
+		render(<RequestDetail request={makeManagerRequest({ budget: "$4.00", budgetMinor: 400 })} />);
+		const notes = screen.getByRole("region", { name: requestsCopy.managerReviewNotes });
+		expect(within(notes).getByText("The total is $1.00 above the stated budget.")).toBeInTheDocument();
+		expect(within(notes).queryByRole("button")).not.toBeInTheDocument();
+		expect(within(notes).queryByRole("link")).not.toBeInTheDocument();
 	});
 	it("sends manager quantity edits with a revision, never prices or ownership", async () => {
 		render(<RequestDetail request={makeManagerRequest()} />);
@@ -290,14 +301,16 @@ describe("shopping request screens", () => {
 	it("rolls preview amounts back on rejection while retaining the exact input node and draft", async () => {
 		const { promise, finish } = deferredMutation();
 		fake.update.mockReturnValueOnce(promise);
-		render(<RequestDetail request={makeManagerRequest()} />);
+		render(<RequestDetail request={makeManagerRequest({ budget: "$10.00", budgetMinor: 1_000 })} />);
 		const input = screen.getByRole("spinbutton", { name: "Quantity: Demo milk" });
 		fireEvent.change(input, { target: { value: "5" } });
 		fireEvent.click(screen.getByRole("button", { name: requestsCopy.save }));
 		const summary = screen.getByRole("region", { name: requestsCopy.managerSummary });
 		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
+		expect(within(summary).getByText("The total is $2.50 above the stated budget.")).toBeInTheDocument();
 		await act(async () => finish({ ok: false, error: { code: "CONFLICT", message: "Refresh before retrying." } }));
 		expect(within(summary).getByText("$5.00")).toBeInTheDocument();
+		expect(within(summary).getByText("The total is $5.00 below the stated budget.")).toBeInTheDocument();
 		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
 		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$5.00")).toBeInTheDocument();
 		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toBe(input);
