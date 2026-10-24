@@ -13,6 +13,7 @@ import { changeDraft } from "@/features/requests/draft";
 import { assistantCopy as copy } from "../../copy";
 import { loadReviewProductsAction } from "../../actions";
 import type { Proposal, ProposalItem } from "../../types";
+import { ShoppingGuide } from "../ShoppingGuide/ShoppingGuide";
 import styles from "./ProposalReview.module.css";
 
 type Props = { proposal: Proposal };
@@ -78,6 +79,7 @@ export function ProposalReview({ proposal }: Props) {
 					{copy.unrecognized({ phrases: proposal.unrecognized })}
 				</p> : null}
 			</div> : null}
+			{proposal.unrecognized.length ? <ShoppingGuide initialQuery={proposal.unrecognized[0]} /> : null}
 			{(["REQUESTED", "SUGGESTED"] as const).map((origin) => feed.items.some((item) => item.origin === origin) ? <section key={origin} className={styles.group}>
 				<h2>{origin === "REQUESTED" ? copy.requested : copy.suggested}</h2>
 				<p className={styles.muted}>{origin === "REQUESTED" ? copy.selectedHelp : copy.suggestionHelp}</p>
