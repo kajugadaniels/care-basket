@@ -51,6 +51,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 - Its [catalog capabilities](docs/agentic-commerce-step-2.md) provide bounded, price-free search, product lookup and package-size comparison behind the existing authenticated catalog service; they are internal capabilities, not public APIs or autonomous model tools.
 - The [controlled orchestration layer](docs/agentic-commerce-step-3.md) deterministically routes strict search, lookup and comparison operations to those capabilities and returns proposals or one clarification without changing a draft.
 - The [requester guidance flow](docs/agentic-commerce-step-4.md) offers controlled catalog help for unresolved words and requires an explicit add action for every proposed product.
+- [Explainable suggestions](docs/agentic-commerce-step-5.md) show a short catalog-grounded reason based only on the current request and still require explicit confirmation.
 
 ## Local setup (developer-run)
 
@@ -111,6 +112,7 @@ Import [the Postman collection](postman/CareBasket.postman_collection.json) and 
 - [Agent catalog capabilities](docs/agentic-commerce-step-2.md): bounded internal search, lookup and comparison contracts.
 - [Agent orchestration](docs/agentic-commerce-step-3.md): deterministic capability selection, unresolved-phrase handling and proposal-only results.
 - [Agent requester guidance](docs/agentic-commerce-step-4.md): authenticated unresolved-word search, comparison and explicit draft confirmation.
+- [Explainable suggestions](docs/agentic-commerce-step-5.md): current-request category explanations with no history-based profiling or automatic draft changes.
 - [Engineering rulebook](.agents/README.md): security boundaries and agent execution restrictions.
 
 Privacy contact: kajugadaniels@gmail.com. Cleanup is developer-run, not automatically scheduled. Full family/account deletion has no self-service UI; an operator procedure is still needed. Backups and provider logs have separate retention. Review privacy/child-related obligations before any real users.
