@@ -1,0 +1,184 @@
+{
+  "info": {
+    "_postman_id": "29eb6e5a-e8ac-48f8-b0c7-7f6f502e545b",
+    "name": "CareBasket Security Boundary Checks",
+    "description": "Secret-free negative checks for CareBasket HTTP Route Handlers. These requests verify that private routes reject missing sessions and that the PayPal webhook rejects unsigned input. They do not simulate a signed-in user, call Gemini, complete a pairing, create a payment, or replace browser end-to-end testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Pairing",
+      "description": "Read-only pairing status checks. Successful polling remains browser-bound and is intentionally excluded from this committed collection.",
+      "item": [
+        {
+          "name": "Reject pairing status without a pairing cookie",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Rejects the unauthenticated request\", function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test(\"Prevents response caching\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Cache-Control\")).to.eql(\"no-store\");",
+                  "});",
+                  "pm.test(\"Does not create a browser session\", function () {",
+                  "  pm.expect(pm.response.headers.has(\"Set-Cookie\")).to.be.false;",
+                  "});",
+                  "pm.test(\"Returns the generic error envelope\", function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.nested.property(\"error.code\", \"UNAUTHENTICATED\");",
+                  "  pm.expect(body).to.have.nested.property(\"error.requestId\").that.is.a(\"string\");",
+                  "  pm.expect(body).not.to.have.property(\"data\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/pairing/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "pairing",
+                "status"
+              ]
+            },
+            "description": "Expected to return 401. Do not add a real pairing cookie to this committed request."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assistant",
+      "description": "Authentication is checked before uploads or provider work, so this request is safe and deterministic without audio or credentials.",
+      "item": [
+        {
+          "name": "Reject voice interpretation without a device session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Rejects the unauthenticated request\", function () {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test(\"Prevents response caching\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Cache-Control\")).to.eql(\"no-store\");",
+                  "});",
+                  "pm.test(\"Does not create a browser session\", function () {",
+                  "  pm.expect(pm.response.headers.has(\"Set-Cookie\")).to.be.false;",
+                  "});",
+                  "pm.test(\"Returns no proposal or transcript\", function () {",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body).to.have.nested.property(\"error.code\", \"UNAUTHENTICATED\");",
+                  "  pm.expect(body).not.to.have.property(\"data\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/assistant/voice",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "assistant",
+                "voice"
+              ]
+            },
+            "description": "Expected to return 401 before reading audio or contacting an AI provider. Do not add a real device cookie to this committed request."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PayPal",
+      "description": "Webhook authenticity can only be proven by a real PayPal Sandbox delivery. This check confirms that unsigned JSON fails closed.",
+      "item": [
+        {
+          "name": "Reject an unsigned PayPal webhook",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Rejects the unsigned notification\", function () {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"Prevents response caching\", function () {",
+                  "  pm.expect(pm.response.headers.get(\"Cache-Control\")).to.eql(\"no-store\");",
+                  "});",
+                  "pm.test(\"Returns only the generic public error\", function () {",
+                  "  pm.expect(pm.response.json()).to.eql({ error: \"Invalid notification.\" });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"WH-FICTIONAL-UNSIGNED\",\n  \"event_type\": \"PAYMENT.CAPTURE.COMPLETED\",\n  \"resource\": {\n    \"id\": \"FICTIONAL-CAPTURE\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/webhooks/paypal",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "webhooks",
+                "paypal"
+              ]
+            },
+            "description": "Expected to return 400. The fictional payload and absent signature headers must never reconcile payment state."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
