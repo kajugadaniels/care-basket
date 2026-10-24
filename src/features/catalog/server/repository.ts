@@ -48,3 +48,13 @@ export async function findCatalogRow(sku: string, childOnly: boolean): Promise<C
 	const now = new Date();
 	return getDb().catalogProduct.findFirst({ where: { ...availableWhere(childOnly, now), sku }, select: productSelect(now) });
 }
+
+export async function findCatalogRows(skus: string[], childOnly: boolean): Promise<CatalogRow[]> {
+	const now = new Date();
+	return getDb().catalogProduct.findMany({
+		where: { ...availableWhere(childOnly, now), sku: { in: skus } },
+		orderBy: { id: "asc" },
+		take: Math.min(skus.length, 12),
+		select: productSelect(now),
+	});
+}
