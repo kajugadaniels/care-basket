@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ many: vi.fn().mockResolvedValue([]), first: vi.fn().mockResolvedValue(null) }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/server/db/client", () => ({ getDb: () => ({ catalogProduct: { findMany: mocks.many, findFirst: mocks.first } }) }));
-import { findCatalogRow, listCatalogRows } from "./repository";
+import { findCatalogRow, findCatalogRows, listCatalogRows } from "./repository";
 
 describe("shared catalog queries", () => {
 	beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date("2026-10-12T10:00:00Z")); vi.clearAllMocks(); });
@@ -26,6 +26,18 @@ describe("shared catalog queries", () => {
 	it("queries individual products with availability and suitability in the same lookup", async () => {
 		await findCatalogRow("example-rice", true);
 		expect(mocks.first).toHaveBeenLastCalledWith(expect.objectContaining({ where: expect.objectContaining({ sku: "example-rice", isChildSuitable: true, isActive: true, archivedAt: null }) }));
+	});
+	it("reads a bounded product set in one query", async () => {
+		await findCatalogRows(["example-rice", "example-beans"], false);
+		expect(mocks.many).toHaveBeenLastCalledWith(expect.objectContaining({
+			take: 2,
+			orderBy: { id: "asc" },
+			where: expect.objectContaining({
+				sku: { in: ["example-rice", "example-beans"] },
+				isActive: true,
+				archivedAt: null,
+			}),
+		}));
 	});
 	it("uses the same current approval cutoff for eligibility and the selected price", async () => {
 		await listCatalogRows({ q: "", limit: 12 }, false);
