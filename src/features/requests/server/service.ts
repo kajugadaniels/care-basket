@@ -96,6 +96,7 @@ export async function getFamilyRequest(actor: AdultActor, id: string): Promise<M
 		itemCount: row.basket.items.length, editable: row.status === "PENDING_REVIEW" && row.basket.lockedAt === null,
 		displayName: row.profile.displayName, inputText: row.inputText, subtotal: formatMoney(row.basket.subtotalMinor, currency),
 		currency, subtotalMinor: row.basket.subtotalMinor,
+		budgetMinor: row.budgetMinor,
 		budget: row.budgetMinor == null ? null : formatMoney(row.budgetMinor, "USD"),
 		items: row.basket.items.map((item) => ({ ...item.product, id: item.id, quantity: item.quantity,
 			unitPriceMinor: item.unitPriceMinor,
