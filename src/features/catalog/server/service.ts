@@ -1,11 +1,10 @@
 import "server-only";
-import { z } from "zod";
 import { isAdultProfile } from "@/lib/audience";
 import type { DeviceActor } from "@/server/auth/device-policy";
 import { AppError } from "@/server/errors";
-import { catalogFiltersSchema } from "../schemas";
+import { catalogFiltersSchema, catalogSkusSchema, catalogSkuSchema } from "../schemas";
 import type { CatalogFilters, CatalogPage, CatalogProductDto } from "../types";
-import { readCatalogPage, readCatalogProduct } from "./cached-catalog";
+import { readCatalogPage, readCatalogProduct, readCatalogProducts } from "./cached-catalog";
 import type { CatalogRow } from "./repository";
 
 function assertDevice(actor: DeviceActor) {
@@ -45,7 +44,19 @@ export async function listRequesterProducts(actor: DeviceActor, input: unknown):
 
 export async function getRequesterProduct(actor: DeviceActor, sku: string): Promise<CatalogProductDto> {
 	assertDevice(actor);
-	const row = await readCatalogProduct(z.string().max(60).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).parse(sku), false);
+	const row = await readCatalogProduct(catalogSkuSchema.parse(sku), false);
 	if (!row) throw new AppError("NOT_FOUND");
 	return requesterProduct(row);
+}
+
+export async function getRequesterProducts(actor: DeviceActor, input: unknown): Promise<CatalogProductDto[]> {
+	assertDevice(actor);
+	const skus = catalogSkusSchema.parse(input);
+	const rows = await readCatalogProducts([...skus].sort(), false);
+	const products = new Map(rows.map((row) => [row.sku, requesterProduct(row)]));
+
+	return skus.flatMap((sku) => {
+		const product = products.get(sku);
+		return product ? [product] : [];
+	});
 }
