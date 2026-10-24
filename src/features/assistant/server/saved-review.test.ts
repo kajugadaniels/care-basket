@@ -79,6 +79,18 @@ describe("reloadable private shopping reviews", () => {
 		expect(fake.limit).not.toHaveBeenCalled();
 	});
 
+	it("retains bounded suggestion explanations across a private review reload", async () => {
+		const value = proposal({ items: [
+			displayItem(assistantCatalog[0], 1, "REQUESTED"),
+			{ ...displayItem(assistantCatalog[1], 1, "SUGGESTED"),
+				suggestionReason: "An extra bakery idea based on this shopping request." },
+		], questions: [] });
+		const saved = await save(value);
+		const restored = await restoreShoppingReview(requester, saved.reviewId);
+		expect(restored?.items.find((item) => item.sku === "demo-bread")?.suggestionReason)
+			.toBe("An extra bakery idea based on this shopping request.");
+	});
+
 	it("rebuilds current product images and omits products removed from the active catalog", async () => {
 		await save();
 		fake.catalog.mockResolvedValue([{ ...assistantCatalog[0], displayName: "Current milk", imagePath: "/products/demo-milk.jpg" }]);
