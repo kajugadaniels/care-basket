@@ -15,6 +15,7 @@ import { cancelRequest, countWaitingRequests, declineRequest, getFamilyRequest, 
 const submit = { clientRequestKey: requestIds.key, inputMode: "PICTURES", items: [{ sku: "demo-milk", quantity: 2 }] };
 const closing = { requestId: requestIds.request, revision: 0, confirmed: true };
 const row = { id: requestIds.request, status: "PENDING_REVIEW", submittedAt: requestNow, revision: 0,
+	budgetMinor: null,
 	basket: { lockedAt: null, items: [{ id: requestIds.item, quantity: 2, product: requestProduct }] } };
 describe("shopping request service authorization and DTOs", () => {
 	beforeEach(() => vi.resetAllMocks());
@@ -74,13 +75,16 @@ describe("shopping request service authorization and DTOs", () => {
 			basket: { ...row.basket, subtotalMinor: 500, currency: "USD", items: [{ ...row.basket.items[0], unitPriceMinor: 250 }] } });
 		const result = await getOwnRequest(requester, requestIds.request);
 		expect(result.items[0]).toEqual({ ...requestProduct, id: requestIds.item, quantity: 2 });
-		for (const field of ["price", "subtotal", "reviewedBy", "inputText", "currency"]) expect(JSON.stringify(result)).not.toContain(field);
+		for (const field of ["price", "subtotal", "reviewedBy", "inputText", "budget", "currency"]) {
+			expect(JSON.stringify(result)).not.toContain(field);
+		}
 	});
 	it("server-formats manager snapshot prices and total", async () => {
 		fake.family.mockResolvedValue({ ...row, profile: { displayName: "Demo Grandma" }, inputText: null,
 			basket: { ...row.basket, subtotalMinor: 500, currency: "USD", items: [{ ...row.basket.items[0], unitPriceMinor: 250,
 				origin: "REQUESTED", isSubstitute: false, substitutionNote: null }] } });
 		expect(await getFamilyRequest(requestManager, requestIds.request)).toMatchObject({ subtotal: "$5.00", subtotalMinor: 500, currency: "USD",
+			budgetMinor: null,
 			items: [{ unitPriceMinor: 250, unitPrice: "$2.50", lineTotal: "$5.00" }] });
 	});
 	it.each(["REFUNDED", "REVERSED"])("exposes only a simple %s update to requesters", async (status) => {
