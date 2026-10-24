@@ -5,7 +5,8 @@ export type AssistantProduct = CatalogProductDto & {
 };
 export type ProposalItem = CatalogProductDto & {
 	quantity: number; origin: "REQUESTED" | "SUGGESTED"; uncertain: boolean;
-	isSubstitute: boolean; substitutionNote: string | null; proof?: string;
+	isSubstitute: boolean; substitutionNote: string | null;
+	suggestionReason?: string | null; proof?: string;
 };
 export type Proposal = {
 	reviewId?: string;
