@@ -74,14 +74,18 @@ describe("explicit proposal review", () => {
 
 	it("preserves suggestion proof, substitution and input provenance on explicit add", () => {
 		const suggestion = { ...proposal.items[1], proof: "reviewed-suggestion-proof", uncertain: true,
-			isSubstitute: true, substitutionNote: copy.substitution };
+			isSubstitute: true, substitutionNote: copy.substitution,
+			suggestionReason: "An extra bakery idea based on this shopping request." };
 		review({ ...proposal, items: [proposal.items[0], suggestion], inputMode: "VOICE" });
 		expect(screen.getByText(copy.substitution)).toBeInTheDocument();
 		expect(screen.getByText(copy.uncertain)).toBeInTheDocument();
+		expect(screen.getByText(copy.whySuggested)).toBeInTheDocument();
+		expect(screen.getByText(/An extra bakery idea/)).toBeInTheDocument();
 		fireEvent.click(card("Bread").getByRole("button", { name: requestsCopy.add }));
 		expect(draft()).toMatchObject({ inputMode: "VOICE", inputText: "milk", sourceProof: requestIds.key,
 			items: [{ sku: "demo-bread", origin: "SUGGESTED", proof: suggestion.proof,
-				isSubstitute: true, substitutionNote: copy.substitution }] });
+				isSubstitute: true, substitutionNote: copy.substitution,
+				suggestionReason: suggestion.suggestionReason }] });
 		expect(fake.push).not.toHaveBeenCalled();
 	});
 
