@@ -4,9 +4,32 @@ import type { AssistantProduct, Proposal, ProposalItem } from "../types";
 import { rankMatches } from "./keyword-matcher";
 import { resolvePacks } from "./units";
 
+const categoryNames: Record<AssistantProduct["category"], string> = {
+	PRODUCE: "produce",
+	DAIRY_EGGS: "dairy and eggs",
+	BAKERY: "bakery",
+	PANTRY: "pantry",
+	BREAKFAST: "breakfast",
+	MEAT_SEAFOOD: "meat and seafood",
+	FROZEN: "frozen food",
+	SNACKS: "snacks",
+	BEVERAGES: "beverages",
+	HOUSEHOLD: "household",
+	PERSONAL_CARE: "personal care",
+};
+
+function explainSuggestion(item: ProposalItem, requestedCategories: ReadonlySet<AssistantProduct["category"]>) {
+	if (item.origin !== "SUGGESTED") return null;
+	const category = categoryNames[item.category];
+	return requestedCategories.has(item.category)
+		? `Another ${category} choice based on the groceries you asked for.`
+		: `An extra ${category} idea based on this shopping request.`;
+}
+
 export function displayItem(product: AssistantProduct, quantity: number, origin: ProposalItem["origin"], uncertain = false): ProposalItem {
 	return { sku: product.sku, displayName: product.displayName, category: product.category, sizeLabel: product.sizeLabel,
-		imagePath: product.imagePath, quantity, origin, uncertain, isSubstitute: false, substitutionNote: null };
+		imagePath: product.imagePath, quantity, origin, uncertain, isSubstitute: false, substitutionNote: null,
+		suggestionReason: null };
 }
 export type GroundedProposal = Pick<Proposal, "items" | "unrecognized"> & {
 	questions: { question: string; options: ProposalItem[]; candidates?: ProposalItem[] }[];
@@ -56,5 +79,22 @@ export function groundInterpretation(raw: Interpretation, catalog: AssistantProd
 		});
 		if (options.length >= 2) questions.push({ question: assistantCopy.question, options });
 	}
-	return { items, questions, unrecognized: [...new Set(unrecognized)].slice(0, 10) };
+	const requestedCategories = new Set(raw.items.flatMap((entry) => {
+		if (entry.origin !== "requested") return [];
+		const product = catalog.find((candidate) => candidate.sku === entry.sku);
+		return product ? [product.category] : [];
+	}));
+	const explain = (item: ProposalItem): ProposalItem => ({
+		...item,
+		suggestionReason: explainSuggestion(item, requestedCategories),
+	});
+	return {
+		items: items.map(explain),
+		questions: questions.map((question) => ({
+			...question,
+			options: question.options.map(explain),
+			...(question.candidates ? { candidates: question.candidates.map(explain) } : {}),
+		})),
+		unrecognized: [...new Set(unrecognized)].slice(0, 10),
+	};
 }
