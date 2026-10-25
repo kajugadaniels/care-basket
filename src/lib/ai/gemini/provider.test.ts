@@ -7,7 +7,7 @@ vi.mock("server-only", () => ({}));
 vi.mock("@/lib/env/server", () => ({ getShoppingAiConfig: mocks.config }));
 vi.mock("@google/genai", () => ({
 	GoogleGenAI: class { models = { generateContent: mocks.generate }; },
-	ThinkingLevel: { LOW: "LOW" },
+	ThinkingLevel: { MINIMAL: "MINIMAL" },
 }));
 import { GeminiShoppingProvider } from "./provider";
 const input = { request: { kind: "text" as const, text: "milk" }, catalog: [], locale: "en-US" as const, audience: "assisted_adult" as const };
@@ -17,7 +17,7 @@ describe("Gemini shopping adapter", () => {
 		mocks.generate.mockResolvedValue({ text: JSON.stringify(interpretation()), usageMetadata: { totalTokenCount: 740 } });
 		await expect(new GeminiShoppingProvider(mocks.metric).interpret(input)).resolves.toEqual(interpretation());
 		expect(mocks.generate.mock.calls[0][0].config).toMatchObject({ responseMimeType: "application/json",
-			maxOutputTokens: 4096, thinkingConfig: { thinkingLevel: "LOW" },
+			maxOutputTokens: 4096, thinkingConfig: { thinkingLevel: "MINIMAL" },
 			httpOptions: { retryOptions: { attempts: 1 } } });
 		expect(mocks.generate.mock.calls[0][0].config.tools).toBeUndefined();
 		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number),
