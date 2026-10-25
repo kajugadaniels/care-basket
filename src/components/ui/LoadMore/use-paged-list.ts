@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ActionResult } from "@/types/action-result";
 
 type Page<T, Cursor> = { items: T[]; nextCursor: Cursor | null };
@@ -11,7 +11,7 @@ export function usePagedList<T extends { sku: string }, Cursor extends string | 
 ) {
 	const [page, setPage] = useState(initial);
 	const [failed, setFailed] = useState(false);
-	const [pending, startTransition] = useTransition();
+	const [pending, setPending] = useState(false);
 	const inFlight = useRef(false);
 	const mounted = useRef(true);
 	const visited = useRef(new Set<Cursor>());
@@ -26,15 +26,21 @@ export function usePagedList<T extends { sku: string }, Cursor extends string | 
 		const cursor = page.nextCursor;
 		inFlight.current = true; // Observer and button can fire before the pending render.
 		setFailed(false);
-		startTransition(async () => {
+		setPending(true);
+		void (async () => {
+			let requestFailed = false;
+
 			try {
 				const result = await fetchPage(cursor);
 				if (!mounted.current) return;
-				if (!result.ok) { setFailed(true); return; }
+				if (!result.ok) {
+					requestFailed = true;
+					return;
+				}
 				visited.current.add(cursor);
 				const nextCursor = result.data.nextCursor;
 				const exhausted = nextCursor !== null && visited.current.has(nextCursor);
-				startTransition(() => setPage((previous) => {
+				setPage((previous) => {
 					const skus = new Set(previous.items.map((item) => item.sku));
 					const additions = result.data.items.filter((item) => {
 						if (skus.has(item.sku)) return false;
@@ -42,13 +48,17 @@ export function usePagedList<T extends { sku: string }, Cursor extends string | 
 						return true;
 					});
 					return { items: [...previous.items, ...additions], nextCursor: exhausted ? null : nextCursor };
-				}));
+				});
 			} catch {
-				if (mounted.current) setFailed(true);
+				requestFailed = true;
 			} finally {
 				inFlight.current = false;
+				if (mounted.current) {
+					setPending(false);
+					setFailed(requestFailed);
+				}
 			}
-		});
+		})();
 	}
 
 	return { items: page.items, hasMore: page.nextCursor !== null, failed, pending, loadMore };
