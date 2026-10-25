@@ -155,7 +155,16 @@ describe("explicit proposal review", () => {
 		const suggestions = Array.from({ length: 13 }, (_, index) => ({
 			...proposal.items[1], sku: `suggested-${index}`, displayName: `Idea ${index}`,
 		}));
-		review({ ...proposal, items: suggestions });
+		fake.page.mockResolvedValue({
+			ok: true,
+			data: { items: [suggestions[12]], nextCursor: null },
+		});
+		review({
+			...proposal,
+			items: suggestions.slice(0, 12),
+			reviewId: requestIds.key,
+			nextOffset: 12,
+		});
 		for (let index = 0; index < 12; index++) {
 			fireEvent.click(card(`Idea ${index}`).getByRole("button", { name: requestsCopy.add }));
 		}
