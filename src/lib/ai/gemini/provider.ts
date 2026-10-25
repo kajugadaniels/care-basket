@@ -56,7 +56,7 @@ export class GeminiShoppingProvider implements ShoppingAssistantProvider {
 				const remaining = deadline - Date.now();
 				if (remaining <= 0) throw new DOMException("Provider deadline exceeded", "TimeoutError");
 				const response = await client.models.generateContent({ model: config.model, contents: [{ role: "user", parts }],
-					config: { systemInstruction: SHOPPING_INSTRUCTION, temperature: 0.1, maxOutputTokens: 4096,
+					config: { systemInstruction: SHOPPING_INSTRUCTION, maxOutputTokens: 4096,
 						thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
 						responseMimeType: "application/json", responseJsonSchema: shoppingResponseJsonSchema(),
 						abortSignal: AbortSignal.timeout(Math.min(20_000, remaining)),
