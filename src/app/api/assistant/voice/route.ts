@@ -6,6 +6,7 @@ import { RateLimitError } from "@/server/rate-limit/limiter";
 import { logSecurityFailure } from "@/server/logger";
 import { getAppOrigin } from "@/lib/env/server";
 import { assistantCopy } from "@/features/assistant/copy";
+import { logShoppingInterpretationMetric } from "@/features/assistant/server/observability";
 import { enforceAssistantLimits, requireVoicePermission } from "@/features/assistant/server/service";
 import { interpretShoppingForReview } from "@/features/assistant/server/saved-review";
 import { AudioUploadError, readVoiceUpload } from "@/features/assistant/server/voice-upload";
@@ -25,6 +26,11 @@ export async function POST(request: Request) {
 		const code = error instanceof AppError ? error.code : "INTERNAL";
 		const requestId = randomUUID();
 		if (code === "INTERNAL") logSecurityFailure({ event: "assistant.voice_failed", code, actorType: "SYSTEM", requestId });
+		if (error instanceof RateLimitError) logShoppingInterpretationMetric({
+			inputMode: "VOICE",
+			outcome: "REJECTED",
+			reason: "RATE_LIMITED",
+		});
 		const status = error instanceof AudioUploadError ? error.status : code === "UNAUTHENTICATED" ? 401
 			: code === "FORBIDDEN" ? 403 : code === "RATE_LIMITED" ? 429 : code === "AI_UNAVAILABLE" ? 503 : 500;
 		if (error instanceof RateLimitError) headers["Retry-After"] = String(error.retryAfter);
