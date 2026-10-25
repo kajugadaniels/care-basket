@@ -1,5 +1,4 @@
 import "server-only";
-import { randomUUID } from "node:crypto";
 import type { AppErrorCode } from "@/types/action-result";
 
 // Narrow allow-list: callers cannot attach raw exceptions, cookies, codes, or names.
@@ -32,7 +31,7 @@ export type OperationalLogEvent =
  */
 export function logOperationalEvent(input: OperationalLogEvent) {
 	try {
-		const shared = { event: input.event, eventId: randomUUID(), actorType: "SYSTEM" } as const;
+		const shared = { event: input.event, eventId: crypto.randomUUID(), actorType: "SYSTEM" } as const;
 		const entry = input.event === "assistant.provider"
 			? { ...shared, outcome: input.outcome, model: input.model, durationBucket: input.durationBucket,
 				...(input.tokenBucket ? { tokenBucket: input.tokenBucket } : {}) }
