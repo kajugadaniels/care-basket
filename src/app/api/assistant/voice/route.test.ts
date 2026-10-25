@@ -1,12 +1,13 @@
 // @vitest-environment node
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requester } from "@/test/factories/requests";
-const fake = vi.hoisted(() => ({ device: vi.fn(), permission: vi.fn(), limit: vi.fn(), read: vi.fn(), interpret: vi.fn() }));
+const fake = vi.hoisted(() => ({ device: vi.fn(), permission: vi.fn(), limit: vi.fn(), read: vi.fn(), interpret: vi.fn(), metric: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/navigation", () => ({ unstable_rethrow: vi.fn() }));
 vi.mock("@/server/auth/require-device", () => ({ requireDevice: fake.device }));
 vi.mock("@/lib/env/server", () => ({ getAppOrigin: () => "https://example.test" }));
 vi.mock("@/features/assistant/server/service", () => ({ requireVoicePermission: fake.permission, enforceAssistantLimits: fake.limit }));
+vi.mock("@/features/assistant/server/observability", () => ({ logShoppingInterpretationMetric: fake.metric }));
 vi.mock("@/features/assistant/server/saved-review", () => ({ interpretShoppingForReview: fake.interpret }));
 vi.mock("@/features/assistant/server/voice-upload", async (original) => ({ ...await original<typeof import("@/features/assistant/server/voice-upload")>(), readVoiceUpload: fake.read }));
 import { AppError } from "@/server/errors";
@@ -35,6 +36,7 @@ describe("voice endpoint boundaries", () => {
 		fake.limit.mockRejectedValue(new RateLimitError(60));
 		const response = await POST(request()); expect(response.status).toBe(429);
 		expect(response.headers.get("retry-after")).toBe("60"); expect(fake.read).not.toHaveBeenCalled();
+		expect(fake.metric).toHaveBeenCalledWith({ inputMode: "VOICE", outcome: "REJECTED", reason: "RATE_LIMITED" });
 	});
 	it.each([413, 415, 422] as const)("returns audio validation status %s without provider calls", async (status) => {
 		fake.read.mockRejectedValue(new AudioUploadError(status));
