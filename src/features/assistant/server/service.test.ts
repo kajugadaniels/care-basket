@@ -1,15 +1,20 @@
 // @vitest-environment node
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { RateLimitError } from "@/server/rate-limit/limiter";
 import { requester, requestIds, requestManager } from "@/test/factories/requests";
 import { assistantCatalog, interpretation } from "@/test/factories/assistant";
 
 const fake = vi.hoisted(() => ({ profile: vi.fn(), catalog: vi.fn(), preference: vi.fn(), write: vi.fn(),
-	config: vi.fn(), limit: vi.fn(), interpret: vi.fn(), guide: vi.fn() }));
+	config: vi.fn(), limit: vi.fn(), interpret: vi.fn(), guide: vi.fn(), metric: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/env/server", () => ({ getShoppingAiConfig: fake.config }));
 vi.mock("@/lib/ai/get-provider", () => ({ getShoppingProvider: () => ({ interpret: fake.interpret }) }));
 vi.mock("@/server/auth/shopping-proposal", () => ({ signShoppingProposal: () => "fictional-proof" }));
-vi.mock("@/server/rate-limit/limiter", () => ({ enforceRateLimit: fake.limit }));
+vi.mock("@/server/rate-limit/limiter", () => ({
+	enforceRateLimit: fake.limit,
+	RateLimitError: class RateLimitError extends Error {},
+}));
+vi.mock("./observability", () => ({ logShoppingProviderMetric: vi.fn(), logShoppingInterpretationMetric: fake.metric }));
 vi.mock("./shopping-guide-orchestrator", () => ({ orchestrateShoppingGuide: fake.guide }));
 vi.mock("./repository", () => ({ AI_CONSENT_VERSION: "ai-shopping-v1", readAssistantProfile: fake.profile,
 	readAssistantCatalog: fake.catalog, readAiPreference: fake.preference, writeAiPreference: fake.write,
@@ -78,21 +83,25 @@ describe("assistant authorization and grounding", () => {
 		expect(result.items.map((item) => item.sku)).toEqual(["demo-milk", "demo-bread"]);
 		expect(result.items[0]).not.toHaveProperty("priceMinor");
 		expect(fake.interpret).not.toHaveBeenCalled(); expect(fake.limit).not.toHaveBeenCalled();
+		expect(fake.metric).toHaveBeenCalledWith({ inputMode: "TEXT", outcome: "LOCAL_ONLY" });
 	});
 	it.each([new Error("timeout"), { status: 429 }, { status: 503 }])("preserves deterministic text fallback after provider failure %s", async (error) => {
 		fake.config.mockReturnValue({ model: "gemini-test" }); fake.interpret.mockRejectedValue(error);
 		expect(await interpretShopping(requester, { kind: "text", text: "milk" })).toMatchObject({ local: true });
 		expect(fake.limit).toHaveBeenCalledWith(`ai:device:${requester.deviceId}`, 30, 3_600_000);
 		expect(fake.limit).toHaveBeenCalledWith(`ai:family:${requester.familyId}`, 200, 86_400_000);
+		expect(fake.metric).toHaveBeenCalledWith({ inputMode: "TEXT", outcome: "FALLBACK", reason: "PROVIDER_UNAVAILABLE" });
 	});
 	it("rejects invalid provider schema and locally matches the original text", async () => {
 		fake.config.mockReturnValue({ model: "gemini-test" }); fake.interpret.mockResolvedValue({ items: [], prices: [500] });
 		expect(await interpretShopping(requester, { kind: "text", text: "milk" })).toMatchObject({ local: true, inputText: "milk" });
+		expect(fake.metric).toHaveBeenCalledWith({ inputMode: "TEXT", outcome: "FALLBACK", reason: "OUTPUT_INVALID" });
 	});
 	it("falls back when the PostgreSQL quota refuses an AI call", async () => {
-		fake.config.mockReturnValue({ model: "gemini-test" }); fake.limit.mockRejectedValue(new Error("quota"));
+		fake.config.mockReturnValue({ model: "gemini-test" }); fake.limit.mockRejectedValue(new RateLimitError(60));
 		expect(await interpretShopping(requester, { kind: "text", text: "bread" })).toMatchObject({ local: true });
 		expect(fake.interpret).not.toHaveBeenCalled();
+		expect(fake.metric).toHaveBeenCalledWith({ inputMode: "TEXT", outcome: "FALLBACK", reason: "RATE_LIMITED" });
 	});
 	it("sends only compact product context and rechecks catalog after interpretation", async () => {
 		fake.config.mockReturnValue({ model: "gemini-test" }); fake.interpret.mockResolvedValue(interpretation());
