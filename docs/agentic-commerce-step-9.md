@@ -47,3 +47,5 @@ For each added case, record privately who reviewed it, why the fictional scenari
 ## Acceptance boundary
 
 Step 9 code is complete when the fictional corpus and focused suite are present. Its release gate is complete only after a developer reviews the cases, changes the metadata to record that explicit approval, runs the focused suite, and resolves any regression without weakening the Step 7 safety gate. The process remains manual and privacy-preserving; automatic fixture generation, production-content harvesting, model fine-tuning, and behavioral changes driven directly by telemetry are out of scope.
+
+[Step 10 release evidence](agentic-commerce-step-10.md) combines that approval with automated, two-browser, provider, isolation, confirmation, manager, payment-boundary, and privacy evidence in a strict fail-closed verdict.
