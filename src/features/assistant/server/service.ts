@@ -6,7 +6,7 @@ import type { AdultActor } from "@/server/auth/require-adult";
 import type { DeviceActor } from "@/server/auth/device-policy";
 import { assertDevicePermission } from "@/server/auth/require-device";
 import { signShoppingProposal } from "@/server/auth/shopping-proposal";
-import { enforceRateLimit } from "@/server/rate-limit/limiter";
+import { enforceRateLimit, RateLimitError } from "@/server/rate-limit/limiter";
 import { AppError } from "@/server/errors";
 import { getShoppingAiConfig } from "@/lib/env/server";
 import { interpretationSchema } from "@/lib/ai/schemas";
@@ -22,6 +22,15 @@ import { groundInterpretation, type GroundedProposal } from "./grounding";
 import { fitBudget } from "./budget";
 import { assistantCopy } from "../copy";
 import { orchestrateShoppingGuide } from "./shopping-guide-orchestrator";
+import { logShoppingInterpretationMetric, logShoppingProviderMetric,
+	type ShoppingInterpretationReason } from "./observability";
+
+function interpretationFailureReason(error: unknown): ShoppingInterpretationReason {
+	if (error instanceof RateLimitError || (error instanceof AppError && error.code === "RATE_LIMITED")) return "RATE_LIMITED";
+	if (error instanceof z.ZodError) return "OUTPUT_INVALID";
+	if (error instanceof AppError && error.code === "FORBIDDEN") return "CONSENT_CHANGED";
+	return "PROVIDER_UNAVAILABLE";
+}
 
 export async function guideShopping(actor: DeviceActor, input: ShoppingGuideOperationInput): Promise<ShoppingGuideOrchestrationResult> {
 	assertDevicePermission(actor, "create-own-request");
@@ -58,29 +67,38 @@ export async function enforceAssistantLimits(actor: DeviceActor) {
 export async function interpretShopping(actor: DeviceActor, request: InterpretInput["request"], voiceRateLimited = false): Promise<Proposal & GroundedProposal> {
 	requireShoppingAgentAuthority("INTERPRET_REQUEST");
 	const deadline = Date.now() + 25_000;
+	const inputMode = request.kind === "audio" ? "VOICE" : "TEXT";
 	const availability = await assistantAvailability(actor);
 	if (request.kind === "audio") await requireVoicePermission(actor);
 	if (request.kind === "text") textRequestSchema.parse({ text: request.text });
 	const catalogFilter = request.kind === "text" ? { text: request.text } : {};
 	const catalog = await readAssistantCatalog(availability.child, catalogFilter);
 	let local = true;
+	let fallbackReason: ShoppingInterpretationReason | null = null;
 	let raw = request.kind === "text" ? matchKeywords(request.text, catalog) : null;
 	if (availability.voice && catalog.length) {
 		try {
 			if (!voiceRateLimited || request.kind !== "audio") await enforceAssistantLimits(actor);
 			const context = await readProviderContext([...new Set(catalog.map((product) => product.category))]);
 			await requireVoicePermission(actor); // Fresh consent check immediately before transmitting data.
-			const response = await getShoppingProvider().interpret({ request, locale: "en-US", audience: "assisted_adult", deadline,
+			const response = await getShoppingProvider(logShoppingProviderMetric).interpret({ request, locale: "en-US", audience: "assisted_adult", deadline,
 				catalog: context.filter((product) => catalog.some((active) => active.sku === product.sku)) });
 			raw = interpretationSchema.parse(response);
 			local = false;
 			// Products may have been archived while the provider was working. Ground against a fresh catalog.
 		} catch (error) {
-			if (request.kind === "audio") throw error instanceof AppError ? error : new AppError("AI_UNAVAILABLE");
+			fallbackReason = interpretationFailureReason(error);
+			if (request.kind === "audio") {
+				logShoppingInterpretationMetric({ inputMode, outcome: "REJECTED", reason: fallbackReason });
+				throw error instanceof AppError ? error : new AppError("AI_UNAVAILABLE");
+			}
 			// Genuine local matching, not fabricated provider success. Keep the input for correction.
 		}
 	}
-	if (!raw || (request.kind === "audio" && !raw.transcript?.trim())) throw new AppError("AI_UNAVAILABLE");
+	if (!raw || (request.kind === "audio" && !raw.transcript?.trim())) {
+		logShoppingInterpretationMetric({ inputMode, outcome: "REJECTED", reason: "EMPTY_AUDIO" });
+		throw new AppError("AI_UNAVAILABLE");
+	}
 	const currentCatalog = local ? catalog : await readAssistantCatalog(availability.child, catalogFilter);
 	const grounded = groundInterpretation(raw, currentCatalog);
 	const amount = raw.statedBudget?.amount;
@@ -96,6 +114,9 @@ export async function interpretShopping(actor: DeviceActor, request: InterpretIn
 	proposal.sourceProof = proof;
 	proposal.items = items.map((item) => ({ ...item, proof }));
 	proposal.questions = grounded.questions.map((q) => ({ ...q, options: q.options.map((item) => ({ ...item, proof })) }));
+	if (!local) logShoppingInterpretationMetric({ inputMode, outcome: "PROVIDER_SUCCESS" });
+	else if (fallbackReason) logShoppingInterpretationMetric({ inputMode, outcome: "FALLBACK", reason: fallbackReason });
+	else logShoppingInterpretationMetric({ inputMode, outcome: "LOCAL_ONLY" });
 	return proposal;
 }
 function manager(actor: AdultActor) {
