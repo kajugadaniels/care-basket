@@ -1,14 +1,27 @@
 import "server-only";
-import { GoogleGenAI, type Part } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel, type Part } from "@google/genai";
 import { z } from "zod";
 import { getShoppingAiConfig } from "@/lib/env/server";
 import { AppError } from "@/server/errors";
 import { shoppingResponseJsonSchema } from "../response-schema";
 import { catalogContextSchema } from "../catalog-context";
 import { SHOPPING_INSTRUCTION } from "../prompts";
-import type { AiProviderMetric, AiProviderMetricSink, InterpretInput, ShoppingAssistantProvider } from "../provider";
+import type { AiProviderFailureReason, AiProviderMetric, AiProviderMetricSink, InterpretInput,
+	ShoppingAssistantProvider } from "../provider";
 
 class InvalidProviderOutput extends Error {}
+
+function failureReason(error: unknown): AiProviderFailureReason {
+	if (error instanceof DOMException && ["AbortError", "TimeoutError"].includes(error.name)) return "TIMEOUT";
+	const status = typeof error === "object" && error !== null && "status" in error ? error.status : null;
+	if (status === 401 || status === 403) return "AUTHENTICATION";
+	if (status === 404) return "MODEL_UNAVAILABLE";
+	if (status === 408 || status === 504) return "TIMEOUT";
+	if (status === 429) return "RATE_LIMITED";
+	if (typeof status === "number" && status >= 400 && status < 500) return "REQUEST_REJECTED";
+	if (error instanceof TypeError) return "NETWORK";
+	return "PROVIDER_ERROR";
+}
 
 export class GeminiShoppingProvider implements ShoppingAssistantProvider {
 	constructor(private readonly onMetric: AiProviderMetricSink = () => undefined) {}
@@ -41,9 +54,10 @@ export class GeminiShoppingProvider implements ShoppingAssistantProvider {
 		for (let attempt = 0; attempt < 2; attempt++) {
 			try {
 				const remaining = deadline - Date.now();
-				if (remaining <= 0) throw new AppError("AI_UNAVAILABLE");
+				if (remaining <= 0) throw new DOMException("Provider deadline exceeded", "TimeoutError");
 				const response = await client.models.generateContent({ model: config.model, contents: [{ role: "user", parts }],
-					config: { systemInstruction: SHOPPING_INSTRUCTION, temperature: 0.1, maxOutputTokens: 8192,
+					config: { systemInstruction: SHOPPING_INSTRUCTION, temperature: 0.1, maxOutputTokens: 4096,
+						thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
 						responseMimeType: "application/json", responseJsonSchema: shoppingResponseJsonSchema(),
 						abortSignal: AbortSignal.timeout(Math.min(20_000, remaining)),
 						httpOptions: { timeout: Math.min(20_000, remaining), retryOptions: { attempts: 1 } } } });
@@ -62,7 +76,8 @@ export class GeminiShoppingProvider implements ShoppingAssistantProvider {
 				const retryable = typeof status === "number" ? status >= 500 : error instanceof TypeError;
 				if (attempt || !retryable || deadline - Date.now() < 8_000) {
 					this.record({ model: config.model, durationMs: Date.now() - started,
-						outcome: error instanceof InvalidProviderOutput ? "OUTPUT_INVALID" : "UNAVAILABLE" });
+						outcome: error instanceof InvalidProviderOutput ? "OUTPUT_INVALID" : "UNAVAILABLE",
+						...(error instanceof InvalidProviderOutput ? {} : { reason: failureReason(error) }) });
 					throw new AppError("AI_UNAVAILABLE");
 				}
 			}
