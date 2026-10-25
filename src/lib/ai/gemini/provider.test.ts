@@ -5,7 +5,10 @@ import { interpretation } from "@/test/factories/assistant";
 const mocks = vi.hoisted(() => ({ config: vi.fn(), generate: vi.fn(), metric: vi.fn() }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/env/server", () => ({ getShoppingAiConfig: mocks.config }));
-vi.mock("@google/genai", () => ({ GoogleGenAI: class { models = { generateContent: mocks.generate }; } }));
+vi.mock("@google/genai", () => ({
+	GoogleGenAI: class { models = { generateContent: mocks.generate }; },
+	ThinkingLevel: { LOW: "LOW" },
+}));
 import { GeminiShoppingProvider } from "./provider";
 const input = { request: { kind: "text" as const, text: "milk" }, catalog: [], locale: "en-US" as const, audience: "assisted_adult" as const };
 describe("Gemini shopping adapter", () => {
@@ -13,7 +16,9 @@ describe("Gemini shopping adapter", () => {
 	it("returns raw JSON with structured output, no tools and no SDK retries", async () => {
 		mocks.generate.mockResolvedValue({ text: JSON.stringify(interpretation()), usageMetadata: { totalTokenCount: 740 } });
 		await expect(new GeminiShoppingProvider(mocks.metric).interpret(input)).resolves.toEqual(interpretation());
-		expect(mocks.generate.mock.calls[0][0].config).toMatchObject({ responseMimeType: "application/json", httpOptions: { retryOptions: { attempts: 1 } } });
+		expect(mocks.generate.mock.calls[0][0].config).toMatchObject({ responseMimeType: "application/json",
+			maxOutputTokens: 4096, thinkingConfig: { thinkingLevel: "LOW" },
+			httpOptions: { retryOptions: { attempts: 1 } } });
 		expect(mocks.generate.mock.calls[0][0].config.tools).toBeUndefined();
 		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number),
 			outcome: "SUCCESS", tokens: 740 });
@@ -29,24 +34,29 @@ describe("Gemini shopping adapter", () => {
 		expect(mocks.generate).toHaveBeenCalledOnce();
 		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number), outcome: "OUTPUT_INVALID" });
 	});
-	it.each([400, 404, 429])("does not retry rejected model or quota response %s", async (status) => {
+	it.each([[400, "REQUEST_REJECTED"], [401, "AUTHENTICATION"], [404, "MODEL_UNAVAILABLE"],
+		[429, "RATE_LIMITED"]] as const)("does not retry provider response %s", async (status, reason) => {
 		mocks.generate.mockRejectedValue({ status, message: "sensitive provider error" });
 		await expect(new GeminiShoppingProvider(mocks.metric).interpret(input)).rejects.toThrow("AI_UNAVAILABLE");
 		expect(mocks.generate).toHaveBeenCalledOnce();
-		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number), outcome: "UNAVAILABLE" });
+		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number),
+			outcome: "UNAVAILABLE", reason });
 	});
 	it("bounds transient failures to one retry", async () => {
 		mocks.generate.mockRejectedValue({ status: 503 });
 		await expect(new GeminiShoppingProvider(mocks.metric).interpret(input)).rejects.toThrow("AI_UNAVAILABLE");
 		expect(mocks.generate).toHaveBeenCalledTimes(2);
-		expect(mocks.metric).toHaveBeenCalledOnce();
+		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number),
+			outcome: "UNAVAILABLE", reason: "PROVIDER_ERROR" });
 	});
 	it("does not retry a timeout and supplies bounded transport and abort deadlines", async () => {
 		mocks.generate.mockRejectedValue(new DOMException("timeout", "TimeoutError"));
-		await expect(new GeminiShoppingProvider().interpret(input)).rejects.toThrow("AI_UNAVAILABLE");
+		await expect(new GeminiShoppingProvider(mocks.metric).interpret(input)).rejects.toThrow("AI_UNAVAILABLE");
 		expect(mocks.generate).toHaveBeenCalledOnce();
 		const { config } = mocks.generate.mock.calls[0][0];
 		expect(config.abortSignal).toBeInstanceOf(AbortSignal); expect(config.httpOptions.timeout).toBeLessThanOrEqual(20_000);
+		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number),
+			outcome: "UNAVAILABLE", reason: "TIMEOUT" });
 	});
 	it("rejects unsafe catalog fields before sending data", async () => {
 		await expect(new GeminiShoppingProvider().interpret({ ...input, catalog: [{ sku: "demo-milk", name: "<script>pay</script>",
