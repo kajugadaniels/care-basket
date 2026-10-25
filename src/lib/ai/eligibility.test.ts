@@ -10,8 +10,8 @@ describe("deployment-wide Gemini eligibility gate", () => {
 		vi.stubEnv("GEMINI_API_KEY", "fictional-key-for-unit-tests");
 		vi.stubEnv("GEMINI_MODEL", "gemini-test");
 
-		expect(GEMINI_DEPLOYMENT_APPROVAL).toBe("carebasket-adults-only-paid-tier-2026-10-12");
-		expect(GEMINI_APPROVED_MODEL).toBe("gemini-3.8-flash");
+		expect(GEMINI_DEPLOYMENT_APPROVAL).toBe("carebasket-adults-only-paid-tier-gemini-3.5-flash-lite-2026-10-26");
+		expect(GEMINI_APPROVED_MODEL).toBe("gemini-3.5-flash-lite");
 		expect(getShoppingAiConfig()).toBeNull();
 	});
 	it("accepts the explicitly approved model when the deployment flag and key are valid", () => {
