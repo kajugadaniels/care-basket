@@ -19,7 +19,11 @@ describe("Gemini shopping adapter", () => {
 		expect(mocks.generate.mock.calls[0][0].config).toMatchObject({ responseMimeType: "application/json",
 			maxOutputTokens: 4096, thinkingConfig: { thinkingLevel: "MINIMAL" },
 			httpOptions: { retryOptions: { attempts: 1 } } });
-		expect(mocks.generate.mock.calls[0][0].config.tools).toBeUndefined();
+		const { config } = mocks.generate.mock.calls[0][0];
+		expect(config).not.toHaveProperty("temperature");
+		expect(config).not.toHaveProperty("topP");
+		expect(config).not.toHaveProperty("topK");
+		expect(config.tools).toBeUndefined();
 		expect(mocks.metric).toHaveBeenCalledWith({ model: "gemini-test", durationMs: expect.any(Number),
 			outcome: "SUCCESS", tokens: 740 });
 	});
