@@ -31,7 +31,6 @@ export function CheckoutPanel({
 }) {
   const id = useId();
   const router = useRouter();
-  const [pending, transition] = useTransition();
   const [refreshingPage, refreshPage] = useTransition();
   const [local, setLocal] = useState<{
     revision: number;
@@ -41,8 +40,9 @@ export function CheckoutPanel({
   const [error, setError] = useState("");
   const [announcement, setAnnouncement] = useState("");
   const [operation, setOperation] = useState<
-    "start" | "cancel" | "refresh" | "capture"
-  >("start");
+    "start" | "cancel" | "refresh" | "capture" | null
+  >(null);
+  const pending = operation !== null;
   const busy = useRef(false);
   const errorRef = useRef<HTMLParagraphElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -97,7 +97,7 @@ export function CheckoutPanel({
     setOperation(kind);
     setError("");
     setAnnouncement("");
-    transition(async () => {
+    void (async () => {
       try {
         if (kind === "start") {
           const result = await startCheckoutAction({ requestId, revision });
@@ -140,8 +140,9 @@ export function CheckoutPanel({
       } finally {
         dialog.current?.close();
         busy.current = false;
+        setOperation(null);
       }
-    });
+    })();
   }
 
   return (
