@@ -65,3 +65,5 @@ Store evidence with the private release process, not in public source control if
 - Events do not prove that a grocery match was semantically correct; Step 7 fixtures and manual review cover that risk.
 - No alerting service or dashboard API was added. Adding another processor requires explicit approval and a privacy review.
 - No event may trigger a draft change, request submission, manager decision, checkout, or payment action.
+
+[Step 9 reviewed improvement](agentic-commerce-step-9.md) converts behavior categories into fictional deterministic fixtures that require explicit human review, without copying production requests or provider output.
