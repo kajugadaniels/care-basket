@@ -3,7 +3,7 @@
 **Purpose:** Define what CareBasket's AI does and must never do, the full request workflow and its states, how outputs are grounded in the catalog and validated, and how voice, clarification, budgets, and audiences are handled.
 **Applies to:** Anything touching AI, transcription, catalog matching, suggestions, budgets, or voice capture.
 **Related:** [catalog.md](catalog.md), [privacy.md](privacy.md), [security.md](security.md), [accessibility.md § 7](accessibility.md#7-voice-audio-and-feedback), [api.md § 3](api.md#3-route-handlers), [testing.md](testing.md)
-**Last reviewed:** 2026-10-12
+**Last reviewed:** 2026-10-26
 
 ---
 
@@ -62,7 +62,7 @@ type InterpretInput = {
 - `src/lib/ai/gemini/` implements the interface with `@google/genai` (`GoogleGenAI`). A fake implementation for tests lives next to the tests. `getShoppingAssistant()` selects the provider; swapping providers changes no feature code.
 - The model ID comes from `GEMINI_MODEL`. Choose a fast, cost-efficient current model that supports audio input and JSON-schema output; never hard-code model names elsewhere.
 - **The Gemini API evolves quickly.** Before writing provider code, read the current official Gemini documentation for the installed `@google/genai` version (the Gemini docs MCP server or ai.google.dev). Use the SDK's current structured-output configuration with a JSON Schema generated from the Zod schema (`z.toJSONSchema`).
-- Low temperature, no streaming, no tools, no conversation history.
+- No deprecated sampling controls (`temperature`, `topP`, or `topK`) for Gemini 3.x. Determinism comes from the fixed instruction, structured schema, and server validation. No streaming, tools, or conversation history.
 - **Step 8 implemented behind a closed deployment gate.** `GEMINI_SHOPPING_ENABLED` defaults to false and malformed configuration fails closed. `src/lib/ai/eligibility.ts` contains no approved deployment record. An environment flag alone cannot activate Gemini.
 
 ## 5. Request workflow and states
