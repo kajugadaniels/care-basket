@@ -54,6 +54,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 - [Explainable suggestions](docs/agentic-commerce-step-5.md) show a short catalog-grounded reason based only on the current request and still require explicit confirmation.
 - [Manager decision support](docs/agentic-commerce-step-6.md) summarizes request provenance, substitutions and budget position without recommending or taking an action.
 - The [agent safety evaluation](docs/agentic-commerce-step-7.md) exercises ambiguous and hostile input, bounded suggestions, provider fallback, actor-derived isolation, explicit confirmation and the checkout boundary.
+- [Operational readiness](docs/agentic-commerce-step-8.md) exposes allowlisted, bucketed assistant health signals without recording shopping content, personal identifiers or payment data.
 
 ## Local setup (developer-run)
 
@@ -117,6 +118,7 @@ Import [the Postman collection](postman/CareBasket.postman_collection.json) and 
 - [Explainable suggestions](docs/agentic-commerce-step-5.md): current-request category explanations with no history-based profiling or automatic draft changes.
 - [Manager decision support](docs/agentic-commerce-step-6.md): deterministic review notes with no automatic edits, approval or checkout.
 - [Agent safety evaluation](docs/agentic-commerce-step-7.md): deterministic adversarial scenarios and a manual release gate for the supervised shopping flow.
+- [Agent operational readiness](docs/agentic-commerce-step-8.md): privacy-safe structured events, aggregate review guidance and release evidence.
 - [Engineering rulebook](.agents/README.md): security boundaries and agent execution restrictions.
 
 Privacy contact: kajugadaniels@gmail.com. Cleanup is developer-run, not automatically scheduled. Full family/account deletion has no self-service UI; an operator procedure is still needed. Backups and provider logs have separate retention. Review privacy/child-related obligations before any real users.
