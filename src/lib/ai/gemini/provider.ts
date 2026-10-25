@@ -5,17 +5,31 @@ import { getShoppingAiConfig } from "@/lib/env/server";
 import { AppError } from "@/server/errors";
 import { shoppingResponseJsonSchema } from "../response-schema";
 import { catalogContextSchema } from "../catalog-context";
-import { logShoppingAiMetric } from "../metrics";
 import { SHOPPING_INSTRUCTION } from "../prompts";
-import type { InterpretInput, ShoppingAssistantProvider } from "../provider";
+import type { AiProviderMetric, AiProviderMetricSink, InterpretInput, ShoppingAssistantProvider } from "../provider";
+
+class InvalidProviderOutput extends Error {}
 
 export class GeminiShoppingProvider implements ShoppingAssistantProvider {
+	constructor(private readonly onMetric: AiProviderMetricSink = () => undefined) {}
+
+	private record(metric: AiProviderMetric) {
+		try {
+			this.onMetric(metric);
+		} catch {
+			// A metrics sink is best effort and cannot change provider behavior.
+		}
+	}
+
 	async interpret(input: InterpretInput): Promise<unknown> {
 		const config = getShoppingAiConfig();
 		if (!config || input.audience !== "assisted_adult") throw new AppError("AI_UNAVAILABLE");
 		const started = Date.now();
 		const context = z.array(catalogContextSchema).max(200).safeParse(input.catalog);
-		if (!context.success) throw new AppError("AI_UNAVAILABLE");
+		if (!context.success) {
+			this.record({ model: config.model, durationMs: Date.now() - started, outcome: "OUTPUT_INVALID" });
+			throw new AppError("AI_UNAVAILABLE");
+		}
 		const client = new GoogleGenAI({ apiKey: config.apiKey });
 		const parts: Part[] = [{ text: JSON.stringify({ catalogData: context.data, locale: input.locale,
 			requestData: input.request.kind === "text" ? input.request.text : "Interpret the attached audio." }) }];
@@ -33,15 +47,22 @@ export class GeminiShoppingProvider implements ShoppingAssistantProvider {
 						responseMimeType: "application/json", responseJsonSchema: shoppingResponseJsonSchema(),
 						abortSignal: AbortSignal.timeout(Math.min(20_000, remaining)),
 						httpOptions: { timeout: Math.min(20_000, remaining), retryOptions: { attempts: 1 } } } });
-				if (!response.text || response.text.length > 64_000) throw new AppError("AI_UNAVAILABLE");
-				const raw: unknown = JSON.parse(response.text);
-				logShoppingAiMetric(config.model, started, "ok", response.usageMetadata?.totalTokenCount);
+				if (!response.text || response.text.length > 64_000) throw new InvalidProviderOutput();
+				let raw: unknown;
+				try {
+					raw = JSON.parse(response.text);
+				} catch {
+					throw new InvalidProviderOutput();
+				}
+				this.record({ model: config.model, durationMs: Date.now() - started, outcome: "SUCCESS",
+					tokens: response.usageMetadata?.totalTokenCount });
 				return raw;
 			} catch (error) {
 				const status = typeof error === "object" && error !== null && "status" in error ? error.status : null;
 				const retryable = typeof status === "number" ? status >= 500 : error instanceof TypeError;
 				if (attempt || !retryable || deadline - Date.now() < 8_000) {
-					logShoppingAiMetric(config.model, started, "AI_UNAVAILABLE");
+					this.record({ model: config.model, durationMs: Date.now() - started,
+						outcome: error instanceof InvalidProviderOutput ? "OUTPUT_INVALID" : "UNAVAILABLE" });
 					throw new AppError("AI_UNAVAILABLE");
 				}
 			}
