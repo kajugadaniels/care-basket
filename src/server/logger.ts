@@ -1,4 +1,5 @@
 import "server-only";
+import type { AiProviderFailureReason } from "@/lib/ai/provider";
 import type { AppErrorCode } from "@/types/action-result";
 
 // Narrow allow-list: callers cannot attach raw exceptions, cookies, codes, or names.
@@ -16,6 +17,7 @@ export type OperationalLogEvent =
 		outcome: "SUCCESS" | "UNAVAILABLE" | "OUTPUT_INVALID";
 		model: string;
 		durationBucket: "UNDER_1S" | "1_TO_5S" | "5_TO_15S" | "OVER_15S";
+		reason?: AiProviderFailureReason;
 		tokenBucket?: "UNDER_1K" | "1K_TO_4K" | "OVER_4K";
 	}
 	| {
@@ -34,6 +36,7 @@ export function logOperationalEvent(input: OperationalLogEvent) {
 		const shared = { event: input.event, eventId: crypto.randomUUID(), actorType: "SYSTEM" } as const;
 		const entry = input.event === "assistant.provider"
 			? { ...shared, outcome: input.outcome, model: input.model, durationBucket: input.durationBucket,
+				...(input.reason ? { reason: input.reason } : {}),
 				...(input.tokenBucket ? { tokenBucket: input.tokenBucket } : {}) }
 			: { ...shared, outcome: input.outcome, inputMode: input.inputMode,
 				...(input.reason ? { reason: input.reason } : {}) };
