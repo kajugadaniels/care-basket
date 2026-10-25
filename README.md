@@ -10,7 +10,7 @@ Source implements family setup, consent-based profiles, secure pairing, catalog 
 
 Buyer approval is **off by default** pending controlled verification. The supported deployment audience is **adults 18+ only**. New setup/profile consent confirms age eligibility and permission; child profile creation, pairing, existing device access, and shopping/review access are blocked. Historical child records remain available for manager review and confirmed deletion, not automatically relabelled or deleted. These controls are not age verification.
 
-Gemini and voice processing remain **blocked** pending a separate application-wide eligibility, account/billing, region, and model review. Changing the audience does not activate Gemini. Deterministic text matching and pictures remain available; they are not real Gemini calls. No end-to-end provider operation is claimed here.
+Gemini and voice processing are approved only for the adults-only, paid-tier deployment and the reviewed model. They remain off unless the private environment gate is enabled and the assisted-adult profile has current AI consent. Deterministic text matching and pictures remain available when AI is off. Source configuration alone is not evidence of a successful end-to-end provider operation.
 
 Demo URL: not yet supplied/verified. Video URL: not yet supplied/verified. See [release readiness](docs/release-readiness.md) and [submission readiness](docs/submission-readiness.md).
 
@@ -55,6 +55,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 - [Manager decision support](docs/agentic-commerce-step-6.md) summarizes request provenance, substitutions and budget position without recommending or taking an action.
 - The [agent safety evaluation](docs/agentic-commerce-step-7.md) exercises ambiguous and hostile input, bounded suggestions, provider fallback, actor-derived isolation, explicit confirmation and the checkout boundary.
 - [Operational readiness](docs/agentic-commerce-step-8.md) exposes allowlisted, bucketed assistant health signals without recording shopping content, personal identifiers or payment data.
+- The [reviewed improvement loop](docs/agentic-commerce-step-9.md) turns behavior categories into fictional deterministic evaluation candidates that require explicit human review, without harvesting production requests or provider output.
 
 ## Local setup (developer-run)
 
@@ -119,6 +120,7 @@ Import [the Postman collection](postman/CareBasket.postman_collection.json) and 
 - [Manager decision support](docs/agentic-commerce-step-6.md): deterministic review notes with no automatic edits, approval or checkout.
 - [Agent safety evaluation](docs/agentic-commerce-step-7.md): deterministic adversarial scenarios and a manual release gate for the supervised shopping flow.
 - [Agent operational readiness](docs/agentic-commerce-step-8.md): privacy-safe structured events, aggregate review guidance and release evidence.
+- [Agent reviewed improvement loop](docs/agentic-commerce-step-9.md): fictional regression candidates derived from behavior categories, pending explicit human review and never production content.
 - [Engineering rulebook](.agents/README.md): security boundaries and agent execution restrictions.
 
 Privacy contact: kajugadaniels@gmail.com. Cleanup is developer-run, not automatically scheduled. Full family/account deletion has no self-service UI; an operator procedure is still needed. Backups and provider logs have separate retention. Review privacy/child-related obligations before any real users.
