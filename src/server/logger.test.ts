@@ -47,4 +47,22 @@ describe("operational logging", () => {
 			reason: "PROVIDER_UNAVAILABLE",
 		})).not.toThrow();
 	});
+
+	it("logs a coarse provider reason without accepting provider details", () => {
+		const info = vi.spyOn(console, "info").mockImplementation(() => undefined);
+		const input = {
+			event: "assistant.provider",
+			outcome: "UNAVAILABLE",
+			model: "gemini-test",
+			durationBucket: "OVER_15S",
+			reason: "TIMEOUT",
+			providerMessage: "private provider response",
+		} as OperationalLogEvent & Record<string, string>;
+
+		logOperationalEvent(input);
+
+		const logged = String(info.mock.calls[0][0]);
+		expect(JSON.parse(logged)).toMatchObject({ outcome: "UNAVAILABLE", reason: "TIMEOUT" });
+		expect(logged).not.toContain("private provider response");
+	});
 });
