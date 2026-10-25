@@ -9,10 +9,20 @@ export type InterpretInput = {
 	deadline?: number;
 };
 
+export type AiProviderFailureReason =
+	| "AUTHENTICATION"
+	| "MODEL_UNAVAILABLE"
+	| "NETWORK"
+	| "PROVIDER_ERROR"
+	| "RATE_LIMITED"
+	| "REQUEST_REJECTED"
+	| "TIMEOUT";
+
 export type AiProviderMetric = {
 	model: string;
 	durationMs: number;
 	outcome: "SUCCESS" | "UNAVAILABLE" | "OUTPUT_INVALID";
+	reason?: AiProviderFailureReason;
 	tokens?: number;
 };
 
