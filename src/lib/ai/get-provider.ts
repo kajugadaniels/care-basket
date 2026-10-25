@@ -1,7 +1,7 @@
 import "server-only";
 import { GeminiShoppingProvider } from "./gemini/provider";
-import type { ShoppingAssistantProvider } from "./provider";
+import type { AiProviderMetricSink, ShoppingAssistantProvider } from "./provider";
 
-export function getShoppingProvider(): ShoppingAssistantProvider {
-	return new GeminiShoppingProvider();
+export function getShoppingProvider(onMetric: AiProviderMetricSink): ShoppingAssistantProvider {
+	return new GeminiShoppingProvider(onMetric);
 }
