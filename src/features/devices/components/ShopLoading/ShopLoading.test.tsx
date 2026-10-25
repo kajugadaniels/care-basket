@@ -55,7 +55,8 @@ describe("simple shopping loading states", () => {
 		"basket/page.tsx", "requests/page.tsx", "requests/[requestId]/page.tsx",
 	])("keeps the %s streaming boundary on the same non-skeleton loader", (path) => {
 		const source = readFileSync(resolve(process.cwd(), "src/app/(device)/shop", path), "utf8");
-		expect(source).toContain("<Suspense fallback={<ShopLoading");
+		expect(source).toContain("<Suspense fallback={");
+		expect(source).toMatch(/<ShopLoading(?:\s+label=\{[^}]+\})?\s*\/>/);
 		expect(source).not.toContain("Skeleton");
 	});
 
