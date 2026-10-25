@@ -41,6 +41,22 @@ describe("shopping assistant observability", () => {
 		});
 	});
 
+	it("records only an allowlisted provider failure category", () => {
+		logShoppingProviderMetric({
+			model: "gemini-test",
+			durationMs: 20_000,
+			outcome: "UNAVAILABLE",
+			reason: "TIMEOUT",
+		});
+		expect(log).toHaveBeenCalledWith({
+			event: "assistant.provider",
+			outcome: "UNAVAILABLE",
+			model: "gemini-test",
+			durationBucket: "OVER_15S",
+			reason: "TIMEOUT",
+		});
+	});
+
 	it("records only coarse interpretation outcomes", () => {
 		logShoppingInterpretationMetric({ inputMode: "TEXT", outcome: "FALLBACK", reason: "RATE_LIMITED" });
 		expect(log).toHaveBeenCalledWith({
