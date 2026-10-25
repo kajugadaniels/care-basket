@@ -39,3 +39,5 @@ Record the date, commit, browser/device combination, and pass/fail result in the
 ## Acceptance boundary
 
 Step 7 is complete when the automated suites pass in the developer's environment and the manual release gate has recorded evidence. A test failure blocks release; it must not be skipped, weakened, or reclassified to make the build green. Provider success, live payment behavior, accessibility, and responsive layout still require their dedicated checks.
+
+[Step 8 operational readiness](agentic-commerce-step-8.md) adds privacy-safe aggregate signals and a release-evidence contract for monitoring these boundaries without recording shopping content or personal data.
