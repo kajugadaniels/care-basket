@@ -56,6 +56,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 - The [agent safety evaluation](docs/agentic-commerce-step-7.md) exercises ambiguous and hostile input, bounded suggestions, provider fallback, actor-derived isolation, explicit confirmation and the checkout boundary.
 - [Operational readiness](docs/agentic-commerce-step-8.md) exposes allowlisted, bucketed assistant health signals without recording shopping content, personal identifiers or payment data.
 - The [reviewed improvement loop](docs/agentic-commerce-step-9.md) turns behavior categories into fictional deterministic evaluation candidates that require explicit human review, without harvesting production requests or provider output.
+- The [release evidence gate](docs/agentic-commerce-step-10.md) returns `HOLD` unless every automated, two-browser, provider, isolation, confirmation, manager, payment-boundary and privacy check has explicit passing evidence.
 
 ## Local setup (developer-run)
 
@@ -121,6 +122,7 @@ Import [the Postman collection](postman/CareBasket.postman_collection.json) and 
 - [Agent safety evaluation](docs/agentic-commerce-step-7.md): deterministic adversarial scenarios and a manual release gate for the supervised shopping flow.
 - [Agent operational readiness](docs/agentic-commerce-step-8.md): privacy-safe structured events, aggregate review guidance and release evidence.
 - [Agent reviewed improvement loop](docs/agentic-commerce-step-9.md): fictional regression candidates derived from behavior categories, pending explicit human review and never production content.
+- [Agent release evidence gate](docs/agentic-commerce-step-10.md): strict status-only release verdict with no provider calls, deployment changes or public evidence data.
 - [Engineering rulebook](.agents/README.md): security boundaries and agent execution restrictions.
 
 Privacy contact: kajugadaniels@gmail.com. Cleanup is developer-run, not automatically scheduled. Full family/account deletion has no self-service UI; an operator procedure is still needed. Backups and provider logs have separate retention. Review privacy/child-related obligations before any real users.
