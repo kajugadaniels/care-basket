@@ -12,6 +12,7 @@ const fake = vi.hoisted(() => ({
 	config: vi.fn(),
 	limit: vi.fn(),
 	interpret: vi.fn(),
+	metric: vi.fn(),
 }));
 
 vi.mock("server-only", () => ({}));
@@ -22,7 +23,11 @@ vi.mock("@/lib/ai/get-provider", () => ({
 vi.mock("@/server/auth/shopping-proposal", () => ({
 	signShoppingProposal: () => "evaluation-proof",
 }));
-vi.mock("@/server/rate-limit/limiter", () => ({ enforceRateLimit: fake.limit }));
+vi.mock("@/server/rate-limit/limiter", () => ({
+	enforceRateLimit: fake.limit,
+	RateLimitError: class RateLimitError extends Error {},
+}));
+vi.mock("./observability", () => ({ logShoppingProviderMetric: vi.fn(), logShoppingInterpretationMetric: fake.metric }));
 vi.mock("./repository", () => ({
 	AI_CONSENT_VERSION: "ai-shopping-v1",
 	readAssistantProfile: fake.profile,
@@ -140,6 +145,11 @@ describe("agentic shopping safety evaluation", () => {
 		expect(result.items.map((item) => item.sku)).toEqual(["demo-milk"]);
 		expect(fake.limit).toHaveBeenCalledWith(`ai:device:${requester.deviceId}`, 30, 3_600_000);
 		expect(fake.limit).toHaveBeenCalledWith(`ai:family:${requester.familyId}`, 200, 86_400_000);
+		expect(fake.metric).toHaveBeenCalledWith({
+			inputMode: "TEXT",
+			outcome: "FALLBACK",
+			reason: "PROVIDER_UNAVAILABLE",
+		});
 	});
 
 	it("keeps a proposal inert until the requester explicitly changes the draft", () => {
