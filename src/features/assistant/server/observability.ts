@@ -38,6 +38,7 @@ export function logShoppingProviderMetric(metric: AiProviderMetric) {
 		outcome: metric.outcome,
 		model: safeModel(metric.model),
 		durationBucket: durationBucket(Math.max(0, metric.durationMs)),
+		...(metric.reason ? { reason: metric.reason } : {}),
 		...(tokens ? { tokenBucket: tokens } : {}),
 	});
 }
