@@ -6,6 +6,7 @@ import { CancelCircleIcon } from "@hugeicons/core-free-icons";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import {
   cancelCheckoutAction,
   captureCheckoutAction,
@@ -31,6 +32,7 @@ export function CheckoutPanel({
 }) {
   const id = useId();
   const router = useRouter();
+	const toast = useToast();
   const [refreshingPage, refreshPage] = useTransition();
   const [local, setLocal] = useState<{
     revision: number;
@@ -88,11 +90,23 @@ export function CheckoutPanel({
     };
   }, [waiting, pending, refreshingPage, router]);
 
+	function showError(message: string) {
+		setError(message);
+		toast.notify({ kind: "error", message });
+	}
+
+	function showResult(result: CheckoutDto) {
+		const kind = ["PENDING", "REVIEW_REQUIRED", "REFUNDED", "REVERSED"].includes(result.state)
+			? "warning" : result.state === "DENIED" ? "error" : "success";
+		toast.notify({ kind, message: copy.statuses[result.state] });
+	}
+
   function run(kind: "start" | "cancel" | "refresh" | "capture") {
     if (busy.current || pending) {
-      setError(copy.busy);
+		showError(copy.busy);
       return;
     }
+		toast.prepareSound();
     busy.current = true;
     setOperation(kind);
     setError("");
@@ -102,10 +116,11 @@ export function CheckoutPanel({
         if (kind === "start") {
           const result = await startCheckoutAction({ requestId, revision });
           if (!result.ok) {
-            setError(result.error.message);
+			showError(result.error.message);
             return;
           }
           setLocal({ revision, checkout: result.data, source: checkout });
+			showResult(result.data);
         } else if (
           (kind === "refresh" || kind === "capture") &&
           current?.orderId
@@ -117,10 +132,11 @@ export function CheckoutPanel({
             paypalOrderId: current.orderId,
           });
           if (!result.ok) {
-            setError(result.error.message);
+			showError(result.error.message);
             return;
           }
           setLocal({ revision, checkout: result.data, source: checkout });
+			showResult(result.data);
         } else if (current) {
           const result = await cancelCheckoutAction({
             requestId,
@@ -129,14 +145,15 @@ export function CheckoutPanel({
             confirmed: true,
           });
           if (!result.ok) {
-            setError(result.error.message);
+			showError(result.error.message);
             return;
           }
           setLocal({ revision, checkout: null, source: checkout });
           setAnnouncement(copy.cancelled);
+			toast.notify({ kind: "success", message: copy.cancelled });
         }
       } catch {
-        setError(copy.errors.INTERNAL);
+		showError(copy.errors.INTERNAL);
       } finally {
         dialog.current?.close();
         busy.current = false;
@@ -167,8 +184,9 @@ export function CheckoutPanel({
             onResult={(result) => {
               setError("");
               setLocal({ revision, checkout: result, source: checkout });
+				showResult(result);
             }}
-            onError={setError}
+			onError={showError}
           />
         </>
       ) : null}
