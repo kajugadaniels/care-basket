@@ -48,7 +48,7 @@ describe("requester product feed", () => {
 		fake.page.mockResolvedValueOnce({ ok: false, error: { code: "INTERNAL", message: "safe error" } });
 		render(<RequesterProductFeed selectable={false} filters={{ q: "", limit: 12 }} initial={{ products: [rice], nextCursor: "next" }} />);
 		fireEvent.focus(screen.getByRole("region", { name: "More groceries load automatically" }));
-		await screen.findByRole("alert");
+		expect(await screen.findByRole("alert")).toHaveTextContent("safe error");
 		expect(screen.getByRole("article", { name: "Rice" })).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Try loading again" }));
 		await screen.findByRole("article", { name: "Beans" });
