@@ -38,30 +38,42 @@ function mutationFailure(error: unknown): ProfileMutationResult {
 
 export async function createManagedProfileAction(input: unknown): Promise<ProfileMutationResult> {
   let profileId: string;
+	let feedback: string;
   try {
     const actor = await requireAdult({ roles: ["OWNER", "MANAGER"] });
     const parsed = createManagedProfileSchema.safeParse(input);
     if (!parsed.success) return validationFailure(parsed.error);
     ({ profileId } = await createManagedProfile(actor, parsed.data));
+		feedback = profilesCopy.added(parsed.data.displayName);
   } catch (error) {
     return mutationFailure(error);
   }
   revalidatePath("/family", "layout");
-	return { ok: true, data: { profileId } };
+	return {
+		ok: true,
+		data: { profileId },
+		feedback: { kind: "success", message: feedback },
+	};
 }
 
 export async function updateManagedProfileAction(input: unknown): Promise<ProfileMutationResult> {
   let profileId: string;
+	let feedback: string;
   try {
     const actor = await requireAdult({ roles: ["OWNER", "MANAGER"] });
     const parsed = updateManagedProfileSchema.safeParse(input);
     if (!parsed.success) return validationFailure(parsed.error);
     ({ profileId } = await updateManagedProfile(actor, parsed.data));
+		feedback = profilesCopy.saved(parsed.data.displayName);
   } catch (error) {
     return mutationFailure(error);
   }
   revalidatePath("/family", "layout");
-	return { ok: true, data: { profileId } };
+	return {
+		ok: true,
+		data: { profileId },
+		feedback: { kind: "success", message: feedback },
+	};
 }
 
 export async function deleteManagedProfileAction(input: unknown): Promise<ProfileMutationResult> {
@@ -76,5 +88,9 @@ export async function deleteManagedProfileAction(input: unknown): Promise<Profil
     return mutationFailure(error);
   }
   revalidatePath("/family", "layout");
-	return { ok: true, data: { profileId } };
+	return {
+		ok: true,
+		data: { profileId },
+		feedback: { kind: "success", message: profilesCopy.removedConfirmation },
+	};
 }
