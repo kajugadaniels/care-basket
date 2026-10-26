@@ -1,5 +1,5 @@
 import type { CatalogProductDto } from "@/features/catalog/types";
-import type { ActionResult } from "@/types/action-result";
+import type { MutationResult } from "@/types/action-result";
 import type { REQUEST_STATUSES } from "./limits";
 
 export type RequestStatus = typeof REQUEST_STATUSES[number];
@@ -25,9 +25,9 @@ export type ManagerDetailDto = Omit<RequestDetailDto, "items"> & ManagerSummaryD
 	})[];
 };
 export type RequestPage<T> = { requests: T[]; nextCursor: string | null };
-export type RequestMutationResult = ActionResult<{ requestId: string }>;
+export type RequestMutationResult = MutationResult<{ requestId: string }>;
 
 export type RequestNotificationsDto = {
 	count: number;
-	notifications: { id: string; displayName: string; submittedAt: string }[];
+	notifications: { id: string; displayName: string; submittedAt: string; message: string }[];
 };
