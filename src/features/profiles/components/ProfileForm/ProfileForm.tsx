@@ -1,10 +1,12 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Button } from "@/components/ui/Button/Button";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { TextField } from "@/components/ui/TextField/TextField";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { DISPLAY_NAME_MAX_LENGTH } from "@/features/family/limits";
 import { createManagedProfileAction, updateManagedProfileAction } from "@/features/profiles/actions";
 import { ProfileChoices } from "@/features/profiles/components/ProfileChoices/ProfileChoices";
@@ -13,6 +15,8 @@ import type { ManagedProfileDto, ProfileAvatarKey, ProfileKind, ProfileMutationR
 import styles from "./ProfileForm.module.css";
 
 export function ProfileForm({ profile }: { profile?: ManagedProfileDto }) {
+	const router = useRouter();
+	const toast = useToast();
 	const [name, setName] = useState(profile?.displayName ?? "");
 	const [kind, setKind] = useState<ProfileKind | "">(profile?.kind ?? "");
 	const [avatarKey, setAvatarKey] = useState<ProfileAvatarKey>(profile?.avatarKey ?? "smile");
@@ -33,10 +37,16 @@ export function ProfileForm({ profile }: { profile?: ManagedProfileDto }) {
 	const pendingText = profile ? profilesCopy.saving : profilesCopy.adding;
 
 	useEffect(() => {
+		if (result?.ok) {
+			toast.notify({ kind: "success", message: profile ? profilesCopy.saved(name) : profilesCopy.added(name) });
+			router.push(`/family/members/${result.data.profileId}`);
+			return;
+		}
 		if (!error) return;
 		const invalid = formRef.current?.querySelector<HTMLInputElement>('[aria-invalid="true"]');
 		(invalid ?? summaryRef.current)?.focus();
-	}, [error]);
+		toast.notify({ kind: "error", message: error.message });
+	}, [error, name, profile, result, router, toast]);
 
 	return (
 		<form
