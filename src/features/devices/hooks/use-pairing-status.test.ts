@@ -26,10 +26,14 @@ describe("visible-only pairing polling", () => {
     expect(fetchMock).toHaveBeenCalledWith("/api/pairing/status", expect.objectContaining({ cache: "no-store", credentials: "same-origin" }));
   });
   it("honors Retry-After before making another status request", async () => {
-    fetchMock.mockResolvedValueOnce(new Response(null, { status: 429, headers: { "Retry-After": "120" } }));
+    fetchMock.mockResolvedValueOnce(Response.json(
+		{ error: { message: "Please wait before checking again." } },
+		{ status: 429, headers: { "Retry-After": "120" } },
+	));
     const { result } = renderHook(() => usePairingStatus(expires, 0));
     await act(async () => { await vi.advanceTimersByTimeAsync(0); });
     expect(result.current.hasError).toBe(true);
+	expect(result.current.errorMessage).toBe("Please wait before checking again.");
     await act(async () => { await vi.advanceTimersByTimeAsync(119_999); });
     expect(fetchMock).toHaveBeenCalledTimes(1);
     await act(async () => { await vi.advanceTimersByTimeAsync(1); });
