@@ -38,7 +38,7 @@ export function ProfileForm({ profile }: { profile?: ManagedProfileDto }) {
 
 	useEffect(() => {
 		if (result?.ok) {
-			toast.notify({ kind: "success", message: profile ? profilesCopy.saved(name) : profilesCopy.added(name) });
+			toast.notify(result.feedback);
 			router.push(`/family/members/${result.data.profileId}`);
 			return;
 		}
@@ -46,7 +46,7 @@ export function ProfileForm({ profile }: { profile?: ManagedProfileDto }) {
 		const invalid = formRef.current?.querySelector<HTMLInputElement>('[aria-invalid="true"]');
 		(invalid ?? summaryRef.current)?.focus();
 		toast.notify({ kind: "error", message: error.message });
-	}, [error, name, profile, result, router, toast]);
+	}, [error, result, router, toast]);
 
 	return (
 		<form
