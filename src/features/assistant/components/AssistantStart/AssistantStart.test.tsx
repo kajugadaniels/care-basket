@@ -90,7 +90,11 @@ describe("assistant entry", () => {
 	it("opens the dedicated review route instead of replacing the assistant screen", async () => {
 		const proposal: Proposal = { reviewId: "0199a100-0000-7000-8000-000000000007", inputMode: "TEXT", inputText: "milk", local: true,
 			items: [], questions: [], unrecognized: [], budgetMinor: null };
-		fake.text.mockResolvedValue({ ok: true, data: proposal });
+		fake.text.mockResolvedValue({
+			ok: true,
+			data: proposal,
+			feedback: { kind: "success", message: "Your grocery choices are ready to review." },
+		});
 		render(<AssistantStart displayName="Rose" voice={false} child={false} />);
 		fireEvent.change(screen.getByRole("textbox", { name: copy.prompt }), { target: { value: "milk" } });
 		fireEvent.click(screen.getByRole("button", { name: copy.continue }));
