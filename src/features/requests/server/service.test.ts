@@ -120,7 +120,7 @@ describe("shopping request service authorization and DTOs", () => {
 
 		expect(await getRequestNotifications({ ...requestManager, role })).toEqual({
 			count: 23,
-			notifications: [{ id: requestIds.request, displayName: "Rose", submittedAt: requestNow.toISOString() }],
+			notifications: [{ id: requestIds.request, displayName: "Rose", submittedAt: requestNow.toISOString(), message: "Rose has sent a shopping list." }],
 		});
 		expect(fake.count).toHaveBeenCalledWith(requestIds.family);
 		expect(fake.notifications).toHaveBeenCalledWith(requestIds.family);
