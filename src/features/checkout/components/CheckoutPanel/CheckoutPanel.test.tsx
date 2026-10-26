@@ -43,19 +43,26 @@ const props = {
   editable: true,
   checkout: null,
 };
+const preparedResult: CheckoutResult = {
+	ok: true,
+	data: prepared,
+	feedback: { kind: "success", message: copy.statuses.PREPARED },
+};
 
 describe("manager Sandbox checkout panel", () => {
   beforeEach(() => {
     vi.resetAllMocks();
-    fake.start.mockResolvedValue({ ok: true, data: prepared });
+    fake.start.mockResolvedValue(preparedResult);
     vi.spyOn(document, "visibilityState", "get").mockReturnValue("visible");
     fake.cancel.mockResolvedValue({
       ok: true,
       data: { requestId: requestIds.request },
+		feedback: { kind: "success", message: copy.cancelled },
     });
     fake.refresh.mockResolvedValue({
       ok: true,
       data: { ...prepared, state: "PENDING", canCancel: false },
+		feedback: { kind: "warning", message: copy.statuses.PENDING },
     });
     Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
       configurable: true,
@@ -120,7 +127,7 @@ describe("manager Sandbox checkout panel", () => {
     expect(fake.start).toHaveBeenCalledOnce();
     expect(button).toHaveAttribute("aria-busy", "true");
     expect(screen.queryByText(copy.prepared)).not.toBeInTheDocument();
-    await act(async () => complete({ ok: true, data: prepared }));
+    await act(async () => complete(preparedResult));
     expect(screen.getByText(copy.prepared)).toBeInTheDocument();
   });
   it("focuses a price conflict inline and retains an explicit retry action", async () => {
@@ -294,6 +301,7 @@ describe("manager Sandbox checkout panel", () => {
         captureId: "CAPTURE1",
         canCancel: false,
       },
+		feedback: { kind: "success", message: copy.statuses.CAPTURED },
     });
     const { container } = render(
       <CheckoutPanel
@@ -319,6 +327,7 @@ describe("manager Sandbox checkout panel", () => {
     fake.refresh.mockResolvedValue({
       ok: true,
       data: { ...prepared, state: "DENIED", canCancel: false },
+		feedback: { kind: "error", message: copy.statuses.DENIED },
     });
     const { container } = render(
       <CheckoutPanel {...props} checkout={prepared} />,
