@@ -67,8 +67,8 @@ export const requestsCopy = {
 	soundOff: "Sound off",
 	dismissError: "Dismiss error notification",
 	managerRemoving: "Removing…",
-	managerQuantitySaved: ({ name, quantity }: { name: string; quantity: number }) => `Quantity saved for ${name}: ${quantity}.`,
-	managerItemRemoved: ({ name }: { name: string }) => `${name} removed from this request.`,
+	quantitySaved: "Quantity saved.",
+	itemRemoved: "Product removed from this request.",
 	dismissSuccess: "Dismiss success message",
 	paymentUpdated: "Payment updated",
 	paymentAdjusted: "The payment has changed. Check the payment details below. Delivery has not been confirmed.",
@@ -129,5 +129,4 @@ export const requestNotificationsCopy = {
 	error: "We couldn't update notifications. Try again to check for new lists.",
 	retry: "Try again",
 	refreshing: "Checking notifications…",
-	newLists: (count: number) => `${count} new shopping ${count === 1 ? "list" : "lists"} received.`,
 } as const;
