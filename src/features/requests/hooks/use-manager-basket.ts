@@ -16,7 +16,7 @@ export function useManagerBasket(request: ManagerDetailDto) {
 	const sequence = useRef(0);
 	const sound = useToastSound();
 
-	function notify(kind: "success" | "error", message: string, title: string = kind === "success" ? copy.toastSuccess : copy.toastError) {
+	function notify(kind: "success" | "warning" | "error", message: string, title: string = kind === "success" ? copy.toastSuccess : copy.toastError) {
 		setNotice({ id: ++sequence.current, kind, title, message });
 		sound.play(kind);
 	}
@@ -28,7 +28,7 @@ export function useManagerBasket(request: ManagerDetailDto) {
 		return true;
 	}
 
-	function execute(action: () => Promise<RequestMutationResult>, message: string, key: string, edit?: QuantityPreview) {
+	function execute(action: () => Promise<RequestMutationResult>, key: string, edit?: QuantityPreview) {
 		if (blockIfBusy()) return;
 		sound.prepare();
 		mutation.run(async () => {
@@ -36,23 +36,23 @@ export function useManagerBasket(request: ManagerDetailDto) {
 			if (edit) applyPreview(edit);
 			try {
 				const result = await action();
-				if (!result.ok) notify("error", copy.toastErrorMessage);
+				if (!result.ok) notify("error", result.error.message);
 				return result;
 			} catch {
 				notify("error", copy.toastErrorMessage);
 				return { ok: false, error: { code: "INTERNAL", message: copy.managerConfirmFailed } };
 			}
-		}, () => notify("success", message), key);
+		}, (result) => notify(result.feedback.kind, result.feedback.message), key);
 	}
 
 	function save(item: ManagerDetailDto["items"][number], quantity: number) {
 		execute(() => updateRequestItemAction({ requestId: request.id, revision: request.revision, itemId: item.id, quantity }),
-			copy.managerQuantitySaved({ name: item.displayName, quantity }), `save:${item.id}`, { itemId: item.id, quantity });
+			`save:${item.id}`, { itemId: item.id, quantity });
 	}
 
 	function remove(item: ManagerDetailDto["items"][number]) {
 		execute(() => removeRequestItemAction({ requestId: request.id, revision: request.revision, itemId: item.id }),
-			copy.managerItemRemoved({ name: item.displayName }), `remove:${item.id}`);
+			`remove:${item.id}`);
 	}
 
 	// An error can render before the optimistic transition settles. Show confirmed
