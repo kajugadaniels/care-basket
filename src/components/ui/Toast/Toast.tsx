@@ -1,12 +1,13 @@
 "use client";
 
-import { AlertCircleIcon, CancelCircleIcon, CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
+import { Alert02Icon, AlertCircleIcon, CancelCircleIcon, CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
 import styles from "./Toast.module.css";
 
-export type ToastNotice = { id: number; message: string; kind?: "success" | "error"; title?: string };
+export type ToastKind = "success" | "warning" | "error";
+export type ToastNotice = { id: number; message: string; kind?: ToastKind; title?: string };
 
 type ToastProps = {
 	notice: ToastNotice | null;
@@ -56,7 +57,10 @@ export function Toast({ notice, dismissLabel, onDismiss }: ToastProps) {
 
 	return (
 		<div ref={container} data-kind={notice?.kind ?? "success"} className={notice ? styles.toast : styles.visuallyHidden}>
-			{notice ? <span className={styles.icon}><Icon icon={notice.kind === "error" ? AlertCircleIcon : CheckmarkCircle02Icon} size={24} /></span> : null}
+			{notice ? <span className={styles.icon}><Icon
+				icon={notice.kind === "error" ? AlertCircleIcon : notice.kind === "warning" ? Alert02Icon : CheckmarkCircle02Icon}
+				size={24}
+			/></span> : null}
 			<div role="status" aria-live="polite" aria-atomic="true" className={styles.message}>
 				{notice ? <span key={notice.id} className={styles.content}>
 					{notice.title ? <span className={styles.title}>{notice.title}</span> : null}
