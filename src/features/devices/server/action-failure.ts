@@ -7,7 +7,7 @@ import { logSecurityFailure } from "@/server/logger";
 import type { ActionResult } from "@/types/action-result";
 import { devicesCopy } from "../copy";
 
-export function deviceFailure<T>(error: unknown): ActionResult<T> {
+export function deviceFailure(error: unknown): Extract<ActionResult<never>, { ok: false }> {
   unstable_rethrow(error);
   if (error instanceof z.ZodError) return { ok: false, error: { code: "VALIDATION_FAILED",
     message: devicesCopy.errors.VALIDATION_FAILED, fieldErrors: z.flattenError(error).fieldErrors } };
