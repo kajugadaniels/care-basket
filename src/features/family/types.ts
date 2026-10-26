@@ -1,4 +1,4 @@
-import type { ActionError } from "@/types/action-result";
+import type { ActionError, ActionFeedback } from "@/types/action-result";
 
 export type CreateFamilyFormValues = {
   familyName: string;
@@ -11,6 +11,7 @@ export type CreateFamilyFormState = {
   values: CreateFamilyFormValues;
   error: ActionError | null;
 	created: boolean;
+	feedback: ActionFeedback | null;
 };
 
 // What the family dashboard shows. Only the signed-in adult's own family.
