@@ -8,7 +8,7 @@ const fake = vi.hoisted(() => ({ load: vi.fn() }));
 const empty: RequestNotificationsDto = { count: 0, notifications: [] };
 const incoming: RequestNotificationsDto = {
 	count: 1,
-	notifications: [{ id: requestIds.request, displayName: "Rose", submittedAt: "2026-10-12T12:00:00Z" }],
+	notifications: [{ id: requestIds.request, displayName: "Rose", submittedAt: "2026-10-12T12:00:00Z", message: "Rose has sent a shopping list." }],
 };
 function respond(data: RequestNotificationsDto) {
 	fake.load.mockImplementation(async () => Response.json({ data }));
@@ -94,6 +94,16 @@ describe("manager request notification polling", () => {
 		await act(async () => { await result.current.refresh(); });
 		expect(result.current.failed).toBe(false);
 		expect(result.current.data).toEqual(empty);
+	});
+
+	it("uses the server's safe error message for a failed refresh", async () => {
+		fake.load.mockImplementation(async () => Response.json(
+			{ error: { message: "Shopping list notifications are temporarily unavailable." } },
+			{ status: 500 },
+		));
+		const { result } = renderHook(() => useRequestNotifications(incoming));
+		await act(async () => { await result.current.refresh(); });
+		expect(result.current.failureMessage).toBe("Shopping list notifications are temporarily unavailable.");
 	});
 
 	it.each([401, 403])("clears private notifications and stops polling after HTTP %s", async (status) => {
