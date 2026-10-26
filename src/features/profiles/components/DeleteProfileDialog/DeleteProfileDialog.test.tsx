@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
+import type { ProfileMutationResult } from "@/features/profiles/types";
 
 const mocks = vi.hoisted(() => ({ remove: vi.fn(), push: vi.fn() }));
 vi.mock("@/features/profiles/actions", () => ({ deleteManagedProfileAction: mocks.remove }));
@@ -61,7 +62,7 @@ describe("DeleteProfileDialog", () => {
     expect(mocks.remove).not.toHaveBeenCalled();
   });
   it("sends explicit confirmation and prevents repeated deletion", async () => {
-    let resolveRequest!: (value: { ok: true; data: { profileId: string } }) => void;
+    let resolveRequest!: (value: ProfileMutationResult) => void;
     mocks.remove.mockReturnValue(new Promise((resolve) => { resolveRequest = resolve; }));
     const { dialog } = open();
     fireEvent.click(within(dialog).getByRole("checkbox"));
@@ -72,7 +73,11 @@ describe("DeleteProfileDialog", () => {
     expect(mocks.remove).toHaveBeenCalledWith({ profileId: "profile-rose", confirmed: true });
     fireEvent.click(button);
     expect(mocks.remove).toHaveBeenCalledTimes(1);
-    await act(async () => { resolveRequest({ ok: true, data: { profileId: "profile-rose" } }); });
+    await act(async () => { resolveRequest({
+		ok: true,
+		data: { profileId: "profile-rose" },
+		feedback: { kind: "success", message: "Family member profile removed." },
+	}); });
 		await waitFor(() => expect(mocks.push).toHaveBeenCalledWith("/family/members"));
   });
   it("shows and focuses safe errors without closing the dialog", async () => {
