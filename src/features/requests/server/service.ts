@@ -6,6 +6,7 @@ import { assertDevicePermission } from "@/server/auth/require-device";
 import { AppError } from "@/server/errors";
 import { formatMoney } from "@/lib/format";
 import { REQUEST_PAGE_SIZE } from "../limits";
+import { requestNotificationsCopy } from "../copy";
 import { closeRequestSchema, removeRequestItemSchema, requestListSchema, submitRequestSchema, updateRequestItemSchema } from "../schemas";
 import type { ManagerDetailDto, ManagerSummaryDto, RequestDetailDto, RequestNotificationsDto, RequestPage, RequestSummaryDto } from "../types";
 import { insertRequest } from "./submission-repository";
@@ -64,6 +65,7 @@ export async function getRequestNotifications(actor: AdultActor): Promise<Reques
 			id: row.id,
 			displayName: row.profile.displayName,
 			submittedAt: row.submittedAt.toISOString(),
+			message: requestNotificationsCopy.message(row.profile.displayName),
 		})),
 	};
 }
