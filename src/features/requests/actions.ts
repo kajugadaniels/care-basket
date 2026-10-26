@@ -7,6 +7,7 @@ import { enforceRateLimit } from "@/server/rate-limit/limiter";
 import type { RequestMutationResult } from "./types";
 import { cancelRequest, declineRequest, removeRequestItem, submitRequest, updateRequestItem } from "./server/service";
 import { requestFailure } from "./server/action-failure";
+import { requestsCopy } from "./copy";
 
 function invalidate(requestId: string) {
 	revalidatePath("/family");
@@ -23,34 +24,34 @@ export async function submitRequestAction(input: unknown): Promise<RequestMutati
 		await enforceRateLimit(`request:submit:${actor.deviceId}`, 20, 60 * 60_000);
 		const result = await submitRequest(actor, input);
 		invalidate(result.requestId);
-		return { ok: true, data: result };
+		return { ok: true, data: result, feedback: { kind: "success", message: requestsCopy.sentNotice } };
 	} catch (error) { return requestFailure(error); }
 }
 export async function cancelRequestAction(input: unknown): Promise<RequestMutationResult> {
 	try {
 		const result = await cancelRequest(await requireDevice(), input);
 		invalidate(result.requestId);
-		return { ok: true, data: result };
+		return { ok: true, data: result, feedback: { kind: "success", message: requestsCopy.cancelledNotice } };
 	} catch (error) { return requestFailure(error); }
 }
 export async function updateRequestItemAction(input: unknown): Promise<RequestMutationResult> {
 	try {
 		const result = await updateRequestItem(await requireAdult({ roles: ["OWNER", "MANAGER"] }), input);
 		invalidate(result.requestId);
-		return { ok: true, data: result };
+		return { ok: true, data: result, feedback: { kind: "success", message: requestsCopy.quantitySaved } };
 	} catch (error) { return requestFailure(error); }
 }
 export async function removeRequestItemAction(input: unknown): Promise<RequestMutationResult> {
 	try {
 		const result = await removeRequestItem(await requireAdult({ roles: ["OWNER", "MANAGER"] }), input);
 		invalidate(result.requestId);
-		return { ok: true, data: result };
+		return { ok: true, data: result, feedback: { kind: "success", message: requestsCopy.itemRemoved } };
 	} catch (error) { return requestFailure(error); }
 }
 export async function declineRequestAction(input: unknown): Promise<RequestMutationResult> {
 	try {
 		const result = await declineRequest(await requireAdult({ roles: ["OWNER", "MANAGER"] }), input);
 		invalidate(result.requestId);
-		return { ok: true, data: result };
+		return { ok: true, data: result, feedback: { kind: "success", message: requestsCopy.declinedNotice } };
 	} catch (error) { return requestFailure(error); }
 }
