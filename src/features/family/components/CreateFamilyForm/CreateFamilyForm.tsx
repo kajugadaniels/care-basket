@@ -26,6 +26,7 @@ export function CreateFamilyForm({ defaultDisplayName }: CreateFamilyFormProps) 
     values: { familyName: "", displayName: defaultDisplayName },
     error: null,
 		created: false,
+		feedback: null,
   };
   const [state, formAction, isPending] = useActionState(createFamilyAction, initialState);
   const formRef = useRef<HTMLFormElement>(null);
@@ -40,7 +41,7 @@ export function CreateFamilyForm({ defaultDisplayName }: CreateFamilyFormProps) 
   // After a failed submission, move focus to the first field that needs attention.
   useEffect(() => {
 		if (state.created) {
-			toast.notify({ kind: "success", message: familySetupCopy.created });
+			if (state.feedback) toast.notify(state.feedback);
 			router.replace("/family");
 			return;
 		}
