@@ -1,14 +1,18 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button/Button";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { deleteManagedProfileAction } from "@/features/profiles/actions";
 import { profilesCopy } from "@/features/profiles/copy";
 import type { ProfileMutationResult } from "@/features/profiles/types";
 import styles from "./DeleteProfileDialog.module.css";
 
 export function DeleteProfileDialog({ profileId, displayName }: { profileId: string; displayName: string }) {
+	const router = useRouter();
+	const toast = useToast();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -21,7 +25,18 @@ export function DeleteProfileDialog({ profileId, displayName }: { profileId: str
   );
   const error = result && !result.ok ? result.error : null;
 
-  useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
+	useEffect(() => {
+		if (result?.ok) {
+			dialogRef.current?.close();
+			toast.notify({ kind: "success", message: profilesCopy.removed(displayName) });
+			router.push("/family/members");
+			return;
+		}
+		if (error) {
+			errorRef.current?.focus();
+			toast.notify({ kind: "error", message: error.message });
+		}
+	}, [displayName, error, result, router, toast]);
 
   return (
     <>
