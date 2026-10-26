@@ -12,6 +12,7 @@ export function useRequestNotifications(initialData: RequestNotificationsDto | n
 	const [pending, setPending] = useState(false);
 	const [accessLost, setAccessLost] = useState(false);
 	const [announcement, setAnnouncement] = useState("");
+	const [failureMessage, setFailureMessage] = useState("");
 	const active = useRef(false);
 	const generation = useRef(0);
 	const inFlight = useRef<AbortController | null>(null);
@@ -34,29 +35,35 @@ export function useRequestNotifications(initialData: RequestNotificationsDto | n
 				cache: "no-store", credentials: "same-origin", redirect: "error", signal: controller.signal,
 			});
 			if (!active.current || generation.current !== version) return;
+			const body = await response.json() as { data?: unknown; error?: { message?: unknown } };
+			const serverMessage = typeof body.error?.message === "string" ? body.error.message : "";
 			if (response.status === 401 || response.status === 403) {
 				denied.current = true;
 				setAccessLost(true);
+				setFailureMessage(serverMessage || requestNotificationsCopy.sessionExpired);
 				setData(null);
 				setAnnouncement("");
 				setFailed(true);
 				return;
 			}
-			if (!response.ok) throw new Error("Notification read failed");
-			const body: { data: unknown } = await response.json();
+			if (!response.ok) {
+				setFailureMessage(serverMessage || requestNotificationsCopy.error);
+				setFailed(true);
+				return;
+			}
 			const next = requestNotificationsSchema.parse(body.data);
 			if (!active.current || generation.current !== version || controller.signal.aborted) return;
 			const previousIds = new Set(data?.notifications.map((item) => item.id));
 			const incoming = data ? next.notifications.filter((item) => !previousIds.has(item.id)) : [];
 			if (incoming.length) {
-				setAnnouncement(incoming.length === 1
-					? requestNotificationsCopy.message(incoming[0].displayName)
-					: requestNotificationsCopy.newLists(incoming.length));
+				setAnnouncement(incoming.map((item) => item.message).join(" "));
 			}
 			setData(next);
 			setFailed(false);
+			setFailureMessage("");
 		} catch {
 			if (active.current && generation.current === version && (!controller.signal.aborted || timedOut)) {
+				setFailureMessage(requestNotificationsCopy.error);
 				setFailed(true);
 			}
 		} finally {
@@ -88,5 +95,5 @@ export function useRequestNotifications(initialData: RequestNotificationsDto | n
 		};
 	}, []);
 
-	return { data, failed, pending, accessLost, announcement, refresh };
+	return { data, failed, pending, accessLost, announcement, failureMessage, refresh };
 }
