@@ -5,13 +5,16 @@ import { useRef, useState } from "react";
 import { captureCheckoutAction, startCheckoutAction } from "../../actions";
 import { checkoutCopy as copy } from "../../copy";
 import type { CheckoutDto } from "../../types";
+import type { ActionFeedback } from "@/types/action-result";
 
 // SDK code is fetched only for a deliberately prepared, server-enabled manager checkout.
 const PayPalCheckoutButton = dynamic(() => import("./PayPalCheckoutButton").then((module) => module.PayPalCheckoutButton), { ssr: false });
 
-export function BuyerApproval({ requestId, revision, checkout, onResult, onError }: {
+export function BuyerApproval({ requestId, revision, checkout, onResult, onFeedback, onError }: {
 	requestId: string; revision: number; checkout: CheckoutDto;
-	onResult: (result: CheckoutDto) => void; onError: (message: string) => void;
+	onResult: (result: CheckoutDto, feedback: ActionFeedback) => void;
+	onFeedback: (feedback: ActionFeedback) => void;
+	onError: (message: string) => void;
 }) {
 	const busy = useRef(false);
 	const [pending, setPending] = useState(false);
@@ -25,6 +28,7 @@ export function BuyerApproval({ requestId, revision, checkout, onResult, onError
 					onError(result.ok ? copy.errors.UNKNOWN : result.error.message);
 					throw new Error(copy.errors.UNKNOWN);
 				}
+				onFeedback(result.feedback);
 				return { orderId: result.data.orderId };
 			}}
 			onApprove={async ({ orderId }) => {
@@ -33,7 +37,7 @@ export function BuyerApproval({ requestId, revision, checkout, onResult, onError
 				setPending(true);
 				try {
 					const result = await captureCheckoutAction({ requestId, paypalOrderId: orderId });
-					if (result.ok) onResult(result.data);
+					if (result.ok) onResult(result.data, result.feedback);
 					else onError(result.error.message);
 				} catch { onError(copy.errors.UNKNOWN); }
 				finally { busy.current = false; setPending(false); }
