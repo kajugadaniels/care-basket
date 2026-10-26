@@ -2,6 +2,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requestIds, requester, requestManager } from "@/test/factories/requests";
 import { AppError } from "@/server/errors";
+import { requestsCopy } from "./copy";
 const fake = vi.hoisted(() => ({ device: vi.fn(), adult: vi.fn(), limit: vi.fn(), submit: vi.fn(), cancel: vi.fn(),
 	update: vi.fn(), remove: vi.fn(), decline: vi.fn(), revalidate: vi.fn() }));
 vi.mock("server-only", () => ({}));
@@ -53,6 +54,15 @@ describe("authenticated request actions", () => {
 			"/family", "/family/requests", `/family/requests/${requestIds.request}`,
 			`/family/requests/${requestIds.request}/checkout`, "/shop/requests", `/shop/requests/${requestIds.request}`,
 		]);
+	});
+	it.each([
+		[submitRequestAction, requestsCopy.sentNotice],
+		[cancelRequestAction, requestsCopy.cancelledNotice],
+		[updateRequestItemAction, requestsCopy.quantitySaved],
+		[removeRequestItemAction, requestsCopy.itemRemoved],
+		[declineRequestAction, requestsCopy.declinedNotice],
+	] as const)("returns authoritative success feedback from the server", async (action, message) => {
+		expect(await action({})).toMatchObject({ feedback: { kind: "success", message } });
 	});
 	it("returns a friendly conflict without revalidating failed mutations", async () => {
 		fake.update.mockRejectedValue(new AppError("CONFLICT"));
