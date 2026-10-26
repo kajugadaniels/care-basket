@@ -16,7 +16,7 @@ describe("GET /api/requests/notifications", () => {
 		vi.resetAllMocks();
 		fake.adult.mockResolvedValue(requestManager);
 		fake.notifications.mockResolvedValue({ count: 1, notifications: [
-			{ id: requestIds.request, displayName: "Rose", submittedAt: "2026-10-12T12:00:00Z" },
+			{ id: requestIds.request, displayName: "Rose", submittedAt: "2026-10-12T12:00:00Z", message: "Rose has sent a shopping list." },
 		] });
 	});
 
