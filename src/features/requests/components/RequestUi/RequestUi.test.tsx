@@ -16,6 +16,14 @@ import { RequestError } from "./RequestError";
 
 const pendingActions = new Set<(result: RequestMutationResult) => void>();
 
+function successResult(message = requestsCopy.quantitySaved): RequestMutationResult {
+	return {
+		ok: true,
+		data: { requestId: requestIds.request },
+		feedback: { kind: "success", message },
+	};
+}
+
 function deferredMutation() {
 	let finish!: (result: RequestMutationResult) => void;
 	const promise = new Promise<RequestMutationResult>((resolve) => { finish = resolve; });
@@ -26,7 +34,10 @@ function deferredMutation() {
 describe("shopping request screens", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
-		for (const action of [fake.cancel, fake.decline, fake.update, fake.remove]) action.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
+		fake.cancel.mockResolvedValue(successResult(requestsCopy.cancelledNotice));
+		fake.decline.mockResolvedValue(successResult(requestsCopy.declinedNotice));
+		fake.update.mockResolvedValue(successResult(requestsCopy.quantitySaved));
+		fake.remove.mockResolvedValue(successResult(requestsCopy.itemRemoved));
 		Object.defineProperty(HTMLDialogElement.prototype, "showModal", { configurable: true, value: function(this: HTMLDialogElement) { this.setAttribute("open", ""); } });
 		Object.defineProperty(HTMLDialogElement.prototype, "close", { configurable: true, value: function(this: HTMLDialogElement) { this.removeAttribute("open"); this.dispatchEvent(new Event("close")); } });
 	});
@@ -34,7 +45,7 @@ describe("shopping request screens", () => {
 		// Unmounting does not finish async Actions. Settle them even if an assertion
 		// failed so React's shared transition scope cannot leak into the next test.
 		await act(async () => {
-			for (const finish of pendingActions) finish({ ok: true, data: { requestId: requestIds.request } });
+			for (const finish of pendingActions) finish(successResult());
 		});
 		pendingActions.clear();
 	});
@@ -124,7 +135,7 @@ describe("shopping request screens", () => {
 		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" }), { target: { value: "3" } });
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
 		await waitFor(() => expect(fake.update).toHaveBeenCalledWith({ requestId: requestIds.request, itemId: requestIds.item, revision: 0, quantity: 3 }));
-		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 3."));
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.quantitySaved));
 		expect(fake.refresh).not.toHaveBeenCalled();
 		fireEvent.click(screen.getByRole("button", { name: requestsCopy.dismissSuccess }));
 		expect(screen.getByRole("status")).toBeEmptyDOMElement();
@@ -138,7 +149,7 @@ describe("shopping request screens", () => {
 		render(<RequestDetail request={request} />);
 		fireEvent.click(screen.getByRole("button", { name: "Remove item: Demo bread" }));
 		await waitFor(() => expect(fake.remove).toHaveBeenCalledWith({ requestId: requestIds.request, itemId: requestIds.other, revision: 0 }));
-		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Demo bread removed from this request."));
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.itemRemoved));
 	});
 	it("focuses stale-edit conflicts and leaves data on screen", async () => {
 		fake.update.mockResolvedValue({ ok: false, error: { code: "CONFLICT", message: "Refresh this list before trying again." } });
@@ -223,7 +234,7 @@ describe("shopping request screens", () => {
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 		expect(otherInput).toHaveValue(4);
 		expect(within(summary).getByText("$12.50")).toBeInTheDocument();
-		await act(async () => finish({ ok: true, data: { requestId: requestIds.request } }));
+		await act(async () => finish(successResult()));
 		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
 		expect(otherInput).toHaveValue(4);
 	});
@@ -234,7 +245,7 @@ describe("shopping request screens", () => {
 		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo bread" }), { target: { value: "4" } });
 		fireEvent.change(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" }), { target: { value: "3" } });
 		fireEvent.click(screen.getAllByRole("button", { name: "Save quantity" })[0]);
-		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 3."));
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.quantitySaved));
 
 		rerender(<RequestDetail request={{ ...request, revision: 1, items: [{ ...request.items[0], quantity: 3 }, request.items[1]] }} />);
 		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo bread" })).toHaveValue(4);
@@ -252,8 +263,8 @@ describe("shopping request screens", () => {
 		fireEvent.submit(form);
 		expect(fake.update).toHaveBeenCalledOnce();
 		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusy);
-		await act(async () => finish({ ok: true, data: { requestId: requestIds.request } }));
-		expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 2.");
+		await act(async () => finish(successResult()));
+		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.quantitySaved);
 		expect(fake.refresh).not.toHaveBeenCalled();
 	});
 	it("keeps removal controls enabled and rejects repeats without a button spinner", async () => {
@@ -275,7 +286,7 @@ describe("shopping request screens", () => {
 		expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.actionBusy);
 		expect(fake.remove).toHaveBeenCalledOnce();
 		expect(fake.update).not.toHaveBeenCalled();
-		await act(async () => finish({ ok: true, data: { requestId: requestIds.request } }));
+		await act(async () => finish(successResult(requestsCopy.itemRemoved)));
 		expect(screen.queryByText(requestsCopy.managerRemoving)).not.toBeInTheDocument();
 	});
 	it("preserves a failed quantity edit and offers retry without a success toast", async () => {
@@ -293,9 +304,9 @@ describe("shopping request screens", () => {
 		expect(within(screen.getByRole("list", { name: requestsCopy.managerItems })).getByText("$5.00")).toBeInTheDocument();
 		expect(screen.queryByText(requestsCopy.managerSyncing)).not.toBeInTheDocument();
 		await waitFor(() => expect(input).toBeEnabled());
-		fake.update.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
+		fake.update.mockResolvedValue(successResult());
 		fireEvent.click(screen.getByRole("button", { name: "Save quantity" }));
-		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Quantity saved for Demo milk: 5."));
+		await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent(requestsCopy.quantitySaved));
 		expect(fake.update).toHaveBeenCalledTimes(2);
 	});
 	it("rolls preview amounts back on rejection while retaining the exact input node and draft", async () => {
@@ -331,7 +342,11 @@ describe("shopping request screens", () => {
 		await act(async () => {
 			rerender(<RequestDetail request={{ ...request, revision: 1, subtotalMinor: 750, subtotal: "$7.50",
 				items: [{ ...request.items[0], quantity: 3, lineTotal: "$7.50" }] }} />);
-			finish({ ok: true, data: { requestId: request.id } });
+			finish({
+				ok: true,
+				data: { requestId: request.id },
+				feedback: { kind: "success", message: requestsCopy.quantitySaved },
+			});
 		});
 		expect(within(screen.getByRole("region", { name: requestsCopy.managerSummary })).getByText("$7.50")).toBeInTheDocument();
 		expect(screen.getByRole("spinbutton", { name: "Quantity: Demo milk" })).toHaveValue(3);
