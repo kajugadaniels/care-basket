@@ -2,7 +2,12 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const fake = vi.hoisted(() => ({ status: "PENDING", error: false, expiring: false, complete: vi.fn() }));
 vi.mock("../../actions", () => ({ completePairingAction: fake.complete }));
-vi.mock("../../hooks/use-pairing-status", () => ({ usePairingStatus: () => ({ status: fake.status, hasError: fake.error, isExpiring: fake.expiring }) }));
+vi.mock("../../hooks/use-pairing-status", () => ({ usePairingStatus: () => ({
+	status: fake.status,
+	hasError: fake.error,
+	errorMessage: "We couldn't check your code. Check your connection and try again.",
+	isExpiring: fake.expiring,
+}) }));
 import { PairingWaiting } from "./PairingWaiting";
 const pairing = { code: "000042", expiresAt: "2026-10-08T12:10:00Z" };
 describe("accessible pairing waiting states", () => {
