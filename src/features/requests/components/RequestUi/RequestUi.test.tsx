@@ -16,7 +16,7 @@ import { RequestError } from "./RequestError";
 
 const pendingActions = new Set<(result: RequestMutationResult) => void>();
 
-function successResult(message = requestsCopy.quantitySaved): RequestMutationResult {
+function successResult(message: string = requestsCopy.quantitySaved): RequestMutationResult {
 	return {
 		ok: true,
 		data: { requestId: requestIds.request },
