@@ -54,7 +54,7 @@ describe("shopping guide action", () => {
 describe("saved text review action", () => {
 	beforeEach(() => {
 		vi.resetAllMocks(); fake.device.mockResolvedValue(requester);
-		fake.interpret.mockResolvedValue({ reviewId: requestIds.key, items: [], inputText: "milk" });
+		fake.interpret.mockResolvedValue({ reviewId: requestIds.key, items: [], questions: [], unrecognized: [], inputText: "milk" });
 	});
 	it("authenticates and validates text before returning a private review lookup", async () => {
 		expect(await interpretTextAction({ text: " milk " })).toMatchObject({ ok: true, data: { reviewId: requestIds.key } });
@@ -82,12 +82,16 @@ describe("AI preference edit-page invalidation", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
 		fake.adult.mockResolvedValue(requestManager);
-		fake.preference.mockResolvedValue({ profileId: requestIds.profile });
+		fake.preference.mockResolvedValue({ profileId: requestIds.profile, enabled: false });
 	});
 
 	it("refreshes the edit page only after the authorized change succeeds", async () => {
 		const input = { profileId: requestIds.profile, enabled: false, consent: false };
-		expect(await updateAiPreferenceAction(input)).toEqual({ ok: true, data: { profileId: requestIds.profile } });
+		expect(await updateAiPreferenceAction(input)).toEqual({
+			ok: true,
+			data: { profileId: requestIds.profile, enabled: false },
+			feedback: { kind: "success", message: "Voice and smart suggestions are disabled." },
+		});
 		expect(fake.adult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
 		expect(fake.preference).toHaveBeenCalledWith(requestManager, input);
 		expect(fake.revalidate).toHaveBeenCalledTimes(1);
