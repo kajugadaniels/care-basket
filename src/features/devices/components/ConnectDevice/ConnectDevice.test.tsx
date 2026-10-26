@@ -7,7 +7,11 @@ import { ConnectDevice } from "./ConnectDevice";
 describe("requester device connection", () => {
   beforeEach(() => vi.resetAllMocks());
   it("starts only after the person's deliberate click and then displays their code", async () => {
-    fake.start.mockResolvedValue({ ok: true, data: { code: "000042", expiresAt: "2026-10-08T12:10:00Z" } });
+    fake.start.mockResolvedValue({
+		ok: true,
+		data: { code: "000042", expiresAt: "2026-10-08T12:10:00Z" },
+		feedback: { kind: "success", message: "Connection ready." },
+	});
     render(<ConnectDevice />);
     expect(fake.start).not.toHaveBeenCalled(); expect(screen.getByRole("heading", { name: "Connect your device" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Connect This Device" }));
