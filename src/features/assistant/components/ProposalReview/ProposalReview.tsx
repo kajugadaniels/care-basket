@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { LoadMore } from "@/components/ui/LoadMore/LoadMore";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { usePagedList } from "@/components/ui/LoadMore/use-paged-list";
 import { ProductCard } from "@/features/catalog/components/ProductCard/ProductCard";
 import { catalogCopy } from "@/features/catalog/copy";
@@ -19,11 +20,18 @@ import styles from "./ProposalReview.module.css";
 type Props = { proposal: Proposal };
 
 export function ProposalReview({ proposal }: Props) {
+	const toast = useToast();
 	const { draft, locked, change } = useDraft();
 	const [error, setError] = useState("");
 	const [announcement, setAnnouncement] = useState("");
 	const errorRef = useRef<HTMLParagraphElement>(null);
+	const announcedMissing = useRef(false);
 	useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
+	useEffect(() => {
+		if (!proposal.unrecognized.length || announcedMissing.current) return;
+		announcedMissing.current = true;
+		toast.notify({ kind: "warning", message: copy.unrecognized({ phrases: proposal.unrecognized }) });
+	}, [proposal.unrecognized, toast]);
 	const choices = new Map<string, ProposalItem>();
 	for (const item of [...proposal.items, ...proposal.questions.flatMap((entry) => entry.options)]) {
 		const previous = choices.get(item.sku);
@@ -40,7 +48,7 @@ export function ProposalReview({ proposal }: Props) {
 		// An older in-memory proposal can reveal its existing choices without a server call.
 		return { ok: true, data: { items: initialItems.slice(offset, offset + 12),
 			nextCursor: offset + 12 < initialItems.length ? offset + 12 : null } };
-	});
+	}, catalogCopy.feed.error);
 
 	function add(item: ProposalItem, quantity: number) {
 		if (locked || draft.items.some((existing) => existing.sku === item.sku)) return;
@@ -52,6 +60,7 @@ export function ProposalReview({ proposal }: Props) {
 			changeDraft(draft, addition, "preview");
 		} catch {
 			setError(copy.addError);
+			toast.notify({ kind: "error", message: copy.addError });
 			return;
 		}
 		change(addition);
