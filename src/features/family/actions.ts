@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createFamilySchema } from "@/features/family/schemas";
 import { createFamilyForUser } from "@/features/family/server/service";
@@ -45,6 +44,7 @@ export async function createFamilyAction(
         message: "Please check the highlighted fields.",
         fieldErrors: z.flattenError(parsed.error).fieldErrors,
       },
+		created: false,
     };
   }
 
@@ -61,10 +61,11 @@ export async function createFamilyAction(
         code: "INTERNAL",
         message: "We couldn't create your family. Please try again in a moment.",
       },
+		created: false,
     };
   }
 
   // Outside the try block: redirect() works by throwing.
   revalidatePath("/family", "layout");
-  redirect("/family");
+	return { values, error: null, created: true };
 }
