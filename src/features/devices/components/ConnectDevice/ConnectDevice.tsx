@@ -23,7 +23,7 @@ export function ConnectDevice() {
       const result = await startPairingAction({});
 		if (result.ok) {
 			setPairing(result.data); headingRef.current?.focus();
-			toast.notify({ kind: "success", message: devicesCopy.connectionReady });
+			toast.notify(result.feedback);
 		} else {
 			setError(result.error.message);
 			toast.notify({ kind: "error", message: result.error.message });
