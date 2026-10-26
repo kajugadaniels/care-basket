@@ -28,7 +28,7 @@ export function DeleteProfileDialog({ profileId, displayName }: { profileId: str
 	useEffect(() => {
 		if (result?.ok) {
 			dialogRef.current?.close();
-			toast.notify({ kind: "success", message: profilesCopy.removed(displayName) });
+			toast.notify(result.feedback);
 			router.push("/family/members");
 			return;
 		}
