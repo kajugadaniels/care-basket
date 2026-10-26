@@ -18,7 +18,11 @@ export function useRequestMutation() {
 		return inFlight.current || pending;
 	}
 
-	function run(action: () => Promise<RequestMutationResult>, onSuccess?: () => void, key?: string) {
+	function run(
+		action: () => Promise<RequestMutationResult>,
+		onSuccess?: (result: Extract<RequestMutationResult, { ok: true }>) => void,
+		key?: string,
+	) {
 		if (isRunning()) return;
 		inFlight.current = true;
 		setError("");
@@ -27,7 +31,7 @@ export function useRequestMutation() {
 			try {
 				const result = await action();
 				if (!result.ok) { setError(result.error.message); return; }
-				onSuccess?.();
+				onSuccess?.(result);
 				// These actions revalidate the current detail path and return fresh UI in
 				// the same response. Another router.refresh would repeat that server read.
 			} catch { setError(requestsCopy.errors.INTERNAL); }
