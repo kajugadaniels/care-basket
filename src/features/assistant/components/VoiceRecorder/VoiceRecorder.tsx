@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { AUDIO_LIMIT } from "@/lib/audio";
+import type { ActionFeedback } from "@/types/action-result";
 import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
 import styles from "./VoiceRecorder.module.css";
@@ -74,9 +75,20 @@ export function VoiceRecorder({ onProposal, onType }: { onProposal(proposal: Pro
 				const timeout = setTimeout(() => controller.abort(), 30_000);
 				try {
 					const response = await fetch("/api/assistant/voice", { method: "POST", body: form, signal: controller.signal });
-					const result = await response.json() as { data?: Proposal };
-					if (!response.ok || !result.data) throw new Error();
-					if (active.current) onProposal(result.data);
+					const result = await response.json() as {
+						data?: Proposal;
+						feedback?: ActionFeedback;
+						error?: { message?: string };
+					};
+					if (!response.ok) {
+						if (active.current) fail(result.error?.message ?? copy.voiceError);
+						return;
+					}
+					if (!result.data || !result.feedback) throw new Error();
+					if (active.current) {
+						toast.notify(result.feedback);
+						onProposal(result.data);
+					}
 				} catch { if (active.current) fail(copy.voiceError); }
 				finally { clearTimeout(timeout); upload.current = null; if (active.current) setState("idle"); }
 			};
