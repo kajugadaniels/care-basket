@@ -27,6 +27,7 @@ export const familySetupCopy = {
 	adultConfirmationError: "Confirm that you are at least 18 and will use CareBasket only with adults.",
   submit: "Create My Family",
   submitting: "Creating your family…",
+	created: "Your family is ready.",
   loading: "Loading the family setup form…",
   reassurance:
     "That's all we need for now. Next, you can add the people you shop for.",
