@@ -25,13 +25,7 @@ export function ProposalReview({ proposal }: Props) {
 	const [error, setError] = useState("");
 	const [announcement, setAnnouncement] = useState("");
 	const errorRef = useRef<HTMLParagraphElement>(null);
-	const announcedMissing = useRef(false);
 	useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
-	useEffect(() => {
-		if (!proposal.unrecognized.length || announcedMissing.current) return;
-		announcedMissing.current = true;
-		toast.notify({ kind: "warning", message: copy.unrecognized({ phrases: proposal.unrecognized }) });
-	}, [proposal.unrecognized, toast]);
 	const choices = new Map<string, ProposalItem>();
 	for (const item of [...proposal.items, ...proposal.questions.flatMap((entry) => entry.options)]) {
 		const previous = choices.get(item.sku);
