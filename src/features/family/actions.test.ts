@@ -5,14 +5,10 @@ const mocks = vi.hoisted(() => ({
   ensureUser: vi.fn(),
   createFamilyForUser: vi.fn(),
   revalidatePath: vi.fn(),
-  redirect: vi.fn((path: string) => {
-    throw new Error(`NEXT_REDIRECT:${path}`);
-  }),
 }));
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
-vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
 vi.mock("@/server/auth/ensure-user", () => ({ ensureUser: mocks.ensureUser }));
 vi.mock("@/features/family/server/service", () => ({
   createFamilyForUser: mocks.createFamilyForUser,
@@ -24,6 +20,7 @@ import { createFamilyAction } from "./actions";
 const initialState: CreateFamilyFormState = {
   values: { familyName: "", displayName: "" },
   error: null,
+	created: false,
 };
 const user = { id: "user-1", clerkUserId: "user_clerk_1" };
 
@@ -41,7 +38,6 @@ describe("createFamilyAction", () => {
     mocks.ensureUser.mockReset();
     mocks.createFamilyForUser.mockReset();
     mocks.revalidatePath.mockReset();
-    mocks.redirect.mockClear();
     vi.spyOn(console, "error").mockImplementation(() => undefined);
   });
 
@@ -75,7 +71,7 @@ describe("createFamilyAction", () => {
     expect(mocks.createFamilyForUser).not.toHaveBeenCalled();
   });
 
-  it("creates the family for the session's user and opens the dashboard", async () => {
+  it("creates the family for the session's user and returns a navigation-safe success", async () => {
     mocks.ensureUser.mockResolvedValue(user);
     mocks.createFamilyForUser.mockResolvedValue({ status: "created" });
 
@@ -84,7 +80,11 @@ describe("createFamilyAction", () => {
         initialState,
         formData({ familyName: "  Jane's Family ", displayName: " Jane " }),
       ),
-    ).rejects.toThrow("NEXT_REDIRECT:/family");
+    ).resolves.toEqual({
+		values: { familyName: "  Jane's Family ", displayName: " Jane " },
+		error: null,
+		created: true,
+	});
 
     expect(mocks.createFamilyForUser).toHaveBeenCalledWith("user-1", {
       familyName: "Jane's Family",
@@ -109,7 +109,7 @@ describe("createFamilyAction", () => {
           role: "OWNER",
         }),
       ),
-    ).rejects.toThrow("NEXT_REDIRECT:/family");
+    ).resolves.toMatchObject({ created: true, error: null });
 
     expect(mocks.createFamilyForUser).toHaveBeenCalledWith("user-1", {
       familyName: "Jane's Family",
@@ -124,7 +124,7 @@ describe("createFamilyAction", () => {
 
     await expect(
       createFamilyAction(initialState, formData({ familyName: "Jane's Family", displayName: "Jane" })),
-    ).rejects.toThrow("NEXT_REDIRECT:/family");
+    ).resolves.toMatchObject({ created: true, error: null });
   });
 
 	it.each([null, "false", "true"])("rejects missing or forged adult confirmation: %s", async (value) => {
@@ -135,7 +135,6 @@ describe("createFamilyAction", () => {
 		const state = await createFamilyAction(initialState, data);
 		expect(state.error?.fieldErrors?.adultConfirmed).toBeDefined();
 		expect(mocks.createFamilyForUser).not.toHaveBeenCalled();
-		expect(mocks.redirect).not.toHaveBeenCalled();
 	});
 
   it("shows a safe message without internal details when creation fails", async () => {
@@ -153,8 +152,8 @@ describe("createFamilyAction", () => {
       code: "INTERNAL",
       message: "We couldn't create your family. Please try again in a moment.",
     });
+		expect(state.created).toBe(false);
     expect(JSON.stringify(state)).not.toContain("secret");
     expect(JSON.stringify(vi.mocked(console.error).mock.calls)).not.toContain("secret");
-    expect(mocks.redirect).not.toHaveBeenCalled();
   });
 });
