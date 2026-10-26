@@ -36,7 +36,6 @@ export function AssistantStart({ displayName, voice, child }: Props) {
 	function review(proposal: Proposal) {
 		setText(proposal.inputText);
 		setProposal(proposal);
-		toast.notify({ kind: "success", message: copy.understood });
 		const query = proposal.reviewId ? new URLSearchParams({ review: proposal.reviewId }).toString() : "";
 		router.push(`/shop/assistant/review${query ? `?${query}` : ""}`);
 	}
@@ -72,7 +71,10 @@ export function AssistantStart({ displayName, voice, child }: Props) {
 						startTransition(async () => {
 							try {
 								const result = await interpretTextAction({ text });
-								if (result.ok) review(result.data);
+								if (result.ok) {
+									toast.notify(result.feedback);
+									review(result.data);
+								}
 								else {
 									setError(result.error.message);
 									toast.notify({ kind: "error", message: result.error.message });
