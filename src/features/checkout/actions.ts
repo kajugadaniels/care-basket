@@ -13,7 +13,8 @@ import { cancelCheckoutSchema, captureCheckoutSchema, startCheckoutSchema } from
 import { CheckoutFailure } from "./server/failure";
 import { cancelCheckout, startCheckout } from "./server/service";
 import { reconcileCheckout } from "./server/capture-service";
-import type { CancelCheckoutResult, CheckoutResult } from "./types";
+import type { ActionFeedback } from "@/types/action-result";
+import type { CancelCheckoutResult, CheckoutDto, CheckoutResult } from "./types";
 
 function invalidate(requestId: string) {
 	revalidatePath("/family");
@@ -33,6 +34,14 @@ function failure(error: unknown) {
 		message: checkoutCopy.errors[reason as keyof typeof checkoutCopy.errors] ?? checkoutCopy.errors.INTERNAL } };
 }
 
+function checkoutFeedback(checkout: CheckoutDto): ActionFeedback {
+	const warningStates: CheckoutDto["state"][] = ["PENDING", "REVIEW_REQUIRED", "REFUNDED", "REVERSED"];
+	return {
+		kind: checkout.state === "DENIED" ? "error" : warningStates.includes(checkout.state) ? "warning" : "success",
+		message: checkoutCopy.statuses[checkout.state],
+	};
+}
+
 export async function startCheckoutAction(value: unknown): Promise<CheckoutResult> {
 	let requestId: string | undefined;
 	try {
@@ -40,7 +49,8 @@ export async function startCheckoutAction(value: unknown): Promise<CheckoutResul
 		const input = startCheckoutSchema.parse(value);
 		requestId = input.requestId;
 		await enforceRateLimit(`checkout:start:${actor.familyId}:${input.requestId}`, 10, 60 * 60_000);
-		return { ok: true, data: await startCheckout(actor, input) };
+		const checkout = await startCheckout(actor, input);
+		return { ok: true, data: checkout, feedback: checkoutFeedback(checkout) };
 	} catch (error) { return failure(error); }
 	finally {
 		// Price conflicts and uncertain provider results may already have committed local state.
@@ -55,7 +65,11 @@ export async function cancelCheckoutAction(value: unknown): Promise<CancelChecko
 		const input = cancelCheckoutSchema.parse(value);
 		requestId = input.requestId;
 		await enforceRateLimit(`checkout:cancel:${actor.familyId}:${input.requestId}`, 10, 60 * 60_000);
-		return { ok: true, data: await cancelCheckout(actor, input) };
+		return {
+			ok: true,
+			data: await cancelCheckout(actor, input),
+			feedback: { kind: "success", message: checkoutCopy.cancelled },
+		};
 	} catch (error) { return failure(error); }
 	finally { if (requestId) invalidate(requestId); }
 }
@@ -67,7 +81,8 @@ async function paymentAction(value: unknown, capture: boolean): Promise<Checkout
 		const input = captureCheckoutSchema.parse(value);
 		requestId = input.requestId;
 		await enforceRateLimit(`checkout:payment:${actor.familyId}:${input.requestId}`, 10, 60_000);
-		return { ok: true, data: await reconcileCheckout(actor, input, capture) };
+		const checkout = await reconcileCheckout(actor, input, capture);
+		return { ok: true, data: checkout, feedback: checkoutFeedback(checkout) };
 	} catch (error) { return failure(error); }
 	finally { if (requestId) invalidate(requestId); }
 }
