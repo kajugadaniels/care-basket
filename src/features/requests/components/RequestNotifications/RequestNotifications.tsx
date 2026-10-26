@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { formatDate, formatTime } from "@/lib/format";
 import { requestNotificationsCopy as copy } from "../../copy";
 import { useRequestNotifications } from "../../hooks/use-request-notifications";
@@ -12,11 +13,20 @@ import type { RequestNotificationsDto } from "../../types";
 import styles from "./RequestNotifications.module.css";
 
 export function RequestNotifications({ initialData }: { initialData: RequestNotificationsDto | null }) {
+	const toast = useToast();
 	const id = useId();
 	const root = useRef<HTMLDivElement>(null);
 	const trigger = useRef<HTMLButtonElement>(null);
 	const [open, setOpen] = useState(false);
+	const lastFeedback = useRef("");
 	const { data, failed, pending, accessLost, announcement, refresh } = useRequestNotifications(initialData);
+
+	useEffect(() => {
+		const message = announcement || (open && failed ? accessLost ? copy.sessionExpired : copy.error : "");
+		if (!message || lastFeedback.current === message) return;
+		lastFeedback.current = message;
+		toast.notify({ kind: announcement ? "success" : "error", message });
+	}, [accessLost, announcement, failed, open, toast]);
 
 	useEffect(() => {
 		if (!open) return;
@@ -58,6 +68,7 @@ export function RequestNotifications({ initialData }: { initialData: RequestNoti
 				aria-expanded={open}
 				aria-controls={`${id}-panel`}
 				onClick={() => {
+					lastFeedback.current = "";
 					setOpen(!open);
 					if (!open) void refresh();
 				}}
@@ -80,7 +91,10 @@ export function RequestNotifications({ initialData }: { initialData: RequestNoti
 						{accessLost ? (
 							<Link href="/sign-in" className={styles.signIn}>{copy.signIn}</Link>
 						) : (
-							<Button size="sm" variant="secondary" loading={pending} onClick={() => void refresh()}>
+							<Button size="sm" variant="secondary" loading={pending} onClick={() => {
+								lastFeedback.current = "";
+								void refresh();
+							}}>
 								{pending ? copy.refreshing : copy.retry}
 							</Button>
 						)}
