@@ -7,7 +7,7 @@ import { changeDraft, createDraftKey, EMPTY_DRAFT, type Draft, type DraftChange 
 import { requestsCopy } from "../../copy";
 
 type DraftContextValue = {
-	draft: Draft; locked: boolean; message: string;
+	draft: Draft; locked: boolean;
 	change: (change: DraftChange) => boolean;
 	begin: () => SubmitRequestInput | null;
 	finish: (key: string, succeeded: boolean) => void;
@@ -18,7 +18,6 @@ const DraftContext = createContext<DraftContextValue | null>(null);
 export function DraftProvider({ children }: { children: ReactNode }) {
 	const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);
 	const [locked, setLocked] = useState(false);
-	const [message, setMessage] = useState("");
 	const current = useRef({ draft: EMPTY_DRAFT, locked: false });
 	const toast = useToast();
 
@@ -38,11 +37,9 @@ export function DraftProvider({ children }: { children: ReactNode }) {
 			const feedback = added ? requestsCopy.added(added)
 				: removed ? requestsCopy.draftRemoved({ name: removed.displayName })
 					: change.type === "clear" && previousCount ? requestsCopy.cleared : "";
-			setMessage(feedback);
 			if (feedback) toast.notify({ kind: "success", message: feedback });
 			return true;
 		} catch {
-			setMessage(requestsCopy.limit);
 			toast.notify({ kind: "error", message: requestsCopy.limit });
 			return false;
 		}
@@ -64,10 +61,9 @@ export function DraftProvider({ children }: { children: ReactNode }) {
 		if (succeeded) {
 			current.current.draft = EMPTY_DRAFT;
 			setDraft(EMPTY_DRAFT);
-			setMessage("");
 		}
 	}
-	return <DraftContext.Provider value={{ draft, locked, message, change, begin, finish }}>{children}</DraftContext.Provider>;
+	return <DraftContext.Provider value={{ draft, locked, change, begin, finish }}>{children}</DraftContext.Provider>;
 }
 
 export function useDraft() {
