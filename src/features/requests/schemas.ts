@@ -5,6 +5,7 @@ export const requestNotificationsSchema = z.strictObject({
 	count: z.int().min(0),
 	notifications: z.array(z.strictObject({
 		id: z.uuid(), displayName: z.string().min(1).max(40), submittedAt: z.iso.datetime(),
+		message: z.string().min(1).max(100),
 	})).max(REQUEST_NOTIFICATION_LIMIT),
 });
 
