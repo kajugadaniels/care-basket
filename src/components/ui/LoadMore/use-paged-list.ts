@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import type { ActionResult } from "@/types/action-result";
 
 type Page<T, Cursor> = { items: T[]; nextCursor: Cursor | null };
@@ -8,7 +9,9 @@ type Page<T, Cursor> = { items: T[]; nextCursor: Cursor | null };
 export function usePagedList<T extends { sku: string }, Cursor extends string | number>(
 	initial: Page<T, Cursor>,
 	fetchPage: (cursor: Cursor) => Promise<ActionResult<Page<T, Cursor>>>,
+	errorMessage = "We couldn't load more items. Try again.",
 ) {
+	const toast = useToast();
 	const [page, setPage] = useState(initial);
 	const [failed, setFailed] = useState(false);
 	const [pending, setPending] = useState(false);
@@ -56,6 +59,7 @@ export function usePagedList<T extends { sku: string }, Cursor extends string | 
 				if (mounted.current) {
 					setPending(false);
 					setFailed(requestFailed);
+					if (requestFailed) toast.notify({ kind: "error", message: errorMessage });
 				}
 			}
 		})();
