@@ -5,6 +5,7 @@ import { CheckmarkCircle02Icon, ShoppingBasket01Icon } from "@hugeicons/core-fre
 import { Button } from "@/components/ui/Button/Button";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Icon } from "@/components/ui/Icon/Icon";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { submitRequestAction } from "../../actions";
 import { requestsCopy } from "../../copy";
 import { useDraft } from "../DraftProvider/DraftProvider";
@@ -14,6 +15,7 @@ import styles from "../RequestUi/RequestUi.module.css";
 import basketStyles from "./BasketReview.module.css";
 
 export function BasketReview() {
+	const toast = useToast();
 	const { draft, locked, change, begin, finish } = useDraft();
 	const [pending, startTransition] = useTransition();
 	const [error, setError] = useState("");
@@ -26,16 +28,23 @@ export function BasketReview() {
 	function send() {
 		const input = begin();
 		if (!input) return;
+		toast.prepareSound();
 		setError("");
 		startTransition(async () => {
 			try {
 				const result = await submitRequestAction(input);
 				finish(input.clientRequestKey, result.ok);
-				if (result.ok) setRequestId(result.data.requestId);
-				else setError(result.error.message);
+				if (result.ok) {
+					setRequestId(result.data.requestId);
+					toast.notify({ kind: "success", message: requestsCopy.sentNotice });
+				} else {
+					setError(result.error.message);
+					toast.notify({ kind: "error", message: result.error.message });
+				}
 			} catch {
 				finish(input.clientRequestKey, false);
 				setError(requestsCopy.errors.INTERNAL);
+				toast.notify({ kind: "error", message: requestsCopy.errors.INTERNAL });
 			}
 		});
 	}
