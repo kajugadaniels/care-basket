@@ -4,12 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   requireAdult: vi.fn(), createManagedProfile: vi.fn(), updateManagedProfile: vi.fn(),
   deleteManagedProfile: vi.fn(), revalidatePath: vi.fn(),
-  redirect: vi.fn((path: string) => { throw new Error(`NEXT_REDIRECT:${path}`); }),
 }));
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 vi.mock("next/navigation", () => ({
-  redirect: mocks.redirect,
   unstable_rethrow: (error: unknown) => {
     if (error instanceof Error && error.message.startsWith("NEXT_REDIRECT:")) throw error;
   },
@@ -29,12 +27,12 @@ const createInput = { displayName: "  Rose  ", kind: "ASSISTED_ADULT", avatarKey
 const updateInput = { profileId, displayName: "Rose", avatarKey: "sun" };
 const deleteInput = { profileId, confirmed: true };
 const cases = [
-  { name: "create", action: createManagedProfileAction, input: createInput, service: mocks.createManagedProfile, path: `/family/members/${profileId}` },
-  { name: "update", action: updateManagedProfileAction, input: updateInput, service: mocks.updateManagedProfile, path: `/family/members/${profileId}` },
-  { name: "delete", action: deleteManagedProfileAction, input: deleteInput, service: mocks.deleteManagedProfile, path: "/family/members" },
+  { name: "create", action: createManagedProfileAction, input: createInput, service: mocks.createManagedProfile },
+  { name: "update", action: updateManagedProfileAction, input: updateInput, service: mocks.updateManagedProfile },
+  { name: "delete", action: deleteManagedProfileAction, input: deleteInput, service: mocks.deleteManagedProfile },
 ];
 
-describe.each(cases)("$name managed profile action", ({ action, input, service, path }) => {
+describe.each(cases)("$name managed profile action", ({ action, input, service }) => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.requireAdult.mockResolvedValue(actor);
@@ -59,12 +57,11 @@ describe.each(cases)("$name managed profile action", ({ action, input, service, 
     });
     expect(service).not.toHaveBeenCalled();
   });
-  it("requires OWNER or MANAGER and revalidates before supported navigation", async () => {
-    await expect(action(input)).rejects.toThrow(`NEXT_REDIRECT:${path}`);
+  it("requires OWNER or MANAGER and returns the changed profile after revalidation", async () => {
+    await expect(action(input)).resolves.toEqual({ ok: true, data: { profileId } });
     expect(mocks.requireAdult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
     expect(service).toHaveBeenCalledWith(actor, { ...input, ...(input === createInput ? { displayName: "Rose" } : {}) });
     expect(mocks.revalidatePath).toHaveBeenCalledWith("/family", "layout");
-    expect(mocks.redirect).toHaveBeenCalledWith(path);
   });
   it("returns NOT_FOUND without revealing another family", async () => {
     service.mockRejectedValue(new AppError("NOT_FOUND", "another family has this"));
@@ -78,7 +75,6 @@ describe.each(cases)("$name managed profile action", ({ action, input, service, 
     expect(result).toMatchObject({ ok: false, error: { code: "INTERNAL" } });
     expect(JSON.stringify(result)).not.toContain("private connection");
     expect(JSON.stringify(vi.mocked(console.error).mock.calls)).not.toContain("Rose");
-    expect(mocks.redirect).not.toHaveBeenCalled();
   });
 });
 
@@ -88,7 +84,6 @@ describe("profile mutation validation", () => {
 		await expect(createManagedProfileAction({ ...createInput, kind: "CHILD" }))
 			.resolves.toMatchObject({ ok: false, error: { code: "VALIDATION_FAILED" } });
 		expect(mocks.createManagedProfile).not.toHaveBeenCalled();
-		expect(mocks.redirect).not.toHaveBeenCalled();
 	});
   it("rejects creation without consent", async () => {
     const result = await createManagedProfileAction({ ...createInput, consent: false });
