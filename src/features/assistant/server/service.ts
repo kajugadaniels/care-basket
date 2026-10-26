@@ -136,7 +136,7 @@ export async function updateAiPreference(actor: AdultActor, input: unknown) {
 	if (!profile) throw new AppError("NOT_FOUND");
 	if (data.enabled && (profile.kind !== "ASSISTED_ADULT" || !getShoppingAiConfig())) throw new AppError("FORBIDDEN");
 	await writeAiPreference(actor, data.profileId, data.enabled);
-	return { profileId: data.profileId };
+	return { profileId: data.profileId, enabled: data.enabled };
 }
 
 export async function estimateShoppingBudget(actor: DeviceActor, input: unknown) {
