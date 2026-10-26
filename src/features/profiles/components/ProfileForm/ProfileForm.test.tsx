@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
+import type { ProfileMutationResult } from "@/features/profiles/types";
 
 const mocks = vi.hoisted(() => ({ create: vi.fn(), update: vi.fn(), push: vi.fn() }));
 vi.mock("@/features/profiles/actions", () => ({
@@ -65,7 +66,7 @@ describe("ProfileForm", () => {
     expect(mocks.create).toHaveBeenCalledWith({ displayName: "Rose", kind: "ASSISTED_ADULT", avatarKey: "flower", consent: true });
   });
   it("keeps progress in the submit button and prevents repeat submissions", async () => {
-    let resolveRequest!: (value: { ok: true; data: { profileId: string } }) => void;
+    let resolveRequest!: (value: ProfileMutationResult) => void;
     mocks.create.mockReturnValue(new Promise((resolve) => { resolveRequest = resolve; }));
     render(<ProfileForm />);
     fireEvent.click(screen.getByRole("button", { name: profilesCopy.add }));
@@ -75,7 +76,11 @@ describe("ProfileForm", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     fireEvent.click(button);
     expect(mocks.create).toHaveBeenCalledTimes(1);
-    await act(async () => { resolveRequest({ ok: true, data: { profileId: "profile-rose" } }); });
+    await act(async () => { resolveRequest({
+		ok: true,
+		data: { profileId: "profile-rose" },
+		feedback: { kind: "success", message: "Rose was added to your family." },
+	}); });
 		await waitFor(() => expect(mocks.push).toHaveBeenCalledWith("/family/members/profile-rose"));
   });
   it("keeps the type immutable and omits consent and permission fields during editing", async () => {
