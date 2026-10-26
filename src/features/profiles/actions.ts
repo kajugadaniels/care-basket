@@ -2,7 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { redirect, unstable_rethrow } from "next/navigation";
+import { unstable_rethrow } from "next/navigation";
 import { z } from "zod";
 import { requireAdult } from "@/server/auth/require-adult";
 import { AppError } from "@/server/errors";
@@ -47,7 +47,7 @@ export async function createManagedProfileAction(input: unknown): Promise<Profil
     return mutationFailure(error);
   }
   revalidatePath("/family", "layout");
-  redirect(`/family/members/${profileId}`);
+	return { ok: true, data: { profileId } };
 }
 
 export async function updateManagedProfileAction(input: unknown): Promise<ProfileMutationResult> {
@@ -61,18 +61,20 @@ export async function updateManagedProfileAction(input: unknown): Promise<Profil
     return mutationFailure(error);
   }
   revalidatePath("/family", "layout");
-  redirect(`/family/members/${profileId}`);
+	return { ok: true, data: { profileId } };
 }
 
 export async function deleteManagedProfileAction(input: unknown): Promise<ProfileMutationResult> {
+	let profileId: string;
   try {
     const actor = await requireAdult({ roles: ["OWNER", "MANAGER"] });
     const parsed = deleteManagedProfileSchema.safeParse(input);
     if (!parsed.success) return validationFailure(parsed.error);
+		profileId = parsed.data.profileId;
     await deleteManagedProfile(actor, parsed.data);
   } catch (error) {
     return mutationFailure(error);
   }
   revalidatePath("/family", "layout");
-  redirect("/family/members");
+	return { ok: true, data: { profileId } };
 }
