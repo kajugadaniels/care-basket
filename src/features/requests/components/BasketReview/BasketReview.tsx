@@ -36,7 +36,7 @@ export function BasketReview() {
 				finish(input.clientRequestKey, result.ok);
 				if (result.ok) {
 					setRequestId(result.data.requestId);
-					toast.notify({ kind: "success", message: requestsCopy.sentNotice });
+					toast.notify(result.feedback);
 				} else {
 					setError(result.error.message);
 					toast.notify({ kind: "error", message: result.error.message });
