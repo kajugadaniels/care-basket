@@ -3,11 +3,13 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { revokeDeviceAction } from "../../actions";
 import { devicesCopy } from "../../copy";
 import styles from "./RevokeDeviceDialog.module.css";
 
 export function RevokeDeviceDialog({ deviceId, label }: { deviceId: string; label: string }) {
+	const toast = useToast();
   const id = useId();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -39,11 +41,18 @@ export function RevokeDeviceDialog({ deviceId, label }: { deviceId: string; labe
           const result = await revokeDeviceAction({ deviceId, confirmed });
           if (result.ok) {
             dialogRef.current?.close(); setIsRevoked(true);
+			toast.notify({ kind: "success", message: devicesCopy.revoked });
             // The refreshed server list may remove this control; the card heading stays.
             document.getElementById(`device-${deviceId}`)?.focus();
           }
-          else { setError(result.error.message); requestAnimationFrame(() => errorRef.current?.focus()); }
-        } catch { setError(devicesCopy.errors.INTERNAL); requestAnimationFrame(() => errorRef.current?.focus()); }
+			else {
+				setError(result.error.message); toast.notify({ kind: "error", message: result.error.message });
+				requestAnimationFrame(() => errorRef.current?.focus());
+			}
+		} catch {
+			setError(devicesCopy.errors.INTERNAL); toast.notify({ kind: "error", message: devicesCopy.errors.INTERNAL });
+			requestAnimationFrame(() => errorRef.current?.focus());
+		}
         finally { inFlight.current = false; setIsPending(false); }
       }}>
         <h2 id={`${id}-title`}>{devicesCopy.revokeTitle(label)}</h2>
