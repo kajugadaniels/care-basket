@@ -25,7 +25,11 @@ describe("device Server Actions", () => {
   });
   it("rate-limits starts before generation and never serializes the pairing secret", async () => {
     fake.start.mockResolvedValue({ code: "000042", secret: "internal-test-secret", expiresAt: deviceTestNow });
-    expect(await startPairingAction({})).toEqual({ ok: true, data: { code: "000042", expiresAt: deviceTestNow.toISOString() } });
+    expect(await startPairingAction({})).toEqual({
+		ok: true,
+		data: { code: "000042", expiresAt: deviceTestNow.toISOString() },
+		feedback: { kind: "success", message: "Connection code created. Keep this page open while your family member approves it." },
+	});
     expect(fake.limit).toHaveBeenCalledWith("hashed-ip-key", 5, 3_600_000);
     expect(fake.set).toHaveBeenCalledWith("pairing", "internal-test-secret", deviceTestNow);
     expect(fake.limit.mock.invocationCallOrder[0]).toBeLessThan(fake.start.mock.invocationCallOrder[0]);
@@ -55,7 +59,11 @@ describe("device Server Actions", () => {
   it("requires deliberate confirmation and revalidates after revocation", async () => {
     expect(await revokeDeviceAction({ deviceId: deviceIds.device, confirmed: false })).toMatchObject({ ok: false, error: { code: "VALIDATION_FAILED" } });
     expect(fake.revoke).not.toHaveBeenCalled();
-    expect(await revokeDeviceAction({ deviceId: deviceIds.device, confirmed: true })).toEqual({ ok: true, data: { done: true } });
+    expect(await revokeDeviceAction({ deviceId: deviceIds.device, confirmed: true })).toMatchObject({
+		ok: true,
+		data: { done: true },
+		feedback: { kind: "success" },
+	});
     expect(fake.revalidate).toHaveBeenCalledWith("/family/devices"); expect(fake.revalidate).toHaveBeenCalledWith("/shop");
   });
   it("validates review input without mutating or approving the request", async () => {
