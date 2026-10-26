@@ -13,7 +13,7 @@ export function RequesterProductFeed({ filters, initial, selectable }: {
 	filters: CatalogFilters; initial: CatalogPage<CatalogProductDto>; selectable: boolean;
 }) {
 	const feed = usePagedList({ items: initial.products, nextCursor: initial.nextCursor }, (cursor) =>
-		loadRequesterProductsAction({ q: filters.q, category: filters.category, cursor }));
+		loadRequesterProductsAction({ q: filters.q, category: filters.category, cursor }), catalogCopy.feed.error);
 	return <>
 		<p role="status" aria-live="polite" aria-atomic="true" className={styles.results}>
 			{catalogCopy.results({ count: feed.items.length })}
