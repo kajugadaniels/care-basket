@@ -3,6 +3,7 @@
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { completePairingAction } from "../../actions";
 import { devicesCopy } from "../../copy";
 import { usePairingStatus } from "../../hooks/use-pairing-status";
@@ -10,6 +11,7 @@ import type { PairingStartDto } from "../../types";
 import styles from "./PairingWaiting.module.css";
 
 export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDto; onRestart(): void }) {
+	const toast = useToast();
   const [retryKey, setRetryKey] = useState(0);
   const { status, hasError, isExpiring } = usePairingStatus(pairing.expiresAt, retryKey);
   const [completionError, setCompletionError] = useState<string | null>(null);
@@ -22,8 +24,15 @@ export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDt
     attempted.current = true; setIsCompleting(true); setCompletionError(null);
     try {
       const result = await completePairingAction({});
-      if (result && !result.ok) setCompletionError(result.error.code === "CONFLICT" ? devicesCopy.completionFailed : result.error.message);
-    } catch { setCompletionError(devicesCopy.errors.INTERNAL); }
+		if (result && !result.ok) {
+			const message = result.error.code === "CONFLICT" ? devicesCopy.completionFailed : result.error.message;
+			setCompletionError(message);
+			toast.notify({ kind: "error", message });
+		}
+	} catch {
+		setCompletionError(devicesCopy.errors.INTERNAL);
+		toast.notify({ kind: "error", message: devicesCopy.errors.INTERNAL });
+	}
     finally { setIsCompleting(false); }
   });
   useEffect(() => {
@@ -34,6 +43,14 @@ export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDt
     if (status !== "PENDING") statusRef.current?.focus();
     return () => { cancelled = true; };
   }, [status, completionRetry]);
+	useEffect(() => {
+		if (!hasError) return;
+		toast.notify({ kind: "error", message: devicesCopy.network });
+	}, [hasError, toast]);
+	useEffect(() => {
+		if (!isExpiring) return;
+		toast.notify({ kind: "warning", message: devicesCopy.expiresSoon });
+	}, [isExpiring, toast]);
   const message = status === "PENDING" ? devicesCopy.waiting : status === "APPROVED" ? devicesCopy.approved
     : status === "EXPIRED" ? devicesCopy.expired : status === "REJECTED" ? devicesCopy.rejected : devicesCopy.completed;
   return <section className={styles.waiting} aria-label={devicesCopy.codeLabel}>
