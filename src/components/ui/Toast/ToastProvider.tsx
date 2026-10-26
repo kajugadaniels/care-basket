@@ -39,13 +39,13 @@ const dismissLabels: Record<ToastKind, string> = {
 export function ToastProvider({ children }: { children: ReactNode }) {
 	const [notice, setNotice] = useState<ToastNotice | null>(null);
 	const sequence = useRef(0);
-	const sound = useToastSound();
+	const { play: playSound, prepare: prepareSound } = useToastSound();
 
 	const dismiss = useCallback(() => setNotice(null), []);
 	const notify = useCallback((input: NoticeInput) => {
 		setNotice({ ...input, id: ++sequence.current, title: input.title ?? titles[input.kind] });
-		sound.play(input.kind);
-	}, [sound.play]);
+		playSound(input.kind);
+	}, [playSound]);
 
 	useEffect(() => {
 		if (!notice || notice.kind === "error") return;
@@ -53,7 +53,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 		return () => window.clearTimeout(timeout);
 	}, [dismiss, notice]);
 
-	const value = useMemo<ToastContextValue>(() => ({ notify, dismiss, prepareSound: sound.prepare }), [dismiss, notify, sound.prepare]);
+	const value = useMemo<ToastContextValue>(() => ({ notify, dismiss, prepareSound }), [dismiss, notify, prepareSound]);
 
 	return (
 		<ToastContext.Provider value={value}>
