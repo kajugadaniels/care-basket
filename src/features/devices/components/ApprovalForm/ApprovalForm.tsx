@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { TextField } from "@/components/ui/TextField/TextField";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { reviewPairingAction } from "../../actions";
 import { devicesCopy } from "../../copy";
 import type { PairingReviewDto, ProfileOption } from "../../types";
@@ -10,6 +11,7 @@ import { ApprovalReview } from "../ApprovalReview/ApprovalReview";
 import styles from "./ApprovalForm.module.css";
 
 export function ApprovalForm({ profiles, preselected }: { profiles: ProfileOption[]; preselected?: string }) {
+	const toast = useToast();
   const [code, setCode] = useState("");
   const [review, setReview] = useState<PairingReviewDto | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -22,9 +24,17 @@ export function ApprovalForm({ profiles, preselected }: { profiles: ProfileOptio
     inFlight.current = true; setIsPending(true); setError(null);
     try {
       const result = await reviewPairingAction({ code });
-      if (result.ok) { setReview(result.data); setCode(""); }
-      else { setError(result.error.message); requestAnimationFrame(() => errorRef.current?.focus()); }
-    } catch { setError(devicesCopy.errors.INTERNAL); requestAnimationFrame(() => errorRef.current?.focus()); }
+		if (result.ok) {
+			setReview(result.data); setCode("");
+			toast.notify({ kind: "warning", message: devicesCopy.reviewReady });
+		} else {
+			setError(result.error.message); toast.notify({ kind: "error", message: result.error.message });
+			requestAnimationFrame(() => errorRef.current?.focus());
+		}
+	} catch {
+		setError(devicesCopy.errors.INTERNAL); toast.notify({ kind: "error", message: devicesCopy.errors.INTERNAL });
+		requestAnimationFrame(() => errorRef.current?.focus());
+	}
     finally { inFlight.current = false; setIsPending(false); }
   }}>
     <TextField className={styles.field} name="code" label={devicesCopy.codeInput} hint={devicesCopy.codeHint}
