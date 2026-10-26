@@ -19,14 +19,15 @@ export function RequestNotifications({ initialData }: { initialData: RequestNoti
 	const trigger = useRef<HTMLButtonElement>(null);
 	const [open, setOpen] = useState(false);
 	const lastFeedback = useRef("");
-	const { data, failed, pending, accessLost, announcement, refresh } = useRequestNotifications(initialData);
+	const { data, failed, pending, accessLost, announcement, failureMessage, refresh } = useRequestNotifications(initialData);
+	const displayedFailure = failureMessage || (accessLost ? copy.sessionExpired : copy.error);
 
 	useEffect(() => {
-		const message = announcement || (open && failed ? accessLost ? copy.sessionExpired : copy.error : "");
+		const message = announcement || (open && failed ? displayedFailure : "");
 		if (!message || lastFeedback.current === message) return;
 		lastFeedback.current = message;
 		toast.notify({ kind: announcement ? "success" : "error", message });
-	}, [accessLost, announcement, failed, open, toast]);
+	}, [announcement, displayedFailure, failed, open, toast]);
 
 	useEffect(() => {
 		if (!open) return;
@@ -87,7 +88,7 @@ export function RequestNotifications({ initialData }: { initialData: RequestNoti
 				</header>
 				{failed ? (
 					<div className={styles.error}>
-						<p role="alert">{accessLost ? copy.sessionExpired : copy.error}</p>
+						<p role="alert">{displayedFailure}</p>
 						{accessLost ? (
 							<Link href="/sign-in" className={styles.signIn}>{copy.signIn}</Link>
 						) : (
@@ -107,7 +108,7 @@ export function RequestNotifications({ initialData }: { initialData: RequestNoti
 								<Link href={`/family/requests/${item.id}`} className={styles.item} onClick={() => setOpen(false)}>
 									<span className={styles.itemIcon}><Icon icon={ShoppingBasket01Icon} size={24} /></span>
 									<span className={styles.itemText}>
-										<span>{copy.message(item.displayName)}</span>
+										<span>{item.message}</span>
 										<time dateTime={item.submittedAt}>{formatDate(item.submittedAt)} · {formatTime(item.submittedAt)} UTC</time>
 									</span>
 								</Link>
