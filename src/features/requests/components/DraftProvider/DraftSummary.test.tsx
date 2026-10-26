@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { ToastProvider } from "@/components/ui/Toast/ToastProvider";
 import { requestProduct } from "@/test/factories/requests";
 import { requestsCopy } from "../../copy";
 import type { DraftItem } from "../../types";
@@ -28,7 +29,7 @@ function PreviewHarness({ items }: { items: DraftItem[] }) {
 }
 
 function renderPreview(items: DraftItem[] = [picturedItem]) {
-	render(<DraftProvider><PreviewHarness items={items} /></DraftProvider>);
+	render(<ToastProvider><DraftProvider><PreviewHarness items={items} /></DraftProvider></ToastProvider>);
 }
 
 describe("shopping list preview", () => {
@@ -207,7 +208,7 @@ describe("shopping list preview", () => {
 		expect(screen.queryByText("private-proof")).not.toBeInTheDocument();
 	});
 
-	it("keeps draft-limit feedback in the mounted live region", () => {
+	it("keeps draft-limit feedback in the global live region", () => {
 		renderPreview();
 		const status = screen.getByRole("status");
 		fireEvent.click(screen.getByRole("button", { name: "Add groceries" }));
