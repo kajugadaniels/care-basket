@@ -1,4 +1,4 @@
-import type { ActionResult } from "@/types/action-result";
+import type { MutationResult } from "@/types/action-result";
 import type { PROFILE_AVATAR_KEYS, PROFILE_KINDS } from "./presets";
 
 export type ProfileAvatarKey = (typeof PROFILE_AVATAR_KEYS)[number];
@@ -11,4 +11,4 @@ export type ManagedProfileDto = {
   createdAt: string;
 };
 export type ProfileListDto = { profiles: ManagedProfileDto[]; nextCursor: string | null };
-export type ProfileMutationResult = ActionResult<{ profileId: string }>;
+export type ProfileMutationResult = MutationResult<{ profileId: string }>;
