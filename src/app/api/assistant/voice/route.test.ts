@@ -16,7 +16,7 @@ import { AudioUploadError } from "@/features/assistant/server/voice-upload";
 import { POST } from "./route";
 const request = (origin = "https://example.test") => new Request("https://example.test/api/assistant/voice", { method: "POST", headers: { origin } });
 describe("voice endpoint boundaries", () => {
-	beforeEach(() => { vi.resetAllMocks(); fake.device.mockResolvedValue(requester); fake.read.mockResolvedValue({ kind: "audio" }); fake.interpret.mockResolvedValue({ items: [] }); });
+	beforeEach(() => { vi.resetAllMocks(); fake.device.mockResolvedValue(requester); fake.read.mockResolvedValue({ kind: "audio" }); fake.interpret.mockResolvedValue({ items: [], unrecognized: [] }); });
 	it.each([["UNAUTHENTICATED", 401], ["FORBIDDEN", 403], ["AI_UNAVAILABLE", 503]] as const)(
 		"returns %s before reading uploads", async (code, status) => {
 			if (code === "UNAUTHENTICATED") fake.device.mockRejectedValue(new AppError(code)); else fake.permission.mockRejectedValue(new AppError(code));
@@ -50,10 +50,13 @@ describe("voice endpoint boundaries", () => {
 		expect(response.headers.get("cache-control")).toBe("no-store");
 	});
 	it("returns no-store proposals and does not apply the same quota twice", async () => {
-		fake.interpret.mockResolvedValue({ items: [], reviewId: "0199a100-0000-7000-8000-000000000007" });
+		fake.interpret.mockResolvedValue({ items: [], unrecognized: [], reviewId: "0199a100-0000-7000-8000-000000000007" });
 		const response = await POST(request()); expect(response.status).toBe(200);
 		expect(fake.interpret).toHaveBeenCalledWith(requester, { kind: "audio" }, true);
 		expect(response.headers.get("cache-control")).toBe("no-store");
-		expect(await response.json()).toMatchObject({ data: { reviewId: "0199a100-0000-7000-8000-000000000007" } });
+		expect(await response.json()).toMatchObject({
+			data: { reviewId: "0199a100-0000-7000-8000-000000000007" },
+			feedback: { kind: "success", message: expect.any(String) },
+		});
 	});
 });
