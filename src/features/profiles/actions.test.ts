@@ -58,7 +58,11 @@ describe.each(cases)("$name managed profile action", ({ action, input, service }
     expect(service).not.toHaveBeenCalled();
   });
   it("requires OWNER or MANAGER and returns the changed profile after revalidation", async () => {
-    await expect(action(input)).resolves.toEqual({ ok: true, data: { profileId } });
+    await expect(action(input)).resolves.toMatchObject({
+		ok: true,
+		data: { profileId },
+		feedback: { kind: "success", message: expect.any(String) },
+	});
     expect(mocks.requireAdult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
     expect(service).toHaveBeenCalledWith(actor, { ...input, ...(input === createInput ? { displayName: "Rose" } : {}) });
     expect(mocks.revalidatePath).toHaveBeenCalledWith("/family", "layout");
