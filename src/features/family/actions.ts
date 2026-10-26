@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createFamilySchema } from "@/features/family/schemas";
 import { createFamilyForUser } from "@/features/family/server/service";
 import type { CreateFamilyFormState } from "@/features/family/types";
+import { familySetupCopy } from "@/features/family/copy";
 import { ensureUser } from "@/server/auth/ensure-user";
 
 // Generous cap for values echoed back to the form; validation enforces the real limits.
@@ -45,6 +46,7 @@ export async function createFamilyAction(
         fieldErrors: z.flattenError(parsed.error).fieldErrors,
       },
 		created: false,
+		feedback: null,
     };
   }
 
@@ -62,10 +64,16 @@ export async function createFamilyAction(
         message: "We couldn't create your family. Please try again in a moment.",
       },
 		created: false,
+		feedback: null,
     };
   }
 
   // Outside the try block: redirect() works by throwing.
   revalidatePath("/family", "layout");
-	return { values, error: null, created: true };
+	return {
+		values,
+		error: null,
+		created: true,
+		feedback: { kind: "success", message: familySetupCopy.created },
+	};
 }
