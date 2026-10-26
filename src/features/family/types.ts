@@ -10,6 +10,7 @@ export type CreateFamilyFormValues = {
 export type CreateFamilyFormState = {
   values: CreateFamilyFormValues;
   error: ActionError | null;
+	created: boolean;
 };
 
 // What the family dashboard shows. Only the signed-in adult's own family.
