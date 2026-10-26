@@ -1,4 +1,4 @@
-import type { ActionResult } from "@/types/action-result";
+import type { MutationResult } from "@/types/action-result";
 
 // Manager-only DTO: minimal verified references, never provider payloads or payer data.
 export type CheckoutDto = {
@@ -12,5 +12,5 @@ export type CheckoutDto = {
 	capturedAt?: string | null;
 	canCancel?: boolean;
 };
-export type CheckoutResult = ActionResult<CheckoutDto>;
-export type CancelCheckoutResult = ActionResult<{ requestId: string }>;
+export type CheckoutResult = MutationResult<CheckoutDto>;
+export type CancelCheckoutResult = MutationResult<{ requestId: string }>;
