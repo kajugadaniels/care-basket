@@ -41,7 +41,7 @@ export function RevokeDeviceDialog({ deviceId, label }: { deviceId: string; labe
           const result = await revokeDeviceAction({ deviceId, confirmed });
           if (result.ok) {
             dialogRef.current?.close(); setIsRevoked(true);
-			toast.notify({ kind: "success", message: devicesCopy.revoked });
+			toast.notify(result.feedback);
             // The refreshed server list may remove this control; the card heading stays.
             document.getElementById(`device-${deviceId}`)?.focus();
           }
