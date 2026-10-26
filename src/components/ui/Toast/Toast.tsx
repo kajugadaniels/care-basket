@@ -4,9 +4,10 @@ import { Alert02Icon, AlertCircleIcon, CancelCircleIcon, CheckmarkCircle02Icon }
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
+import type { ActionFeedback } from "@/types/action-result";
 import styles from "./Toast.module.css";
 
-export type ToastKind = "success" | "warning" | "error";
+export type ToastKind = ActionFeedback["kind"];
 export type ToastNotice = { id: number; message: string; kind?: ToastKind; title?: string };
 
 type ToastProps = {
