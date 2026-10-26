@@ -1,11 +1,13 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Alert02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/Button/Button";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { TextField } from "@/components/ui/TextField/TextField";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { createFamilyAction } from "@/features/family/actions";
 import { familySetupCopy } from "@/features/family/copy";
 import { DISPLAY_NAME_MAX_LENGTH, FAMILY_NAME_MAX_LENGTH } from "@/features/family/limits";
@@ -18,9 +20,12 @@ type CreateFamilyFormProps = {
 };
 
 export function CreateFamilyForm({ defaultDisplayName }: CreateFamilyFormProps) {
+	const router = useRouter();
+	const toast = useToast();
   const initialState: CreateFamilyFormState = {
     values: { familyName: "", displayName: defaultDisplayName },
     error: null,
+		created: false,
   };
   const [state, formAction, isPending] = useActionState(createFamilyAction, initialState);
   const formRef = useRef<HTMLFormElement>(null);
@@ -34,9 +39,17 @@ export function CreateFamilyForm({ defaultDisplayName }: CreateFamilyFormProps) 
 
   // After a failed submission, move focus to the first field that needs attention.
   useEffect(() => {
+		if (state.created) {
+			toast.notify({ kind: "success", message: familySetupCopy.created });
+			router.replace("/family");
+			return;
+		}
     const firstInvalid = formRef.current?.querySelector<HTMLInputElement>('[aria-invalid="true"]');
     firstInvalid?.focus();
-  }, [state]);
+		if (state.error) {
+			toast.notify({ kind: "error", message: state.error.message });
+		}
+	}, [router, state, toast]);
 
   return (
     <form ref={formRef} action={formAction} noValidate className={styles.form}>
