@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState, useTransition, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button/Button";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { ProductCard } from "@/features/catalog/components/ProductCard/ProductCard";
 import { ProductSelection } from "@/features/requests/components/DraftProvider/ProductSelection";
 import { guideShoppingAction } from "../../actions";
@@ -10,6 +11,7 @@ import type { ShoppingGuideOrchestrationResult } from "../../types";
 import styles from "./ShoppingGuide.module.css";
 
 export function ShoppingGuide({ initialQuery }: { initialQuery: string }) {
+	const toast = useToast();
 	const [query, setQuery] = useState(initialQuery.slice(0, 80));
 	const [result, setResult] = useState<ShoppingGuideOrchestrationResult | null>(null);
 	const [error, setError] = useState("");
@@ -31,13 +33,14 @@ export function ShoppingGuide({ initialQuery }: { initialQuery: string }) {
 		if (pending) return;
 
 		setError("");
+		toast.prepareSound();
 		startTransition(async () => {
 			try {
 				const response = await guideShoppingAction({ kind: "SEARCH", query, limit: 6 });
 				if (response.ok) setResult(response.data);
-				else setError(copy.guideError);
+				else { setError(copy.guideError); toast.notify({ kind: "error", message: copy.guideError }); }
 			} catch {
-				setError(copy.guideError);
+				setError(copy.guideError); toast.notify({ kind: "error", message: copy.guideError });
 			}
 		});
 	}
