@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Atkinson_Hyperlegible, DM_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ToastProvider } from "@/components/ui/Toast/ToastProvider";
 import { clerkAppearance } from "@/lib/clerk/appearance";
 import "./globals.css";
 
@@ -45,7 +46,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         {/* Not `dynamic`: the provider reads no request data, so pages keep their static shell.
             Components that read the session sit behind their own Suspense boundaries. */}
-        <ClerkProvider appearance={clerkAppearance} telemetry={false}>{children}</ClerkProvider>
+        <ClerkProvider appearance={clerkAppearance} telemetry={false}>
+          <ToastProvider>{children}</ToastProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
