@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useRef, useState, type ReactNode } from "react";
-import { useToastSound } from "@/components/ui/Toast/use-toast-sound";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import type { SubmitRequestInput } from "../../schemas";
 import { changeDraft, createDraftKey, EMPTY_DRAFT, type Draft, type DraftChange } from "../../draft";
 import { requestsCopy } from "../../copy";
@@ -20,21 +20,30 @@ export function DraftProvider({ children }: { children: ReactNode }) {
 	const [locked, setLocked] = useState(false);
 	const [message, setMessage] = useState("");
 	const current = useRef({ draft: EMPTY_DRAFT, locked: false });
-	const sound = useToastSound();
+	const toast = useToast();
 
 	function change(change: DraftChange): boolean {
 		if (current.current.locked) return false;
 		const previousCount = current.current.draft.items.length;
-		if (change.type === "add" || change.type === "proposal") sound.prepare();
+		const removed = change.type === "remove"
+			? current.current.draft.items.find((item) => item.sku === change.sku)
+			: null;
+		if (["add", "proposal", "remove", "clear"].includes(change.type)) toast.prepareSound();
 		try {
 			const next = changeDraft(current.current.draft, change, createDraftKey());
 			current.current.draft = next;
 			setDraft(next);
-			setMessage(change.type === "add" ? requestsCopy.added(change.item.displayName) : "");
-			if (next.items.length > previousCount) sound.play("success");
+			const added = change.type === "add" ? change.item.displayName
+				: change.type === "proposal" && next.items.length > previousCount ? change.items[0]?.displayName : null;
+			const feedback = added ? requestsCopy.added(added)
+				: removed ? requestsCopy.draftRemoved({ name: removed.displayName })
+					: change.type === "clear" && previousCount ? requestsCopy.cleared : "";
+			setMessage(feedback);
+			if (feedback) toast.notify({ kind: "success", message: feedback });
 			return true;
 		} catch {
 			setMessage(requestsCopy.limit);
+			toast.notify({ kind: "error", message: requestsCopy.limit });
 			return false;
 		}
 	}
