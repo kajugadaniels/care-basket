@@ -39,9 +39,14 @@ describe("optional toast tones", () => {
 	it("plays different brief tones, disconnects nodes and closes on unmount", () => {
 		const { audio, Constructor, notes, stops, oscillators, gains } = fakeAudio();
 		const { result, unmount } = renderHook(useToastSound);
-		act(() => { result.current.prepare(); result.current.play("success"); result.current.play("error"); });
+		act(() => {
+			result.current.prepare();
+			result.current.play("success");
+			result.current.play("warning");
+			result.current.play("error");
+		});
 		expect(Constructor).toHaveBeenCalledOnce();
-		expect(notes).toEqual([660, 880, 440, 330]);
+		expect(notes).toEqual([660, 880, 520, 440, 440, 330]);
 		expect(Math.max(...stops)).toBeLessThan(0.5);
 		oscillators.forEach((oscillator) => { oscillator.onended?.(); expect(oscillator.disconnect).toHaveBeenCalledOnce(); });
 		gains.forEach((gain) => expect(gain.disconnect).toHaveBeenCalledOnce());
