@@ -38,7 +38,7 @@ export function ShoppingGuide({ initialQuery }: { initialQuery: string }) {
 			try {
 				const response = await guideShoppingAction({ kind: "SEARCH", query, limit: 6 });
 				if (response.ok) setResult(response.data);
-				else { setError(copy.guideError); toast.notify({ kind: "error", message: copy.guideError }); }
+				else { setError(response.error.message); toast.notify({ kind: "error", message: response.error.message }); }
 			} catch {
 				setError(copy.guideError); toast.notify({ kind: "error", message: copy.guideError });
 			}
