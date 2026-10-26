@@ -4,17 +4,20 @@ import { requestNotificationsCopy as copy } from "../../copy";
 import type { RequestNotificationsDto } from "../../types";
 import { RequestNotifications } from "./RequestNotifications";
 
-const fake = vi.hoisted(() => ({ refresh: vi.fn(), failed: false, pending: false, accessLost: false, announcement: "" }));
+const fake = vi.hoisted(() => ({
+	refresh: vi.fn(), failed: false, pending: false, accessLost: false, announcement: "", failureMessage: "",
+}));
 vi.mock("../../hooks/use-request-notifications", () => ({
 	useRequestNotifications: (data: RequestNotificationsDto | null) => ({
 		data, failed: fake.failed || data === null, pending: fake.pending, accessLost: fake.accessLost,
 		announcement: fake.announcement, refresh: fake.refresh,
+		failureMessage: fake.failureMessage,
 	}),
 }));
 
 const data: RequestNotificationsDto = {
 	count: 1,
-	notifications: [{ id: "rose-list", displayName: "Rose", submittedAt: "2026-10-12T12:30:00Z" }],
+	notifications: [{ id: "rose-list", displayName: "Rose", submittedAt: "2026-10-12T12:30:00Z", message: "Rose has sent a shopping list." }],
 };
 
 function open() {
@@ -30,6 +33,7 @@ describe("request notification bell", () => {
 		fake.pending = false;
 		fake.accessLost = false;
 		fake.announcement = "";
+		fake.failureMessage = copy.error;
 	});
 
 	it("exposes the pending count and opens a linked notification without clearing it", () => {
@@ -106,7 +110,7 @@ describe("request notification bell", () => {
 	});
 
 	it("announces newly received lists politely without stealing focus", () => {
-		fake.announcement = copy.message("Rose");
+		fake.announcement = data.notifications[0].message;
 		render(<RequestNotifications initialData={data} />);
 		const trigger = screen.getByRole("button", { name: copy.bell(1) });
 		trigger.focus();
@@ -117,6 +121,7 @@ describe("request notification bell", () => {
 
 	it("offers sign-in rather than a broken retry after access is lost", () => {
 		fake.accessLost = true;
+		fake.failureMessage = copy.sessionExpired;
 		render(<RequestNotifications initialData={null} />);
 		open();
 		expect(screen.getByRole("alert")).toHaveTextContent(copy.sessionExpired);
