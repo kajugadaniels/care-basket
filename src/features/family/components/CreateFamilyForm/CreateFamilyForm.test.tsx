@@ -2,9 +2,10 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CreateFamilyFormState } from "@/features/family/types";
 
-const mocks = vi.hoisted(() => ({ createFamilyAction: vi.fn() }));
+const mocks = vi.hoisted(() => ({ createFamilyAction: vi.fn(), replace: vi.fn() }));
 
 vi.mock("@/features/family/actions", () => ({ createFamilyAction: mocks.createFamilyAction }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: mocks.replace }) }));
 
 import { CreateFamilyForm } from "./CreateFamilyForm";
 import { familySetupCopy } from "@/features/family/copy";
@@ -16,6 +17,7 @@ function submit() {
 describe("CreateFamilyForm", () => {
   beforeEach(() => {
     mocks.createFamilyAction.mockReset();
+		mocks.replace.mockReset();
   });
 
   it("asks for two names and explicit adult confirmation, without birth dates", () => {
@@ -46,6 +48,7 @@ describe("CreateFamilyForm", () => {
         message: "Please check the highlighted fields.",
         fieldErrors: { familyName: ["Use at least 2 characters."] },
       },
+		created: false,
     };
     mocks.createFamilyAction.mockResolvedValue(errorState);
     render(<CreateFamilyForm defaultDisplayName="Jane" />);
@@ -69,6 +72,7 @@ describe("CreateFamilyForm", () => {
         code: "INTERNAL",
         message: "We couldn't create your family. Please try again in a moment.",
       },
+		created: false,
     } satisfies CreateFamilyFormState);
     render(<CreateFamilyForm defaultDisplayName="Jane" />);
 
@@ -86,6 +90,7 @@ describe("CreateFamilyForm", () => {
 				code: "VALIDATION_FAILED", message: "Please check the highlighted fields.",
 				fieldErrors: { adultConfirmed: [familySetupCopy.adultConfirmationError] },
 			},
+			created: false,
 		} satisfies CreateFamilyFormState);
 		render(<CreateFamilyForm defaultDisplayName="Jane" />);
 		submit();
@@ -106,4 +111,17 @@ describe("CreateFamilyForm", () => {
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-busy", "true");
   });
+
+	it("announces success before opening the family dashboard", async () => {
+		mocks.createFamilyAction.mockResolvedValue({
+			values: { familyName: "Jane's Family", displayName: "Jane" },
+			error: null,
+			created: true,
+		} satisfies CreateFamilyFormState);
+		render(<CreateFamilyForm defaultDisplayName="Jane" />);
+
+		submit();
+
+		await waitFor(() => expect(mocks.replace).toHaveBeenCalledWith("/family"));
+	});
 });
