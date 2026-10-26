@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Button } from "@/components/ui/Button/Button";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { updateAiPreferenceAction } from "../../actions";
 import { assistantCopy as copy } from "../../copy";
 import styles from "./AiPreference.module.css";
 
 export function AiPreference({ profileId, enabled, available }: { profileId: string; enabled: boolean; available: boolean }) {
+	const toast = useToast();
 	const [consent, setConsent] = useState(false);
 	const [message, setMessage] = useState("");
 	const [error, setError] = useState(false);
@@ -19,11 +21,16 @@ export function AiPreference({ profileId, enabled, available }: { profileId: str
 		{!enabled && available ? <label className={styles.check}><input type="checkbox" checked={consent}
 			disabled={pending} onChange={(event) => setConsent(event.target.checked)} />{copy.consent}</label> : null}
 		{enabled || available ? <Button disabled={!enabled && !consent} loading={pending} variant="secondary" onClick={() => {
+			toast.prepareSound();
 			startTransition(async () => {
 				try {
 					const result = await updateAiPreferenceAction({ profileId, enabled: !enabled, consent });
-					setError(!result.ok); setMessage(result.ok ? copy.saved : result.error.message);
-				} catch { setError(true); setMessage(copy.error); }
+					const nextMessage = result.ok ? enabled ? copy.revoked : copy.enabled : result.error.message;
+					setError(!result.ok); setMessage(nextMessage);
+					toast.notify({ kind: result.ok ? "success" : "error", message: nextMessage });
+				} catch {
+					setError(true); setMessage(copy.error); toast.notify({ kind: "error", message: copy.error });
+				}
 			});
 		}}>{enabled ? copy.revoke : copy.enable}</Button> : null}
 		{message ? <p ref={resultRef} tabIndex={-1} role={error ? "alert" : "status"}>{message}</p> : null}
