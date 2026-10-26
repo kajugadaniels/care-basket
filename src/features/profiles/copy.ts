@@ -42,7 +42,7 @@ export const profilesCopy = {
   connectDevice: "Connect Their Device",
   remove: "Remove Profile",
   removing: "Removing profile…",
-	removed: (name: string) => `${name}'s profile was removed.`,
+	removedConfirmation: "Family member profile removed.",
   removeTitle: (name: string) => `Remove ${name}?`,
   removeText: (name: string) => `This permanently removes ${name}'s profile and disconnects all their devices. This cannot be undone.`,
   removeConfirm: (name: string) => `I confirm that I want to permanently remove ${name}'s profile.`,
