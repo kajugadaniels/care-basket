@@ -1,4 +1,4 @@
-import type { ActionResult } from "@/types/action-result";
+import type { MutationResult } from "@/types/action-result";
 import type { ProfileAvatarKey } from "@/features/profiles/types";
 
 export type PairingStatus = "PENDING" | "APPROVED" | "REJECTED" | "COMPLETED" | "EXPIRED";
@@ -10,6 +10,6 @@ export type DeviceDto = {
   id: string; label: string; profileName: string; userAgentSummary: string;
   createdAt: string; lastSeenAt: string; status: "ACTIVE" | "EXPIRED" | "REVOKED";
 };
-export type DeviceResult = ActionResult<{ done: true }>;
+export type DeviceResult = MutationResult<{ done: true }>;
 export type ProfileOption = { id: string; displayName: string };
 export type ShopHomeDto = { displayName: string; avatarKey: ProfileAvatarKey };
