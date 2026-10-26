@@ -22,11 +22,16 @@ function BasketFixture({ selecting = true, reviewing = true, products = [request
 	</DraftProvider>;
 }
 function add() { fireEvent.click(screen.getByRole("button", { name: "Add to my list" })); }
+const submitted: RequestMutationResult = {
+	ok: true,
+	data: { requestId: requestIds.request },
+	feedback: { kind: "success", message: requestsCopy.sentNotice },
+};
 describe("shopping basket review", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
 		vi.spyOn(crypto, "randomUUID").mockReturnValue(requestIds.key as ReturnType<typeof crypto.randomUUID>);
-		fake.submit.mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
+		fake.submit.mockResolvedValue(submitted);
 	});
 	it("shows an empty state and working catalog link without a submit button", () => {
 		render(<BasketFixture selecting={false} />);
@@ -79,7 +84,7 @@ describe("shopping basket review", () => {
 		expect(screen.getAllByText(requestsCopy.sending)).toHaveLength(1);
 		expect(screen.getByRole("button", { name: "Clear my list" })).toBeDisabled();
 		for (const button of screen.getAllByRole("button", { name: "Increase quantity for Demo milk" })) expect(button).toBeDisabled();
-		resolve({ ok: true, data: { requestId: requestIds.request } });
+		resolve(submitted);
 		await screen.findByRole("heading", { name: "Your shopping list has been sent!" });
 	});
 	it("retains the draft and key after failure and focuses the retry error", async () => {
