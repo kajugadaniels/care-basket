@@ -22,6 +22,7 @@ export const assistantCopy = {
 	disclosure: "Google AI helps us understand your list. We don't keep recordings.",
 	prompt: "What groceries do you need?", placeholder: "Try: two bags of rice and one carton of milk",
 	continue: "Find my groceries", cancel: "Cancel", working: "Finding groceries…",
+	understood: "Your grocery choices are ready to review.",
 	review: "Here is what I understood", requested: "Your groceries", suggested: "Suggested for you",
 	whySuggested: "Why this idea:",
 	uncertain: "Is this right?", question: "Which one would you like?", none: "None of these",
@@ -42,7 +43,8 @@ export const assistantCopy = {
 	listening: "Listening…", warning: "Ten seconds left.", transcript: "I heard:",
 	consentTitle: "Voice and smart suggestions", blocked: "Google AI is unavailable pending deployment eligibility review. Typing and pictures still work.",
 	consent: "This person understands and agrees that Google AI may process their shopping requests.",
-	enable: "Enable voice and smart suggestions", revoke: "Revoke AI consent", saved: "AI preference saved.",
+	enable: "Enable voice and smart suggestions", revoke: "Revoke AI consent",
+	enabled: "Voice and smart suggestions are enabled.", revoked: "Voice and smart suggestions are disabled.", saved: "AI preference saved.",
 	budgetLine: ({ total, budget, over }: { total: string; budget: string; over: boolean }) =>
 		`About ${total} with demo prices, ${over ? "over" : "within"} your ${budget}.`,
 };
