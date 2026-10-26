@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { CheckmarkCircle02Icon, KeyboardIcon, Mic01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/Button/Button";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { interpretTextAction } from "../../actions";
 import { assistantCopy as copy } from "../../copy";
 import type { Proposal } from "../../types";
@@ -20,6 +21,7 @@ type Props = { displayName?: string; voice: boolean; child: boolean };
 
 export function AssistantStart({ displayName, voice, child }: Props) {
 	const router = useRouter();
+	const toast = useToast();
 	const { text, setText, setProposal } = useAssistant();
 	const [mode, setMode] = useState<"text" | "voice">("text");
 	const [error, setError] = useState("");
@@ -34,6 +36,7 @@ export function AssistantStart({ displayName, voice, child }: Props) {
 	function review(proposal: Proposal) {
 		setText(proposal.inputText);
 		setProposal(proposal);
+		toast.notify({ kind: "success", message: copy.understood });
 		const query = proposal.reviewId ? new URLSearchParams({ review: proposal.reviewId }).toString() : "";
 		router.push(`/shop/assistant/review${query ? `?${query}` : ""}`);
 	}
@@ -64,13 +67,19 @@ export function AssistantStart({ displayName, voice, child }: Props) {
 					<form className={styles.composer} onSubmit={(event) => {
 						event.preventDefault();
 						if (pending) return;
+						toast.prepareSound();
 						setError("");
 						startTransition(async () => {
 							try {
 								const result = await interpretTextAction({ text });
 								if (result.ok) review(result.data);
-								else setError(result.error.message);
-							} catch { setError(copy.error); }
+								else {
+									setError(result.error.message);
+									toast.notify({ kind: "error", message: result.error.message });
+								}
+							} catch {
+								setError(copy.error); toast.notify({ kind: "error", message: copy.error });
+							}
 						});
 					}}>
 						<label className={styles.field}>{copy.prompt}
