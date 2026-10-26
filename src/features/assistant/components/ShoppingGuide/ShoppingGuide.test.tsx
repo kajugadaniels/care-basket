@@ -67,14 +67,17 @@ describe("requester shopping guide", () => {
 		expect(screen.queryByRole("article")).not.toBeInTheDocument();
 	});
 
-	it("preserves the query and focuses a recoverable error", async () => {
-		fake.guide.mockRejectedValue(new Error("offline"));
+	it("preserves the query and focuses the safe error returned by the server", async () => {
+		fake.guide.mockResolvedValue({
+			ok: false,
+			error: { code: "AI_UNAVAILABLE", message: "Search is temporarily unavailable." },
+		});
 		open();
 		fireEvent.click(screen.getByRole("button", { name: copy.guideSearch }));
 
 		const alert = await screen.findByRole("alert");
 		await waitFor(() => expect(alert).toHaveFocus());
-		expect(alert).toHaveTextContent(copy.guideError);
+		expect(alert).toHaveTextContent("Search is temporarily unavailable.");
 		expect(screen.getByRole("textbox", { name: copy.guideLabel })).toHaveValue("rice");
 	});
 
