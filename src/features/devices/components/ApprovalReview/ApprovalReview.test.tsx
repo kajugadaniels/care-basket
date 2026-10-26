@@ -9,7 +9,7 @@ describe("explicit manager device review", () => {
   beforeEach(() => { vi.resetAllMocks(); vi.spyOn(Date, "now").mockReturnValue(deviceTestNow.getTime()); });
   afterEach(() => vi.restoreAllMocks());
   it("requires profile choice, label, and a deliberate confirmation", async () => {
-    fake.approve.mockResolvedValue({ ok: true, data: { done: true } });
+    fake.approve.mockResolvedValue({ ok: true, data: { done: true }, feedback: { kind: "success", message: "Approved." } });
     render(<ApprovalReview review={review} profiles={[{ id: deviceIds.profile, displayName: "Rose" }]} />);
     const approve = screen.getByRole("button", { name: "Approve Connection" }); expect(approve).toBeDisabled(); expect(fake.approve).not.toHaveBeenCalled();
     fireEvent.change(screen.getByRole("combobox", { name: "Family member" }), { target: { value: deviceIds.profile } });
@@ -29,8 +29,8 @@ describe("explicit manager device review", () => {
     expect(screen.getByRole("textbox", { name: "Device label" })).toHaveValue("Tablet");
   });
   it("supports rejection without an accidental approval", async () => {
-    fake.reject.mockResolvedValue({ ok: true, data: { done: true } });
+    fake.reject.mockResolvedValue({ ok: true, data: { done: true }, feedback: { kind: "success", message: "Rejected." } });
     render(<ApprovalReview review={review} profiles={[]} />); fireEvent.click(screen.getByRole("button", { name: "Reject Connection" }));
-    expect(await screen.findByRole("status")).toHaveTextContent("rejected"); expect(fake.approve).not.toHaveBeenCalled();
+    expect(await screen.findByRole("status")).toHaveTextContent("Rejected."); expect(fake.approve).not.toHaveBeenCalled();
   });
 });
