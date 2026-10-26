@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fireEvent, render, screen, within } from "@testing-library/react";
+import { ToastProvider } from "@/components/ui/Toast/ToastProvider";
 import { assistantCatalog } from "@/test/factories/assistant";
 import { requestIds } from "@/test/factories/requests";
 import { DraftProvider, useDraft } from "@/features/requests/components/DraftProvider/DraftProvider";
@@ -30,7 +31,7 @@ function DraftState() {
 }
 
 function review(value = proposal) {
-	render(<DraftProvider><ProposalReview proposal={value} /><DraftState /></DraftProvider>);
+	render(<ToastProvider><DraftProvider><ProposalReview proposal={value} /><DraftState /></DraftProvider></ToastProvider>);
 }
 
 function draft(): Draft {
