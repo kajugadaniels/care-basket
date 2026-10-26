@@ -18,7 +18,6 @@ export function CloseRequestDialog({ requestId, revision, manager = false }: {
 	const keep = useRef<HTMLButtonElement>(null);
 	const { pending, error, errorRef, run } = useRequestMutation();
 	const label = manager ? requestsCopy.decline : requestsCopy.cancel;
-	const success = manager ? requestsCopy.declinedNotice : requestsCopy.cancelledNotice;
 	useEffect(() => {
 		if (error) toast.notify({ kind: "error", message: error });
 	}, [error, toast]);
@@ -36,9 +35,9 @@ export function CloseRequestDialog({ requestId, revision, manager = false }: {
 					<Button ref={keep} variant="secondary" disabled={pending} onClick={() => dialog.current?.close()}>{requestsCopy.keep}</Button>
 					<Button variant="destructive" loading={pending} onClick={() => run(
 						() => (manager ? declineRequestAction : cancelRequestAction)({ requestId, revision, confirmed: true }),
-						() => {
+						(result) => {
 							dialog.current?.close();
-							toast.notify({ kind: "success", message: success });
+							toast.notify(result.feedback);
 						},
 					)}>{pending ? requestsCopy.closing : requestsCopy.confirm}</Button>
 				</div>
