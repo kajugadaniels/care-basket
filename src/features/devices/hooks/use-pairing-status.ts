@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { devicesCopy } from "../copy";
 import { pairingStatusSchema } from "../schemas";
 import type { PairingStatus } from "../types";
 
@@ -11,6 +12,7 @@ function isDocumentHidden() {
 export function usePairingStatus(expiresAt: string, retryKey: number) {
   const [status, setStatus] = useState<PairingStatus>("PENDING");
   const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [isExpiring, setIsExpiring] = useState(false);
   useEffect(() => {
     let stopped = false;
@@ -33,23 +35,43 @@ export function usePairingStatus(expiresAt: string, retryKey: number) {
       try {
         const response = await fetch("/api/pairing/status", { credentials: "same-origin", cache: "no-store", signal: requestController.signal });
         if (stopped || final) return;
+		let body: { data?: unknown; error?: { message?: unknown } } = {};
+		try {
+			body = await response.json() as typeof body;
+		} catch {
+			// Transport-compatible fallback; CareBasket routes normally return JSON.
+		}
+		const serverMessage = typeof body.error?.message === "string" ? body.error.message : "";
         if (response.status === 429) {
           const seconds = Number(response.headers.get("Retry-After"));
           retryAt = Date.now() + (Number.isFinite(seconds) && seconds > 0 ? Math.max(15, seconds) : 60) * 1000;
           setHasError(true);
+		  setErrorMessage(serverMessage || devicesCopy.network);
           return;
         }
-        if (!response.ok) { if (response.status === 401) { final = true; setStatus("EXPIRED"); } else setHasError(true); return; }
-        const body: unknown = await response.json();
-        const data = body && typeof body === "object" && "data" in body ? body.data : undefined;
+		if (!response.ok) {
+			setErrorMessage(serverMessage || devicesCopy.network);
+			if (response.status === 401) { final = true; setStatus("EXPIRED"); } else setHasError(true);
+			return;
+		}
+		const data = body.data;
         const parsed = pairingStatusSchema.safeParse(data);
-        if (!parsed.success) { setHasError(true); return; }
+        if (!parsed.success) {
+			setHasError(true);
+			setErrorMessage(devicesCopy.network);
+			return;
+		}
         if (!stopped && !final) {
-          setHasError(false); setStatus(parsed.data.status);
+		  setHasError(false); setErrorMessage(""); setStatus(parsed.data.status);
           final = parsed.data.status !== "PENDING";
           if (final) { clearTimeout(expiry); clearTimeout(warning); }
         }
-      } catch { if (!stopped && !controller.signal.aborted) setHasError(true); }
+		} catch {
+			if (!stopped && !controller.signal.aborted) {
+				setHasError(true);
+				setErrorMessage(devicesCopy.network);
+			}
+		}
       finally {
         clearTimeout(requestTimeout); controller.signal.removeEventListener("abort", abortRequest);
         inFlight = false;
@@ -67,5 +89,5 @@ export function usePairingStatus(expiresAt: string, retryKey: number) {
       document.removeEventListener("visibilitychange", resume); window.removeEventListener("focus", resume);
     };
   }, [expiresAt, retryKey]);
-  return { status, hasError, isExpiring };
+  return { status, hasError, errorMessage, isExpiring };
 }
