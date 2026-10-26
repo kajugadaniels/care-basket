@@ -25,9 +25,9 @@ export function AiPreference({ profileId, enabled, available }: { profileId: str
 			startTransition(async () => {
 				try {
 					const result = await updateAiPreferenceAction({ profileId, enabled: !enabled, consent });
-					const nextMessage = result.ok ? enabled ? copy.revoked : copy.enabled : result.error.message;
+					const nextMessage = result.ok ? result.feedback.message : result.error.message;
 					setError(!result.ok); setMessage(nextMessage);
-					toast.notify({ kind: result.ok ? "success" : "error", message: nextMessage });
+					toast.notify(result.ok ? result.feedback : { kind: "error", message: result.error.message });
 				} catch {
 					setError(true); setMessage(copy.error); toast.notify({ kind: "error", message: copy.error });
 				}
