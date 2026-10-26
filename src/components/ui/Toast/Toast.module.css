@@ -30,6 +30,11 @@
 	color: var(--color-danger);
 }
 
+.toast[data-kind="warning"] .icon {
+	background: var(--color-warning-bg);
+	color: var(--color-warning);
+}
+
 .toast[data-position="bottom"] {
 	inset-block-start: auto;
 	inset-block-end: var(--space-5);
