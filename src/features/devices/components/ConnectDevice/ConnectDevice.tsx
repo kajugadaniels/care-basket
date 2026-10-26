@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button/Button";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { startPairingAction } from "../../actions";
 import { devicesCopy } from "../../copy";
 import type { PairingStartDto } from "../../types";
@@ -9,6 +10,7 @@ import { PairingWaiting } from "../PairingWaiting/PairingWaiting";
 import styles from "./ConnectDevice.module.css";
 
 export function ConnectDevice() {
+	const toast = useToast();
   const [pairing, setPairing] = useState<PairingStartDto | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
@@ -19,9 +21,17 @@ export function ConnectDevice() {
     inFlight.current = true; setIsPending(true); setError(null);
     try {
       const result = await startPairingAction({});
-      if (result.ok) { setPairing(result.data); headingRef.current?.focus(); }
-      else setError(result.error.message);
-    } catch { setError(devicesCopy.errors.INTERNAL); }
+		if (result.ok) {
+			setPairing(result.data); headingRef.current?.focus();
+			toast.notify({ kind: "success", message: devicesCopy.connectionReady });
+		} else {
+			setError(result.error.message);
+			toast.notify({ kind: "error", message: result.error.message });
+		}
+	} catch {
+		setError(devicesCopy.errors.INTERNAL);
+		toast.notify({ kind: "error", message: devicesCopy.errors.INTERNAL });
+	}
     finally { inFlight.current = false; setIsPending(false); }
   }
   return <div className={styles.content}>
