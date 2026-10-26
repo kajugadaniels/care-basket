@@ -5,6 +5,11 @@ import type { RequestMutationResult } from "../types";
 import { useRequestMutation } from "./use-request-mutation";
 
 describe("synchronous request mutation guard", () => {
+	const successResult: RequestMutationResult = {
+		ok: true,
+		data: { requestId: requestIds.request },
+		feedback: { kind: "success", message: "Saved." },
+	};
 	it("blocks duplicate writes before pending has rendered and permits writes after confirmation", async () => {
 		let finish: (result: RequestMutationResult) => void = () => {};
 		const action = vi.fn(() => new Promise<RequestMutationResult>((resolve) => { finish = resolve; }));
@@ -23,11 +28,11 @@ describe("synchronous request mutation guard", () => {
 		expect(result.current.pendingKey).toBe("save:milk");
 		expect(success).not.toHaveBeenCalled();
 
-		await act(async () => finish({ ok: true, data: { requestId: requestIds.request } }));
+		await act(async () => finish(successResult));
 		expect(success).toHaveBeenCalledOnce();
 		expect(result.current.isRunning()).toBe(false);
 		expect(result.current.pendingKey).toBeNull();
-		const next = vi.fn().mockResolvedValue({ ok: true, data: { requestId: requestIds.request } });
+		const next = vi.fn().mockResolvedValue(successResult);
 		await act(async () => result.current.run(next));
 		expect(next).toHaveBeenCalledOnce();
 	});
