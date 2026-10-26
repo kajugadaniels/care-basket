@@ -2,8 +2,9 @@ import { act, fireEvent, render, screen, waitFor, within } from "@testing-librar
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
 
-const mocks = vi.hoisted(() => ({ remove: vi.fn() }));
+const mocks = vi.hoisted(() => ({ remove: vi.fn(), push: vi.fn() }));
 vi.mock("@/features/profiles/actions", () => ({ deleteManagedProfileAction: mocks.remove }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: mocks.push }) }));
 import { DeleteProfileDialog } from "./DeleteProfileDialog";
 
 const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
@@ -12,6 +13,7 @@ const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototyp
 describe("DeleteProfileDialog", () => {
   beforeEach(() => {
     mocks.remove.mockReset();
+		mocks.push.mockReset();
     // jsdom does not implement modal top-layer/focus behavior. Browser checks cover trapping.
     Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
       configurable: true, value: function (this: HTMLDialogElement) { this.open = true; },
@@ -71,6 +73,7 @@ describe("DeleteProfileDialog", () => {
     fireEvent.click(button);
     expect(mocks.remove).toHaveBeenCalledTimes(1);
     await act(async () => { resolveRequest({ ok: true, data: { profileId: "profile-rose" } }); });
+		await waitFor(() => expect(mocks.push).toHaveBeenCalledWith("/family/members"));
   });
   it("shows and focuses safe errors without closing the dialog", async () => {
     mocks.remove.mockResolvedValue({ ok: false, error: { code: "INTERNAL", message: profilesCopy.errors.internal } });
