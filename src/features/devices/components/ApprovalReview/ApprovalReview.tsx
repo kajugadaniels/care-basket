@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button/Button";
 import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { TextField } from "@/components/ui/TextField/TextField";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { formatCountdown, formatDate, formatTime } from "@/lib/format";
 import { approvePairingAction, rejectPairingAction } from "../../actions";
 import { devicesCopy } from "../../copy";
@@ -14,6 +15,7 @@ import styles from "./ApprovalReview.module.css";
 export function ApprovalReview({ review, profiles, preselected }: {
   review: PairingReviewDto; profiles: ProfileOption[]; preselected?: string;
 }) {
+	const toast = useToast();
   const [profileId, setProfileId] = useState(profiles.some((p) => p.id === preselected) ? preselected ?? "" : "");
   const [label, setLabel] = useState("");
   const [confirmed, setConfirmed] = useState(false);
@@ -34,6 +36,9 @@ export function ApprovalReview({ review, profiles, preselected }: {
     const interval = setInterval(update, 15_000);
     return () => { clearTimeout(timer); clearTimeout(first); clearInterval(interval); };
   }, [review.expiresAt]);
+	useEffect(() => {
+		if (isExpired) toast.notify({ kind: "warning", message: devicesCopy.expired });
+	}, [isExpired, toast]);
   async function decide(decision: "approve" | "reject") {
     if (inFlight.current) return;
     inFlight.current = true; setPendingDecision(decision); setError(null);
@@ -41,9 +46,18 @@ export function ApprovalReview({ review, profiles, preselected }: {
       const input = { pairingId: review.pairingId, reviewTicket: review.reviewTicket, expiresAt: review.expiresAt };
       const response = decision === "approve" ? await approvePairingAction({ ...input, profileId, label, confirmed })
         : await rejectPairingAction({ ...input, confirmed: true });
-      if (response.ok) { setResult(decision === "approve" ? "approved" : "rejected"); requestAnimationFrame(() => headingRef.current?.focus()); }
-      else { setError(response.error); requestAnimationFrame(() => errorRef.current?.focus()); }
-    } catch { setError({ message: devicesCopy.errors.INTERNAL }); requestAnimationFrame(() => errorRef.current?.focus()); }
+		if (response.ok) {
+			setResult(decision === "approve" ? "approved" : "rejected");
+			toast.notify({ kind: "success", message: decision === "approve" ? devicesCopy.approvedManager : devicesCopy.rejectedManager });
+			requestAnimationFrame(() => headingRef.current?.focus());
+		} else {
+			setError(response.error); toast.notify({ kind: "error", message: response.error.message });
+			requestAnimationFrame(() => errorRef.current?.focus());
+		}
+	} catch {
+		setError({ message: devicesCopy.errors.INTERNAL }); toast.notify({ kind: "error", message: devicesCopy.errors.INTERNAL });
+		requestAnimationFrame(() => errorRef.current?.focus());
+	}
     finally { inFlight.current = false; setPendingDecision(null); }
   }
   return <section className={styles.review} aria-labelledby="review-title">
