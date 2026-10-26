@@ -125,23 +125,6 @@
 	overflow-wrap: anywhere;
 }
 
-.announcement {
-	color: var(--color-primary);
-	overflow-wrap: anywhere;
-}
-
-/* Keep the live region mounted without reserving space until it has feedback. */
-.announcement:empty {
-	position: absolute;
-	inline-size: 1px;
-	block-size: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip-path: inset(50%);
-	white-space: nowrap;
-}
-
 @media (min-width: 40rem) and (max-width: 63.999rem) {
 	.items {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
