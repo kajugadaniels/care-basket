@@ -49,6 +49,7 @@ describe("CreateFamilyForm", () => {
         fieldErrors: { familyName: ["Use at least 2 characters."] },
       },
 		created: false,
+		feedback: null,
     };
     mocks.createFamilyAction.mockResolvedValue(errorState);
     render(<CreateFamilyForm defaultDisplayName="Jane" />);
@@ -73,6 +74,7 @@ describe("CreateFamilyForm", () => {
         message: "We couldn't create your family. Please try again in a moment.",
       },
 		created: false,
+		feedback: null,
     } satisfies CreateFamilyFormState);
     render(<CreateFamilyForm defaultDisplayName="Jane" />);
 
@@ -91,6 +93,7 @@ describe("CreateFamilyForm", () => {
 				fieldErrors: { adultConfirmed: [familySetupCopy.adultConfirmationError] },
 			},
 			created: false,
+			feedback: null,
 		} satisfies CreateFamilyFormState);
 		render(<CreateFamilyForm defaultDisplayName="Jane" />);
 		submit();
@@ -117,6 +120,7 @@ describe("CreateFamilyForm", () => {
 			values: { familyName: "Jane's Family", displayName: "Jane" },
 			error: null,
 			created: true,
+			feedback: { kind: "success", message: familySetupCopy.created },
 		} satisfies CreateFamilyFormState);
 		render(<CreateFamilyForm defaultDisplayName="Jane" />);
 
