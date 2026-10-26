@@ -2,14 +2,15 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { profilesCopy } from "@/features/profiles/copy";
 
-const mocks = vi.hoisted(() => ({ create: vi.fn(), update: vi.fn() }));
+const mocks = vi.hoisted(() => ({ create: vi.fn(), update: vi.fn(), push: vi.fn() }));
 vi.mock("@/features/profiles/actions", () => ({
   createManagedProfileAction: mocks.create, updateManagedProfileAction: mocks.update,
 }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: mocks.push }) }));
 import { ProfileForm } from "./ProfileForm";
 
 describe("ProfileForm", () => {
-  beforeEach(() => { mocks.create.mockReset(); mocks.update.mockReset(); });
+  beforeEach(() => { mocks.create.mockReset(); mocks.update.mockReset(); mocks.push.mockReset(); });
   it("asks only for name, type, a preset avatar, and explicit consent", () => {
     render(<ProfileForm />);
     expect(screen.getAllByRole("textbox")).toHaveLength(1);
@@ -75,6 +76,7 @@ describe("ProfileForm", () => {
     fireEvent.click(button);
     expect(mocks.create).toHaveBeenCalledTimes(1);
     await act(async () => { resolveRequest({ ok: true, data: { profileId: "profile-rose" } }); });
+		await waitFor(() => expect(mocks.push).toHaveBeenCalledWith("/family/members/profile-rose"));
   });
   it("keeps the type immutable and omits consent and permission fields during editing", async () => {
     mocks.update.mockResolvedValue({ ok: false, error: { code: "INTERNAL", message: profilesCopy.errors.internal } });
