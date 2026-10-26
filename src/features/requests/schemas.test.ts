@@ -5,7 +5,7 @@ import { closeRequestSchema, removeRequestItemSchema, requestListSchema, request
 
 const input = { clientRequestKey: requestIds.key, inputMode: "PICTURES", items: [{ sku: "demo-milk", quantity: 1 }] };
 describe("request notification response", () => {
-	const item = { id: requestIds.request, displayName: "Rose", submittedAt: "2026-10-12T12:00:00Z" };
+	const item = { id: requestIds.request, displayName: "Rose", submittedAt: "2026-10-12T12:00:00Z", message: "Rose has sent a shopping list." };
 	it("accepts a bounded feed with a larger total count", () => {
 		expect(requestNotificationsSchema.safeParse({ count: 125, notifications: [item] }).success).toBe(true);
 	});
