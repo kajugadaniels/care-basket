@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CreateFamilyFormState } from "@/features/family/types";
 
@@ -105,7 +105,8 @@ describe("CreateFamilyForm", () => {
 	});
 
   it("disables the button while sending, so the form cannot be submitted twice", async () => {
-    mocks.createFamilyAction.mockReturnValue(new Promise(() => undefined));
+		let finish!: (state: CreateFamilyFormState) => void;
+		mocks.createFamilyAction.mockReturnValue(new Promise((resolve) => { finish = resolve; }));
     render(<CreateFamilyForm defaultDisplayName="Jane" />);
 
     submit();
@@ -113,6 +114,15 @@ describe("CreateFamilyForm", () => {
     const button = await screen.findByRole("button", { name: "Creating your family…" });
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-busy", "true");
+		await act(async () => {
+			finish({
+				values: { familyName: "Jane's Family", displayName: "Jane" },
+				error: { code: "INTERNAL", message: "Please try again." },
+				created: false,
+				feedback: null,
+			});
+		});
+		expect(await screen.findByRole("button", { name: "Create My Family" })).toBeEnabled();
   });
 
 	it("announces success before opening the family dashboard", async () => {
