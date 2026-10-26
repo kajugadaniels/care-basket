@@ -16,13 +16,12 @@ import styles from "./DraftSummary.module.css";
 const PREVIEW_LIMIT = 4;
 
 export function DraftSummary() {
-	const { draft, message, locked, change } = useDraft();
+	const { draft, locked, change } = useDraft();
 	const headingRef = useRef<HTMLHeadingElement>(null);
 	const [removed, setRemoved] = useState<{ item: DraftItem; draft: Draft } | null>(null);
 	const items = draft.items.slice(0, PREVIEW_LIMIT);
 	const remaining = draft.items.length - items.length;
 	const canUndo = removed !== null && !draft.items.some((item) => item.sku === removed.item.sku);
-	const feedback = message || (canUndo ? requestsCopy.draftRemoved({ name: removed.item.displayName }) : "");
 
 	function removeItem(item: DraftItem) {
 		if (locked || !change({ type: "remove", sku: item.sku })) return;
@@ -84,7 +83,6 @@ export function DraftSummary() {
 
 			{remaining > 0 ? <p className={styles.more}>{requestsCopy.draftMore({ count: remaining })}</p> : null}
 			{items.length > 0 ? <ActionLink href="/shop/basket" size="lg" className={styles.review}>{requestsCopy.basket}</ActionLink> : null}
-			<p role="status" aria-live="polite" aria-atomic="true" className={styles.announcement}>{feedback}</p>
 			{canUndo ? <Button variant="secondary" disabled={locked} className={styles.undo}
 				onClick={undoRemoval}>{requestsCopy.undoRemove}</Button> : null}
 		</div>
