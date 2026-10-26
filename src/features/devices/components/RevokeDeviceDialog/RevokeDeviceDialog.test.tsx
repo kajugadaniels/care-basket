@@ -26,7 +26,7 @@ describe("device revocation confirmation", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Cancel" })); expect(trigger).toHaveFocus(); expect(fake.revoke).not.toHaveBeenCalled();
   });
   it("requires confirmation and announces success", async () => {
-    fake.revoke.mockResolvedValue({ ok: true, data: { done: true } }); const { dialog } = open();
+    fake.revoke.mockResolvedValue({ ok: true, data: { done: true }, feedback: { kind: "success", message: "Device disconnected." } }); const { dialog } = open();
     fireEvent.click(within(dialog).getByRole("checkbox")); fireEvent.click(within(dialog).getByRole("button", { name: "Disconnect Device" }));
     expect(await screen.findByRole("status")).toHaveTextContent("Device disconnected.");
     await waitFor(() => expect(screen.getByRole("status")).toHaveFocus());
