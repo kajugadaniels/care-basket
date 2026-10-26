@@ -13,7 +13,7 @@ import styles from "./PairingWaiting.module.css";
 export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDto; onRestart(): void }) {
 	const toast = useToast();
   const [retryKey, setRetryKey] = useState(0);
-  const { status, hasError, isExpiring } = usePairingStatus(pairing.expiresAt, retryKey);
+  const { status, hasError, errorMessage, isExpiring } = usePairingStatus(pairing.expiresAt, retryKey);
   const [completionError, setCompletionError] = useState<string | null>(null);
   const [isCompleting, setIsCompleting] = useState(false);
   const [completionRetry, setCompletionRetry] = useState(0);
@@ -25,7 +25,7 @@ export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDt
     try {
       const result = await completePairingAction({});
 		if (result && !result.ok) {
-			const message = result.error.code === "CONFLICT" ? devicesCopy.completionFailed : result.error.message;
+			const message = result.error.message;
 			setCompletionError(message);
 			toast.notify({ kind: "error", message });
 		}
@@ -45,8 +45,8 @@ export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDt
   }, [status, completionRetry]);
 	useEffect(() => {
 		if (!hasError) return;
-		toast.notify({ kind: "error", message: devicesCopy.network });
-	}, [hasError, toast]);
+		toast.notify({ kind: "error", message: errorMessage });
+	}, [errorMessage, hasError, toast]);
 	useEffect(() => {
 		if (!isExpiring) return;
 		toast.notify({ kind: "warning", message: devicesCopy.expiresSoon });
@@ -63,7 +63,7 @@ export function PairingWaiting({ pairing, onRestart }: { pairing: PairingStartDt
       <p role="status">{isExpiring ? devicesCopy.expiresSoon : ""}</p>
     </> : null}
     <p ref={statusRef} tabIndex={-1} role="status" className={styles.status}>{message}</p>
-    {hasError || completionError ? <p role="alert" className={styles.error}>{completionError ?? devicesCopy.network}</p> : null}
+    {hasError || completionError ? <p role="alert" className={styles.error}>{completionError ?? errorMessage}</p> : null}
     {hasError && status === "PENDING" ? <Button className={styles.action} onClick={() => setRetryKey((n) => n + 1)}>{devicesCopy.retry}</Button> : null}
     {completionError && status === "APPROVED" ? <Button className={styles.action} loading={isCompleting}
       onClick={() => { attempted.current = false; setCompletionRetry((n) => n + 1); }}>{devicesCopy.retry}</Button> : null}
