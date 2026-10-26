@@ -21,6 +21,7 @@ const initialState: CreateFamilyFormState = {
   values: { familyName: "", displayName: "" },
   error: null,
 	created: false,
+	feedback: null,
 };
 const user = { id: "user-1", clerkUserId: "user_clerk_1" };
 
@@ -84,6 +85,7 @@ describe("createFamilyAction", () => {
 		values: { familyName: "  Jane's Family ", displayName: " Jane " },
 		error: null,
 		created: true,
+		feedback: { kind: "success", message: "Your family is ready." },
 	});
 
     expect(mocks.createFamilyForUser).toHaveBeenCalledWith("user-1", {
