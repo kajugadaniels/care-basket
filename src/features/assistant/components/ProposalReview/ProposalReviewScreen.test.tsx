@@ -52,7 +52,11 @@ function open(child = false, savedProposal?: Proposal | null) {
 describe("separate proposal review screen", () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
-		fake.text.mockResolvedValue({ ok: true, data: proposal });
+		fake.text.mockResolvedValue({
+			ok: true,
+			data: proposal,
+			feedback: { kind: "success", message: "Your grocery choices are ready to review." },
+		});
 	});
 
 	it("shows restored products after a reload with empty client state without adding them", () => {
