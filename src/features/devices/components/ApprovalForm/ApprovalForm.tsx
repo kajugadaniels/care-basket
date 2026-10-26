@@ -26,7 +26,7 @@ export function ApprovalForm({ profiles, preselected }: { profiles: ProfileOptio
       const result = await reviewPairingAction({ code });
 		if (result.ok) {
 			setReview(result.data); setCode("");
-			toast.notify({ kind: "warning", message: devicesCopy.reviewReady });
+			toast.notify(result.feedback);
 		} else {
 			setError(result.error.message); toast.notify({ kind: "error", message: result.error.message });
 			requestAnimationFrame(() => errorRef.current?.focus());
