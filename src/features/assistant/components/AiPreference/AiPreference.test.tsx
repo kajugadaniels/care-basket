@@ -18,7 +18,11 @@ describe("separate AI consent", () => {
 		expect(screen.getByRole("button", { name: copy.enable })).toBeEnabled();
 	});
 	it("still permits revocation while the global gate is closed", async () => {
-		fake.update.mockResolvedValue({ ok: true, data: { profileId: requestIds.profile } });
+		fake.update.mockResolvedValue({
+			ok: true,
+			data: { profileId: requestIds.profile, enabled: false },
+			feedback: { kind: "success", message: "Voice and smart suggestions are disabled." },
+		});
 		render(<AiPreference profileId={requestIds.profile} enabled available={false} />);
 		fireEvent.click(screen.getByRole("button", { name: copy.revoke }));
 		await waitFor(() => expect(fake.update).toHaveBeenCalledWith({ profileId: requestIds.profile, enabled: false, consent: false }));
