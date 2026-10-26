@@ -7,6 +7,7 @@ import { logSecurityFailure } from "@/server/logger";
 import { getAppOrigin } from "@/lib/env/server";
 import { assistantCopy } from "@/features/assistant/copy";
 import { logShoppingInterpretationMetric } from "@/features/assistant/server/observability";
+import { proposalFeedback } from "@/features/assistant/server/feedback";
 import { enforceAssistantLimits, requireVoicePermission } from "@/features/assistant/server/service";
 import { interpretShoppingForReview } from "@/features/assistant/server/saved-review";
 import { AudioUploadError, readVoiceUpload } from "@/features/assistant/server/voice-upload";
@@ -20,7 +21,8 @@ export async function POST(request: Request) {
 		if (request.headers.get("origin") !== getAppOrigin()) throw new AppError("FORBIDDEN");
 		await enforceAssistantLimits(actor);
 		const audio = await readVoiceUpload(request);
-		return Response.json({ data: await interpretShoppingForReview(actor, audio, true) }, { headers });
+		const proposal = await interpretShoppingForReview(actor, audio, true);
+		return Response.json({ data: proposal, feedback: proposalFeedback(proposal) }, { headers });
 	} catch (error) {
 		unstable_rethrow(error);
 		const code = error instanceof AppError ? error.code : "INTERNAL";
