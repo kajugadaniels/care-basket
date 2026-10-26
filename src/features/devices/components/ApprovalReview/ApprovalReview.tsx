@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/Checkbox/Checkbox";
 import { TextField } from "@/components/ui/TextField/TextField";
 import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { formatCountdown, formatDate, formatTime } from "@/lib/format";
+import type { ActionFeedback } from "@/types/action-result";
 import { approvePairingAction, rejectPairingAction } from "../../actions";
 import { devicesCopy } from "../../copy";
 import type { PairingReviewDto, ProfileOption } from "../../types";
@@ -20,7 +21,7 @@ export function ApprovalReview({ review, profiles, preselected }: {
   const [label, setLabel] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState<{ message: string; fieldErrors?: Record<string, string[] | undefined> } | null>(null);
-  const [result, setResult] = useState<"approved" | "rejected" | null>(null);
+  const [result, setResult] = useState<ActionFeedback | null>(null);
   const [pendingDecision, setPendingDecision] = useState<"approve" | "reject" | null>(null);
   const isPending = pendingDecision !== null;
   const [isExpired, setIsExpired] = useState(false);
@@ -47,8 +48,8 @@ export function ApprovalReview({ review, profiles, preselected }: {
       const response = decision === "approve" ? await approvePairingAction({ ...input, profileId, label, confirmed })
         : await rejectPairingAction({ ...input, confirmed: true });
 		if (response.ok) {
-			setResult(decision === "approve" ? "approved" : "rejected");
-			toast.notify({ kind: "success", message: decision === "approve" ? devicesCopy.approvedManager : devicesCopy.rejectedManager });
+			setResult(response.feedback);
+			toast.notify(response.feedback);
 			requestAnimationFrame(() => headingRef.current?.focus());
 		} else {
 			setError(response.error); toast.notify({ kind: "error", message: response.error.message });
@@ -62,7 +63,7 @@ export function ApprovalReview({ review, profiles, preselected }: {
   }
   return <section className={styles.review} aria-labelledby="review-title">
     <h2 ref={headingRef} id="review-title" tabIndex={-1}>{devicesCopy.reviewTitle}</h2>
-    {result ? <><p role="status">{result === "approved" ? devicesCopy.approvedManager : devicesCopy.rejectedManager}</p>
+    {result ? <><p role="status">{result.message}</p>
       <ActionLink href="/family/devices">{devicesCopy.backDevices}</ActionLink></> : <>
       <p>{review.userAgentSummary}</p><p className={styles.notice}>{devicesCopy.browserNotice}</p>
       <dl className={styles.facts}>
