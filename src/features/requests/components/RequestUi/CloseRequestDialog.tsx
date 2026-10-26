@@ -1,7 +1,8 @@
 "use client";
 
-import { useId, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { Button } from "@/components/ui/Button/Button";
+import { useToast } from "@/components/ui/Toast/ToastProvider";
 import { cancelRequestAction, declineRequestAction } from "../../actions";
 import { requestsCopy } from "../../copy";
 import { useRequestMutation } from "../../hooks/use-request-mutation";
@@ -10,12 +11,17 @@ import styles from "./RequestUi.module.css";
 export function CloseRequestDialog({ requestId, revision, manager = false }: {
 	requestId: string; revision: number; manager?: boolean;
 }) {
+	const toast = useToast();
 	const id = useId();
 	const dialog = useRef<HTMLDialogElement>(null);
 	const trigger = useRef<HTMLButtonElement>(null);
 	const keep = useRef<HTMLButtonElement>(null);
 	const { pending, error, errorRef, run } = useRequestMutation();
 	const label = manager ? requestsCopy.decline : requestsCopy.cancel;
+	const success = manager ? requestsCopy.declinedNotice : requestsCopy.cancelledNotice;
+	useEffect(() => {
+		if (error) toast.notify({ kind: "error", message: error });
+	}, [error, toast]);
 	return <>
 		<Button ref={trigger} variant="destructive" onClick={() => {
 			dialog.current?.showModal(); keep.current?.focus();
@@ -30,7 +36,10 @@ export function CloseRequestDialog({ requestId, revision, manager = false }: {
 					<Button ref={keep} variant="secondary" disabled={pending} onClick={() => dialog.current?.close()}>{requestsCopy.keep}</Button>
 					<Button variant="destructive" loading={pending} onClick={() => run(
 						() => (manager ? declineRequestAction : cancelRequestAction)({ requestId, revision, confirmed: true }),
-						() => dialog.current?.close(),
+						() => {
+							dialog.current?.close();
+							toast.notify({ kind: "success", message: success });
+						},
 					)}>{pending ? requestsCopy.closing : requestsCopy.confirm}</Button>
 				</div>
 			</div>
