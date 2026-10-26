@@ -9,11 +9,11 @@ type Page<T, Cursor> = { items: T[]; nextCursor: Cursor | null };
 export function usePagedList<T extends { sku: string }, Cursor extends string | number>(
 	initial: Page<T, Cursor>,
 	fetchPage: (cursor: Cursor) => Promise<ActionResult<Page<T, Cursor>>>,
-	errorMessage = "We couldn't load more items. Try again.",
+	connectionError = "We couldn't load more items. Try again.",
 ) {
 	const toast = useToast();
 	const [page, setPage] = useState(initial);
-	const [failed, setFailed] = useState(false);
+	const [error, setError] = useState("");
 	const [pending, setPending] = useState(false);
 	const inFlight = useRef(false);
 	const mounted = useRef(true);
@@ -28,16 +28,16 @@ export function usePagedList<T extends { sku: string }, Cursor extends string | 
 		if (inFlight.current || pending || page.nextCursor === null) return;
 		const cursor = page.nextCursor;
 		inFlight.current = true; // Observer and button can fire before the pending render.
-		setFailed(false);
+		setError("");
 		setPending(true);
 		void (async () => {
-			let requestFailed = false;
+			let failureMessage = "";
 
 			try {
 				const result = await fetchPage(cursor);
 				if (!mounted.current) return;
 				if (!result.ok) {
-					requestFailed = true;
+					failureMessage = result.error.message;
 					return;
 				}
 				visited.current.add(cursor);
@@ -53,17 +53,17 @@ export function usePagedList<T extends { sku: string }, Cursor extends string | 
 					return { items: [...previous.items, ...additions], nextCursor: exhausted ? null : nextCursor };
 				});
 			} catch {
-				requestFailed = true;
+				failureMessage = connectionError;
 			} finally {
 				inFlight.current = false;
 				if (mounted.current) {
 					setPending(false);
-					setFailed(requestFailed);
-					if (requestFailed) toast.notify({ kind: "error", message: errorMessage });
+					setError(failureMessage);
+					if (failureMessage) toast.notify({ kind: "error", message: failureMessage });
 				}
 			}
 		})();
 	}
 
-	return { items: page.items, hasMore: page.nextCursor !== null, failed, pending, loadMore };
+	return { items: page.items, hasMore: page.nextCursor !== null, failed: Boolean(error), error, pending, loadMore };
 }
