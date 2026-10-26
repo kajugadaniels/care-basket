@@ -7,6 +7,7 @@ import { ActionLink } from "@/components/ui/ActionLink/ActionLink";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
 import { useToast } from "@/components/ui/Toast/ToastProvider";
+import type { ActionFeedback } from "@/types/action-result";
 import {
   cancelCheckoutAction,
   captureCheckoutAction,
@@ -95,10 +96,8 @@ export function CheckoutPanel({
 		toast.notify({ kind: "error", message });
 	}
 
-	function showResult(result: CheckoutDto) {
-		const kind = ["PENDING", "REVIEW_REQUIRED", "REFUNDED", "REVERSED"].includes(result.state)
-			? "warning" : result.state === "DENIED" ? "error" : "success";
-		toast.notify({ kind, message: copy.statuses[result.state] });
+	function showResult(feedback: ActionFeedback) {
+		toast.notify(feedback);
 	}
 
   function run(kind: "start" | "cancel" | "refresh" | "capture") {
@@ -120,7 +119,7 @@ export function CheckoutPanel({
             return;
           }
           setLocal({ revision, checkout: result.data, source: checkout });
-			showResult(result.data);
+			showResult(result.feedback);
         } else if (
           (kind === "refresh" || kind === "capture") &&
           current?.orderId
@@ -136,7 +135,7 @@ export function CheckoutPanel({
             return;
           }
           setLocal({ revision, checkout: result.data, source: checkout });
-			showResult(result.data);
+			showResult(result.feedback);
         } else if (current) {
           const result = await cancelCheckoutAction({
             requestId,
@@ -149,8 +148,8 @@ export function CheckoutPanel({
             return;
           }
           setLocal({ revision, checkout: null, source: checkout });
-          setAnnouncement(copy.cancelled);
-			toast.notify({ kind: "success", message: copy.cancelled });
+			setAnnouncement(result.feedback.message);
+			toast.notify(result.feedback);
         }
       } catch {
 		showError(copy.errors.INTERNAL);
@@ -181,11 +180,12 @@ export function CheckoutPanel({
             requestId={requestId}
             revision={revision}
             checkout={current}
-            onResult={(result) => {
+			onResult={(result, feedback) => {
               setError("");
               setLocal({ revision, checkout: result, source: checkout });
-				showResult(result);
+				showResult(feedback);
             }}
+			onFeedback={showResult}
 			onError={showError}
           />
         </>
