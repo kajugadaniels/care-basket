@@ -25,7 +25,11 @@ describe("authenticated checkout actions", () => {
 		fake.reconcile.mockResolvedValue(checkout);
 	});
 	it("requires the manager actor, validates, rate-limits and revalidates manager/requester paths", async () => {
-		expect(await startCheckoutAction(input)).toEqual({ ok: true, data: checkout });
+		expect(await startCheckoutAction(input)).toEqual({
+			ok: true,
+			data: checkout,
+			feedback: { kind: "success", message: copy.statuses.PREPARED },
+		});
 		expect(fake.adult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
 		expect(fake.limit).toHaveBeenCalledWith(`checkout:start:${requestIds.family}:${input.requestId}`, 10, 3_600_000);
 		expect(fake.start).toHaveBeenCalledWith(requestManager, input);
@@ -70,7 +74,11 @@ describe("authenticated checkout actions", () => {
 		const cancel = { ...input, paymentId: requestIds.key, confirmed: true };
 		expect(await cancelCheckoutAction({ ...input, paymentId: requestIds.key })).toMatchObject({ ok: false, error: { code: "VALIDATION_FAILED" } });
 		expect(fake.cancel).not.toHaveBeenCalled();
-		expect(await cancelCheckoutAction(cancel)).toEqual({ ok: true, data: { requestId: input.requestId } });
+		expect(await cancelCheckoutAction(cancel)).toEqual({
+			ok: true,
+			data: { requestId: input.requestId },
+			feedback: { kind: "success", message: copy.cancelled },
+		});
 		expect(fake.cancel).toHaveBeenCalledWith(requestManager, cancel);
 		expect(fake.limit).toHaveBeenCalledWith(`checkout:cancel:${requestIds.family}:${input.requestId}`, 10, 3_600_000);
 		expect(fake.revalidate).toHaveBeenCalledWith(`/family/requests/${input.requestId}/checkout`);
@@ -78,7 +86,11 @@ describe("authenticated checkout actions", () => {
 	it.each([true, false])("authenticates and bounds payment reconciliation with capture=%s", async (capture) => {
 		const action = capture ? captureCheckoutAction : refreshCheckoutAction;
 		const value = { requestId: input.requestId, paypalOrderId: "ORDER1" };
-		expect(await action(value)).toEqual({ ok: true, data: checkout });
+		expect(await action(value)).toEqual({
+			ok: true,
+			data: checkout,
+			feedback: { kind: "success", message: copy.statuses.PREPARED },
+		});
 		expect(fake.adult).toHaveBeenCalledWith({ roles: ["OWNER", "MANAGER"] });
 		expect(fake.limit).toHaveBeenCalledWith(`checkout:payment:${requestIds.family}:${input.requestId}`, 10, 60_000);
 		expect(fake.reconcile).toHaveBeenCalledWith(requestManager, value, capture);
