@@ -20,3 +20,13 @@ export type ActionError = {
 };
 
 export type ActionResult<T> = { ok: true; data: T } | { ok: false; error: ActionError };
+
+export type ActionFeedback = {
+	kind: "success" | "warning" | "error";
+	// Authoritative, user-safe copy produced by the server operation.
+	message: string;
+};
+
+export type MutationResult<T> =
+	| { ok: true; data: T; feedback: ActionFeedback }
+	| { ok: false; error: ActionError };
