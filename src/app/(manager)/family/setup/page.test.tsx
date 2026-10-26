@@ -6,12 +6,16 @@ const mocks = vi.hoisted(() => ({
   findFamilyMembership: vi.fn(),
   requireAuthenticatedUser: vi.fn(),
   createFamilyAction: vi.fn(),
+	replace: vi.fn(),
   redirect: vi.fn((path: string) => {
     throw new Error(`NEXT_REDIRECT:${path}`);
   }),
 }));
 
-vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
+vi.mock("next/navigation", () => ({
+	redirect: mocks.redirect,
+	useRouter: () => ({ replace: mocks.replace }),
+}));
 vi.mock("@/server/auth/ensure-user", () => ({ ensureUser: mocks.ensureUser }));
 vi.mock("@/server/auth/family-membership", () => ({
   findFamilyMembership: mocks.findFamilyMembership,
@@ -31,6 +35,7 @@ describe("FamilySetupPage", () => {
     mocks.findFamilyMembership.mockReset();
     mocks.requireAuthenticatedUser.mockReset();
     mocks.redirect.mockClear();
+		mocks.replace.mockReset();
   });
 
   it("requires a signed-in session", async () => {
