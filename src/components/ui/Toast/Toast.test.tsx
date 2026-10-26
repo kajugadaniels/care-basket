@@ -49,6 +49,15 @@ describe("edit notifications", () => {
 		expect(screen.queryByRole("alert")).not.toBeInTheDocument();
 	});
 
+	it("labels warning feedback independently from success and error", () => {
+		render(<Toast notice={{ id: 1, kind: "warning", title: "Check this", message: "Connection expires soon." }}
+			dismissLabel="Dismiss warning" onDismiss={vi.fn()} />);
+		const status = screen.getByRole("status");
+		expect(status.parentElement).toHaveAttribute("data-kind", "warning");
+		expect(status).toHaveTextContent("Check this");
+		expect(status).toHaveTextContent("Connection expires soon.");
+	});
+
 	it("updates the message for successive confirmations in the same live region", () => {
 		const { rerender } = render(<Toast notice={{ id: 1, message: "Milk quantity saved." }} dismissLabel="Dismiss success message" onDismiss={vi.fn()} />);
 		const region = screen.getByRole("status");
