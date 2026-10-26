@@ -1,7 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { requestProduct } from "@/test/factories/requests";
 import { CatalogBrowser } from "@/features/catalog/components/CatalogBrowser/CatalogBrowser";
+import { ToastProvider } from "@/components/ui/Toast/ToastProvider";
 import { DraftProvider, useDraft } from "./DraftProvider";
 import { ProductSelection } from "./ProductSelection";
 
@@ -17,14 +19,18 @@ function SuggestedSelection() {
 	</>;
 }
 
+function DraftTest({ children }: { children: ReactNode }) {
+	return <ToastProvider><DraftProvider>{children}</DraftProvider></ToastProvider>;
+}
+
 describe("catalog draft selection", () => {
 	beforeEach(() => vi.clearAllMocks());
 
 	it("uses initial quantities and a custom add handler without also adding a catalog item", () => {
 		const onAdd = vi.fn();
-		render(<DraftProvider><ProductSelection product={requestProduct} initialQuantity={5} maxQuantity={6} onAdd={onAdd}>
+		render(<DraftTest><ProductSelection product={requestProduct} initialQuantity={5} maxQuantity={6} onAdd={onAdd}>
 			<p>{requestProduct.displayName}</p>
-		</ProductSelection></DraftProvider>);
+		</ProductSelection></DraftTest>);
 		expect(screen.getByText("Quantity: 5")).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Increase quantity for Demo milk" }));
 		expect(screen.getByRole("button", { name: "Increase quantity for Demo milk" })).toBeDisabled();
@@ -34,7 +40,7 @@ describe("catalog draft selection", () => {
 		expect(screen.queryByRole("button", { name: "Remove item: Demo milk" })).not.toBeInTheDocument();
 	});
 	it("keeps an assistant suggestion capped at six when it is viewed in the catalog", () => {
-		render(<DraftProvider><SuggestedSelection /></DraftProvider>);
+		render(<DraftTest><SuggestedSelection /></DraftTest>);
 		fireEvent.click(screen.getByRole("button", { name: "Load suggestion" }));
 		expect(screen.getByText("Quantity: 6")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Increase quantity for Demo milk" })).toBeDisabled();
@@ -42,8 +48,8 @@ describe("catalog draft selection", () => {
 		expect(screen.getByText("Quantity: 5")).toBeInTheDocument();
 	});
 	it("announces adding, prevents duplicate cards and keeps quantities in bounds", () => {
-		render(<DraftProvider><CatalogBrowser filters={{ q: "", limit: 24 }} selectable
-			result={{ products: [requestProduct], nextCursor: null }} /></DraftProvider>);
+		render(<DraftTest><CatalogBrowser filters={{ q: "", limit: 24 }} selectable
+			result={{ products: [requestProduct], nextCursor: null }} /></DraftTest>);
 		expect(screen.getByRole("button", { name: "Decrease quantity for Demo milk" })).toBeDisabled();
 		fireEvent.click(screen.getByRole("button", { name: "Increase quantity for Demo milk" }));
 		fireEvent.click(screen.getByRole("button", { name: "Add to my list" }));
@@ -56,9 +62,9 @@ describe("catalog draft selection", () => {
 	});
 
 	it("plays one brief success tone only when a product enters the list", () => {
-		render(<DraftProvider><ProductSelection product={requestProduct}>
+		render(<DraftTest><ProductSelection product={requestProduct}>
 			<p>{requestProduct.displayName}</p>
-		</ProductSelection></DraftProvider>);
+		</ProductSelection></DraftTest>);
 		fireEvent.click(screen.getByRole("button", { name: "Add to my list" }));
 		expect(sound.prepare).toHaveBeenCalledOnce();
 		expect(sound.play).toHaveBeenCalledExactlyOnceWith("success");
@@ -66,18 +72,18 @@ describe("catalog draft selection", () => {
 		expect(sound.play).toHaveBeenCalledOnce();
 	});
 	it("preserves added items across search, category and pagination rerenders", () => {
-		const { rerender } = render(<DraftProvider><CatalogBrowser filters={{ q: "", limit: 24 }} selectable
-			result={{ products: [requestProduct], nextCursor: null }} /></DraftProvider>);
+		const { rerender } = render(<DraftTest><CatalogBrowser filters={{ q: "", limit: 24 }} selectable
+			result={{ products: [requestProduct], nextCursor: null }} /></DraftTest>);
 		fireEvent.click(screen.getByRole("button", { name: "Add to my list" }));
-		rerender(<DraftProvider><CatalogBrowser filters={{ q: "bread", category: "BAKERY", cursor: "page-2", limit: 24 }} selectable
-			result={{ products: [], nextCursor: null }} /></DraftProvider>);
+		rerender(<DraftTest><CatalogBrowser filters={{ q: "bread", category: "BAKERY", cursor: "page-2", limit: 24 }} selectable
+			result={{ products: [], nextCursor: null }} /></DraftTest>);
 		expect(screen.getByText("1 product in your list")).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Check My List" })).toHaveAttribute("href", "/shop/basket");
 		expect(screen.queryByText(/\$/)).not.toBeInTheDocument();
 	});
 	it("explains unreviewed child suitability without inventing products", () => {
-		render(<DraftProvider><CatalogBrowser filters={{ q: "", limit: 24 }} selectable child
-			result={{ products: [], nextCursor: null }} /></DraftProvider>);
+		render(<DraftTest><CatalogBrowser filters={{ q: "", limit: 24 }} selectable child
+			result={{ products: [], nextCursor: null }} /></DraftTest>);
 		expect(screen.getByText(/not yet been reviewed for your shopping experience/)).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: "Add to my list" })).not.toBeInTheDocument();
 	});
