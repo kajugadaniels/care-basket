@@ -9,11 +9,12 @@ type Props = {
 	hasMore: boolean;
 	pending: boolean;
 	failed: boolean;
+	error?: string;
 	onLoad: () => void;
 	labels: { automatic: string; loading: string; retry: string; error: string; end: string };
 };
 
-export function LoadMore({ hasMore, pending, failed, onLoad, labels }: Props) {
+export function LoadMore({ hasMore, pending, failed, error, onLoad, labels }: Props) {
 	const sentinel = useRef<HTMLDivElement>(null);
 	const requestMore = useEffectEvent(onLoad);
 
@@ -77,7 +78,7 @@ export function LoadMore({ hasMore, pending, failed, onLoad, labels }: Props) {
 				if (hasMore && !pending && !failed && document.visibilityState !== "hidden") onLoad();
 			}}
 		>
-			{failed ? <p role="alert" className={styles.error}>{labels.error}</p> : null}
+			{failed ? <p role="alert" className={styles.error}>{error || labels.error}</p> : null}
 			<p role="status" aria-live="polite" aria-atomic="true" className={styles.status}>
 				{pending ? <><Spinner />{labels.loading}</> : !hasMore ? labels.end : null}
 			</p>
