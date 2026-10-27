@@ -35,7 +35,7 @@ Payment never implies delivery. Refund/reversal status and simulated fulfillment
 | Payments | PayPal Orders v2, Sandbox-only REST, JavaScript SDK v6 through React SDK, signed webhooks |
 | Catalog | Reviewed Open Prices/Open Food Facts data and approved curated essentials |
 | Images | Reviewed photos, Cloudinary mappings, same-origin Next image optimization |
-| UI | CSS Modules, Hugeicons, DM Sans and Atkinson Hyperlegible |
+| UI | CSS Modules, Hugeicons, AG Grid Community for manager directories, DM Sans and Atkinson Hyperlegible |
 | Tests | Vitest 4, Testing Library, jsdom; mocked providers and database boundaries |
 | API tooling | OpenAPI 3.0 contract prepared for APIMatic; secret-free Postman security checks |
 
