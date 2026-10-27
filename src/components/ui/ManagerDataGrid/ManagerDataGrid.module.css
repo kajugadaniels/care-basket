@@ -1,0 +1,65 @@
+.directory {
+	display: grid;
+	gap: var(--space-4);
+	min-inline-size: 0;
+}
+
+.searchField {
+	display: grid;
+	gap: var(--space-2);
+	max-inline-size: var(--reading-max);
+}
+
+.searchField label {
+	font-size: var(--text-sm);
+	font-weight: var(--weight-semibold);
+}
+
+.searchControl {
+	position: relative;
+}
+
+.searchControl input {
+	inline-size: 100%;
+	min-block-size: var(--control-height);
+	padding-inline: var(--control-height) var(--space-4);
+	border: 1px solid var(--color-border-strong);
+	border-radius: var(--radius-full);
+	background: var(--color-surface);
+	color: var(--color-text);
+	font: inherit;
+}
+
+.searchControl input:focus-visible {
+	outline: 3px solid var(--color-focus);
+	outline-offset: 2px;
+}
+
+.searchIcon {
+	position: absolute;
+	inset-block-start: 50%;
+	inset-inline-start: var(--space-4);
+	z-index: 1;
+	color: var(--color-text-muted);
+	transform: translateY(-50%);
+	pointer-events: none;
+}
+
+.grid {
+	min-inline-size: 0;
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-sm);
+	overflow: hidden;
+}
+
+.noMatches {
+	padding: var(--space-5);
+	color: var(--color-text-muted);
+}
+
+@media (forced-colors: active) {
+	.grid,
+	.searchControl input {
+		border: 1px solid CanvasText;
+	}
+}
